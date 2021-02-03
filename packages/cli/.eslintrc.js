@@ -7,9 +7,8 @@ module.exports = {
   env: {
     node: true,
   },
-  // "extends": ["@initializer/eslint-config"],
-  ignorePatterns: ["./dist"],
   extends: ["@initializer/eslint-config"],
+  ignorePatterns: ["**/dist"],
   overrides: [
     {
       files: ["src/**/*.ts"],
