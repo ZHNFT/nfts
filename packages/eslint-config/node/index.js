@@ -1,8 +1,6 @@
-"use strict";
-
 module.exports = {
-	env: {
-		node: true,
-	},
-	extends: ["../base"],
+  env: {
+    node: true,
+  },
+  extends: ["../base"],
 };

@@ -1,7 +1,5 @@
-"use strict";
-
 module.exports = {
-	rules: {
-		strict: ["error", "never"],
-	},
+  rules: {
+    strict: ["error", "never"],
+  },
 };

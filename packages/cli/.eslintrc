@@ -1,0 +1,25 @@
+{
+	"env": {
+		"node": true
+	},
+	// "extends": ["@initializer/eslint-config"],
+	"ignorePatterns": [
+		"./dist"
+	],
+	"overrides":[
+    {
+      "files": [
+        "src/**/*.ts"
+      ],
+      "parserOptions": {
+        "projects": [
+          "./tsconfig.json"
+        ]
+      },
+      "extends": [
+        "@initializer/eslint-config/typescript"
+      ]
+    }
+	],
+	"rules": {}
+}
