@@ -1,0 +1,13 @@
+{
+	"name": "@initializer/cli",
+	"version": "0.0.0",
+	"description": "cli init",
+	"main": "index.js",
+	"repository": "https://github.com/leiwenpeng0424/initializer.git",
+	"author": "leiwenpeng <leiwenpeng1994@outlook.com>",
+	"license": "MIT",
+	"private": false,
+	"bin": {
+		"initializer": "./bin/cli"
+	}
+}

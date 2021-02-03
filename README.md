@@ -1,2 +1,2 @@
 # initializer
-a scaffold initializer
+A scaffold initializer
