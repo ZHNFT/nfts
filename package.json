@@ -13,6 +13,7 @@
 	"devDependencies": {
 		"@initializer/eslint-config": "^0.0.1",
 		"eslint": "^7.19.0",
+		"prettier": "^2.2.1",
 		"typescript": "^4.1.3"
 	},
 	"eslintConfig": {
