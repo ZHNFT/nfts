@@ -16,11 +16,16 @@ module.exports = {
         project: [PROJECT],
       },
       extends: ["@initializer/eslint-config/typescript"],
+      rules: {
+        // @fixme Conflict with eslint semi rule
+        "@typescript-eslint/no-extra-semi": 0,
+      },
     },
   ],
   // @FIXME Conflict with Prettier
   rules: {
     "no-tabs": 0,
     indent: 0,
+    semi: 0,
   },
 };

@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "allowJs": false,
+    "alwaysStrict": true,
+    "declaration": true,
+    "declarationDir": "dist",
+    "module": "CommonJS",
+    "noImplicitAny": true,
+    "outDir": "dist",
+    "rootDir": "./src",
+    "target": "ESNext"
+  },
+  "exclude": ["node_modules", "bin", "dist"]
+}
