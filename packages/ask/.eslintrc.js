@@ -17,7 +17,8 @@ module.exports = {
       },
       extends: ["@initializer/eslint-config/typescript"],
       rules: {
-        // @fixme Conflict with eslint semi rule
+        // @FIXME Conflict with eslint semi rule
+        // https://github.com/typescript-eslint/typescript-eslint/blob/v4.14.2/packages/eslint-plugin/docs/rules/no-extra-semi.md
         "@typescript-eslint/no-extra-semi": 0,
       },
     },

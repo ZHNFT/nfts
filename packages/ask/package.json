@@ -2,14 +2,11 @@
   "name": "@initializer/ask",
   "version": "0.0.0",
   "description": "ask terminal interaction",
-  "main": "index.js",
+  "main": "dist/index.js",
   "repository": "https://github.com/leiwenpeng0424/initializer.git",
   "author": "leiwenpeng <leiwenpeng1994@outlook.com>",
   "license": "MIT",
   "private": false,
-  "bin": {
-    "ask": "./dist/ask"
-  },
   "scripts": {
     "dev": "tsc --watch"
   },
