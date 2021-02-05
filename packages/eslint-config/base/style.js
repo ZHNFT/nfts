@@ -434,7 +434,12 @@ module.exports = {
     "no-spaced-func": "error",
 
     // disallow tab characters entirely
-    "no-tabs": "error",
+    "no-tabs": [
+      "error",
+      {
+        allowIndentationTabs: true,
+      },
+    ],
 
     // disallow the use of ternary operators
     "no-ternary": "off",

@@ -29,7 +29,7 @@ module.exports = {
         enforceForArrowConditionals: false,
       },
     ], // disallow unnecessary parentheses
-    "no-extra-semi": ["error"], // disallow unnecessary semicolons
+    "no-extra-semi": "error", // disallow unnecessary semicolons
     "no-func-assign": ["error"], // disallow reassigning `function` declarations
     "no-import-assign": "off", // disallow assigning to imported bindings
     "no-inner-declarations": ["error"], // disallow variable or `function` declarations in nested blocks

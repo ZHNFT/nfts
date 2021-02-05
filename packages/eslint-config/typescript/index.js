@@ -10,5 +10,9 @@ module.exports = {
     // @fixme This rule will cause a eslint-plugin internal error
     // can not read property "0"
     "@typescript-eslint/unbound-method": "off",
+    // @note You must disable the base rule as it can report incorrect errors
+    // "no-extra-semi": "off" @see ../base/errors.js row-32
+    "no-extra-semi": "off",
+    "@typescript-eslint/no-extra-semi": "error",
   },
 };
