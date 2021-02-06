@@ -8,7 +8,9 @@
     "noImplicitAny": true,
     "outDir": "dist",
     "rootDir": "./src",
-    "target": "ESNext"
+    "target": "ESNext",
+    "importHelpers": true,
+    "allowSyntheticDefaultImports": true
   },
   "exclude": ["node_modules", "bin", "dist"]
 }
