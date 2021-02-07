@@ -1,10 +1,10 @@
 module.exports = {
   extends: [
     "./es6",
+    "./style",
     "./strict",
     "./errors",
     "./declare",
-    "./style",
     "./best-practices",
   ],
   rules: {},

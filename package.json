@@ -1,19 +1,21 @@
 {
-	"name": "initializer",
-	"version": "0.0.0",
-	"workspaces": [
-		"packages/*"
-	],
-	"description": "initializer for project",
-	"main": "index.js",
-	"repository": "https://github.com/leiwenpeng0424/initializer.git",
-	"author": "leiwenpeng <leiwenpeng1994@outlook.com>",
-	"license": "MIT",
-	"private": true,
-	"devDependencies": {
-		"prettier": "^2.2.1"
-	},
-	"eslintConfig": {
-		"extends": "@initializer/eslint-config"
-	}
+  "name": "initializer",
+  "version": "0.0.0",
+  "workspaces": [
+    "packages/*"
+  ],
+  "description": "initializer for project",
+  "main": "index.js",
+  "repository": "https://github.com/leiwenpeng0424/initializer.git",
+  "author": "leiwenpeng <leiwenpeng1994@outlook.com>",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "eslint": "^7.19.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "jest": "^26.6.3",
+    "prettier": "^2.2.1",
+    "typescript": "^4.1.3"
+  }
 }

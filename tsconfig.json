@@ -1,0 +1,30 @@
+{
+<<<<<<< HEAD:packages/ask/tsconfig.json
+  "compilerOptions": {
+    "allowJs": false,
+    "alwaysStrict": true,
+    "declaration": true,
+    "declarationDir": "dist",
+    "module": "CommonJS",
+    "noImplicitAny": true,
+    "outDir": "dist",
+    "rootDir": "./src",
+    "target": "ESNext",
+    "importHelpers": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "exclude": ["node_modules", "bin", "dist"]
+=======
+	"compilerOptions": {
+		"allowJs": false,
+		"allowSyntheticDefaultImports": true,
+		"allowUnreachableCode": true,
+		"alwaysStrict": true,
+		"declaration": true,
+		"esModuleInterop": true,
+		"importHelpers": true,
+		"module": "CommonJS",
+		"target": "ES2020"
+	}
+>>>>>>> 8aba26388fb0d9ac996fd01085dd2debb909d486:tsconfig.json
+}
