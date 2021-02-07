@@ -15,4 +15,7 @@ module.exports = {
     project: "./tsconfig.json",
   },
   plugins: ["prettier"],
+  rules: {
+    "no-plusplus": "off",
+  },
 };

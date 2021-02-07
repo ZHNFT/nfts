@@ -1,0 +1,17 @@
+{
+	"name": "@initializer/ask",
+	"version": "0.0.0",
+	"description": "ask terminal interaction",
+	"main": "dist",
+	"repository": "https://github.com/packages/ask",
+	"author": "leiwenpeng",
+	"license": "MIT",
+	"private": false,
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"dev": "tsc --watch",
+		"build": "tsc"
+	}
+}
