@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"allowJs": false,
+		"allowSyntheticDefaultImports": true,
+		"allowUnreachableCode": true,
+		"alwaysStrict": true,
+		"declaration": true,
+		"esModuleInterop": true,
+		"importHelpers": true,
+		"module": "CommonJS",
+		"target": "ES2020"
+	}
+}

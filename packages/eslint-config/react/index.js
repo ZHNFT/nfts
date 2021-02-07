@@ -6,7 +6,6 @@ module.exports = {
   },
   plugins: ["react"],
   extends: ["./rules", "./hooks", "./jsx"],
-  rules: {},
   settings: {
     "import/resolver": {
       node: {
@@ -23,4 +22,5 @@ module.exports = {
       "Object.freeze", // https://tc39.github.io/ecma262/#sec-object.freeze
     ],
   },
+  rules: {},
 };
