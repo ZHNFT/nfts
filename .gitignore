@@ -104,8 +104,8 @@ dist
 .tern-port
 
 # Editor
-.nova
-.idea
-.vscode
+.nova/
+.idea/
+.vscode/
 
 **/.DS_Store

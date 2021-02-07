@@ -1,6 +1,5 @@
 import { WriteStream, ReadStream } from "tty";
 import * as readline from "readline";
-import { makeHook } from "./hook";
 
 export type Config = {
 	input: ReadStream;
