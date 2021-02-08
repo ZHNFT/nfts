@@ -1,6 +1,12 @@
-import { createInterface, destoryInterface } from "./readline";
+import { createInterface, destoryInterface, clean } from "./readline";
 import * as terminal from "./terminal";
-import { bindEventToConfig, getPromptConfig, Option } from "./config";
+import {
+  bindEventToConfig,
+  getPromptConfig,
+  Option,
+  getCurrentConfig,
+  restoreHook,
+} from "./config";
 
 type VoidFunctionWithOneArgument<T> = (val: T) => void;
 
@@ -15,19 +21,29 @@ export function createPrompt<T>(module: PromptModule<T>) {
     getPromptConfig(option);
 
     return new Promise((resolve) => {
-      function done(value) {
+      function done(value: T) {
+        restoreHook();
         destoryInterface();
         resolve(value);
       }
 
-      function handleChange() {
-        //
+      function work(config: Option) {
+        console.log("working");
+        restoreHook();
+        terminal.draw(module(config, done));
       }
 
       bindEventToConfig({
-        onStateChange: handleChange,
+        onStateChange() {
+          work(getCurrentConfig());
+        },
       });
-      terminal.draw(module(option, done));
+
+      getCurrentConfig(work);
     });
   };
 }
+
+export { default as useEffect } from "./hooks/useEffect";
+export { default as useState } from "./hooks/useState";
+export { default as useKeypress } from "./hooks/useKeypress";

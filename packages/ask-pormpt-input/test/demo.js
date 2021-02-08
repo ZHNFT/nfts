@@ -2,7 +2,7 @@ const inputPrompt = require("../dist");
 
 inputPrompt
   .default({
-    message: "Show me the money ?",
+    message: "Who are you ?",
   })
   .then((ans) => {
     console.log(ans);

@@ -2,9 +2,7 @@ import { getCurrentConfig } from "../config";
 
 type StateHandler<T> = (newValue: T) => void;
 
-export default function useState<T>(
-  initialState: T,
-): [state: T, handler: StateHandler<T>] {
+export default function useState<T>(initialState: T): [T, StateHandler<T>] {
   const config = getCurrentConfig();
 
   if (!config) {
@@ -22,6 +20,7 @@ export default function useState<T>(
     value,
     (newValue: T) => {
       config.hooks[idx] = newValue;
+      config.onStateChange();
     },
   ];
 }

@@ -1,3 +1,5 @@
+// type StateChange = () => void;
+
 export type Option = {
   type: string;
   message: string;
@@ -9,7 +11,8 @@ export type Option = {
   hooksCleanup?: unknown[];
   index?: number;
   // Event Handler
-  onStateChange: unknown;
+  onStateChange: VoidFunction;
+  keyPress: VoidFunction;
 };
 
 const validator = () => true;
@@ -20,18 +23,24 @@ let WorkingConfig: Option | null = null;
 
 export function initHooks(): void {
   const { hooksCleanup } = WorkingConfig;
-  let len = hooksCleanup.length;
-
-  while (len--) {
-    const cleanup = hooksCleanup[len];
-    if (typeof cleanup === "function") {
-      cleanup();
+  if (hooksCleanup && hooksCleanup.length) {
+    let len = hooksCleanup.length;
+    while (len--) {
+      const cleanUp = hooksCleanup[len];
+      if (typeof cleanUp === "function") {
+        console.log("cleaning");
+        cleanUp();
+      }
     }
   }
 
   WorkingConfig.index = 0;
   WorkingConfig.hooks = [];
   WorkingConfig.hooksCleanup = [];
+}
+
+export function restoreHook(): void {
+  initHooks();
 }
 
 export function getPromptConfig(config: Option): Option {
@@ -46,10 +55,27 @@ export function getPromptConfig(config: Option): Option {
   return WorkingConfig;
 }
 
-export function getCurrentConfig(): Option {
+export function getCurrentConfig(cb?: (c: Option) => void): Option {
+  if (cb) {
+    cb(WorkingConfig);
+  }
   return WorkingConfig;
 }
 
-export function bindEventToConfig({ onStateChange }): void {
+type Events = {
+  onStateChange: VoidFunction;
+};
+
+export function bindEventToConfig({ onStateChange }: Events): void {
   WorkingConfig.onStateChange = onStateChange;
+}
+
+export function cleanup(idx: number): void {
+  const { hooksCleanup } = WorkingConfig;
+  const cleanupHook = hooksCleanup[idx];
+
+  if (typeof cleanupHook === "function") {
+    cleanupHook();
+    hooksCleanup[idx] = null;
+  }
 }
