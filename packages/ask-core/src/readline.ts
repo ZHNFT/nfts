@@ -39,4 +39,10 @@ export function write(message: string): void {
   }
 }
 
+export function clean(): void {
+  // @fixme Calc the cursor positon
+  RL.cursorTo(process.stdout, 0, -1);
+  RL.clearScreenDown(process.stdout);
+}
+
 export { Interface } from "readline";
