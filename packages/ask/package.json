@@ -2,7 +2,7 @@
   "name": "@initializer/ask",
   "version": "0.0.0",
   "description": "ask terminal interaction",
-  "main": "dist/index.js",
+  "main": "dist",
   "repository": "https://github.com/leiwenpeng0424/initializer.git",
   "author": "leiwenpeng <leiwenpeng1994@outlook.com>",
   "license": "MIT",

@@ -8,6 +8,19 @@ module.exports = {
     {
       files: ["**/*.ts"],
       extends: ["@initializer/eslint-config/typescript"],
+      rules: {
+        // "@typescript-eslint/no-unsafe-return": "off",
+        // @fixme sShould we keep this
+        "@typescript-eslint/restrict-template-expressions": [
+          "off",
+          {
+            allowNumber: true,
+            allowBoolean: false,
+            allowAny: false,
+            allowNullish: false,
+          },
+        ],
+      },
     },
   ],
   ignorePatterns: ["**/dist/"],
@@ -17,5 +30,7 @@ module.exports = {
   plugins: ["prettier"],
   rules: {
     "no-plusplus": "off",
+    // @NOTE Remember async this change to `eslint-config`
+    "arrow-body-style": ["error", "as-needed"],
   },
 };
