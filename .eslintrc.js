@@ -10,7 +10,7 @@ module.exports = {
       extends: ["@initializer/eslint-config/typescript"],
       rules: {
         // "@typescript-eslint/no-unsafe-return": "off",
-        // @fixme sShould we keep this
+        // @FIXME Should we keep this
         "@typescript-eslint/restrict-template-expressions": [
           "off",
           {
