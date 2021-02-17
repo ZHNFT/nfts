@@ -32,5 +32,6 @@ module.exports = {
     "no-plusplus": "off",
     // @NOTE Remember async this change to `eslint-config`
     "arrow-body-style": ["error", "as-needed"],
+    "lines-between-class-members": ["error", "never"],
   },
 };

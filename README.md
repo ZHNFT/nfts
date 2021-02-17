@@ -1,2 +1,3 @@
 # initializer
+
 A scaffold initializer
