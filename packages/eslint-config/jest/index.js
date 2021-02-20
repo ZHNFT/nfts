@@ -4,5 +4,5 @@ module.exports = {
     jest: true,
     es6: true,
   },
-  extends: ["./base", "./typescript", "./react"],
+  extends: ["../base"],
 };

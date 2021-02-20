@@ -1,22 +1,35 @@
-import { Prompt } from "@initializer/ask-core";
+import {
+  createPrompt,
+  useState,
+  useKeypress,
+  usePrefix,
+} from "@initializer/ask-core";
+import chalk from "chalk";
 
-type State = {
-  status: "idle" | "done" | string;
-};
+export default createPrompt((config, done) => {
+  const { message } = config;
+  const [status, setStatus] = useState("pending");
+  const [text, setText] = useState("");
 
-export default class InputPrompt extends Prompt<State, string> {
-  state = {
-    status: "idle",
-  };
-  onKeypress(): void {
-    //
-  }
-  render(): string {
-    const { status } = this.state;
-    if (status === "idle") {
-      return "render";
+  const prefix = usePrefix(status);
+
+  useKeypress((key, rl) => {
+    if (rl.line) {
+      setText(rl.line);
     }
 
-    return "";
+    if (key.name === "return") {
+      setStatus("done");
+      done(text);
+    }
+  });
+
+  let formatedValue = "";
+  if (status === "done") {
+    formatedValue = chalk.green(text);
+  } else {
+    formatedValue = chalk.blue(text);
   }
-}
+
+  return `${prefix} ${message} ${formatedValue}`;
+});

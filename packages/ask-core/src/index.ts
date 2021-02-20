@@ -18,14 +18,14 @@ function cleanup(idx: number) {
 }
 
 type Opts = {
-  message: string;
   type: string;
-  choices: string[];
+  message: string;
+  choices?: string[];
 };
 type Done = (val: unknown) => void;
 type View = (opts: Opts, done: Done) => string;
 
-export function createPrompt<T>(view: View) {
+export function createPrompt<T extends string>(view: View) {
   return function prompt(option: Opts): Promise<T> {
     return new Promise((resolve) => {
       globalRL = createRL();
@@ -35,8 +35,10 @@ export function createPrompt<T>(view: View) {
           cleanup(len);
         }
         index = 0;
+        globalRL = null;
         hooks.length = 0;
         hooksCleanup.length = 0;
+        screen.release();
         resolve(val);
       };
       const workLoop = (opts: Opts) => {
@@ -102,3 +104,5 @@ export function useKeypress(callback: KeypressCallback): void {
   };
   index++;
 }
+
+export { default as usePrefix } from "./prefix";

@@ -22,6 +22,10 @@ module.exports = {
         ],
       },
     },
+    {
+      files: ["**/test/**/*.{js,ts}"],
+      extends: ["@initializer/eslint-config/jest"]
+    }
   ],
   ignorePatterns: ["**/dist/"],
   parserOptions: {
