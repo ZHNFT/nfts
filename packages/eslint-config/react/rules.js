@@ -58,4 +58,4 @@ module.exports = {
     "react/style-prop-object": ["error"], // Enforce style prop value is an object
     "react/void-dom-elements-no-children": ["error"], // Prevent passing of children to void DOM elements (e.g. <br />).
   },
-};
+}

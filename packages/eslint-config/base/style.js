@@ -197,11 +197,7 @@ module.exports = {
     "linebreak-style": ["error", "unix"],
     // require or disallow an empty line between class members
     // https://eslint.org/docs/rules/lines-between-class-members
-    "lines-between-class-members": [
-      "error",
-      "always",
-      { exceptAfterSingleLine: false },
-    ],
+    "lines-between-class-members": ["error", "always", { exceptAfterSingleLine: false }],
     // enforces empty lines around comments
     "lines-around-comment": "off",
     // require or disallow newlines around directives
@@ -273,11 +269,7 @@ module.exports = {
         newIsCap: true,
         newIsCapExceptions: [],
         capIsNew: false,
-        capIsNewExceptions: [
-          "Immutable.Map",
-          "Immutable.Set",
-          "Immutable.List",
-        ],
+        capIsNewExceptions: ["Immutable.Map", "Immutable.Set", "Immutable.List"],
       },
     ],
     // disallow the omission of parentheses when invoking a constructor with no arguments
@@ -552,4 +544,4 @@ module.exports = {
     // require regex literals to be wrapped in parentheses
     "wrap-regex": "off",
   },
-};
+}

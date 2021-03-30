@@ -108,4 +108,4 @@ module.exports = {
       },
     ], // Prevent missing parentheses around multilines JSX
   },
-};
+}

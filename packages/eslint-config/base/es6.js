@@ -120,4 +120,4 @@ module.exports = {
     "template-curly-spacing": ["error", "never"], // require or disallow spacing around embedded expressions of template strings
     "yield-star-spacing": ["error", "before"], // require or disallow spacing around the `*` in `yield*` expressions
   },
-};
+}

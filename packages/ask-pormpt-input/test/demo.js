@@ -1,4 +1,4 @@
-const input = require("../dist");
+const input = require("../dist")
 
 input
   .default({
@@ -18,7 +18,7 @@ input
             message: "Your Gender?",
           })
           .then((ans3) => {
-            console.log(ans1, " <-> ", ans2, "<->", ans3);
-          });
-      });
-  });
+            console.log(ans1, " <-> ", ans2, "<->", ans3)
+          })
+      })
+  })

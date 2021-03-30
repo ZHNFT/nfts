@@ -5,4 +5,4 @@ module.exports = {
     sourceType: "module",
   },
   extends: ["./base"],
-};
+}

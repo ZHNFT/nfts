@@ -7,11 +7,13 @@ module.exports = {
       "error",
       {
         name: "isFinite",
-        message: "Use Number.isFinite instead https://github.com/airbnb/javascript#standard-library--isfinite",
+        message:
+          "Use Number.isFinite instead https://github.com/airbnb/javascript#standard-library--isfinite",
       },
       {
         name: "isNaN",
-        message: "Use Number.isNaN instead https://github.com/airbnb/javascript#standard-library--isnan",
+        message:
+          "Use Number.isNaN instead https://github.com/airbnb/javascript#standard-library--isnan",
       },
     ], // disallow specified global variables
     "no-shadow": ["error"], // disallow variable declarations from shadowing variables declared in the outer scope
@@ -20,9 +22,6 @@ module.exports = {
     "no-undef-init": ["error"], // disallow initializing variables to `undefined`
     "no-undefined": ["error"], // disallow the use of `undefined` as an identifier
     "no-unused-vars": ["error"], // disallow unused variables
-    "no-use-before-define": [
-      "warn",
-      { functions: true, classes: true, variables: true },
-    ], // disallow the use of variables before they are defined
+    "no-use-before-define": ["warn", { functions: true, classes: true, variables: true }], // disallow the use of variables before they are defined
   },
-};
+}

@@ -5,4 +5,4 @@ module.exports = {
     es6: true,
   },
   extends: ["../base"],
-};
+}

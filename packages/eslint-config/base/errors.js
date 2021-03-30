@@ -54,14 +54,11 @@ module.exports = {
     ], // disallow loops with a body that allows only one iteration
     "no-unsafe-finally": ["error"], // disallow control flow statements in `finally` blocks
     "no-unsafe-negation": ["error"], // disallow negating the left operand of relational operators
-    "no-unsafe-optional-chaining": [
-      "off",
-      { disallowArithmeticOperators: true },
-    ], // disallow use of optional chaining in contexts where the `undefined` value is not allowed
+    "no-unsafe-optional-chaining": ["off", { disallowArithmeticOperators: true }], // disallow use of optional chaining in contexts where the `undefined` value is not allowed
     "no-useless-backreference": "off", // disallow useless backreferences in regular expressions
     "require-atomic-updates": "off", // disallow assignments that can lead to race conditions due to usage of `await` or `yield`
     "use-isnan": ["error"], // require calls to `isNaN()` when checking for `NaN`
     "valid-jsdoc": "off",
     "valid-typeof": ["error", { requireStringLiterals: true }], // enforce comparing `typeof` expressions against valid strings
   },
-};
+}

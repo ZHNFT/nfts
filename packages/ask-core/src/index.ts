@@ -1,108 +1,108 @@
 // Main
-import { createRL, Interface, Key } from "./readline";
-import * as screen from "./screen";
+import { createRL, Interface, Key } from "./readline"
+import * as screen from "./screen"
 
-const hooks: unknown[] = [];
-const hooksCleanup: (() => void)[] = [];
-let index = 0;
+const hooks: unknown[] = []
+const hooksCleanup: (() => void)[] = []
+let index = 0
 let onChange = () => {
   /**/
-};
-let globalRL: Interface;
+}
+let globalRL: Interface
 
 function cleanup(idx: number) {
-  const cleanupFn = hooksCleanup[idx];
+  const cleanupFn = hooksCleanup[idx]
   if (cleanupFn && typeof cleanupFn === "function") {
-    cleanupFn();
+    cleanupFn()
   }
 }
 
 type Opts = {
-  type: string;
-  message: string;
-  choices?: string[];
-};
-type Done = (val: unknown) => void;
-type View = (opts: Opts, done: Done) => string;
+  type: string
+  message: string
+  choices?: string[]
+}
+type Done = (val: unknown) => void
+type View = (opts: Opts, done: Done) => string
 
 export function createPrompt<T extends string>(view: View) {
   return function prompt(option: Opts): Promise<T> {
     return new Promise((resolve) => {
-      globalRL = createRL();
+      globalRL = createRL()
       const done = (val: T) => {
-        let len = hooksCleanup.length;
+        let len = hooksCleanup.length
         while (len--) {
-          cleanup(len);
+          cleanup(len)
         }
-        index = 0;
-        globalRL = null;
-        hooks.length = 0;
-        hooksCleanup.length = 0;
-        screen.release();
-        resolve(val);
-      };
+        index = 0
+        globalRL = null
+        hooks.length = 0
+        hooksCleanup.length = 0
+        screen.release()
+        resolve(val)
+      }
       const workLoop = (opts: Opts) => {
-        index = 0;
-        onChange = () => workLoop(opts);
-        screen.render(view(opts, done), globalRL);
-      };
-      workLoop(option);
-    });
-  };
+        index = 0
+        onChange = () => workLoop(opts)
+        screen.render(view(opts, done), globalRL)
+      }
+      workLoop(option)
+    })
+  }
 }
 
 export function useState<T>(initialValue: T): [T, (val: T) => void] {
-  const idx = index;
-  const value = idx in hooks ? (hooks[idx] as T) : initialValue;
-  index++;
+  const idx = index
+  const value = idx in hooks ? (hooks[idx] as T) : initialValue
+  index++
   return [
     value,
     (newVal: T) => {
-      hooks[idx] = newVal;
-      onChange();
+      hooks[idx] = newVal
+      onChange()
     },
-  ];
+  ]
 }
 
-type Cancel = () => void;
-type Callback = (rl: Interface) => Cancel;
+type Cancel = () => void
+type Callback = (rl: Interface) => Cancel
 
 export function useEffect(callback: Callback, deps: string[]): void {
-  const idx = index;
-  let hasChange = false;
-  const prevDeps = hooks[idx];
+  const idx = index
+  let hasChange = false
+  const prevDeps = hooks[idx]
   if (prevDeps) {
-    hasChange = deps.some((dep, i) => !Object.is(dep, prevDeps[i]));
+    hasChange = deps.some((dep, i) => !Object.is(dep, prevDeps[i]))
   }
   if (hasChange) {
-    const cleanupFn = callback(globalRL);
-    const prevCleanupFn = hooksCleanup[idx];
+    const cleanupFn = callback(globalRL)
+    const prevCleanupFn = hooksCleanup[idx]
     if (prevCleanupFn) {
-      cleanup(idx);
+      cleanup(idx)
     }
-    hooksCleanup[idx] = cleanupFn;
+    hooksCleanup[idx] = cleanupFn
   }
-  hooks[idx] = deps;
-  index++;
+  hooks[idx] = deps
+  index++
 }
 
-type KeypressCallback = (event: Key, rl: Interface) => void;
+type KeypressCallback = (event: Key, rl: Interface) => void
 
 export function useKeypress(callback: KeypressCallback): void {
-  const idx = index;
-  const cleanupFn = hooksCleanup[idx];
+  const idx = index
+  const cleanupFn = hooksCleanup[idx]
   if (cleanupFn) {
-    cleanup(idx);
+    cleanup(idx)
   }
   const handleKeyPress = (_buf: Buffer, key: Key) => {
-    callback(key, globalRL);
-  };
-  process.stdin.on("keypress", handleKeyPress);
-  hooks[idx] = callback;
+    callback(key, globalRL)
+  }
+  process.stdin.on("keypress", handleKeyPress)
+  hooks[idx] = callback
   hooksCleanup[idx] = () => {
-    process.stdin.removeListener("keypress", handleKeyPress);
-  };
-  index++;
+    process.stdin.removeListener("keypress", handleKeyPress)
+  }
+  index++
 }
 
-export { default as usePrefix } from "./prefix";
+export { default as usePrefix } from "./prefix"
