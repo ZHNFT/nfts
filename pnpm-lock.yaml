@@ -9,6 +9,7 @@ importers:
       jest: 26.6.3
       prettier: 2.2.1
       ts-jest: 26.5.4_jest@26.6.3+typescript@4.2.3
+      tslib: 2.1.0
       typescript: 4.2.3
     specifiers:
       '@types/jest': ^26.0.20
@@ -19,6 +20,7 @@ importers:
       jest: ^26.6.3
       prettier: ^2.2.1
       ts-jest: ^26.5.1
+      tslib: ^2.1.0
       typescript: ^4.1.3
   packages/ask:
     devDependencies:
@@ -33,7 +35,10 @@ importers:
     specifiers:
       '@initializer/ask-core': workspace:0.0.0
   packages/ask-prompt-comfirm:
-    specifiers: {}
+    dependencies:
+      '@initializer/ask-core': link:../ask-core
+    specifiers:
+      '@initializer/ask-core': workspace:0.0.0
   packages/eslint-config:
     dependencies:
       '@typescript-eslint/eslint-plugin': 4.20.0_@typescript-eslint+parser@4.20.0
@@ -5137,6 +5142,11 @@ packages:
     resolution:
       integrity: sha1-zy04vcNKE0vK8QkcQfZhni9nLQA=
       tarball: tslib/download/tslib-1.14.1.tgz
+  /tslib/2.1.0:
+    dev: true
+    resolution:
+      integrity: sha1-2mCGDxwuyqVwOrfTm8Bba/mIuXo=
+      tarball: tslib/download/tslib-2.1.0.tgz
   /tsutils/3.21.0:
     dependencies:
       tslib: 1.14.1
