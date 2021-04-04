@@ -1,13 +1,13 @@
 {
-	"compilerOptions": {
-		"allowJs": false,
-		"allowSyntheticDefaultImports": true,
-		"allowUnreachableCode": true,
-		"alwaysStrict": true,
-		"declaration": true,
-		"esModuleInterop": true,
-		"module": "CommonJS",
-		"target": "ES2020",
-		"importHelpers": true
-	}
+  "compilerOptions": {
+    "target": "ESNext",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    // strict
+    "strict": true,
+    "alwaysStrict": true,
+    // dts
+    "declaration": true,
+    "sourceMap": true
+  }
 }

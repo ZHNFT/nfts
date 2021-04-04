@@ -1,3 +1,0 @@
-# initializer
-
-A scaffold initializer
