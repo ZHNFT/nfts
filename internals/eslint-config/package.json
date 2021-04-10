@@ -1,11 +1,28 @@
 {
   "name": "@initial/eslint-config",
   "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "internal eslint-config usage",
+  "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "MIT"
+  "author": "ray",
+  "license": "MIT",
+  "keywords": [
+    "eslint",
+    "configuration"
+  ],
+  "peerDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.21.0",
+    "@typescript-eslint/parser": "^4.21.0",
+    "eslint": "^7.24.0"
+  },
+  "devDependencies": {
+    "@internal/enviroment": "0.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.21.0",
+    "@typescript-eslint/parser": "^4.21.0",
+    "eslint": "^7.24.0",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react-hooks": "^4.2.0"
+  }
 }

@@ -1,0 +1,11 @@
+{
+  "name": "@internal/prettier-config",
+  "version": "0.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "author": "",
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  }
+}
