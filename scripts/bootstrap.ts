@@ -1,7 +1,6 @@
-import path from "path"
-import { writeFileSync } from "fs"
 import chalk from "chalk"
 import minimist from "minimist"
+import path from "path"
 
 type PArgsProps = {
   packageName: string
@@ -14,7 +13,7 @@ if (!pargs.packageName) {
   console.error(
     chalk.bold(chalk.red(`Give me a name, please!!!`))
   )
-  process.exitCode = 2
+  process.exit(2)
 }
 
 console.log(
