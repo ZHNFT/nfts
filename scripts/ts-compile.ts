@@ -1,10 +1,27 @@
-import { resolve } from "path"
+import { resolve, relative } from "path"
+import * as fs from "fs"
 import { spawnSync } from "child_process"
 import minimist from "minimist"
 import chalk from "chalk"
+import {
+  findConfigFile,
+  readJsonConfigFile,
+  convertToObject,
+} from "typescript"
+
+import type { CompilerOptions } from "typescript"
 
 const rootPath = process.cwd()
-const TARGETS = ["es3", "es5", "es6", "commonjs"]
+const TARGETS = [
+  "es3",
+  "es5",
+  "es6",
+  "commonjs",
+  "UMD",
+  "AMD",
+  "System",
+  "ESNext",
+]
 
 const { target, mod } = minimist<{
   target: string
@@ -16,10 +33,6 @@ function exit(code: number, message: string = "") {
   process.exit(code)
 }
 
-if (!mod || !target) {
-  exit(24, chalk.red(`> --mode or --target option missing`))
-}
-
 if (!TARGETS.includes(target.toLowerCase())) {
   exit(
     24,
@@ -29,25 +42,24 @@ if (!TARGETS.includes(target.toLowerCase())) {
 
 const command = "tsc"
 const src = resolve(rootPath, mod, "src")
-const dist = resolve(rootPath, mod, "lib")
-// @todo read from project root
-const projectConfig = resolve(
-  process.cwd(),
-  "tsconfig.json"
-)
+
+const [fileConfig, ..._ignoredFileconfigs] = [
+  findConfigFile(resolve(rootPath, mod), fs.existsSync), // search local package root
+  findConfigFile(rootPath, fs.existsSync), // search project root
+].filter(Boolean)
+
+if (fileConfig === undefined) {
+  console.error(
+    chalk.red("> no typescript configuration find")
+  )
+  exit(24, "     please varify your code")
+}
+
+console.log(`> compile with configuration, ${fileConfig}`)
 
 const { status } = spawnSync(
   command,
-  [
-    `${src}/index.ts`,
-    "--target",
-    "esnext",
-    "--outDir",
-    dist,
-    "--allowSyntheticDefaultImports",
-    "--module",
-    target,
-  ],
+  [`${src}/index.ts`, "--module", target],
   {
     stdio: "inherit",
     shell: process.platform === "win32",
@@ -55,8 +67,7 @@ const { status } = spawnSync(
 )
 
 if (status !== 0) {
-  console.log(chalk.red("> build error"))
-  process.exit(status as number)
+  exit(24, chalk.red("> build error"))
 } else {
   console.log(chalk.green("> build success"))
 }

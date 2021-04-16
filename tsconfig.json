@@ -1,9 +1,11 @@
 {
   "compilerOptions": {
     "target": "ESNext",
+    // module
     "moduleResolution": "Node",
     "esModuleInterop": true,
-    // strict
+    "allowSyntheticDefaultImports": true,
+    // code style
     "strict": true,
     "alwaysStrict": true,
     // dts

@@ -64,8 +64,30 @@ if (existsSync(pkgCreatePlace)) {
     }
   )
 
-  mkdirSync(packagePath, "src")
-  mkdirSync(packagePath, "tests")
+  const tsconfig = path.join(packagePath, "tsconfig.json")
+
+  writeFileSync(
+    tsconfig,
+    JSON.stringify(
+      {
+        extends: "../../tsconfig.json",
+        compilerOptions: {
+          outDir: "./lib",
+        },
+      },
+      null,
+      2
+    ),
+    {
+      encoding: "utf-8",
+    }
+  )
+  mkdirSync(path.resolve(packagePath, "src"))
+  mkdirSync(path.resolve(packagePath, "tests"))
+  writeFileSync(
+    path.resolve(packagePath, "README.md"),
+    "`DO NOT USE IT IN YOUR PRODUCTION, PERSONAL USAGE ONLY`"
+  )
   // to be continue...
 } else {
   console.info(
