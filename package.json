@@ -12,7 +12,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "ts": "ts-node --project ./tsconfig.json"
+    "ts": "ts-node --project ./tsconfig.json",
+    "bootstrap": "pnpm ts ./scripts/boot.ts --",
+    "tsc": "pnpm ts ./scripts/ts-compile.ts --"
   },
   "engines": {
     "node": ">=10",

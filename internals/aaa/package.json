@@ -1,0 +1,10 @@
+{
+  "name": "@internals/aaa",
+  "version": "0.0.0",
+  "description": "description",
+  "main": "lib/index.js",
+  "repository": "https://github.com/leiwenpeng0424/initializer.git",
+  "author": "ray",
+  "license": "MIT",
+  "private": false
+}

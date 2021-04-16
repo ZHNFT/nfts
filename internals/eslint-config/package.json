@@ -1,5 +1,5 @@
 {
-  "name": "@initial/eslint-config",
+  "name": "@initials/eslint-config",
   "version": "0.0.0",
   "description": "internal eslint-config usage",
   "main": "lib/index.js",

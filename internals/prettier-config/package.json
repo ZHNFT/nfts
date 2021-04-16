@@ -1,5 +1,5 @@
 {
-  "name": "@internal/prettier-config",
+  "name": "@internals/prettier-config",
   "version": "0.0.0",
   "description": "",
   "main": "lib/index.js",
