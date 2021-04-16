@@ -1,15 +1,22 @@
 {
   "compilerOptions": {
     "target": "ESNext",
+    "module": "CommonJS",
+
     // module
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+
     // code style
     "strict": true,
     "alwaysStrict": true,
+    "allowJs": true,
+
     // dts
-    "declaration": true,
-    "sourceMap": true
+    "declaration": false,
+    "sourceMap": false
   }
 }

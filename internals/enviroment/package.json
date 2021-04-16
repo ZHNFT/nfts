@@ -1,12 +1,9 @@
 {
-  "name": "@internals/enviroment",
+  "name": "@rays/enviroment",
   "version": "0.0.0",
-  "description": "",
+  "description": "enviroment",
   "main": "lib/index.js",
   "scripts": {},
-  "author": "",
-  "license": "ISC",
-  "publishConfig": {
-    "access": "public"
-  }
+  "author": "ray",
+  "license": "ISC"
 }
