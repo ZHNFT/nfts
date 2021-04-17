@@ -1,10 +1,21 @@
 /**
- * check if project base on typescript
- * @type {[type]}
+ * @method shouldUseTypescript
+ *
+ * @return {boolean}
+ * @public
  */
 export declare function shouldUseTypescript(): boolean;
 /**
- * check if project base on react
- * @type {[type]}
+ * @method shouldUseReact
+ *
+ * @return {boolean}
+ * @public
  */
 export declare function shouldUseReact(): boolean;
+/**
+ * @method isDevelopment
+ *
+ * @return {boolean}
+ * @public
+ */
+export declare function isDevelopment(): boolean;

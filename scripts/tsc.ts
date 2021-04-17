@@ -34,7 +34,7 @@ console.log(`> compile with configuration, ${fileConfig}`)
 
 const { status } = spawnSync(
   command,
-  ["--project", fileConfig as string],
+  ["--project", fileConfig as string, "--watch"],
   {
     stdio: "inherit",
     shell: process.platform === "win32",

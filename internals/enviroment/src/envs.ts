@@ -2,25 +2,32 @@ import * as fs from "fs"
 import * as path from "path"
 
 const tsconfigPath = path.resolve(
-  __dirname,
+  process.cwd(),
   "tsconfig.json"
 )
 
-const packagePath = path.resolve(__dirname, "package.json")
+const packagePath = path.resolve(
+  process.cwd(),
+  "package.json"
+)
 
 const pkg = require(packagePath)
 
 /**
- * check if project base on typescript
- * @type {[type]}
+ * @method shouldUseTypescript
+ *
+ * @return {boolean}
+ * @public
  */
 export function shouldUseTypescript(): boolean {
   return fs.existsSync(tsconfigPath)
 }
 
 /**
- * check if project base on react
- * @type {[type]}
+ * @method shouldUseReact
+ *
+ * @return {boolean}
+ * @public
  */
 export function shouldUseReact(): boolean {
   const {
@@ -34,4 +41,14 @@ export function shouldUseReact(): boolean {
     ...devDependencies,
     ...peerDependencies,
   }).includes("react")
+}
+
+/**
+ * @method isDevelopment
+ *
+ * @return {boolean}
+ * @public
+ */
+export function isDevelopment(): boolean {
+  return process.env.NODE_ENV === "development"
 }

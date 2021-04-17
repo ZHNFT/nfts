@@ -2,13 +2,14 @@ import * as path from "path"
 
 const execRoot = process.cwd()
 
-type ResolveByBasepathOptions = { basepath?: string }
+export type ResolveByBasepathOptions = { basepath?: string }
 
 /**
  * resolve path base on basepath
  * @param  {string | string[]}
  * @param  {ResolveByBasepathOptions}
  * @return {string}
+ * @public
  */
 export function resolveByBasepath(
   pAth: string | string[],

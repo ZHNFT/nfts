@@ -1,4 +1,4 @@
-declare type ResolveByBasepathOptions = {
+export declare type ResolveByBasepathOptions = {
     basepath?: string;
 };
 /**
@@ -6,6 +6,6 @@ declare type ResolveByBasepathOptions = {
  * @param  {string | string[]}
  * @param  {ResolveByBasepathOptions}
  * @return {string}
+ * @public
  */
 export declare function resolveByBasepath(pAth: string | string[], { basepath }: ResolveByBasepathOptions): string;
-export {};

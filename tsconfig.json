@@ -9,6 +9,7 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
+    "importHelpers": true,
 
     // code style
     "strict": true,

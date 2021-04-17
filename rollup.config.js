@@ -7,7 +7,16 @@ import minimist from "minimist"
 import glob from "glob"
 import path from "path"
 import buble from "@rollup/plugin-buble"
+import eslint from "@rollup/plugin-eslint"
+import strip from "@rollup/plugin-strip"
+import nodeResolve from "@rollup/plugin-node-resolve"
+import yaml from "@rollup/plugin-yaml"
+import { terser } from "rollup-plugin-terser"
 import ts from "rollup-plugin-typescript2"
+import {
+  isDevelopment,
+  resolveByBasepath,
+} from "@rays/enviroment"
 import { workspaces } from "./package.json"
 
 const { ignore, scope } = minimist(process.argv.slice(2), {
@@ -29,7 +38,6 @@ function filterWorkspaces(workspaces, scope, ignore) {
   let allWorkspaces = getWorkspaces(workspaces)
   return allWorkspaces.flat().filter((workspace) => {
     const pkg = workspace.split("/")[1]
-    console.log
     return scope.includes(pkg) && !ignore.includes(pkg)
   })
 }
@@ -42,30 +50,42 @@ function main() {
   )
 
   packages.forEach((pack) => {
-    const config = {
-      output: {},
-      plugins: [],
-    }
-    config.input = path.resolve(
-      process.cwd(),
-      pack,
-      "src/index.ts"
-    )
-    config.output.file = path.resolve(
-      process.cwd(),
-      pack,
-      "lib/index.js"
-    )
-    // config.plugins.push(buble())
-    config.plugins.push(
+    const plugins = [
       ts({
         tsconfig: path.resolve(
           process.cwd(),
           pack,
           "tsconfig.json"
         ),
-      })
-    )
+        verbosity: 3,
+        clean: true,
+        check: true,
+        typescript: require("typescript"),
+        useTsconfigDeclarationDir: true,
+        tsconfigOverride: {
+          compilerOptions: { module: "ESNext" },
+        },
+      }),
+      buble({ objectAssign: true }),
+      nodeResolve({}),
+      eslint({}),
+      yaml(),
+    ]
+
+    if (isDevelopment()) {
+      plugins.push(terser())
+    } else {
+      plugins.push(strip())
+    }
+
+    const config = {
+      input: resolveByBasepath(pack, "src/index.ts"),
+      output: {
+        file: resolveByBasepath(pack, "lib/index.js"),
+        format: "cjs",
+      },
+      plugins,
+    }
 
     configs.push(config)
   })
@@ -75,4 +95,4 @@ function main() {
   return configs
 }
 
-module.exports = main()
+export default main()

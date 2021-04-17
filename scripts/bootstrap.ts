@@ -1,5 +1,8 @@
-import chalk from "chalk"
-import { existsSync, mkdirSync, writeFileSync } from "fs"
+/**
+ * create new package
+ */
+
+import { mkdirSync, writeFileSync } from "fs"
 import path from "path"
 import inquirer from "inquirer"
 
@@ -72,11 +75,22 @@ inquirer
     mkdirSync(path.resolve(packagePath, "tests"))
     writeFileSync(
       path.resolve(packagePath, "README.md"),
-      `---
-
-\`DO NOT USE IT IN YOUR PRODUCTION, PERSONAL USAGE ONLY\`
-
----
-`
+      "---" +
+        "`DO NOT USE IT IN YOUR PRODUCTION, PERSONAL USAGE ONLY`" +
+        "---"
+    )
+    writeFileSync(
+      path.resolve(packagePath, "api-extractor.json"),
+      JSON.stringify(
+        {
+          $schema:
+            "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
+          mainEntryPointFilePath:
+            "<projectFolder>/lib/index.d.ts",
+          extends: "../../api-extractor.json",
+        },
+        null,
+        2
+      )
     )
   })
