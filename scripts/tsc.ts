@@ -7,9 +7,7 @@ import { findConfigFile } from "typescript"
 
 const rootPath = process.cwd()
 
-const { pack } = minimist<{ pack: string }>(
-  process.argv.slice(2)
-)
+const { pack } = minimist<{ pack: string }>(process.argv.slice(2))
 
 function exit(code: number, message: string = "") {
   console.error(message)
@@ -18,15 +16,13 @@ function exit(code: number, message: string = "") {
 
 const command = "tsc"
 
-const [fileConfig, ..._ignoredFileconfigs] = [
+const [fileConfig, ..._ignoredFileConfigs] = [
   findConfigFile(resolve(rootPath, pack), fs.existsSync), // search local package root
   findConfigFile(rootPath, fs.existsSync), // search project root
 ].filter(Boolean)
 
 if (fileConfig === undefined) {
-  console.error(
-    chalk.red("> no typescript configuration find")
-  )
+  console.error(chalk.red("> no typescript configuration find"))
   exit(24, "     please varify your code")
 }
 

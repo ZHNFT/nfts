@@ -6,18 +6,18 @@
     "oldestForwardsCompatibleVersion": 1001
   },
   "kind": "Package",
-  "canonicalReference": "@rays/enviroment!",
+  "canonicalReference": "@rays/environment!",
   "docComment": "",
-  "name": "@rays/enviroment",
+  "name": "@rays/environment",
   "members": [
     {
       "kind": "EntryPoint",
-      "canonicalReference": "@rays/enviroment!",
+      "canonicalReference": "@rays/environment!",
       "name": "",
       "members": [
         {
           "kind": "Function",
-          "canonicalReference": "@rays/enviroment!isDevelopment:function(1)",
+          "canonicalReference": "@rays/environment!isDevelopment:function(1)",
           "docComment": "/**\n * @method isDevelopment\n *\n * @return {boolean}\n *\n * @public\n */\n",
           "excerptTokens": [
             {
@@ -44,7 +44,7 @@
         },
         {
           "kind": "Function",
-          "canonicalReference": "@rays/enviroment!resolveByBasepath:function(1)",
+          "canonicalReference": "@rays/environment!resolveByBasepath:function(1)",
           "docComment": "/**\n * resolve path base on basepath\n *\n * @param  - {string | string[]}\n *\n * @param  - {ResolveByBasepathOptions}  @return {string}\n *\n * @public\n */\n",
           "excerptTokens": [
             {
@@ -62,7 +62,7 @@
             {
               "kind": "Reference",
               "text": "ResolveByBasepathOptions",
-              "canonicalReference": "@rays/enviroment!ResolveByBasepathOptions:type"
+              "canonicalReference": "@rays/environment!ResolveByBasepathOptions:type"
             },
             {
               "kind": "Content",
@@ -103,7 +103,7 @@
         },
         {
           "kind": "TypeAlias",
-          "canonicalReference": "@rays/enviroment!ResolveByBasepathOptions:type",
+          "canonicalReference": "@rays/environment!ResolveByBasepathOptions:type",
           "docComment": "",
           "excerptTokens": [
             {
@@ -128,7 +128,7 @@
         },
         {
           "kind": "Function",
-          "canonicalReference": "@rays/enviroment!shouldUseReact:function(1)",
+          "canonicalReference": "@rays/environment!shouldUseReact:function(1)",
           "docComment": "/**\n * @method shouldUseReact\n *\n * @return {boolean}\n *\n * @public\n */\n",
           "excerptTokens": [
             {
@@ -155,7 +155,7 @@
         },
         {
           "kind": "Function",
-          "canonicalReference": "@rays/enviroment!shouldUseTypescript:function(1)",
+          "canonicalReference": "@rays/environment!shouldUseTypescript:function(1)",
           "docComment": "/**\n * @method shouldUseTypescript\n *\n * @return {boolean}\n *\n * @public\n */\n",
           "excerptTokens": [
             {

@@ -1,9 +1,0 @@
-{
-  "name": "@rays/enviroment",
-  "version": "0.0.0",
-  "description": "enviroment",
-  "main": "lib/index.js",
-  "scripts": {},
-  "author": "ray",
-  "license": "ISC"
-}

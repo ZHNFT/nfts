@@ -1,25 +1,24 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const enviroment_1 = require("@rays/enviroment");
-const usingRect = enviroment_1.shouldUseReact();
-const usingTs = enviroment_1.shouldUseTypescript();
-const extendRuleSets = ["eslint:recommended"].concat(usingTs
+'use strict';
+
+var environment = require('@rays/environment');
+
+var usingRect = environment.shouldUseReact();
+var usingTs = environment.shouldUseTypescript();
+var extendRuleSets = ["eslint:recommended"].concat(usingTs
     ? [
         "plugin:@typescript-eslint/recommended",
-        "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    ]
+        "plugin:@typescript-eslint/recommended-requiring-type-checking" ]
     : usingRect
-        ? [
-            "plugin:react/recommended",
-            "plugin:react-hooks/recommended",
-        ]
+        ? ["plugin:react/recommended", "plugin:react-hooks/recommended"]
         : []);
-const config = {
+var config = {
     extends: extendRuleSets,
 };
 config.plugins = [];
+config.parserOptions = {};
 if (usingTs) {
     config.parser = "@typescript-eslint/parser";
+    config.parserOptions.project = environment.resolveByBasepath("tsconfig.json", {});
     config.plugins.push("@typescript-eslint/eslint-plugin");
 }
 if (usingRect) {
@@ -30,4 +29,5 @@ if (usingRect) {
         },
     };
 }
-exports.default = config;
+
+module.exports = config;

@@ -1,4 +1,4 @@
-import * as path from "path"
+import path from "path"
 
 const execRoot = process.cwd()
 
@@ -6,15 +6,18 @@ export type ResolveByBasepathOptions = { basepath?: string }
 
 /**
  * resolve path base on basepath
- * @param  {string | string[]}
- * @param  {ResolveByBasepathOptions}
  * @return {string}
  * @public
+ * @param pAth
+ * @param opts
  */
 export function resolveByBasepath(
   pAth: string | string[],
-  { basepath }: ResolveByBasepathOptions
+  opts?: ResolveByBasepathOptions
 ): string {
+  if (!opts) opts = {}
+  let { basepath } = opts
+
   if (!basepath) {
     basepath = execRoot
   }

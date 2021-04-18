@@ -1,3 +1,6 @@
+/**
+ * run api-extractor
+ */
 import * as path from "path"
 import {
   Extractor,
@@ -7,7 +10,7 @@ import {
 import minimist from "minimist"
 
 /**
- * ts-node --workspace=internals --pack=enviroment
+ * ts-node --workspace=internals --pack=environment
  */
 
 const { workspace, pack } = minimist<{ package: string }>(
@@ -33,7 +36,6 @@ const extractorResult: ExtractorResult = Extractor.invoke(
   {
     // Equivalent to the "--local" command-line parameter
     localBuild: true,
-
     // Equivalent to the "--verbose" command-line parameter
     showVerboseMessages: true,
   }

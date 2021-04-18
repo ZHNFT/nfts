@@ -1,7 +1,8 @@
 import {
   shouldUseTypescript,
   shouldUseReact,
-} from "@rays/enviroment"
+  resolveByBasepath,
+} from "@rays/environment"
 
 import type { Linter } from "eslint"
 
@@ -15,10 +16,7 @@ const extendRuleSets = ["eslint:recommended"].concat(
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
       ]
     : usingRect
-    ? [
-        "plugin:react/recommended",
-        "plugin:react-hooks/recommended",
-      ]
+    ? ["plugin:react/recommended", "plugin:react-hooks/recommended"]
     : []
 )
 
@@ -27,9 +25,11 @@ const config: Linter.BaseConfig = {
 }
 
 config.plugins = []
+config.parserOptions = {}
 
 if (usingTs) {
   config.parser = "@typescript-eslint/parser"
+  config.parserOptions.project = resolveByBasepath("tsconfig.json", {})
   config.plugins.push("@typescript-eslint/eslint-plugin")
 }
 

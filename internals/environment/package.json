@@ -1,0 +1,21 @@
+{
+  "name": "@rays/environment",
+  "version": "0.0.0",
+  "description": "dev environment",
+  "main": "lib/index.js",
+  "scripts": {},
+  "author": "ray",
+  "license": "ISC",
+  "devDependencies": {
+    "@rays/eslint-config": "workspace:*"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@rays/eslint-config"
+    ]
+  },
+  "eslintIgnore": [
+    "lib"
+  ]
+}

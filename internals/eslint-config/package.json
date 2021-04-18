@@ -1,5 +1,5 @@
 {
-  "name": "@initials/eslint-config",
+  "name": "@rays/eslint-config",
   "version": "0.0.0",
   "description": "internal eslint-config usage",
   "main": "lib/index.js",
@@ -13,7 +13,7 @@
     "configuration"
   ],
   "dependencies": {
-    "@rays/enviroment": "0.0.0",
+    "@rays/environment": "workspace:*",
     "@typescript-eslint/eslint-plugin": "^4.21.0",
     "@typescript-eslint/parser": "^4.21.0",
     "eslint": "^7.24.0",
@@ -22,5 +22,8 @@
   },
   "devDependencies": {
     "@types/eslint": "^7.2.10"
-  }
+  },
+  "eslintIgnore": [
+    "lib"
+  ]
 }

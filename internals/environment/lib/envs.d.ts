@@ -1,3 +1,11 @@
+export declare type IObject<T> = {
+    [key: string]: T;
+};
+export declare type PackageJSONSchema = {
+    dependencies: IObject<string>;
+    devDependencies: IObject<string>;
+    peerDependencies: IObject<string>;
+};
 /**
  * @method shouldUseTypescript
  *

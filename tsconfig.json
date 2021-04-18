@@ -14,10 +14,11 @@
     // code style
     "strict": true,
     "alwaysStrict": true,
-    "allowJs": true,
+    "allowJs": false,
+    "checkJs": false,
 
     // dts
-    "declaration": false,
+    "declaration": true,
     "sourceMap": false
   }
 }
