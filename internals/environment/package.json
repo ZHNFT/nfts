@@ -6,9 +6,6 @@
   "scripts": {},
   "author": "ray",
   "license": "ISC",
-  "devDependencies": {
-    "@rays/eslint-config": "workspace:*"
-  },
   "eslintConfig": {
     "root": true,
     "extends": [
@@ -17,5 +14,12 @@
   },
   "eslintIgnore": [
     "lib"
-  ]
+  ],
+  "dependencies": {
+    "@rays/eslint-config": "workspace:*",
+    "fs-extra": "^9.1.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.11"
+  }
 }

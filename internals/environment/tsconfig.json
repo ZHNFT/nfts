@@ -5,5 +5,6 @@
     "module": "CommonJS",
     "declaration": true,
     "declarationDir": "lib"
-  }
+  },
+  "exclude": ["lib/**/*"]
 }

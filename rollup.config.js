@@ -12,6 +12,7 @@ import strip from "@rollup/plugin-strip"
 import commonjs from "@rollup/plugin-commonjs"
 import { terser } from "rollup-plugin-terser"
 import ts from "rollup-plugin-typescript2"
+import apiExtractor from "@rays/rollup-plugin-api-extractor"
 import { workspaces } from "./package.json"
 
 const isDevelopment = process.env.NODE_ENV === "development"
@@ -67,16 +68,20 @@ function main() {
 
   packages.forEach(
     ({ package: pack, rawJSON: { dependencies, peerDependencies } }) => {
+      const packageBasePath = path.resolve(process.cwd(), pack)
+
       const plugins = [
         ts({
-          tsconfig: path.resolve(process.cwd(), pack, "tsconfig.json"),
+          tsconfig: path.resolve(packageBasePath, "tsconfig.json"),
           verbosity: 2,
           clean: true,
           check: true,
-          // typescript: require("typescript"),
           useTsconfigDeclarationDir: true,
           tsconfigOverride: {
-            compilerOptions: { module: "ESNext", sourceMap: isDevelopment },
+            compilerOptions: {
+              module: "ESNext",
+              sourceMap: isDevelopment,
+            },
           },
         }),
         buble({ objectAssign: true }),
@@ -84,17 +89,27 @@ function main() {
         eslint({
           fix: !isDevelopment,
           cache: true,
-          cacheFile: path.resolve(process.cwd(), pack, "temp/.eslintcache"),
-          include: "./src",
+          cacheFile: path.resolve(packageBasePath, "temp/.eslintcache"),
+          include: "src/",
           exclude: ["lib/", "dist/", "node_modules/"],
-          cwd: path.resolve(process.cwd(), pack),
+          cwd: packageBasePath,
         }),
       ]
 
-      if (isDevelopment) {
-        plugins.push(terser())
-      } else {
+      if (!isDevelopment) {
+        // plugins.push(terser())
         plugins.push(strip())
+        plugins.push(
+          apiExtractor({
+            configFile: path.resolve(pack, "api-extractor.json"),
+            clear: true,
+            invokeOptions: {
+              localBuild: isDevelopment,
+              showVerboseMessages: isDevelopment,
+            },
+            generatedDist: path.resolve(packageBasePath, `lib`),
+          })
+        )
       }
 
       const config = {

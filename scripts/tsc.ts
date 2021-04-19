@@ -7,16 +7,16 @@ import { findConfigFile } from "typescript"
 
 const rootPath = process.cwd()
 
-const { pack } = minimist<{ pack: string }>(process.argv.slice(2))
+const { pack, ...restArgs } = minimist<{ pack: string }>(process.argv.slice(2))
 
-function exit(code: number, message: string = "") {
+function exit(code: number, message: string) {
   console.error(message)
   process.exit(code)
 }
 
 const command = "tsc"
 
-const [fileConfig, ..._ignoredFileConfigs] = [
+const [fileConfig] = [
   findConfigFile(resolve(rootPath, pack), fs.existsSync), // search local package root
   findConfigFile(rootPath, fs.existsSync), // search project root
 ].filter(Boolean)
@@ -26,16 +26,12 @@ if (fileConfig === undefined) {
   exit(24, "     please varify your code")
 }
 
-console.log(`> compile with configuration, ${fileConfig}`)
+console.log(`> compile with configuration, ${fileConfig as string}`)
 
-const { status } = spawnSync(
-  command,
-  ["--project", fileConfig as string, "--watch"],
-  {
-    stdio: "inherit",
-    shell: process.platform === "win32",
-  }
-)
+const { status } = spawnSync(command, ["--project", fileConfig as string], {
+  stdio: "inherit",
+  shell: process.platform === "win32",
+})
 
 if (status !== 0) {
   exit(24, chalk.red("> build error"))

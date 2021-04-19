@@ -16,7 +16,11 @@
       "@rays/eslint-config"
     ]
   },
-  "eslintIgnore": [],
+  "eslintIgnore": [
+    "lib",
+    "dist",
+    "tests"
+  ],
   "devDependencies": {
     "@microsoft/api-extractor": "^7.13.5",
     "@rays/eslint-config": "workspace:*"

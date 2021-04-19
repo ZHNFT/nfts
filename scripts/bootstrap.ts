@@ -1,7 +1,7 @@
 /**
  * create new package
  */
-import { link, linkSync, mkdirSync, writeFileSync } from "fs"
+import { mkdirSync, writeFileSync } from "fs"
 import path from "path"
 import inquirer from "inquirer"
 import chalk from "chalk"
@@ -13,7 +13,7 @@ import chalk from "chalk"
 const rootPath = process.cwd()
 const workspaces = ["internals", "packages"]
 
-inquirer
+void inquirer
   .prompt<{ type: "internals" | "packages"; name: string }>([
     {
       name: "type",
@@ -51,7 +51,7 @@ inquirer
             root: true,
             extends: ["@rays/eslint-config"],
           },
-          eslintIgnore: [],
+          eslintIgnore: ["dist", "tests", "lib"],
         },
         null,
         2
@@ -67,8 +67,11 @@ inquirer
         {
           extends: "../../tsconfig.json",
           compilerOptions: {
-            outDir: "./lib",
+            outDir: "lib",
+            declaration: true,
+            declarationDir: "lib",
           },
+          exclude: ["lib/**/*", "tests/**/*"],
         },
         null,
         2

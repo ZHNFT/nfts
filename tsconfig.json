@@ -14,11 +14,17 @@
     // code style
     "strict": true,
     "alwaysStrict": true,
-    "allowJs": false,
-    "checkJs": false,
 
     // dts
-    "declaration": true,
-    "sourceMap": false
-  }
+    "declaration": true
+  },
+  "exclude": [
+    "tests/",
+    "__tests__/",
+    "assets/",
+    "output/",
+    "temp/",
+    "lib/",
+    "etc/"
+  ]
 }

@@ -1,53 +1,101 @@
 /**
- * microsoft/api-extractor binding with rollup
+ * @microsoft/api-extractor binding with rollup
  */
-import * as path from "path"
-import { Extractor, ExtractorConfig } from "@microsoft/api-extractor"
+import path from "path"
+import { existsSync } from "fs"
+import * as fs from "fs-extra"
 import type {
   ExtractorResult,
   IExtractorInvokeOptions,
 } from "@microsoft/api-extractor"
+import { Extractor, ExtractorConfig } from "@microsoft/api-extractor"
 
+/**
+ * @public
+ */
 export type RollupPluginApiExtractorOptions = {
   invokeOptions: IExtractorInvokeOptions
-  cleanup?: boolean
-  configFile?: string
+  cleanup: boolean
+  configFile: string
+  generateDist: string
+  override: { [key: string]: unknown }
 }
 
-function runExtractor({}) {
+function runExtractor({
+  configFile,
+  generateDist,
+  invokeOptions,
+}: Partial<RollupPluginApiExtractorOptions>) {
+  if (configFile) {
+    console.log("")
+    console.log("> rpae: generating .d.ts, using @microsoft/api-extractor")
+    console.log("> rpae: using configuration from -> " + configFile)
+    console.log("")
+  }
+
   // Load and parse the api-extractor.json file
   const extractorConfig: ExtractorConfig = ExtractorConfig.loadFileAndPrepare(
-    apiExtractorJsonPath
+    configFile as string
   )
 
   // Invoke API Extractor
-  const extractorResult: ExtractorResult = Extractor.invoke(extractorConfig, {
-    // Equivalent to the "--local" command-line parameter
-    localBuild: true,
-    // Equivalent to the "--verbose" command-line parameter
-    showVerboseMessages: true,
-  })
+  const extractorResult: ExtractorResult = Extractor.invoke(
+    extractorConfig,
+    invokeOptions
+  )
 
   if (extractorResult.succeeded) {
     process.exitCode = 0
   } else {
+    console.log(extractorResult.errorCount)
     process.exitCode = 1
   }
 }
 
-const apiExtractorJsonPath: string = path.join(
-  __dirname,
-  "../config/api-extractor.json"
-)
+const isDev = process.env.NODE_ENV === "development"
 
+const defaultConfigFile = [
+  path.resolve(process.cwd(), "config/api-extractor.json"),
+  path.resolve(process.cwd(), "api-extractor.json"),
+].filter(existsSync)[0]
+
+const defaultGenerateDist = path.resolve(process.cwd(), "dist")
+
+/**
+ *
+ * @param configFile
+ * @param cleanup
+ * @param invokeOptions
+ * @param generateDist
+ * @param override
+ *
+ * @public
+ */
 export default function ({
-  configFile = "",
-  cleanup = true,
+  configFile = defaultConfigFile,
+  cleanup = false,
   invokeOptions = {
-    localBuild: true,
-    showVerboseMessages: true,
+    localBuild: isDev,
+    showVerboseMessages: isDev,
   },
-}: Partial<RollupPluginApiExtractorOptions> = {}): any {}
+  generateDist = defaultGenerateDist,
+  override = {},
+}: Partial<RollupPluginApiExtractorOptions> = {}): any {
+  return {
+    name: "api-extractor",
+    writeBundle: () => {
+      if (cleanup) {
+        fs.rmdirSync(
+          path.isAbsolute(generateDist)
+            ? generateDist
+            : path.resolve(process.cwd(), generateDist)
+        )
+      }
+
+      runExtractor({ configFile, invokeOptions, generateDist, override })
+    },
+  }
+}
 
 // `API Extractor completed successfully`)
 // `API Extractor completed with ${extractorResult.errorCount} errors` +
