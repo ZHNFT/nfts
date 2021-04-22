@@ -3,7 +3,6 @@
  */
 import path from "path"
 import { existsSync } from "fs"
-import * as fs from "fs-extra"
 import type {
   ExtractorResult,
   IExtractorInvokeOptions,
@@ -14,29 +13,65 @@ import { Extractor, ExtractorConfig } from "@microsoft/api-extractor"
  * @public
  */
 export type RollupPluginApiExtractorOptions = {
-  invokeOptions: IExtractorInvokeOptions
-  cleanup: boolean
-  configFile: string
-  generateDist: string
-  override: { [key: string]: unknown }
+  invokeOptions?: IExtractorInvokeOptions
+  cleanup?: boolean
+  configFile?: string
+  generateDist?: string
+  override?: { [key: string]: unknown }
+  cwd?: string
 }
 
 function runExtractor({
+  cwd,
+  // override,
   configFile,
-  generateDist,
+  // generateDist,
   invokeOptions,
 }: Partial<RollupPluginApiExtractorOptions>) {
+  let extractorConfig: ExtractorConfig
+
+  // read local config file
+  const localConfigFile = [
+    path.resolve(cwd as string, "config/api-extractor.json"),
+    path.resolve(cwd as string, "api-extractor.json"),
+  ].filter(existsSync)[0]
+
+  console.log(
+    "> rpae: prepare to generating .d.ts, using @microsoft/api-extractor"
+  )
+
   if (configFile) {
     console.log("")
-    console.log("> rpae: generating .d.ts, using @microsoft/api-extractor")
     console.log("> rpae: using configuration from -> " + configFile)
     console.log("")
-  }
 
-  // Load and parse the api-extractor.json file
-  const extractorConfig: ExtractorConfig = ExtractorConfig.loadFileAndPrepare(
-    configFile as string
-  )
+    // Load and parse the api-extractor.json file
+    extractorConfig = ExtractorConfig.loadFileAndPrepare(configFile)
+  } else {
+    console.log("> rpae: generating config file...")
+    console.log("")
+
+    if (localConfigFile) {
+      extractorConfig = ExtractorConfig.loadFileAndPrepare(localConfigFile)
+    } else {
+      extractorConfig = ExtractorConfig.prepare({
+        configObject: {
+          compiler: {
+            tsconfigFilePath: path.resolve(cwd as string, "tsconfig.json"),
+            overrideTsconfig: {},
+          },
+          projectFolder: cwd,
+          mainEntryPointFilePath: path.resolve(cwd as string, "lib/index.d.ts"),
+          dtsRollup: {
+            enabled: true,
+            untrimmedFilePath: path.resolve(cwd as string, "dist/index.d.ts"),
+          },
+        },
+        packageJsonFullPath: path.resolve(cwd as string, "package.json"),
+        configObjectFullPath: undefined,
+      })
+    }
+  }
 
   // Invoke API Extractor
   const extractorResult: ExtractorResult = Extractor.invoke(
@@ -47,19 +82,19 @@ function runExtractor({
   if (extractorResult.succeeded) {
     process.exitCode = 0
   } else {
-    console.log(extractorResult.errorCount)
-    process.exitCode = 1
+    if (extractorResult.errorCount) {
+      console.log("")
+      console.log(
+        `> rpae: ${extractorResult.errorCount} errors counted durin api extractor`
+      )
+      process.exitCode = 1
+    }
   }
 }
 
 const isDev = process.env.NODE_ENV === "development"
 
-const defaultConfigFile = [
-  path.resolve(process.cwd(), "config/api-extractor.json"),
-  path.resolve(process.cwd(), "api-extractor.json"),
-].filter(existsSync)[0]
-
-const defaultGenerateDist = path.resolve(process.cwd(), "dist")
+let haveRun = false
 
 /**
  *
@@ -71,32 +106,27 @@ const defaultGenerateDist = path.resolve(process.cwd(), "dist")
  *
  * @public
  */
-export default function ({
-  configFile = defaultConfigFile,
+export default function plugin({
+  configFile,
   cleanup = false,
   invokeOptions = {
     localBuild: isDev,
     showVerboseMessages: isDev,
   },
-  generateDist = defaultGenerateDist,
+  generateDist,
   override = {},
-}: Partial<RollupPluginApiExtractorOptions> = {}): any {
+  cwd = process.cwd(),
+}: RollupPluginApiExtractorOptions = {}): any {
   return {
     name: "api-extractor",
     writeBundle: () => {
-      if (cleanup) {
-        fs.rmdirSync(
-          path.isAbsolute(generateDist)
-            ? generateDist
-            : path.resolve(process.cwd(), generateDist)
-        )
+      if (!haveRun) {
+        if (cleanup) {
+          // cleanup dist folder
+        }
+        runExtractor({ configFile, invokeOptions, generateDist, override, cwd })
+        haveRun = true
       }
-
-      runExtractor({ configFile, invokeOptions, generateDist, override })
     },
   }
 }
-
-// `API Extractor completed successfully`)
-// `API Extractor completed with ${extractorResult.errorCount} errors` +
-//       ` and ${extractorResult.warningCount} warnings`

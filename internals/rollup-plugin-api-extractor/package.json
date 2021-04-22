@@ -2,7 +2,7 @@
   "name": "@rays/rollup-plugin-api-extractor",
   "version": "0.0.0",
   "description": "description",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "repository": "https://github.com/leiwenpeng0424/initializer.git",
   "author": "ray",
   "license": "MIT",

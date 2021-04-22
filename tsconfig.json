@@ -16,7 +16,8 @@
     "alwaysStrict": true,
 
     // dts
-    "declaration": true
+    "declaration": true,
+    "outDir": "lib"
   },
   "exclude": [
     "tests/",
@@ -25,6 +26,7 @@
     "output/",
     "temp/",
     "lib/",
-    "etc/"
+    "etc/",
+    "dist/"
   ]
 }

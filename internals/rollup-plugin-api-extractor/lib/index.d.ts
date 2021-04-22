@@ -1,5 +1,17 @@
-import type { IExtractorInvokeOptions } from '@microsoft/api-extractor';
-
+import type { IExtractorInvokeOptions } from "@microsoft/api-extractor";
+/**
+ * @public
+ */
+export declare type RollupPluginApiExtractorOptions = {
+    invokeOptions?: IExtractorInvokeOptions;
+    cleanup?: boolean;
+    configFile?: string;
+    generateDist?: string;
+    override?: {
+        [key: string]: unknown;
+    };
+    cwd?: string;
+};
 /**
  *
  * @param configFile
@@ -10,20 +22,4 @@ import type { IExtractorInvokeOptions } from '@microsoft/api-extractor';
  *
  * @public
  */
-declare function ({ configFile, cleanup, invokeOptions, generateDist, override, }?: Partial<RollupPluginApiExtractorOptions>): any;
-export default default_2;
-
-/**
- * @public
- */
-export declare type RollupPluginApiExtractorOptions = {
-    invokeOptions: IExtractorInvokeOptions;
-    cleanup: boolean;
-    configFile: string;
-    generateDist: string;
-    override: {
-        [key: string]: unknown;
-    };
-};
-
-export { }
+export default function plugin({ configFile, cleanup, invokeOptions, generateDist, override, cwd, }?: RollupPluginApiExtractorOptions): any;

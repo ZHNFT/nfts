@@ -10,6 +10,7 @@ import buble from "@rollup/plugin-buble"
 import eslint from "@rollup/plugin-eslint"
 import strip from "@rollup/plugin-strip"
 import commonjs from "@rollup/plugin-commonjs"
+import { nodeResolve } from "@rollup/plugin-node-resolve"
 import { terser } from "rollup-plugin-terser"
 import ts from "rollup-plugin-typescript2"
 import apiExtractor from "@rays/rollup-plugin-api-extractor"
@@ -86,6 +87,7 @@ function main() {
         }),
         buble({ objectAssign: true }),
         commonjs(),
+        nodeResolve(),
         eslint({
           fix: !isDevelopment,
           cache: true,
@@ -101,13 +103,14 @@ function main() {
         plugins.push(strip())
         plugins.push(
           apiExtractor({
-            configFile: path.resolve(pack, "api-extractor.json"),
+            // configFile: path.resolve(pack, "api-extractor.json"),
             clear: true,
             invokeOptions: {
               localBuild: isDevelopment,
               showVerboseMessages: isDevelopment,
             },
-            generatedDist: path.resolve(packageBasePath, `lib`),
+            generatedDist: path.resolve(packageBasePath, `./dist`),
+            cwd: packageBasePath,
           })
         )
       }
@@ -119,7 +122,7 @@ function main() {
           ...peerDependencies,
         }),
         output: {
-          file: path.resolve(pack, "lib/index.js"),
+          file: path.resolve(pack, "dist/index.js"),
           format: "cjs",
           exports: "auto",
         },

@@ -3,7 +3,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "declaration": true,
-    "declarationDir": "lib"
+    "declarationDir": "./lib"
   },
-  "exclude": ["lib/**/*", "tests/**/*"]
+  "exclude": ["lib/**/*", "dist/**/*", "tests/**/*"]
 }
