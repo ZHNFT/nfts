@@ -6,12 +6,11 @@
 import minimist from "minimist"
 import glob from "glob"
 import path from "path"
-import buble from "@rollup/plugin-buble"
 import eslint from "@rollup/plugin-eslint"
 import strip from "@rollup/plugin-strip"
+import { babel } from "@rollup/plugin-babel"
 import commonjs from "@rollup/plugin-commonjs"
 import { nodeResolve } from "@rollup/plugin-node-resolve"
-import { terser } from "rollup-plugin-terser"
 import ts from "rollup-plugin-typescript2"
 import apiExtractor from "@rays/rollup-plugin-api-extractor"
 import { workspaces } from "./package.json"
@@ -85,7 +84,10 @@ function main() {
             },
           },
         }),
-        buble({ objectAssign: true }),
+        babel({
+          include: ["src"],
+          babelHelpers: "runtime",
+        }),
         commonjs(),
         nodeResolve(),
         eslint({

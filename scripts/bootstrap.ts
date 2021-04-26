@@ -39,7 +39,7 @@ void inquirer
           name: `@rays/${name}`,
           version: "0.0.0",
           description: "description",
-          main: "lib/index.js",
+          main: "dist/index.js",
           repository: "https://github.com/leiwenpeng0424/initializer.git",
           author: "ray",
           license: "MIT",
@@ -48,7 +48,6 @@ void inquirer
             "@rays/eslint-config": "workspace:*",
           },
           eslintConfig: {
-            root: true,
             extends: ["@rays/eslint-config"],
           },
           eslintIgnore: ["dist", "tests", "lib"],
@@ -97,19 +96,20 @@ void inquirer
         "`DO NOT USE IT IN YOUR PRODUCTION, PERSONAL USAGE ONLY`\r" +
         "---\r"
     )
-    writeFileSync(
-      path.resolve(packagePath, "api-extractor.json"),
-      JSON.stringify(
-        {
-          $schema:
-            "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
-          mainEntryPointFilePath: "<projectFolder>/lib/index.d.ts",
-          extends: "../../api-extractor.json",
-        },
-        null,
-        2
-      )
-    )
+
+    // writeFileSync(
+    //   path.resolve(packagePath, "api-extractor.json"),
+    //   JSON.stringify(
+    //     {
+    //       $schema:
+    //         "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
+    //       mainEntryPointFilePath: "<projectFolder>/lib/index.d.ts",
+    //       extends: "../../api-extractor.json",
+    //     },
+    //     null,
+    //     2
+    //   )
+    // )
 
     const { bgBlack, white, blue } = chalk
     console.log("")
