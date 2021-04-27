@@ -66,6 +66,15 @@ function runExtractor({
             enabled: true,
             untrimmedFilePath: path.resolve(cwd as string, "dist/index.d.ts"),
           },
+          docModel: {
+            enabled: false,
+          },
+          apiReport: {
+            enabled: false,
+          },
+          tsdocMetadata: {
+            enabled: false,
+          },
         },
         packageJsonFullPath: path.resolve(cwd as string, "package.json"),
         configObjectFullPath: undefined,

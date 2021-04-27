@@ -2,7 +2,6 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "CommonJS",
-
     // module
     "moduleResolution": "Node",
     "esModuleInterop": true,
@@ -10,11 +9,9 @@
     "experimentalDecorators": true,
     "resolveJsonModule": true,
     "importHelpers": true,
-
     // code style
     "strict": true,
     "alwaysStrict": true,
-
     // dts
     "declaration": true,
     "outDir": "lib"

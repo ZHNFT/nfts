@@ -16,7 +16,7 @@
     "bootstrap": "pnpm ts ./scripts/bootstrap.ts",
     "api": "pnpm ts ./scripts/api.ts --",
     "dev": "rollup -cw",
-    "build": "rollup -c",
+    "build": "ts-node node_modules/.bin/rollup -c=rollup.config.ts",
     "tsc": "pnpm ts ./scripts/tsc.ts --"
   },
   "engines": {
@@ -62,7 +62,7 @@
   },
   "eslintIgnore": [
     "**/lib",
-    "rollup.config.js"
+    "rollup.config.ts"
   ],
   "devDependencies": {
     "@types/jest": "^26.0.22"

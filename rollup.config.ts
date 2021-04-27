@@ -7,33 +7,41 @@ import minimist from "minimist"
 import glob from "glob"
 import path from "path"
 import eslint from "@rollup/plugin-eslint"
-import strip from "@rollup/plugin-strip"
+// import strip from "@rollup/plugin-strip"
 import { babel } from "@rollup/plugin-babel"
 import commonjs from "@rollup/plugin-commonjs"
 import { nodeResolve } from "@rollup/plugin-node-resolve"
 import ts from "rollup-plugin-typescript2"
 import apiExtractor from "@rays/rollup-plugin-api-extractor"
 import { workspaces } from "./package.json"
+import type { RollupOptions } from "rollup"
 
 const isDevelopment = process.env.NODE_ENV === "development"
 
-const { ignore, scope } = minimist(process.argv.slice(2), {
+const { ignore, scope } = minimist<{
+  ignore: string
+  scope: string
+}>(process.argv.slice(2), {
   default: {
     ignore: "",
     scope: "",
   },
 })
 
-const configs = []
+const configs: RollupOptions[] = []
 
-function getWorkspaces(workspaces) {
+function getWorkspaces(workspaces: string[]): string[][] {
   return workspaces.map((workspace) => {
     return glob.sync(workspace, {})
   })
 }
 
-function filterWorkspaces(workspaces, scope, ignore) {
-  let allWorkspaces = getWorkspaces(workspaces)
+function filterWorkspaces(
+  workspaces: string[],
+  scope: string[],
+  ignore: string[]
+) {
+  const allWorkspaces = getWorkspaces(workspaces)
   return allWorkspaces
     .flat()
     .filter((workspace) => {
@@ -42,7 +50,8 @@ function filterWorkspaces(workspaces, scope, ignore) {
     })
     .map((filterdPackage) => {
       try {
-        const pkgJSON = require(path.resolve(
+        // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-assignment
+        const pkgJSON: { [key: string]: unknown } = require(path.resolve(
           process.cwd(),
           filterdPackage,
           "package.json"
@@ -67,7 +76,10 @@ function main() {
   )
 
   packages.forEach(
-    ({ package: pack, rawJSON: { dependencies, peerDependencies } }) => {
+    ({
+      package: pack,
+      rawJSON: { dependencies = {}, peerDependencies = {} },
+    }) => {
       const packageBasePath = path.resolve(process.cwd(), pack)
 
       const plugins = [
@@ -102,26 +114,26 @@ function main() {
 
       if (!isDevelopment) {
         // plugins.push(terser())
-        plugins.push(strip())
+        // plugins.push(strip())
         plugins.push(
           apiExtractor({
             // configFile: path.resolve(pack, "api-extractor.json"),
-            clear: true,
+            // clear: true,
             invokeOptions: {
               localBuild: isDevelopment,
               showVerboseMessages: isDevelopment,
             },
-            generatedDist: path.resolve(packageBasePath, `./dist`),
+            // generatedDist: path.resolve(packageBasePath, `./dist`),
             cwd: packageBasePath,
           })
         )
       }
 
-      const config = {
+      const config: RollupOptions = {
         input: path.resolve(pack, "src/index.ts"),
         external: Object.keys({
-          ...dependencies,
-          ...peerDependencies,
+          ...(dependencies as Record<string, unknown>),
+          ...(peerDependencies as Record<string, unknown>),
         }),
         output: {
           file: path.resolve(pack, "dist/index.js"),
