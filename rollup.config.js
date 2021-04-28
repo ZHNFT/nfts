@@ -14,33 +14,26 @@ import { nodeResolve } from "@rollup/plugin-node-resolve"
 import ts from "rollup-plugin-typescript2"
 import apiExtractor from "@rays/rollup-plugin-api-extractor"
 import { workspaces } from "./package.json"
-import type { RollupOptions } from "rollup"
+// import type { RollupOptions } from "rollup"
 
 const isDevelopment = process.env.NODE_ENV === "development"
 
-const { ignore, scope } = minimist<{
-  ignore: string
-  scope: string
-}>(process.argv.slice(2), {
+const { ignore, scope } = minimist(process.argv.slice(2), {
   default: {
     ignore: "",
     scope: "",
   },
 })
 
-const configs: RollupOptions[] = []
+const configs = []
 
-function getWorkspaces(workspaces: string[]): string[][] {
+function getWorkspaces(workspaces) {
   return workspaces.map((workspace) => {
     return glob.sync(workspace, {})
   })
 }
 
-function filterWorkspaces(
-  workspaces: string[],
-  scope: string[],
-  ignore: string[]
-) {
+function filterWorkspaces(workspaces, scope, ignore) {
   const allWorkspaces = getWorkspaces(workspaces)
   return allWorkspaces
     .flat()
@@ -50,8 +43,7 @@ function filterWorkspaces(
     })
     .map((filterdPackage) => {
       try {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-assignment
-        const pkgJSON: { [key: string]: unknown } = require(path.resolve(
+        const pkgJSON = require(path.resolve(
           process.cwd(),
           filterdPackage,
           "package.json"
@@ -129,11 +121,11 @@ function main() {
         )
       }
 
-      const config: RollupOptions = {
+      const config = {
         input: path.resolve(pack, "src/index.ts"),
         external: Object.keys({
-          ...(dependencies as Record<string, unknown>),
-          ...(peerDependencies as Record<string, unknown>),
+          ...dependencies,
+          ...peerDependencies,
         }),
         output: {
           file: path.resolve(pack, "dist/index.js"),

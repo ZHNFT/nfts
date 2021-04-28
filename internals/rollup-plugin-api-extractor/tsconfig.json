@@ -1,9 +1,0 @@
-{
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "target": "ESNext",
-    "declaration": true,
-    "declarationDir": "./lib"
-  },
-  "exclude": ["lib/**/*", "dist/**/*", "tests/**/*"]
-}

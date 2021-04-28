@@ -16,7 +16,7 @@
     "bootstrap": "pnpm ts ./scripts/bootstrap.ts",
     "api": "pnpm ts ./scripts/api.ts --",
     "dev": "rollup -cw",
-    "build": "ts-node node_modules/.bin/rollup -c=rollup.config.ts",
+    "build": "rollup -c",
     "tsc": "pnpm ts ./scripts/tsc.ts --"
   },
   "engines": {
@@ -26,8 +26,6 @@
   "dependencies": {
     "@babel/core": "^7.13.16",
     "@microsoft/api-extractor": "^7.13.5",
-    "@rays/eslint-config": "workspace:*",
-    "@rays/rollup-plugin-api-extractor": "workspace:*",
     "@rollup/plugin-buble": "^0.21.3",
     "@rollup/plugin-commonjs": "^18.0.0",
     "@rollup/plugin-eslint": "^8.0.1",
@@ -54,16 +52,8 @@
     "semi": false,
     "printWidth": 80
   },
-  "eslintConfig": {
-    "extends": "@rays/eslint-config",
-    "env": {
-      "node": true
-    }
-  },
-  "eslintIgnore": [
-    "**/lib",
-    "rollup.config.ts"
-  ],
+  "eslintConfig": {},
+  "eslintIgnore": [],
   "devDependencies": {
     "@types/jest": "^26.0.22"
   }
