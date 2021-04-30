@@ -6,6 +6,8 @@ import commonjs from "@rollup/plugin-commonjs";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import eslint from "@rollup/plugin-eslint";
 
+import { formatMessage } from "./eslintFormatter";
+
 import type { RollupOptions } from "rollup";
 
 const root = process.cwd();
@@ -32,7 +34,7 @@ export default function config({
   const plugins = [];
 
   if (apiExtractor) {
-    plugins.push(/* @todo 这里放api-extractor插件 */);
+    plugins.push(/* TODO 这里放api-extractor插件 */);
   }
 
   return {
@@ -45,6 +47,8 @@ export default function config({
       eslint({
         fix: true,
         include: "*.ts",
+        // @ts-ignore FIXME
+        formatter: formatMessage,
       }),
     ],
   };
