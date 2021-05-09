@@ -1,0 +1,17 @@
+{
+  "name": "@rays/eslint_config",
+  "type": "module",
+  "main": "",
+  "module": "",
+  "author": {
+    "email": "leiwenpeng1994@outlook.com",
+    "name": "lei wenpeng"
+  },
+  "bin": {
+    "ray": "lib/index.js"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}

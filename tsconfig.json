@@ -1,29 +1,16 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "CommonJS",
-    // module
+    // common
+    "module": "ESNext",
     "moduleResolution": "Node",
-    "esModuleInterop": true,
+    "target": "ESNext",
+    // feature
     "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
     "resolveJsonModule": true,
-    "importHelpers": true,
-    // code style
-    "strict": true,
     "alwaysStrict": true,
-    // dts
-    "declaration": true,
-    "outDir": "lib"
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "strictNullChecks": true
   },
-  "exclude": [
-    "tests/",
-    "__tests__/",
-    "assets/",
-    "output/",
-    "temp/",
-    "lib/",
-    "etc/",
-    "dist/"
-  ]
+  "exclude": []
 }

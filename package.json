@@ -6,20 +6,21 @@
     "internals/*"
   ],
   "description": "bootstrap personal project",
-  "main": "",
   "repository": "https://github.com/leiwenpeng0424/initializer.git",
-  "author": "leiwenpeng <leiwenpeng1994@outlook.com>",
+  "author": "雷文鹏 <leiwenpeng1994@outlook.com>",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "ts": "ts-node",
-    "dev": "rollup -cw",
-    "build": "rollup -c"
+    "dev": "toolkit dev",
+    "build": "toolkit build",
+    "test": "toolkit test"
   },
   "engines": {
     "node": ">=10",
-    "pnpm": ">=3"
+    "pnpm": ">=6"
   },
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "prettier": "^2.2.1",
+    "@rays/build_helper": "workspace:*"
+  }
 }

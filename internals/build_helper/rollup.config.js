@@ -3,43 +3,44 @@
  *   --scope=a,b,c,d,e,f,g
  *   --ignore=a,b,c,d,e,f,g
  */
-import minimist from "minimist"
-import glob from "glob"
-import path from "path"
-import eslint from "@rollup/plugin-eslint"
+import minimist from "minimist";
+import glob from "glob";
+import path from "path";
+import eslint from "@rollup/plugin-eslint";
 // import strip from "@rollup/plugin-strip"
-import { babel } from "@rollup/plugin-babel"
-import commonjs from "@rollup/plugin-commonjs"
-import { nodeResolve } from "@rollup/plugin-node-resolve"
-import ts from "rollup-plugin-typescript2"
-import apiExtractor from "@rays/rollup-plugin-api-extractor"
-import { workspaces } from "./package.json"
-// import type { RollupOptions } from "rollup"
+import { babel } from "@rollup/plugin-babel";
+import commonjs from "@rollup/plugin-commonjs";
+import { nodeResolve } from "@rollup/plugin-node-resolve";
+// import ts from "rollup-plugin-typescript2"
+// import apiExtractor from "@rays/rollup-plugin_api_extractor"
+import { workspaces } from "../../package.json";
 
-const isDevelopment = process.env.NODE_ENV === "development"
+process.chdir("../../");
+
+const isDevelopment = process.env.NODE_ENV === "development";
 
 const { ignore, scope } = minimist(process.argv.slice(2), {
   default: {
     ignore: "",
     scope: "",
   },
-})
+});
 
-const configs = []
+const configs = [];
 
 function getWorkspaces(workspaces) {
   return workspaces.map((workspace) => {
-    return glob.sync(workspace, {})
-  })
+    return glob.sync(workspace, {});
+  });
 }
 
 function filterWorkspaces(workspaces, scope, ignore) {
-  const allWorkspaces = getWorkspaces(workspaces)
+  const allWorkspaces = getWorkspaces(workspaces);
   return allWorkspaces
     .flat()
     .filter((workspace) => {
-      const pkg = workspace.split("/")[1]
-      return scope.includes(pkg) && !ignore.includes(pkg)
+      const pkg = workspace.split("/")[1];
+      return scope.includes(pkg) && !ignore.includes(pkg);
     })
     .map((filterdPackage) => {
       try {
@@ -47,17 +48,17 @@ function filterWorkspaces(workspaces, scope, ignore) {
           process.cwd(),
           filterdPackage,
           "package.json"
-        ))
+        ));
 
         return {
           package: filterdPackage,
           rawJSON: pkgJSON,
-        }
+        };
       } catch (e) {
-        console.error(e)
-        process.exit(24)
+        console.error(e);
+        process.exit(24);
       }
-    })
+    });
 }
 
 function main() {
@@ -65,29 +66,29 @@ function main() {
     workspaces,
     scope.split(","),
     ignore.split(",")
-  )
+  );
 
   packages.forEach(
     ({
       package: pack,
       rawJSON: { dependencies = {}, peerDependencies = {} },
     }) => {
-      const packageBasePath = path.resolve(process.cwd(), pack)
+      const packageBasePath = path.resolve(process.cwd(), pack);
 
       const plugins = [
-        ts({
-          tsconfig: path.resolve(packageBasePath, "tsconfig.json"),
-          verbosity: 2,
-          clean: true,
-          check: true,
-          useTsconfigDeclarationDir: true,
-          tsconfigOverride: {
-            compilerOptions: {
-              module: "ESNext",
-              sourceMap: isDevelopment,
-            },
-          },
-        }),
+        // ts({
+        //   tsconfig: path.resolve(packageBasePath, "tsconfig.json"),
+        //   verbosity: 2,
+        //   clean: true,
+        //   check: true,
+        //   useTsconfigDeclarationDir: true,
+        //   tsconfigOverride: {
+        //     compilerOptions: {
+        //       module: "ESNext",
+        //       sourceMap: isDevelopment,
+        //     },
+        //   },
+        // }),
         babel({
           include: ["src"],
           babelHelpers: "runtime",
@@ -102,23 +103,24 @@ function main() {
           exclude: ["lib/", "dist/", "node_modules/"],
           cwd: packageBasePath,
         }),
-      ]
+      ];
 
       if (!isDevelopment) {
         // plugins.push(terser())
         // plugins.push(strip())
-        plugins.push(
-          apiExtractor({
-            // configFile: path.resolve(pack, "api-extractor.json"),
-            // clear: true,
-            invokeOptions: {
-              localBuild: isDevelopment,
-              showVerboseMessages: isDevelopment,
-            },
-            // generatedDist: path.resolve(packageBasePath, `./dist`),
-            cwd: packageBasePath,
-          })
-        )
+        plugins
+          .push
+          // apiExtractor({
+          //   // configFile: path.resolve(pack, "api-extractor.json"),
+          //   // clear: true,
+          //   invokeOptions: {
+          //     localBuild: isDevelopment,
+          //     showVerboseMessages: isDevelopment,
+          //   },
+          //   // generatedDist: path.resolve(packageBasePath, `./dist`),
+          //   cwd: packageBasePath,
+          // })
+          ();
       }
 
       const config = {
@@ -133,13 +135,13 @@ function main() {
           exports: "auto",
         },
         plugins,
-      }
+      };
 
-      configs.push(config)
+      configs.push(config);
     }
-  )
+  );
 
-  return configs
+  return configs;
 }
 
-export default main()
+export default main();
