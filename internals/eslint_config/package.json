@@ -1,17 +1,16 @@
 {
   "name": "@rays/eslint_config",
   "type": "module",
-  "main": "",
-  "module": "",
+  "main": "index.js",
+  "module": "index.js",
   "author": {
     "email": "leiwenpeng1994@outlook.com",
-    "name": "lei wenpeng"
-  },
-  "bin": {
-    "ray": "lib/index.js"
+    "name": "ray"
   },
   "dependencies": {
-  },
-  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.22.1",
+    "@typescript-eslint/parser": "^4.22.1",
+    "eslint": "^7.26.0",
+    "typescript": "^4.2.4"
   }
 }

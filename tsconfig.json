@@ -7,10 +7,7 @@
     // feature
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "alwaysStrict": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "strictNullChecks": true
-  },
-  "exclude": []
+    "alwaysStrict": true
+  }
+  // "include": []
 }

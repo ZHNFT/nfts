@@ -5,9 +5,10 @@ import glob from "glob";
 import fs from "fs";
 import jsyaml from "js-yaml";
 import path from "path";
-import nodeResolve from "@rollup/plugin-node-resolve";
+import { rollup } from "rollup";
+import { nodeResolve } from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
-import babel from "@rollup/plugin-babel";
+import { babel } from "@rollup/plugin-babel";
 import eslint from "@rollup/plugin-eslint";
 
 const isUsingPnpm = fs.existsSync("./pnpm-lock.yaml");
@@ -43,7 +44,7 @@ packs.forEach((pack) => {
 
   try {
     const pkg = fs.readFileSync(path.resolve(packPath, "package.json"));
-    const { name, peerDependencies } = pkg;
+    const { peerDependencies } = pkg;
 
     config.external = {
       ...peerDependencies,
@@ -75,6 +76,20 @@ packs.forEach((pack) => {
 });
 
 /// generate rollup bundle
+
+Promise.resolve(
+  configs.map((config) => {
+    return bundle(config);
+  })
+)
+  .then(() => {
+    console.log("");
+    console.log("[@rays/toolkit] Build all specified packages successfully");
+  })
+  .catch((e) => {
+    console.error(e);
+    process.exitCode = 1;
+  });
 
 function packages() {
   if (isUsingNpm || isUsingYarn) {
@@ -120,4 +135,19 @@ function filterPackages(scope, ignore) {
     const pkg = pack.split("/")[1];
     return scope.includes(pkg) && !ignore.includes(pkg);
   });
+}
+
+async function bundle(config) {
+  const packBundle = await rollup(config);
+
+  return Promise.resolve([
+    packBundle.generate(config),
+    packBundle.write(config),
+  ])
+    .then(() => {
+      console.log("[@ray/toolkit] Build successfully");
+    })
+    .catch((e) => {
+      console.error(e);
+    });
 }
