@@ -53,7 +53,14 @@ packs.forEach((pack) => {
     throw e;
   }
 
-  const plugins = [babel(), nodeResolve(), commonjs(), eslint()];
+  const plugins = [
+    babel({
+      babelHelpers: "runtime",
+    }),
+    nodeResolve(),
+    commonjs(),
+    eslint({}),
+  ];
 
   config.plugins = plugins;
   config.input = path.resolve(packPath, "src/index.ts");

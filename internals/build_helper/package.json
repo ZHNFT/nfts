@@ -23,6 +23,7 @@
     "rollup": "^2.47.0"
   },
   "devDependencies": {
-    "@types/eslint": "^7.2.10"
+    "@types/eslint": "^7.2.10",
+    "@rays/eslint_config": "workspace:*"
   }
 }

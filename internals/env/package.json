@@ -3,15 +3,15 @@
   "type": "module",
   "main": "",
   "module": "",
+  "eslintConfig": {
+    "extends": "@rays/eslint_config"
+  },
   "author": {
     "email": "leiwenpeng1994@outlook.com",
     "name": "lei wenpeng"
   },
-  "bin": {
-    "ray": "lib/index.js"
-  },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
+    "@rays/eslint_config": "workspace:*"
   }
 }
