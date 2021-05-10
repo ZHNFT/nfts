@@ -1,7 +1,7 @@
 {
   "name": "@rays/eslint_config",
-  "main": "./index.js",
-  "module": "./index.js",
+  "main": "index.js",
+  "module": "index.js",
   "author": {
     "email": "leiwenpeng1994@outlook.com",
     "name": "ray"

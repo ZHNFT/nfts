@@ -1,6 +1,5 @@
 {
   "name": "@rays/env",
-  "type": "module",
   "main": "",
   "module": "",
   "eslintConfig": {
