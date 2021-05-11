@@ -2,4 +2,4 @@
 
 // Execute file
 
-require("../lib/run_build.js");
+require("../lib/build.js");

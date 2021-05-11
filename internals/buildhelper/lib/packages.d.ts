@@ -21,4 +21,3 @@ export declare class Package {
     get(main: string): Package | undefined;
 }
 export declare function filterPackages(scope: string[], ignore: string[]): Package[];
-//# sourceMappingURL=packages.d.ts.map

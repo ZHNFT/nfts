@@ -4,10 +4,10 @@ importers:
 
   .:
     specifiers:
-      '@rays/build_helper': workspace:*
+      '@rays/buildhelper': workspace:*
       prettier: ^2.2.1
     dependencies:
-      '@rays/build_helper': link:internals/buildhelper
+      '@rays/buildhelper': link:internals/buildhelper
       prettier: 2.2.1
 
   internals/buildhelper:

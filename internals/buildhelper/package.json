@@ -8,7 +8,7 @@
     "toolkit": "bin/command.js"
   },
   "scripts": {
-    "prepare": "tsc -m commonjs --outDir lib --rootDir ./src --allowSyntheticDefaultImports"
+    "prepare": "tsc"
   },
   "dependencies": {
     "@rollup/plugin-commonjs": "^18.0.0",

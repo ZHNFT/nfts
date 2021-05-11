@@ -1,5 +1,6 @@
 import minimist from "minimist";
-import { rollup, RollupOptions } from "rollup";
+import { resolve } from "path";
+import { RollupOptions } from "rollup";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import eslint from "@rollup/plugin-eslint";
@@ -20,6 +21,8 @@ console.log(
 
 const packs = filterPackages(scope, ignore);
 
+console.log("packs -->", packs);
+
 if (!packs || !packs.length) {
   console.error("no package found in workspaces");
   process.exit(2);
@@ -34,48 +37,50 @@ packs.forEach((pack) => {
 
   const { peerDependencies = {}, dependencies = {} } = pack.json;
 
-  config.external = {
+  config.external = [
     ...Object.keys(dependencies),
     ...Object.keys(peerDependencies),
-  };
+  ];
 
   const plugins = [nodeResolve(), commonjs(), eslint()];
 
   config.plugins = plugins;
-  config.input = pack.json.main;
+  config.input = resolve(pack.root, pack.json.main);
   config.output = [
     /// CommonJS
     {
       format: "cjs",
       exports: "auto",
-      file: pack.json.exports.node,
+      file: resolve(pack.root, pack.json.exports.node),
     },
     {
       /// ES Module
       format: "esm",
       exports: "auto",
-      file: pack.json.exports.default,
+      file: resolve(pack.root, pack.json.exports.default),
     },
   ];
 
   configs.push(config);
 });
 
-async function runTS() {}
+console.log(configs);
 
-async function watchTS() {}
+// async function runTS() {}
 
-async function rollupBundle(config: RollupOptions) {
-  const packBundle = await rollup(config);
+// async function watchTS() {}
 
-  return Promise.resolve([
-    packBundle.generate(config),
-    packBundle.write(config),
-  ])
-    .then(() => {
-      console.log("[@ray/toolkit] Build successfully");
-    })
-    .catch((e) => {
-      console.error(e);
-    });
-}
+// async function rollupBundle(config: RollupOptions) {
+//   const packBundle = await rollup(config);
+
+//   return Promise.resolve([
+//     packBundle.generate(config),
+//     packBundle.write(config),
+//   ])
+//     .then(() => {
+//       console.log("[@ray/toolkit] Build successfully");
+//     })
+//     .catch((e) => {
+//       console.error(e);
+//     });
+// }
