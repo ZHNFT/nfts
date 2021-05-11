@@ -1,24 +1,24 @@
-// const fs = require("fs");
-// const path = require("path");
-//
-// const root = process.cwd();
-// const pkgJson = path.resolve(root, "package.json");
-// const tsJson = path.resolve(root, "tsconfig.json");
-//
-// let isUsingReact, isUsingTypeScript;
-//
-// try {
-//   fs.accessSync(pkgJson);
-//   const pkgJsonData = JSON.parse(fs.readFileSync(pkgJson).toString());
-//
-//   isUsingReact =
-//     "react" in (pkgJsonData.dependencies || {}) ||
-//     "react" in (pkgJsonData.peerDependencies || {});
-// } catch (e) {
-//   throw e;
-// }
+import fs from "fs";
+import path from "path";
 
-// isUsingTypeScript = fs.existsSync(tsJson);
+const root = process.cwd();
+const pkgJson = path.resolve(root, "package.json");
+const tsJson = path.resolve(root, "tsconfig.json");
+
+let isUsingReact, isUsingTypeScript;
+
+try {
+  fs.accessSync(pkgJson);
+  const pkgJsonData = JSON.parse(fs.readFileSync(pkgJson).toString());
+
+  isUsingReact =
+    "react" in (pkgJsonData.dependencies || {}) ||
+    "react" in (pkgJsonData.peerDependencies || {});
+} catch (e) {
+  throw e;
+}
+
+isUsingTypeScript = fs.existsSync(tsJson);
 
 module.exports = {
   parser: "@typescript-eslint/parser",

@@ -1,7 +1,10 @@
 {
   "name": "@rays/env",
-  "main": "",
-  "module": "",
+  "main": "src/index.ts",
+  "exports": {
+    "node": "./dist/index.cjs",
+    "default": "./dist/index.js"
+  },
   "eslintConfig": {
     "extends": "@rays/eslint_config"
   },

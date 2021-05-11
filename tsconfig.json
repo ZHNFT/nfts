@@ -1,13 +1,24 @@
 {
   "compilerOptions": {
+    "skipLibCheck": true,
     // common
-    "module": "ESNext",
-    "moduleResolution": "Node",
+    "module": "ES6",
     "target": "ESNext",
-    // feature
+    "esModuleInterop": true,
+    "moduleResolution": "Node",
+    // features
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "alwaysStrict": true
-  }
-  // "include": []
+    "alwaysStrict": true,
+    "noUnusedLocals": true,
+    "strict": true,
+    // dts
+    "declaration": true,
+    "declarationMap": true,
+    "typeRoots": ["node_modules/@types"],
+    // paths
+    "paths": {}
+  },
+  "include": ["**/src/*.ts"],
+  "exclude": ["**/node_modules"]
 }
