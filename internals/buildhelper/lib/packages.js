@@ -15,19 +15,29 @@ class Package {
     // bundleConfig: RollupOptions;
     constructor(main) {
         this.main = main;
-        const root = path_1.resolve(cwd, main), src = path_1.resolve(root, "src"), tests = path_1.resolve(root, "tests;");
-        let dirs = (this.dirs = [src]);
+        const root = path_1.resolve(cwd, main), tests = path_1.resolve(root, "tests;");
+        this.dirs = [];
+        let dirs = [...this.dirs];
         if (fs_1.existsSync(tests)) {
-            dirs.push(tests);
+            // dirs.push(tests);
             // add test files to this.tests
             this.tests = fs_1.readdirSync(tests).filter((file) => /\*.ts/.test(file));
         }
         else {
             this.tests = [];
         }
+        dirs = dirs.concat(this.tests);
         this.root = root;
-        this.dirs = dirs;
+        // this.dirs = dirs;
         this.json = JSON.parse(fs_1.readFileSync(path_1.resolve(root, "package.json")).toString("utf-8"));
+        if (this.json.main) {
+            this.src = path_1.resolve(root, path_1.dirname(this.json.main));
+            dirs.push(this.src);
+        }
+        else {
+            this.src = null;
+        }
+        this.dirs = dirs;
     }
     get(main) {
         if (packCache.has(main)) {

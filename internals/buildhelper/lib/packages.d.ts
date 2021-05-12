@@ -14,6 +14,7 @@ export interface PackageJson {
 export declare class Package {
     readonly main: string;
     root: string;
+    src: string | null;
     dirs: readonly string[];
     tests: readonly string[];
     json: PackageJson;
