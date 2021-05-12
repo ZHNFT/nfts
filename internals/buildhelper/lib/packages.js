@@ -1,34 +1,37 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.filterPackages = exports.Package = void 0;
+exports.configFor = exports.emit = exports.cjs = exports.esm = exports.rollupWatch = exports.rollupBundle = exports.filterPackages = exports.Package = void 0;
 /// Packages
 /// transpile TS with TypeScript, bundle files with Rollup
 const path_1 = require("path");
 const fs_1 = require("fs");
-// import type { RollupOptions } from "rollup";
 const glob_1 = require("glob");
+const plugin_node_resolve_1 = require("@rollup/plugin-node-resolve");
+const plugin_commonjs_1 = __importDefault(require("@rollup/plugin-commonjs"));
+const rollup_plugin_typescript2_1 = __importDefault(require("rollup-plugin-typescript2"));
+const plugin_eslint_1 = __importDefault(require("@rollup/plugin-eslint"));
 const utils_1 = require("./utils");
 const js_yaml_1 = require("js-yaml");
+const rollup_1 = require("rollup");
 const cwd = process.cwd();
 const packCache = new Map();
 class Package {
-    // bundleConfig: RollupOptions;
     constructor(main) {
         this.main = main;
-        const root = path_1.resolve(cwd, main), tests = path_1.resolve(root, "tests;");
+        const root = path_1.resolve(cwd, main), tests = path_1.resolve(root, "tests");
         this.dirs = [];
         let dirs = [...this.dirs];
         if (fs_1.existsSync(tests)) {
-            // dirs.push(tests);
-            // add test files to this.tests
+            dirs.push(tests);
             this.tests = fs_1.readdirSync(tests).filter((file) => /\*.ts/.test(file));
         }
         else {
             this.tests = [];
         }
-        dirs = dirs.concat(this.tests);
         this.root = root;
-        // this.dirs = dirs;
         this.json = JSON.parse(fs_1.readFileSync(path_1.resolve(root, "package.json")).toString("utf-8"));
         if (this.json.main) {
             this.src = path_1.resolve(root, path_1.dirname(this.json.main));
@@ -49,7 +52,6 @@ class Package {
     }
 }
 exports.Package = Package;
-// function tsConfig() {}
 function packages() {
     if (utils_1.isUsingNpm || utils_1.isUsingYarn) {
         try {
@@ -96,3 +98,76 @@ function filterPackages(scope, ignore) {
     });
 }
 exports.filterPackages = filterPackages;
+async function rollupBundle(option) {
+    const { input, plugins, external } = option;
+    return rollup_1.rollup({
+        input,
+        plugins,
+        external,
+    });
+}
+exports.rollupBundle = rollupBundle;
+function rollupWatch(options) {
+    return rollup_1.watch(options);
+}
+exports.rollupWatch = rollupWatch;
+// esm
+function esm(pack) {
+    return {
+        format: "esm",
+        exports: "auto",
+        file: path_1.resolve(pack.root, pack.json.exports.default),
+    };
+}
+exports.esm = esm;
+// commonjs
+function cjs(pack) {
+    return {
+        format: "cjs",
+        exports: "auto",
+        file: path_1.resolve(pack.root, pack.json.exports.node),
+    };
+}
+exports.cjs = cjs;
+async function emit(bundle, output) {
+    await bundle.generate(output);
+    const bundleOutput = await bundle.write(output);
+    const { output: _outputs } = bundleOutput;
+    console.log(`[@rays/buildhelper] write file ${_outputs[0].fileName}`);
+}
+exports.emit = emit;
+function configFor(pack, isDev) {
+    const option = {};
+    const { peerDependencies = {}, dependencies = {}, main, exports: moduleExports, } = pack.json;
+    if (!main || !moduleExports) {
+        console.log(`[@rays/toolkit] ignore package ${pack.main} without \`main\` field and \`exports\` field`);
+    }
+    option.external = [
+        ...Object.keys(dependencies),
+        ...Object.keys(peerDependencies),
+    ];
+    const plugins = [
+        plugin_eslint_1.default({}),
+        rollup_plugin_typescript2_1.default({
+            tsconfigOverride: {
+                compilerOptions: {
+                    target: "es6",
+                },
+                include: [pack.src], //resolve(pack.root, dirname(pack.json.main))
+            },
+        }),
+        plugin_commonjs_1.default(),
+        plugin_node_resolve_1.nodeResolve({
+            moduleDirectories: [path_1.resolve(pack.root, "node_modules")],
+        }),
+    ];
+    option.plugins = plugins;
+    option.input = path_1.resolve(pack.root, main);
+    option.watch = isDev
+        ? {
+            clearScreen: true,
+        }
+        : false;
+    return option;
+}
+exports.configFor = configFor;

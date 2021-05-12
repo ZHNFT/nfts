@@ -1,3 +1,4 @@
+import { InputOptions, OutputOptions, RollupBuild, RollupOptions, RollupWatcher, RollupWatchOptions } from "rollup";
 export interface PackageJson {
     dependencies: {
         [key: string]: string;
@@ -22,3 +23,9 @@ export declare class Package {
     get(main: string): Package | undefined;
 }
 export declare function filterPackages(scope: string[], ignore: string[]): Package[];
+export declare function rollupBundle(option: InputOptions): Promise<RollupBuild>;
+export declare function rollupWatch(options: RollupWatchOptions): RollupWatcher;
+export declare function esm(pack: Package): OutputOptions;
+export declare function cjs(pack: Package): OutputOptions;
+export declare function emit(bundle: RollupBuild, output: OutputOptions): Promise<void>;
+export declare function configFor(pack: Package, isDev: boolean): RollupOptions;
