@@ -1,6 +1,6 @@
 import { existsSync, writeFileSync } from "fs";
 import { resolve } from "path";
-import { spawnSync, SpawnSyncReturns, SpawnSyncOptions } from "child_process";
+import { execFileSync, ExecFileSyncOptions } from "child_process";
 import { Package } from "./packages";
 import { ReleaseTypes } from "./release";
 
@@ -10,13 +10,14 @@ export const isUsingPnpm = existsSync(resolve(cwd, "pnpm-lock.yaml"));
 export const isUsingNpm = existsSync(resolve(cwd, "package-lock.json"));
 export const isUsingYarn = existsSync(resolve(cwd, "yarn.lock"));
 
-export function crossSpawnSync(
+export function crossExecFileSync(
   command: string,
-  options: SpawnSyncOptions = {}
-): SpawnSyncReturns<Buffer> {
-  return spawnSync(command, {
+  options: ReadonlyArray<string> = [],
+  config: ExecFileSyncOptions = {}
+): string | Buffer {
+  return execFileSync(command, options, {
+    ...config,
     shell: process.platform === "win32",
-    ...options,
   });
 }
 
@@ -28,7 +29,7 @@ export function revertVersion(pack: Package) {
   );
 }
 
-export function updateVersion(pack: Package, type: ReleaseTypes) {
+export function updateVersion(pack: Package, type: keyof typeof ReleaseTypes) {
   const { json, root } = pack;
   /// shallow copy， easy to revert version
   const copiedJson = Object.assign({}, json);

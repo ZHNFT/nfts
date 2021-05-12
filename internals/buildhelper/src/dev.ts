@@ -1,9 +1,16 @@
-import { cjs, configFor, esm, filterPackages, rollupWatch } from "./packages";
+import {
+  cjs,
+  esm,
+  configFor,
+  filterPackages,
+  rollupWatch,
+  Package,
+} from "./packages";
 
-export default function development(
+export default async function development(
   scope: string[],
   ignore: string[]
-): Promise<unknown> {
+): Promise<Package[]> {
   const packs = filterPackages(scope, ignore);
 
   if (!packs || !packs.length) {
@@ -14,28 +21,28 @@ export default function development(
   console.log(`[@rays/toolkit] building...`);
   console.log("");
 
-  return Promise.all(
-    packs.map((pack) => {
-      const config = configFor(pack, true);
-      config.output = [esm(pack), cjs(pack)];
+  packs.forEach((pack) => {
+    const config = configFor(pack, true);
+    config.output = [esm(pack), cjs(pack)];
 
-      const rollupWatcher = rollupWatch(config);
+    const rollupWatcher = rollupWatch(config);
 
-      rollupWatcher.on("event", (e) => {
-        if (e.code === "START") {
-          console.log("Starting rollup watcher process....");
-        }
+    rollupWatcher.on("event", (e) => {
+      if (e.code === "START") {
+        console.log("Starting rollup watcher process....");
+      }
 
-        if (e.code === "BUNDLE_END") {
-          console.log(e.input, "-->", e.output.join(","));
-          console.log("");
-        }
+      if (e.code === "BUNDLE_END") {
+        console.log(e.input, "-->", e.output.join(","));
+        console.log("");
+      }
 
-        if (e.code === "ERROR") {
-          console.log(e.error);
-          rollupWatcher.close();
-        }
-      });
-    })
-  );
+      if (e.code === "ERROR") {
+        console.log(e.error);
+        rollupWatcher.close();
+      }
+    });
+  });
+
+  return Promise.resolve(packs);
 }

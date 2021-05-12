@@ -1,43 +1,33 @@
 import build from "./build";
-import { crossSpawnSync, updateVersion, revertVersion } from "./utils";
+import { crossExecFileSync, updateVersion, revertVersion } from "./utils";
 import { Package } from "./packages";
 
-export type ReleaseTypes = "major" | "minor" | "patch";
+export enum ReleaseTypes {
+  "major",
+  "minor",
+  "patch",
+}
 
 export function publish(
   pack: Package,
   success: () => void,
   failed: (e: Error) => void
 ) {
-  const { root } = pack;
-  const result = crossSpawnSync("npm publish", {
-    cwd: root,
-    stdio: "inherit",
+  crossExecFileSync("npm", ["publish"], {
+    cwd: pack.root,
   });
-
-  if (result.error) {
-    failed(result.error);
-  }
-
-  if (result.status === 0) {
-    success();
-  }
 }
 
 export function git(pack: Package) {
-  const gitStatus = crossSpawnSync("git status", {
+  crossExecFileSync("git status", ["status"], {
     cwd: pack.root,
   });
-
-  if (gitStatus.output) {
-    // code...
-  }
 }
 
 export default async function release(
   scope: string[],
   ignore: string[],
-  type: ReleaseTypes
+  type: keyof typeof ReleaseTypes
 ) {
   console.log("[@rays/buildhelper] Start release process......");
 
