@@ -1,7 +1,7 @@
 /// Packages
 /// transpile TS with TypeScript, bundle files with Rollup
-import { resolve, dirname } from "path";
-import { existsSync, readFileSync, readdirSync } from "fs";
+import { dirname, resolve } from "path";
+import { existsSync, readdirSync, readFileSync } from "fs";
 import { glob } from "glob";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
@@ -28,6 +28,7 @@ export interface PackageJson {
   devDependencies: { [key: string]: string };
   peerDependencies: { [key: string]: string };
   main: string;
+  version: string;
   [key: string]: any;
 }
 
@@ -39,6 +40,7 @@ export class Package {
   dirs: readonly string[];
   tests: readonly string[];
   json: PackageJson;
+
   constructor(readonly main: string) {
     const root = resolve(cwd, main),
       tests = resolve(root, "tests");
@@ -173,8 +175,8 @@ export function configFor(pack: Package, isDev: boolean): RollupOptions {
   const option: RollupOptions = {};
 
   const {
-    peerDependencies = {},
-    dependencies = {},
+    peerDependencies,
+    dependencies,
     main,
     exports: moduleExports,
   } = pack.json;
@@ -186,11 +188,11 @@ export function configFor(pack: Package, isDev: boolean): RollupOptions {
   }
 
   option.external = [
-    ...Object.keys(dependencies),
-    ...Object.keys(peerDependencies),
+    ...Object.keys(dependencies || {}),
+    ...Object.keys(peerDependencies || {}),
   ];
 
-  const plugins = [
+  option.plugins = [
     eslint({}),
     ts({
       tsconfigOverride: {
@@ -205,8 +207,6 @@ export function configFor(pack: Package, isDev: boolean): RollupOptions {
       moduleDirectories: [resolve(pack.root, "node_modules")],
     }),
   ];
-
-  option.plugins = plugins;
   option.input = resolve(pack.root, main);
   option.watch = isDev
     ? {

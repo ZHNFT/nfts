@@ -3,8 +3,9 @@
   "compilerOptions": {
     "outDir": "./lib",
     "target": "ESNext",
-    "module": "CommonJS",
-    "declarationMap": false
+    "module": "CommonJS"
   },
-  "include": ["./src"]
+  "include": [
+    "./src"
+  ]
 }

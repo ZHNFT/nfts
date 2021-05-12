@@ -138,15 +138,15 @@ async function emit(bundle, output) {
 exports.emit = emit;
 function configFor(pack, isDev) {
     const option = {};
-    const { peerDependencies = {}, dependencies = {}, main, exports: moduleExports, } = pack.json;
+    const { peerDependencies, dependencies, main, exports: moduleExports, } = pack.json;
     if (!main || !moduleExports) {
         console.log(`[@rays/toolkit] ignore package ${pack.main} without \`main\` field and \`exports\` field`);
     }
     option.external = [
-        ...Object.keys(dependencies),
-        ...Object.keys(peerDependencies),
+        ...Object.keys(dependencies || {}),
+        ...Object.keys(peerDependencies || {}),
     ];
-    const plugins = [
+    option.plugins = [
         plugin_eslint_1.default({}),
         rollup_plugin_typescript2_1.default({
             tsconfigOverride: {
@@ -161,7 +161,6 @@ function configFor(pack, isDev) {
             moduleDirectories: [path_1.resolve(pack.root, "node_modules")],
         }),
     ];
-    option.plugins = plugins;
     option.input = path_1.resolve(pack.root, main);
     option.watch = isDev
         ? {

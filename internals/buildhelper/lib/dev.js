@@ -10,14 +10,16 @@ function development(scope, ignore) {
     console.log(`[@rays/toolkit] building...`);
     console.log("");
     return Promise.all(packs.map((pack) => {
-        const rollupWatcher = packages_1.rollupWatch(packages_1.configFor(pack, true));
+        const config = packages_1.configFor(pack, true);
+        config.output = [packages_1.esm(pack), packages_1.cjs(pack)];
+        const rollupWatcher = packages_1.rollupWatch(config);
         rollupWatcher.on("event", (e) => {
             if (e.code === "START") {
                 console.log("Starting rollup watcher process....");
             }
             if (e.code === "BUNDLE_END") {
-                e.result.close();
-                console.log("Bundle end");
+                console.log(e.input, "-->", e.output.join(","));
+                console.log("");
             }
             if (e.code === "ERROR") {
                 console.log(e.error);

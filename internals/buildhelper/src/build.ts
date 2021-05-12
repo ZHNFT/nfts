@@ -5,12 +5,13 @@ import {
   cjs,
   emit,
   configFor,
+  Package,
 } from "./packages";
 
-export default function build(
+export default async function build(
   scope: string[],
   ignore: string[]
-): Promise<unknown> {
+): Promise<Package[]> {
   const packs = filterPackages(scope, ignore);
 
   if (!packs || !packs.length) {
@@ -21,12 +22,12 @@ export default function build(
   console.log(`[@rays/toolkit] building...`);
   console.log("");
 
-  return Promise.all(
-    packs.map((pack) =>
-      rollupBundle(configFor(pack, false)).then(async (bundle) => {
-        await emit(bundle, cjs(pack));
-        await emit(bundle, esm(pack));
-      })
-    )
-  )
+  packs.forEach((pack) =>
+    rollupBundle(configFor(pack, false)).then(async (bundle) => {
+      await emit(bundle, cjs(pack));
+      await emit(bundle, esm(pack));
+    })
+  );
+
+  return Promise.resolve(packs);
 }

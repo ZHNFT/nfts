@@ -1,7 +1,5 @@
 # buildhelper
 
-- dev
-
-- build
-
-- test
+- toolkit dev
+- toolkit build
+- toolkit test

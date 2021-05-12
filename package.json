@@ -20,7 +20,6 @@
     "pnpm": ">=6"
   },
   "dependencies": {
-
     "prettier": "^2.2.1",
     "@rays/buildhelper": "workspace:*"
   }

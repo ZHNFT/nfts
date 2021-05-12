@@ -1,11 +1,4 @@
-import {
-  filterPackages,
-  rollupWatch,
-  esm,
-  cjs,
-  emit,
-  configFor,
-} from "./packages";
+import { cjs, configFor, esm, filterPackages, rollupWatch } from "./packages";
 
 export default function development(
   scope: string[],
@@ -23,7 +16,10 @@ export default function development(
 
   return Promise.all(
     packs.map((pack) => {
-      const rollupWatcher = rollupWatch(configFor(pack, true));
+      const config = configFor(pack, true);
+      config.output = [esm(pack), cjs(pack)];
+
+      const rollupWatcher = rollupWatch(config);
 
       rollupWatcher.on("event", (e) => {
         if (e.code === "START") {
@@ -31,8 +27,8 @@ export default function development(
         }
 
         if (e.code === "BUNDLE_END") {
-          e.result.close();
-          console.log("Bundle end");
+          console.log(e.input, "-->", e.output.join(","));
+          console.log("");
         }
 
         if (e.code === "ERROR") {

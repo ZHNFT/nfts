@@ -20,31 +20,45 @@ try {
 
 isUsingTypeScript = fs.existsSync(tsJson);
 
-module.exports = {
-  parser: "@typescript-eslint/parser",
-  extends: [
-    "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended",
-  ],
-  plugins: ["@typescript-eslint"],
-  env: {
-    browser: true,
-    node: true,
-    jest: true,
+let config = Object.create(null);
+
+config.parser = "@babel/eslint-parser";
+config.extends = ["eslint:recommended"];
+config.plugins = [];
+config.env = {
+  browser: true,
+  node: true,
+  jest: true,
+};
+config.parserOptions = {
+  ecmaVersion: 2019,
+  sourceType: "module",
+  ecmaFeatures: {
+    jsx: isUsingReact,
   },
-  settings: {
+};
+
+if (isUsingTypeScript) {
+  config.parser = "@typescript-eslint/parser";
+  config.parserOptions.project = "./tsconfig.json";
+  config.plugins.push("@typescript-eslint");
+  config.extends.push("plugin:@typescript-eslint/recommended");
+  config.extends.push(
+    "plugin:@typescript-eslint/recommended-requiring-type-checking"
+  );
+}
+
+if (isUsingReact) {
+  config.plugins = config.plugins.concat(["react", "react-hooks"]);
+  config.settings = {
     //自动发现React的版本，从而进行规范react代码
     react: {
       pragma: "React",
       version: "detect",
     },
-  },
-  parserOptions: {
-    ecmaVersion: 2019,
-    sourceType: "module",
-    ecmaFeatures: {
-      jsx: true,
-    },
-  },
-  rules: {},
-};
+  };
+}
+
+config.overrides = [];
+
+module.exports = config;

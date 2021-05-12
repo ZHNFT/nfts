@@ -29,3 +29,4 @@ export declare function esm(pack: Package): OutputOptions;
 export declare function cjs(pack: Package): OutputOptions;
 export declare function emit(bundle: RollupBuild, output: OutputOptions): Promise<void>;
 export declare function configFor(pack: Package, isDev: boolean): RollupOptions;
+//# sourceMappingURL=packages.d.ts.map
