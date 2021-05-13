@@ -7,6 +7,9 @@ import {
   Package,
 } from "./packages";
 
+/// Build steps
+/// 1. find packages with CLI arguments in workspace
+/// 2. start watching process
 export default async function development(
   scope: string[],
   ignore: string[]
@@ -18,8 +21,8 @@ export default async function development(
     process.exit(2);
   }
 
-  console.log(`[@rays/toolkit] building...`);
   console.log("");
+  console.log("[@rays/buildhelper] Starting development process");
 
   packs.forEach((pack) => {
     const config = configFor(pack, true);
@@ -29,7 +32,7 @@ export default async function development(
 
     rollupWatcher.on("event", (e) => {
       if (e.code === "START") {
-        console.log("Starting rollup watcher process....");
+        // console.log("Starting rollup watcher process....");
       }
 
       if (e.code === "BUNDLE_END") {

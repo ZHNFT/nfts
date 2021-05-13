@@ -11,11 +11,10 @@ const {
   type = "",
 } = minimist(process.argv.slice(2));
 
-const isDev = command === "dev";
-
 require(`../lib/${command}`)
   .default(scope.split(","), ignore.split(","), type)
   .then(() => {
-    !isDev && console.log("[@rays/buildhelper] build all pckages");
+    console.log("");
+    console.log(`[@rays/buildhelper] ${command} all pckages`);
   })
   .catch((e) => console.error(e));

@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.configFor = exports.emit = exports.cjs = exports.esm = exports.rollupWatch = exports.rollupBundle = exports.filterPackages = exports.Package = void 0;
 /// Packages
-/// transpile TS with TypeScript, bundle files with Rollup
 const path_1 = require("path");
 const fs_1 = require("fs");
 const glob_1 = require("glob");
@@ -52,6 +51,9 @@ class Package {
     }
 }
 exports.Package = Package;
+/// find packages in current workspace
+/// [yarn/npm] workspaces field in package.json
+///     [pnpm] packages field in pnpm-workspace.yaml
 function packages() {
     if (utils_1.isUsingNpm || utils_1.isUsingYarn) {
         try {
@@ -87,6 +89,7 @@ function getPackages() {
         return workspace;
     });
 }
+///
 function filterPackages(scope, ignore) {
     return getPackages()
         .filter((pack) => {
@@ -98,6 +101,7 @@ function filterPackages(scope, ignore) {
     });
 }
 exports.filterPackages = filterPackages;
+/// generate rollup bundle
 async function rollupBundle(option) {
     const { input, plugins, external } = option;
     return rollup_1.rollup({
@@ -107,11 +111,12 @@ async function rollupBundle(option) {
     });
 }
 exports.rollupBundle = rollupBundle;
+// generate rollup watcher
 function rollupWatch(options) {
     return rollup_1.watch(options);
 }
 exports.rollupWatch = rollupWatch;
-// esm
+/// esm
 function esm(pack) {
     return {
         format: "esm",
@@ -120,7 +125,7 @@ function esm(pack) {
     };
 }
 exports.esm = esm;
-// commonjs
+/// commonjs
 function cjs(pack) {
     return {
         format: "cjs",
@@ -129,6 +134,7 @@ function cjs(pack) {
     };
 }
 exports.cjs = cjs;
+/// write file to fs
 async function emit(bundle, output) {
     await bundle.generate(output);
     const bundleOutput = await bundle.write(output);
@@ -136,11 +142,12 @@ async function emit(bundle, output) {
     console.log(`[@rays/buildhelper] write file ${_outputs[0].fileName}`);
 }
 exports.emit = emit;
+/// generate rollup configuration
 function configFor(pack, isDev) {
     const option = {};
     const { peerDependencies, dependencies, main, exports: moduleExports, } = pack.json;
     if (!main || !moduleExports) {
-        console.log(`[@rays/toolkit] ignore package ${pack.main} without \`main\` field and \`exports\` field`);
+        console.log(`[@rays/buildhelper] ignore package ${pack.main} without \`main\` field and \`exports\` field`);
     }
     option.external = [
         ...Object.keys(dependencies || {}),
@@ -153,13 +160,15 @@ function configFor(pack, isDev) {
                 compilerOptions: {
                     target: "es6",
                 },
-                include: [pack.src], //resolve(pack.root, dirname(pack.json.main))
+                include: [pack.src],
             },
         }),
         plugin_commonjs_1.default(),
         plugin_node_resolve_1.nodeResolve({
             moduleDirectories: [path_1.resolve(pack.root, "node_modules")],
         }),
+        /// TODO
+        /// need a api-extractor plugin
     ];
     option.input = path_1.resolve(pack.root, main);
     option.watch = isDev
