@@ -1,5 +1,4 @@
 /// Packages
-/// transpile TS with TypeScript, bundle files with Rollup
 import { dirname, resolve } from "path";
 import { existsSync, readdirSync, readFileSync } from "fs";
 import { glob } from "glob";
@@ -78,6 +77,9 @@ export class Package {
   }
 }
 
+/// find packages in current workspace
+/// [yarn/npm] workspaces field in package.json
+///     [pnpm] packages field in pnpm-workspace.yaml
 function packages() {
   if (isUsingNpm || isUsingYarn) {
     try {
@@ -119,6 +121,7 @@ function getPackages(): string[] {
     });
 }
 
+///
 export function filterPackages(scope: string[], ignore: string[]): Package[] {
   return getPackages()
     .filter((pack: string) => {
@@ -130,6 +133,7 @@ export function filterPackages(scope: string[], ignore: string[]): Package[] {
     });
 }
 
+/// generate rollup bundle
 export async function rollupBundle(option: InputOptions): Promise<RollupBuild> {
   const { input, plugins, external } = option;
 
@@ -140,11 +144,12 @@ export async function rollupBundle(option: InputOptions): Promise<RollupBuild> {
   });
 }
 
+// generate rollup watcher
 export function rollupWatch(options: RollupWatchOptions): RollupWatcher {
   return watch(options);
 }
 
-// esm
+/// esm
 export function esm(pack: Package): OutputOptions {
   return {
     format: "esm",
@@ -153,7 +158,7 @@ export function esm(pack: Package): OutputOptions {
   };
 }
 
-// commonjs
+/// commonjs
 export function cjs(pack: Package): OutputOptions {
   return {
     format: "cjs",
@@ -162,6 +167,7 @@ export function cjs(pack: Package): OutputOptions {
   };
 }
 
+/// write file to fs
 export async function emit(bundle: RollupBuild, output: OutputOptions) {
   await bundle.generate(output);
   const bundleOutput = await bundle.write(output);
@@ -171,6 +177,7 @@ export async function emit(bundle: RollupBuild, output: OutputOptions) {
   console.log(`[@rays/buildhelper] write file ${_outputs[0].fileName}`);
 }
 
+/// generate rollup configuration
 export function configFor(pack: Package, isDev: boolean): RollupOptions {
   const option: RollupOptions = {};
 
@@ -183,7 +190,7 @@ export function configFor(pack: Package, isDev: boolean): RollupOptions {
 
   if (!main || !moduleExports) {
     console.log(
-      `[@rays/toolkit] ignore package ${pack.main} without \`main\` field and \`exports\` field`
+      `[@rays/buildhelper] ignore package ${pack.main} without \`main\` field and \`exports\` field`
     );
   }
 
@@ -199,13 +206,15 @@ export function configFor(pack: Package, isDev: boolean): RollupOptions {
         compilerOptions: {
           target: "es6",
         },
-        include: [pack.src], //resolve(pack.root, dirname(pack.json.main))
+        include: [pack.src],
       },
     }),
     commonjs(),
     nodeResolve({
       moduleDirectories: [resolve(pack.root, "node_modules")],
     }),
+    /// TODO
+    /// need a api-extractor plugin
   ];
   option.input = resolve(pack.root, main);
   option.watch = isDev

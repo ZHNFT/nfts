@@ -13,7 +13,8 @@
   "scripts": {
     "dev": "toolkit dev",
     "build": "toolkit build",
-    "test": "toolkit test"
+    "test": "toolkit test",
+    "release": "toolkit release"
   },
   "engines": {
     "node": ">=10",

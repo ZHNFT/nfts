@@ -10,18 +10,20 @@ export const isUsingPnpm = existsSync(resolve(cwd, "pnpm-lock.yaml"));
 export const isUsingNpm = existsSync(resolve(cwd, "package-lock.json"));
 export const isUsingYarn = existsSync(resolve(cwd, "yarn.lock"));
 
+/// make sure it's working in Wins
 export function crossExecFileSync(
   command: string,
   options: ReadonlyArray<string> = [],
   config: ExecFileSyncOptions = {}
 ): string | Buffer {
   return execFileSync(command, options, {
+    stdio: "inherit",
     ...config,
     shell: process.platform === "win32",
   });
 }
 
-/// revert package version
+/// revert version after release process failed
 export function revertVersion(pack: Package) {
   writeFileSync(
     resolve(pack.root, "package.json"),
@@ -29,11 +31,17 @@ export function revertVersion(pack: Package) {
   );
 }
 
+/// update version field in package.json, before release
 export function updateVersion(pack: Package, type: keyof typeof ReleaseTypes) {
   const { json, root } = pack;
-  /// shallow copy， easy to revert version
+  /// make a shallow copy
   const copiedJson = Object.assign({}, json);
-  const version = copiedJson.version;
+  let version = copiedJson.version;
+
+  if (!version) {
+    version = "0.0.0";
+  }
+
   let [major, minor, patch] = version.split(".");
   switch (type) {
     case "major": {
@@ -52,7 +60,9 @@ export function updateVersion(pack: Package, type: keyof typeof ReleaseTypes) {
       break;
     }
   }
+
   copiedJson.version = [major, minor, patch].join(".");
+
   writeFileSync(
     resolve(root, "package.json"),
     JSON.stringify(copiedJson, null, 2)

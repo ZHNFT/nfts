@@ -1,6 +1,7 @@
 {
   "name": "@rays/env",
   "main": "src/index.ts",
+  "version": "0.0.0",
   "exports": {
     "node": "./dist/index.cjs",
     "default": "./dist/index.js"
@@ -15,5 +16,9 @@
   "dependencies": {},
   "devDependencies": {
     "@rays/eslint-config": "workspace:*"
-  }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ]
 }
