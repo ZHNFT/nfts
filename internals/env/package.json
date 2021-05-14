@@ -11,11 +11,11 @@
   },
   "author": {
     "email": "leiwenpeng1994@outlook.com",
-    "name": "lei wenpeng"
+    "name": "leiwenpeng"
   },
   "dependencies": {},
   "devDependencies": {
-    "@rays/eslint-config": "workspace:*"
+    "@initializer/eslint-config": "workspace:*"
   },
   "files": [
     "dist",

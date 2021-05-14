@@ -1,8 +1,9 @@
 {
-  "name": "@rays/buildhelper",
+  "name": "@initializer/buildhelper",
+  "version": "0.0.1",
   "author": {
     "email": "leiwenpeng1994@outlook.com",
-    "name": "lei wenpeng"
+    "name": "leiwenpeng"
   },
   "bin": {
     "toolkit": "bin/command.js"
@@ -24,11 +25,15 @@
     "rollup-plugin-typescript2": "^0.30.0"
   },
   "devDependencies": {
-    "@rays/eslint-config": "workspace:*",
+    "@initializer/eslint-config": "workspace:*",
+    "@initializer/plugin-api-extractor": "workspace:*",
     "@types/eslint": "^7.2.10",
     "@types/glob": "^7.1.3",
     "@types/js-yaml": "^4.0.1",
     "@types/minimist": "^1.2.1"
+  },
+  "eslintConfig": {
+    "extends": "@initializer/eslint-config"
   },
   "files": [
     "bin",

@@ -15,6 +15,5 @@ require(`../lib/${command}`)
   .default(scope.split(","), ignore.split(","), type)
   .then(() => {
     console.log("");
-    console.log(`[@rays/buildhelper] ${command} all pckages`);
   })
   .catch((e) => console.error(e));

@@ -1,11 +1,12 @@
 {
-  "name": "@rays/eslint-config",
+  "name": "@initializer/eslint-config",
+  "version": "0.0.2",
   "exports": {
     "node": "./index.js"
   },
   "author": {
     "email": "leiwenpeng1994@outlook.com",
-    "name": "ray"
+    "name": "leiwenpeng"
   },
   "dependencies": {
     "@babel/eslint-parser": "^7.13.14",

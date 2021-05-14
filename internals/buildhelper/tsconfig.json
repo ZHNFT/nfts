@@ -2,10 +2,10 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "./lib",
-    "target": "ESNext",
-    "module": "CommonJS"
+    "target": "ES6",
+    "module": "CommonJS",
+    "declarationMap": false,
+    "lib": ["DOM", "ESNext"]
   },
-  "include": [
-    "./src"
-  ]
+  "include": ["./src"]
 }

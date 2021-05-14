@@ -6,6 +6,7 @@ import { nodeResolve } from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import ts from "rollup-plugin-typescript2";
 import eslint from "@rollup/plugin-eslint";
+import apiExtractor from "@initializer/plugin-api-extractor";
 
 import { isUsingNpm, isUsingPnpm, isUsingYarn } from "./utils";
 import { load } from "js-yaml";
@@ -23,15 +24,20 @@ import {
 const cwd = process.cwd();
 
 export interface PackageJson {
-  dependencies: { [key: string]: string };
-  devDependencies: { [key: string]: string };
-  peerDependencies: { [key: string]: string };
+  dependencies?: { [key: string]: string };
+  devDependencies?: { [key: string]: string };
+  peerDependencies?: { [key: string]: string };
   main: string;
   version: string;
-  [key: string]: any;
+  workspaces?: string[];
+  exports: {
+    node: string;
+    default: string;
+  };
+  [key: string]: unknown;
 }
 
-const packCache: Map<string, Package> = new Map();
+const packCache: Map<string, Package> = new Map([]);
 
 export class Package {
   root: string;
@@ -45,7 +51,7 @@ export class Package {
       tests = resolve(root, "tests");
     this.dirs = [];
 
-    let dirs = [...this.dirs];
+    const dirs = [...this.dirs];
 
     if (existsSync(tests)) {
       dirs.push(tests);
@@ -57,7 +63,7 @@ export class Package {
     this.root = root;
     this.json = JSON.parse(
       readFileSync(resolve(root, "package.json")).toString("utf-8")
-    );
+    ) as PackageJson;
     if (this.json.main) {
       this.src = resolve(root, dirname(this.json.main));
       dirs.push(this.src);
@@ -80,13 +86,16 @@ export class Package {
 /// find packages in current workspace
 /// [yarn/npm] workspaces field in package.json
 ///     [pnpm] packages field in pnpm-workspace.yaml
-function packages() {
+function packages(): string[] {
   if (isUsingNpm || isUsingYarn) {
     try {
-      return JSON.parse(readFileSync(resolve(cwd, "package.json")).toString())
-        .workspaces;
+      return (
+        (JSON.parse(
+          readFileSync(resolve(cwd, "package.json")).toString()
+        ) as PackageJson).workspaces || []
+      );
     } catch (e) {
-      console.error(e.message);
+      console.error(e);
       return [];
     }
   }
@@ -98,9 +107,11 @@ function packages() {
           encoding: "utf-8",
         }),
         { json: true }
-      ) as PackageJson).packages;
+      ) as {
+        packages: string[];
+      }).packages;
     } catch (e) {
-      console.error(e.message);
+      console.error(e);
       return [];
     }
   }
@@ -111,14 +122,9 @@ function packages() {
 function getPackages(): string[] {
   const workspaces = packages();
 
-  return workspaces
-    .map((workspace: string) => {
-      return glob.sync(workspace, {});
-    })
-    .flat()
-    .map((workspace: string[]) => {
-      return workspace;
-    });
+  return workspaces.reduce((a: string[], c) => {
+    return a.concat(glob.sync(c, {}));
+  }, []);
 }
 
 ///
@@ -168,7 +174,10 @@ export function cjs(pack: Package): OutputOptions {
 }
 
 /// write file to fs
-export async function emit(bundle: RollupBuild, output: OutputOptions) {
+export async function emit(
+  bundle: RollupBuild,
+  output: OutputOptions
+): Promise<void> {
   await bundle.generate(output);
   const bundleOutput = await bundle.write(output);
 
@@ -189,9 +198,10 @@ export function configFor(pack: Package, isDev: boolean): RollupOptions {
   } = pack.json;
 
   if (!main || !moduleExports) {
-    console.log(
-      `[@rays/buildhelper] ignore package ${pack.main} without \`main\` field and \`exports\` field`
+    console.error(
+      `[@rays/buildhelper] package ${pack.main} has no \`main\` and \`exports\` fields in package.json`
     );
+    process.exit(2);
   }
 
   option.external = [
@@ -202,12 +212,17 @@ export function configFor(pack: Package, isDev: boolean): RollupOptions {
   option.plugins = [
     eslint({}),
     ts({
+      useTsconfigDeclarationDir: true,
       tsconfigOverride: {
         compilerOptions: {
           target: "es6",
         },
         include: [pack.src],
       },
+    }),
+    apiExtractor({
+      clear: true,
+      declarationDir: resolve(pack.root, "dist"),
     }),
     commonjs(),
     nodeResolve({
