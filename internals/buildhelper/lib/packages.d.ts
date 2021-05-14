@@ -10,6 +10,7 @@ export interface PackageJson {
         [key: string]: string;
     };
     main: string;
+    version: string;
     [key: string]: any;
 }
 export declare class Package {
