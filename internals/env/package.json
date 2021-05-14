@@ -1,5 +1,5 @@
 {
-  "name": "@rays/env",
+  "name": "@initializer/env",
   "main": "src/index.ts",
   "version": "0.0.0",
   "exports": {
@@ -7,7 +7,7 @@
     "default": "./dist/index.js"
   },
   "eslintConfig": {
-    "extends": "@rays/eslint-config"
+    "extends": "@initializer/eslint-config"
   },
   "author": {
     "email": "leiwenpeng1994@outlook.com",

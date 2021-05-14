@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+process.env.NODE_ENV = "development";
 const packages_1 = require("./packages");
 /// Build steps
 /// 1. find packages with CLI arguments in workspace
@@ -28,7 +29,7 @@ function development(scope, ignore) {
             const rollupWatcher = packages_1.rollupWatch(config);
             rollupWatcher.on("event", (e) => {
                 if (e.code === "START") {
-                    // console.log("Starting rollup watcher process....");
+                    console.log("Starting rollup watcher process....");
                 }
                 if (e.code === "BUNDLE_END") {
                     console.log(e.input, "-->", e.output.join(","));
@@ -36,7 +37,6 @@ function development(scope, ignore) {
                 }
                 if (e.code === "ERROR") {
                     console.log(e.error);
-                    rollupWatcher.close();
                 }
             });
         });

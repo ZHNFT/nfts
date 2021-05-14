@@ -169,20 +169,22 @@ function configFor(pack, isDev) {
             tsconfigOverride: {
                 compilerOptions: {
                     target: "es6",
+                    declaration: true,
+                    outDir: path_1.resolve(pack.root, "lib"),
+                    declarationDir: path_1.resolve(pack.root, "temp"),
                 },
                 include: [pack.src],
             },
         }),
         plugin_api_extractor_1.default({
             clear: true,
-            declarationDir: path_1.resolve(pack.root, "dist"),
+            cwd: pack.root,
+            declarationDir: path_1.resolve(pack.root, "temp"),
         }),
         plugin_commonjs_1.default(),
         plugin_node_resolve_1.nodeResolve({
             moduleDirectories: [path_1.resolve(pack.root, "node_modules")],
         }),
-        /// TODO
-        /// need a api-extractor plugin
     ];
     option.input = path_1.resolve(pack.root, main);
     option.watch = isDev

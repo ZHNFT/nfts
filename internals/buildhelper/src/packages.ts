@@ -216,20 +216,22 @@ export function configFor(pack: Package, isDev: boolean): RollupOptions {
       tsconfigOverride: {
         compilerOptions: {
           target: "es6",
+          declaration: true,
+          outDir: resolve(pack.root, "lib"),
+          declarationDir: resolve(pack.root, "temp"),
         },
         include: [pack.src],
       },
     }),
     apiExtractor({
       clear: true,
-      declarationDir: resolve(pack.root, "dist"),
+      cwd: pack.root,
+      declarationDir: resolve(pack.root, "temp"),
     }),
     commonjs(),
     nodeResolve({
       moduleDirectories: [resolve(pack.root, "node_modules")],
     }),
-    /// TODO
-    /// need a api-extractor plugin
   ];
   option.input = resolve(pack.root, main);
   option.watch = isDev

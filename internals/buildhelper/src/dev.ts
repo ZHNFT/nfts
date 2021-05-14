@@ -1,3 +1,5 @@
+process.env.NODE_ENV = "development";
+
 import {
   cjs,
   esm,
@@ -32,7 +34,7 @@ export default async function development(
 
     rollupWatcher.on("event", (e) => {
       if (e.code === "START") {
-        // console.log("Starting rollup watcher process....");
+        console.log("Starting rollup watcher process....");
       }
 
       if (e.code === "BUNDLE_END") {
@@ -42,7 +44,6 @@ export default async function development(
 
       if (e.code === "ERROR") {
         console.log(e.error);
-        rollupWatcher.close();
       }
     });
   });

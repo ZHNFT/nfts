@@ -1,24 +1,20 @@
 {
+  "license": "MIT",
   "name": "@initializer/plugin-api-extractor",
   "version": "0.0.0",
-  "description": "rollup-plugin",
   "main": "src/index.ts",
+  "author": "leiwenpeng",
   "exports": {
     "node": "./dist/index.cjs",
     "default": "./dist/index.js"
   },
+  "typings": "./dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "rollup-plugin",
-    "api-extractor"
-  ],
   "eslintConfig": {
     "extends": "@initializer/eslint-config"
   },
-  "author": "leiwenpeng",
-  "license": "MIT",
   "dependencies": {
     "@microsoft/api-extractor": "^7.15.1",
     "rollup": "^2.47.0"
