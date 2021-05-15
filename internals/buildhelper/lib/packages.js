@@ -65,27 +65,33 @@ exports.Package = Package;
 /// [yarn/npm] workspaces field in package.json
 ///     [pnpm] packages field in pnpm-workspace.yaml
 function packages() {
+    let _packs = [];
     if (utils_1.isUsingNpm || utils_1.isUsingYarn) {
         try {
-            return (JSON.parse(fs_1.readFileSync(path_1.resolve(cwd, "package.json")).toString()).workspaces || []);
+            _packs =
+                JSON.parse(fs_1.readFileSync(path_1.resolve(cwd, "package.json")).toString()).workspaces || [];
         }
         catch (e) {
             console.error(e);
-            return [];
+            _packs = [];
         }
     }
     if (utils_1.isUsingPnpm) {
         try {
-            return js_yaml_1.load(fs_1.readFileSync(path_1.resolve(cwd, "pnpm-workspace.yaml"), {
+            _packs = js_yaml_1.load(fs_1.readFileSync(path_1.resolve(cwd, "pnpm-workspace.yaml"), {
                 encoding: "utf-8",
             }), { json: true }).packages;
         }
         catch (e) {
             console.error(e);
-            return [];
+            _packs = [];
         }
     }
-    return [];
+    if (_packs.length === 0) {
+        /// not a monorepo
+        return ["./"];
+    }
+    return _packs;
 }
 function getPackages() {
     const workspaces = packages();

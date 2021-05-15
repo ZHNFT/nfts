@@ -87,22 +87,23 @@ export class Package {
 /// [yarn/npm] workspaces field in package.json
 ///     [pnpm] packages field in pnpm-workspace.yaml
 function packages(): string[] {
+  let _packs: string[] = [];
+
   if (isUsingNpm || isUsingYarn) {
     try {
-      return (
+      _packs =
         (JSON.parse(
           readFileSync(resolve(cwd, "package.json")).toString()
-        ) as PackageJson).workspaces || []
-      );
+        ) as PackageJson).workspaces || [];
     } catch (e) {
       console.error(e);
-      return [];
+      _packs = [];
     }
   }
 
   if (isUsingPnpm) {
     try {
-      return (load(
+      _packs = (load(
         readFileSync(resolve(cwd, "pnpm-workspace.yaml"), {
           encoding: "utf-8",
         }),
@@ -112,11 +113,16 @@ function packages(): string[] {
       }).packages;
     } catch (e) {
       console.error(e);
-      return [];
+      _packs = [];
     }
   }
 
-  return [];
+  if (_packs.length === 0) {
+    /// not a monorepo
+    return ["./"];
+  }
+
+  return _packs;
 }
 
 function getPackages(): string[] {
