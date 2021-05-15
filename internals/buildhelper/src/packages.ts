@@ -228,6 +228,10 @@ export function configFor(pack: Package, isDev: boolean): RollupOptions {
         include: [pack.src],
       },
     }),
+    commonjs(),
+    nodeResolve({
+      moduleDirectories: [resolve(pack.root, "node_modules")],
+    }),
     apiExtractor({
       clear: true,
       cwd: pack.root,
@@ -236,10 +240,6 @@ export function configFor(pack: Package, isDev: boolean): RollupOptions {
         "temp",
         basename(pack.json.main).replace(/\.tsx?$/, ".d.ts")
       ),
-    }),
-    commonjs(),
-    nodeResolve({
-      moduleDirectories: [resolve(pack.root, "node_modules")],
     }),
   ];
   option.input = resolve(pack.root, main);

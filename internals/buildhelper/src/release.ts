@@ -9,28 +9,25 @@ export enum ReleaseTypes {
 }
 
 /// publish package to npm repo
-export function publish(
-  pack: Package,
-  success: () => void,
-  failed: (e: Error) => void
-): void {
-  try {
-    ///
-    /// 虽然使用pnpm做包管理，但是我们还是选择使用npm指令来发布包。
-    ///
-    crossExecFileSync("npm", ["publish"], {
-      cwd: pack.root,
-    });
-    success();
-  } catch (e) {
-    failed(e);
-  }
+export function publish(pack: Package): Promise<void> {
+  return new Promise((resolve, reject) => {
+    try {
+      ///
+      /// 虽然使用pnpm做包管理，但是我们还是选择使用npm指令来发布包。
+      ///
+      crossExecFileSync("npm", ["publish"], {
+        cwd: pack.root,
+      });
+      resolve();
+    } catch (e) {
+      reject(e);
+    }
+  });
 }
 
 /// commit/push modified/added/staged/removed files
 export function git(pack: Package): void {
   try {
-    console.log("commiting files");
     crossExecFileSync("git", ["add", "."], { cwd: pack.root });
     crossExecFileSync(
       "git",
@@ -55,19 +52,21 @@ export default async function release(
   console.log("[@rays/buildhelper] Start release process......");
   console.log("");
   /// build before release
-  await build(scope, ignore).then(async (packs) => {
-    await Promise.all(
-      packs.map((pack) => {
-        updateVersion(pack, type);
-        publish(
-          pack,
-          () => git(pack),
-          (e: Error) => {
-            console.log(e.message);
-            revertVersion(pack);
-          }
-        );
-      })
-    );
+  await build(scope, ignore).then((packs) => {
+    packs.forEach((pack) => {
+      console.log("");
+      console.log(`publish ${pack.main} 🚗...`);
+      updateVersion(pack, type);
+      git(pack);
+      publish(pack)
+        .then(() => {
+          console.log(`publish ${pack.main} successfully 🎆`);
+          console.log("");
+        })
+        .catch((e) => {
+          console.log(e);
+          revertVersion(pack);
+        });
+    });
   });
 }
