@@ -24,7 +24,7 @@ export function crossExecFileSync(
 }
 
 /// revert version after release process failed
-export function revertVersion(pack: Package) {
+export function revertVersion(pack: Package): void {
   writeFileSync(
     resolve(pack.root, "package.json"),
     JSON.stringify(pack.json, null, 2)
@@ -32,7 +32,10 @@ export function revertVersion(pack: Package) {
 }
 
 /// update version field in package.json, before release
-export function updateVersion(pack: Package, type: keyof typeof ReleaseTypes) {
+export function updateVersion(
+  pack: Package,
+  type: keyof typeof ReleaseTypes
+): void {
   const { json, root } = pack;
   /// make a shallow copy
   const copiedJson = Object.assign({}, json);

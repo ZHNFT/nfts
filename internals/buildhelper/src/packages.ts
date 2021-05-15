@@ -133,10 +133,10 @@ function getPackages(): string[] {
   }, []);
 }
 
-///
 export function filterPackages(scope: string[], ignore: string[]): Package[] {
   return getPackages()
     .filter((pack: string) => {
+      /// TODO release single repo
       const pkg = pack.split("/")[1];
       return scope.includes(pkg) && !ignore.includes(pkg);
     })
