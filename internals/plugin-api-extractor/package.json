@@ -8,7 +8,6 @@
     "node": "./dist/index.cjs",
     "default": "./dist/index.js"
   },
-  "typings": "./dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

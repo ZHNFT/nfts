@@ -65,31 +65,27 @@ exports.Package = Package;
 /// [yarn/npm] workspaces field in package.json
 ///     [pnpm] packages field in pnpm-workspace.yaml
 function packages() {
+    var _a, _b;
     let _packs = [];
     if (utils_1.isUsingNpm || utils_1.isUsingYarn) {
         try {
             _packs =
-                JSON.parse(fs_1.readFileSync(path_1.resolve(cwd, "package.json")).toString()).workspaces || [];
+                (_a = JSON.parse(fs_1.readFileSync(path_1.resolve(cwd, "package.json")).toString()).workspaces) !== null && _a !== void 0 ? _a : [];
         }
         catch (e) {
             console.error(e);
-            _packs = [];
         }
     }
     if (utils_1.isUsingPnpm) {
         try {
-            _packs = js_yaml_1.load(fs_1.readFileSync(path_1.resolve(cwd, "pnpm-workspace.yaml"), {
-                encoding: "utf-8",
-            }), { json: true }).packages;
+            _packs =
+                (_b = js_yaml_1.load(fs_1.readFileSync(path_1.resolve(cwd, "pnpm-workspace.yaml"), {
+                    encoding: "utf-8",
+                }), { json: true }).packages) !== null && _b !== void 0 ? _b : [];
         }
         catch (e) {
             console.error(e);
-            _packs = [];
         }
-    }
-    if (_packs.length === 0) {
-        /// not a monorepo
-        return ["./"];
     }
     return _packs;
 }
@@ -99,8 +95,11 @@ function getPackages() {
         return a.concat(glob_1.glob.sync(c, {}));
     }, []);
 }
-///
 function filterPackages(scope, ignore) {
+    const allPackages = getPackages();
+    if (allPackages.length === 0) {
+        return [new Package(".")];
+    }
     return getPackages()
         .filter((pack) => {
         const pkg = pack.split("/")[1];

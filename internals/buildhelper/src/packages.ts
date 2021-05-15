@@ -94,32 +94,26 @@ function packages(): string[] {
       _packs =
         (JSON.parse(
           readFileSync(resolve(cwd, "package.json")).toString()
-        ) as PackageJson).workspaces || [];
+        ) as PackageJson).workspaces ?? [];
     } catch (e) {
       console.error(e);
-      _packs = [];
     }
   }
 
   if (isUsingPnpm) {
     try {
-      _packs = (load(
-        readFileSync(resolve(cwd, "pnpm-workspace.yaml"), {
-          encoding: "utf-8",
-        }),
-        { json: true }
-      ) as {
-        packages: string[];
-      }).packages;
+      _packs =
+        (load(
+          readFileSync(resolve(cwd, "pnpm-workspace.yaml"), {
+            encoding: "utf-8",
+          }),
+          { json: true }
+        ) as {
+          packages: string[];
+        }).packages ?? [];
     } catch (e) {
       console.error(e);
-      _packs = [];
     }
-  }
-
-  if (_packs.length === 0) {
-    /// not a monorepo
-    return ["./"];
   }
 
   return _packs;
@@ -134,9 +128,14 @@ function getPackages(): string[] {
 }
 
 export function filterPackages(scope: string[], ignore: string[]): Package[] {
+  const allPackages = getPackages();
+
+  if (allPackages.length === 0) {
+    return [new Package(".")];
+  }
+
   return getPackages()
     .filter((pack: string) => {
-      /// TODO release single repo
       const pkg = pack.split("/")[1];
       return scope.includes(pkg) && !ignore.includes(pkg);
     })
