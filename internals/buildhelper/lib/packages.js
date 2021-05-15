@@ -179,7 +179,7 @@ function configFor(pack, isDev) {
         plugin_api_extractor_1.default({
             clear: true,
             cwd: pack.root,
-            declarationDir: path_1.resolve(pack.root, "temp"),
+            mainEntryPointFilePath: path_1.resolve(pack.root, "temp", path_1.basename(pack.json.main).replace(/\.tsx?$/, ".d.ts")),
         }),
         plugin_commonjs_1.default(),
         plugin_node_resolve_1.nodeResolve({

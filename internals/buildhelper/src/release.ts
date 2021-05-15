@@ -13,8 +13,11 @@ export function publish(
   pack: Package,
   success: () => void,
   failed: (e: Error) => void
-) {
+): void {
   try {
+    ///
+    /// 虽然使用pnpm做包管理，但是我们还是选择使用npm指令来发布包。
+    ///
     crossExecFileSync("npm", ["publish"], {
       cwd: pack.root,
     });
@@ -25,7 +28,7 @@ export function publish(
 }
 
 /// commit/push modified/added/staged/removed files
-export function git(pack: Package) {
+export function git(pack: Package): void {
   try {
     console.log("commiting files");
     crossExecFileSync("git", ["add", "."], { cwd: pack.root });
@@ -34,7 +37,9 @@ export function git(pack: Package) {
       ["commit", "-m", `release: release ${pack.main}@${pack.json.version}`],
       { cwd: pack.root }
     );
-  } catch (e) {}
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 /// Release steps
@@ -46,13 +51,13 @@ export default async function release(
   scope: string[],
   ignore: string[],
   type: keyof typeof ReleaseTypes
-) {
+): Promise<void> {
   console.log("[@rays/buildhelper] Start release process......");
   console.log("");
   /// build before release
   await build(scope, ignore).then(async (packs) => {
     await Promise.all(
-      packs.map(async (pack) => {
+      packs.map((pack) => {
         updateVersion(pack, type);
         publish(
           pack,

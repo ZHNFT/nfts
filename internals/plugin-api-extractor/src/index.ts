@@ -4,7 +4,7 @@ import { ExtractorConfig, Extractor } from "@microsoft/api-extractor";
 
 /// TODO enhance those props
 export type ApiExtractorProps = {
-  declarationDir: string;
+  mainEntryPointFilePath: string;
   clear?: boolean;
   cwd?: string;
 };
@@ -12,7 +12,7 @@ export type ApiExtractorProps = {
 let runBefore = false;
 
 const combine = (
-  options: ApiExtractorProps = { declarationDir: "./" }
+  options: ApiExtractorProps = { mainEntryPointFilePath: "./index.d.ts" }
 ): ApiExtractorProps => {
   const defaultOpts = {
     clear: false,
@@ -23,13 +23,16 @@ const combine = (
 };
 
 /// generate api-extractor configuration
-const createConfig = (declarationDir: string, cwd: string): ExtractorConfig => {
+const createConfig = (
+  mainEntryPointFilePath: string,
+  cwd: string
+): ExtractorConfig => {
   return ExtractorConfig.prepare({
     configObjectFullPath: undefined,
     configObject: {
-      mainEntryPointFilePath: resolve(declarationDir, "index.d.ts"),
+      mainEntryPointFilePath,
       compiler: {
-        skipLibCheck: true,
+        // skipLibCheck: true,
         overrideTsconfig: {},
       },
       projectFolder: cwd,
@@ -55,7 +58,7 @@ const apiExtractor: PluginImpl<ApiExtractorProps> = (props) => {
       if (!runBefore) {
         console.log("Starting api-extractor process......");
         const result = Extractor.invoke(
-          createConfig(props.declarationDir, props.cwd as string)
+          createConfig(props.mainEntryPointFilePath, props.cwd as string)
         );
         if (result.succeeded) {
           console.log("api-extractor succeeded");

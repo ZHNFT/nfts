@@ -1,5 +1,5 @@
 /// Packages
-import { dirname, resolve } from "path";
+import { dirname, resolve, basename } from "path";
 import { existsSync, readdirSync, readFileSync } from "fs";
 import { glob } from "glob";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
@@ -226,7 +226,11 @@ export function configFor(pack: Package, isDev: boolean): RollupOptions {
     apiExtractor({
       clear: true,
       cwd: pack.root,
-      declarationDir: resolve(pack.root, "temp"),
+      mainEntryPointFilePath: resolve(
+        pack.root,
+        "temp",
+        basename(pack.json.main).replace(/\.tsx?$/, ".d.ts")
+      ),
     }),
     commonjs(),
     nodeResolve({
