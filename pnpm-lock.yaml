@@ -77,12 +77,12 @@ importers:
     specifiers:
       '@initializer/eslint-config': workspace:*
       '@microsoft/api-extractor': ^7.15.1
-      rollup: ^2.47.0
+      rollup: ^2.48.0
     dependencies:
       '@microsoft/api-extractor': 7.15.1
-      rollup: 2.47.0
     devDependencies:
       '@initializer/eslint-config': link:../eslint-config
+      rollup: 2.48.0
 
 packages:
 
@@ -995,7 +995,6 @@ packages:
     resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
-    dev: false
     optional: true
 
   /function-bind/1.1.1:
@@ -1625,6 +1624,14 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
     dev: false
+
+  /rollup/2.48.0:
+    resolution: {integrity: sha512-wl9ZSSSsi5579oscSDYSzGn092tCS076YB+TQrzsGuSfYyJeep8eEWj0eaRjuC5McuMNmcnR8icBqiE/FWNB1A==}
+    engines: {node: '>=10.0.0'}
+    hasBin: true
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: true
 
   /run-parallel/1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}

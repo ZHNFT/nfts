@@ -12,6 +12,7 @@
     "prepare": "tsc"
   },
   "dependencies": {
+    "@initializer/plugin-api-extractor": "workspace:*",
     "@rollup/plugin-commonjs": "^18.0.0",
     "@rollup/plugin-eslint": "^8.0.1",
     "@rollup/plugin-node-resolve": "^11.2.1",
@@ -26,7 +27,6 @@
   },
   "devDependencies": {
     "@initializer/eslint-config": "workspace:*",
-    "@initializer/plugin-api-extractor": "workspace:*",
     "@types/eslint": "^7.2.10",
     "@types/glob": "^7.1.3",
     "@types/js-yaml": "^4.0.1",
