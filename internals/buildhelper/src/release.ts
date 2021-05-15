@@ -26,17 +26,20 @@ export function publish(pack: Package): Promise<void> {
 }
 
 /// commit/push modified/added/staged/removed files
-export function git(pack: Package): void {
-  try {
-    crossExecFileSync("git", ["add", "."], { cwd: pack.root });
-    crossExecFileSync(
-      "git",
-      ["commit", "-m", `release: release ${pack.main}@${pack.json.version}`],
-      { cwd: pack.root }
-    );
-  } catch (e) {
-    console.error(e);
-  }
+export function git(pack: Package): Promise<void> {
+  return new Promise((resolve, reject) => {
+    try {
+      crossExecFileSync("git", ["add", "."], { cwd: pack.root });
+      crossExecFileSync(
+        "git",
+        ["commit", "-m", `release: release ${pack.main}@${pack.json.version}`],
+        { cwd: pack.root }
+      );
+      resolve();
+    } catch (e) {
+      reject(e);
+    }
+  });
 }
 
 /// Release steps
@@ -57,8 +60,7 @@ export default async function release(
       console.log("");
       console.log(`publish ${pack.main} 🚗...`);
       updateVersion(pack, type);
-      git(pack);
-      publish(pack)
+      Promise.all([git(pack), publish(pack)])
         .then(() => {
           console.log(`publish ${pack.main} successfully 🎆`);
           console.log("");
