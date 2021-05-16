@@ -9,7 +9,12 @@
     "default": "./dist/index.js"
   },
   "eslintConfig": {
-    "extends": "@initializer/eslint-config"
+    "extends": "@initializer/eslint-config",
+    "ignorePatterns": [
+      "dist/*",
+      "temp/*",
+      "tests/*"
+    ]
   },
   "dependencies": {
     "@microsoft/api-extractor": "^7.15.1"

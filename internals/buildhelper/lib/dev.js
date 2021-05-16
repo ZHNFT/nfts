@@ -9,18 +9,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-process.env.NODE_ENV = "development";
 const packages_1 = require("./packages");
+process.env.NODE_ENV = "development";
 /// Build steps
 /// 1. find packages with CLI arguments in workspace
 /// 2. start watching process
 function development(scope, ignore) {
     return __awaiter(this, void 0, void 0, function* () {
         const packs = packages_1.filterPackages(scope, ignore);
-        if (!packs || !packs.length) {
-            console.error("no package found in workspaces");
-            process.exit(2);
-        }
+        // if (!packs || !packs.length) {
+        //   console.error("no package found in workspaces");
+        //   process.exit(2);
+        // }
         console.log("");
         console.log("[@rays/buildhelper] Starting development process");
         packs.forEach((pack) => {

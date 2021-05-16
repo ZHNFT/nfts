@@ -90,7 +90,7 @@ function packages(): string[] | never {
   /// multi package-manager is not allowd
   if (hasMoreThanOnePackageLock())
     throw Error(
-      `Please make sure you only using one of theme (npm, pnpm, yarn)`
+      `Please make sure you only using one of them (npm, pnpm, yarn)`
     );
 
   try {

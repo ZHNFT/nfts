@@ -20,9 +20,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.git = exports.publish = exports.ReleaseTypes = void 0;
-process.env.NODE_ENV = "release";
 const build_1 = __importDefault(require("./build"));
 const utils_1 = require("./utils");
+process.env.NODE_ENV = "release";
 var ReleaseTypes;
 (function (ReleaseTypes) {
     ReleaseTypes[ReleaseTypes["major"] = 0] = "major";

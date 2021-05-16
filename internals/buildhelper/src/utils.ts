@@ -10,7 +10,7 @@ export const isUsingPnpm = existsSync(resolve(cwd, "pnpm-lock.yaml"));
 export const isUsingNpm = existsSync(resolve(cwd, "package-lock.json"));
 export const isUsingYarn = existsSync(resolve(cwd, "yarn.lock"));
 
-export function hasMoreThanOnePackageLock() {
+export function hasMoreThanOnePackageLock(): boolean {
   return (
     (isUsingPnpm && isUsingNpm) ||
     (isUsingPnpm && isUsingYarn) ||

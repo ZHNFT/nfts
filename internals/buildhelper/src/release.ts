@@ -1,8 +1,8 @@
-process.env.NODE_ENV = "release";
-
 import build from "./build";
 import { crossExecFileSync, updateVersion, revertVersion } from "./utils";
 import { Package } from "./packages";
+
+process.env.NODE_ENV = "release";
 
 export enum ReleaseTypes {
   "major",

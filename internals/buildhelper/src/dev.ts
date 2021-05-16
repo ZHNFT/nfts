@@ -1,5 +1,3 @@
-process.env.NODE_ENV = "development";
-
 import {
   cjs,
   esm,
@@ -8,6 +6,8 @@ import {
   rollupWatch,
   Package,
 } from "./packages";
+
+process.env.NODE_ENV = "development";
 
 /// Build steps
 /// 1. find packages with CLI arguments in workspace
@@ -18,11 +18,10 @@ export default async function development(
 ): Promise<Package[]> {
   const packs = filterPackages(scope, ignore);
 
-  if (!packs || !packs.length) {
-    console.error("no package found in workspaces");
-    process.exit(2);
-  }
-
+  // if (!packs || !packs.length) {
+  //   console.error("no package found in workspaces");
+  //   process.exit(2);
+  // }
   console.log("");
   console.log("[@rays/buildhelper] Starting development process");
 

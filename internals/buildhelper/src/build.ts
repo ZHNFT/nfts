@@ -1,5 +1,3 @@
-process.env.NODE_ENV = "production";
-
 import {
   filterPackages,
   rollupBundle,
@@ -9,6 +7,8 @@ import {
   configFor,
   Package,
 } from "./packages";
+
+process.env.NODE_ENV = "production";
 
 /// TODO
 /// This function should return not only Package,

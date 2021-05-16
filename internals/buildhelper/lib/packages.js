@@ -67,7 +67,7 @@ exports.Package = Package;
 function packages() {
     /// multi package-manager is not allowd
     if (utils_1.hasMoreThanOnePackageLock())
-        throw Error(`Please make sure you only using one of theme (npm, pnpm, yarn)`);
+        throw Error(`Please make sure you only using one of them (npm, pnpm, yarn)`);
     try {
         const { workspaces } = JSON.parse(fs_1.readFileSync(path_1.resolve(cwd, "package.json")).toString());
         const { packages } = js_yaml_1.load(fs_1.readFileSync(path_1.resolve(cwd, "pnpm-workspace.yaml"), {
