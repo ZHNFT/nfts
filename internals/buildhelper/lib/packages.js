@@ -65,29 +65,20 @@ exports.Package = Package;
 /// [yarn/npm] workspaces field in package.json
 ///     [pnpm] packages field in pnpm-workspace.yaml
 function packages() {
-    var _a, _b;
-    let _packs = [];
-    if (utils_1.isUsingNpm || utils_1.isUsingYarn) {
-        try {
-            _packs =
-                (_a = JSON.parse(fs_1.readFileSync(path_1.resolve(cwd, "package.json")).toString()).workspaces) !== null && _a !== void 0 ? _a : [];
-        }
-        catch (e) {
-            console.error(e);
-        }
+    /// multi package-manager is not allowd
+    if (utils_1.hasMoreThanOnePackageLock())
+        throw Error(`Please make sure you only using one of theme (npm, pnpm, yarn)`);
+    try {
+        const { workspaces } = JSON.parse(fs_1.readFileSync(path_1.resolve(cwd, "package.json")).toString());
+        const { packages } = js_yaml_1.load(fs_1.readFileSync(path_1.resolve(cwd, "pnpm-workspace.yaml"), {
+            encoding: "utf-8",
+        }), { json: true });
+        return [...(workspaces !== null && workspaces !== void 0 ? workspaces : []), ...(packages !== null && packages !== void 0 ? packages : [])].filter(Boolean);
     }
-    if (utils_1.isUsingPnpm) {
-        try {
-            _packs =
-                (_b = js_yaml_1.load(fs_1.readFileSync(path_1.resolve(cwd, "pnpm-workspace.yaml"), {
-                    encoding: "utf-8",
-                }), { json: true }).packages) !== null && _b !== void 0 ? _b : [];
-        }
-        catch (e) {
-            console.error(e);
-        }
+    catch (e) {
+        console.error(e);
+        return [];
     }
-    return _packs;
 }
 function getPackages() {
     const workspaces = packages();
@@ -95,6 +86,7 @@ function getPackages() {
         return a.concat(glob_1.glob.sync(c, {}));
     }, []);
 }
+/// filter package in workspaces
 function filterPackages(scope, ignore) {
     const allPackages = getPackages();
     if (allPackages.length === 0) {
@@ -181,14 +173,14 @@ function configFor(pack, isDev) {
                 include: [pack.src],
             },
         }),
+        plugin_commonjs_1.default(),
+        plugin_node_resolve_1.nodeResolve({
+            moduleDirectories: [path_1.resolve(pack.root, "node_modules")],
+        }),
         plugin_api_extractor_1.default({
             clear: true,
             cwd: pack.root,
             mainEntryPointFilePath: path_1.resolve(pack.root, "temp", path_1.basename(pack.json.main).replace(/\.tsx?$/, ".d.ts")),
-        }),
-        plugin_commonjs_1.default(),
-        plugin_node_resolve_1.nodeResolve({
-            moduleDirectories: [path_1.resolve(pack.root, "node_modules")],
         }),
     ];
     option.input = path_1.resolve(pack.root, main);

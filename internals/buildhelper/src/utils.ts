@@ -10,6 +10,14 @@ export const isUsingPnpm = existsSync(resolve(cwd, "pnpm-lock.yaml"));
 export const isUsingNpm = existsSync(resolve(cwd, "package-lock.json"));
 export const isUsingYarn = existsSync(resolve(cwd, "yarn.lock"));
 
+export function hasMoreThanOnePackageLock() {
+  return (
+    (isUsingPnpm && isUsingNpm) ||
+    (isUsingPnpm && isUsingYarn) ||
+    (isUsingNpm && isUsingYarn)
+  );
+}
+
 /// make sure it's working in Wins
 export function crossExecFileSync(
   command: string,

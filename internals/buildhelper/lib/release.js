@@ -8,11 +8,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __asyncValues = (this && this.__asyncValues) || function (o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.git = exports.publish = exports.ReleaseTypes = void 0;
+process.env.NODE_ENV = "release";
 const build_1 = __importDefault(require("./build"));
 const utils_1 = require("./utils");
 var ReleaseTypes;
@@ -22,31 +30,33 @@ var ReleaseTypes;
     ReleaseTypes[ReleaseTypes["patch"] = 2] = "patch";
 })(ReleaseTypes = exports.ReleaseTypes || (exports.ReleaseTypes = {}));
 /// publish package to npm repo
-function publish(pack, success, failed) {
-    try {
-        ///
-        /// 虽然使用pnpm做包管理，但是我们还是选择使用npm指令来发布包。
-        ///
-        utils_1.crossExecFileSync("npm", ["publish"], {
-            cwd: pack.root,
-        });
-        success();
-    }
-    catch (e) {
-        failed(e);
-    }
+function publish(pack) {
+    return new Promise((resolve, reject) => {
+        try {
+            /// 虽然使用pnpm做包管理，但是我们还是选择使用npm指令来发布包。
+            utils_1.crossExecFileSync("npm", ["publish"], {
+                cwd: pack.root,
+            });
+            resolve();
+        }
+        catch (e) {
+            reject(e);
+        }
+    });
 }
 exports.publish = publish;
 /// commit/push modified/added/staged/removed files
 function git(pack) {
-    try {
-        console.log("commiting files");
-        utils_1.crossExecFileSync("git", ["add", "."], { cwd: pack.root });
-        utils_1.crossExecFileSync("git", ["commit", "-m", `release: release ${pack.main}@${pack.json.version}`], { cwd: pack.root });
-    }
-    catch (e) {
-        console.error(e);
-    }
+    return new Promise((resolve, reject) => {
+        try {
+            utils_1.crossExecFileSync("git", ["add", "."], { cwd: pack.root });
+            utils_1.crossExecFileSync("git", ["commit", "-m", `release: release ${pack.main}@${pack.json.version}`], { cwd: pack.root });
+            resolve();
+        }
+        catch (e) {
+            reject(e);
+        }
+    });
 }
 exports.git = git;
 /// Release steps
@@ -56,18 +66,36 @@ exports.git = git;
 /// 4. publish package to npm service
 function release(scope, ignore, type) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log("[@rays/buildhelper] Start release process......");
         console.log("");
+        console.log("[@rays/buildhelper] Start release process......");
         /// build before release
-        yield build_1.default(scope, ignore).then((packs) => __awaiter(this, void 0, void 0, function* () {
-            yield Promise.all(packs.map((pack) => {
-                utils_1.updateVersion(pack, type);
-                publish(pack, () => git(pack), (e) => {
-                    console.log(e.message);
-                    utils_1.revertVersion(pack);
-                });
-            }));
-        }));
+        yield build_1.default(scope, ignore).then((packs) => { var packs_1, packs_1_1; return __awaiter(this, void 0, void 0, function* () {
+            var e_1, _a;
+            try {
+                /// Release the kraken!!!!!!!!!!!!!
+                for (packs_1 = __asyncValues(packs); packs_1_1 = yield packs_1.next(), !packs_1_1.done;) {
+                    const pack = packs_1_1.value;
+                    console.log("");
+                    console.log(`publish ${pack.main} 🚗...`);
+                    try {
+                        utils_1.updateVersion(pack, type);
+                        yield git(pack);
+                        yield publish(pack);
+                    }
+                    catch (e) {
+                        utils_1.revertVersion(pack);
+                        console.log(e);
+                    }
+                }
+            }
+            catch (e_1_1) { e_1 = { error: e_1_1 }; }
+            finally {
+                try {
+                    if (packs_1_1 && !packs_1_1.done && (_a = packs_1.return)) yield _a.call(packs_1);
+                }
+                finally { if (e_1) throw e_1.error; }
+            }
+        }); });
     });
 }
 exports.default = release;

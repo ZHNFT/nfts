@@ -8,7 +8,7 @@ import ts from "rollup-plugin-typescript2";
 import eslint from "@rollup/plugin-eslint";
 import apiExtractor from "@initializer/plugin-api-extractor";
 
-import { isUsingNpm, isUsingPnpm, isUsingYarn } from "./utils";
+import { hasMoreThanOnePackageLock } from "./utils";
 import { load } from "js-yaml";
 import {
   InputOptions,
@@ -86,37 +86,32 @@ export class Package {
 /// find packages in current workspace
 /// [yarn/npm] workspaces field in package.json
 ///     [pnpm] packages field in pnpm-workspace.yaml
-function packages(): string[] {
-  let _packs: string[] = [];
+function packages(): string[] | never {
+  /// multi package-manager is not allowd
+  if (hasMoreThanOnePackageLock())
+    throw Error(
+      `Please make sure you only using one of theme (npm, pnpm, yarn)`
+    );
 
-  if (isUsingNpm || isUsingYarn) {
-    try {
-      _packs =
-        (JSON.parse(
-          readFileSync(resolve(cwd, "package.json")).toString()
-        ) as PackageJson).workspaces ?? [];
-    } catch (e) {
-      console.error(e);
-    }
+  try {
+    const { workspaces } = JSON.parse(
+      readFileSync(resolve(cwd, "package.json")).toString()
+    ) as PackageJson;
+
+    const { packages } = load(
+      readFileSync(resolve(cwd, "pnpm-workspace.yaml"), {
+        encoding: "utf-8",
+      }),
+      { json: true }
+    ) as {
+      packages: string[];
+    };
+
+    return [...(workspaces ?? []), ...(packages ?? [])].filter(Boolean);
+  } catch (e) {
+    console.error(e);
+    return [];
   }
-
-  if (isUsingPnpm) {
-    try {
-      _packs =
-        (load(
-          readFileSync(resolve(cwd, "pnpm-workspace.yaml"), {
-            encoding: "utf-8",
-          }),
-          { json: true }
-        ) as {
-          packages: string[];
-        }).packages ?? [];
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
-  return _packs;
 }
 
 function getPackages(): string[] {
@@ -127,6 +122,7 @@ function getPackages(): string[] {
   }, []);
 }
 
+/// filter package in workspaces
 export function filterPackages(scope: string[], ignore: string[]): Package[] {
   const allPackages = getPackages();
 

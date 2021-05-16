@@ -19,9 +19,10 @@ function build(scope, ignore) {
     return __awaiter(this, void 0, void 0, function* () {
         const packs = packages_1.filterPackages(scope, ignore);
         if (!packs || !packs.length) {
-            console.error("no packages found in current workspace with option");
-            console.error(`  --scope=${scope.toString()}`);
-            console.error(`  --ignore=${ignore.toString()}`);
+            console.log("no packages found in current workspace with option");
+            console.log(`  --scope=${scope.toString()}`);
+            console.log(`  --ignore=${ignore.toString()}`);
+            console.log("");
             process.exit(2);
         }
         console.log(`[@rays/buildhelper] building...`);

@@ -33,7 +33,11 @@
     "@types/minimist": "^1.2.1"
   },
   "eslintConfig": {
-    "extends": "@initializer/eslint-config"
+    "extends": "@initializer/eslint-config",
+    "ignorePatterns": [
+      "bin/*",
+      "lib/*"
+    ]
   },
   "files": [
     "bin",
