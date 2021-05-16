@@ -1,5 +1,1 @@
-export function print(msg: string) {
-  console.log(msg ?? "hello world");
-}
-
-print("@rays/env");
+export const BUILD_PROCESS = "development";

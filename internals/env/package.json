@@ -1,13 +1,17 @@
 {
   "name": "@initializer/env",
   "main": "src/index.ts",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     "node": "./dist/index.cjs",
     "default": "./dist/index.js"
   },
   "eslintConfig": {
-    "extends": "@initializer/eslint-config"
+    "extends": "@initializer/eslint-config",
+    "ignorePatterns": "dist/*"
   },
   "author": {
     "email": "leiwenpeng1994@outlook.com",
