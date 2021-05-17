@@ -90,9 +90,9 @@ importers:
       rollup: ^2.48.0
     dependencies:
       '@microsoft/api-extractor': 7.15.1
+      rollup: 2.48.0
     devDependencies:
       '@initializer/eslint-config': link:../eslint-config
-      rollup: 2.48.0
 
 packages:
 
@@ -2335,6 +2335,7 @@ packages:
     resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
+    dev: false
     optional: true
 
   /function-bind/1.1.1:
@@ -4297,7 +4298,7 @@ packages:
     hasBin: true
     optionalDependencies:
       fsevents: 2.3.2
-    dev: true
+    dev: false
 
   /rsvp/4.8.5:
     resolution: {integrity: sha512-nfMOlASu9OnRJo1mbEk2cz0D56a1MBNrJ7orjRZQG10XDyuvwksKbuXNp6qa+kbn839HwjwhBzhFmdsaEAfauA==}

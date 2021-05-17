@@ -17,7 +17,8 @@
     ]
   },
   "dependencies": {
-    "@microsoft/api-extractor": "^7.15.1"
+    "@microsoft/api-extractor": "^7.15.1",
+    "rollup": "^2.48.0"
   },
   "devDependencies": {
     "@initializer/eslint-config": "workspace:*"
