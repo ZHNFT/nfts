@@ -94,6 +94,15 @@ importers:
     devDependencies:
       '@initializer/eslint-config': link:../eslint-config
 
+  internals/plugin-doc-generator:
+    specifiers:
+      '@initializer/eslint-config': workspace:*
+      rollup: ^2.48.0
+    dependencies:
+      rollup: 2.48.0
+    devDependencies:
+      '@initializer/eslint-config': link:../eslint-config
+
 packages:
 
   /@babel/code-frame/7.12.11:
