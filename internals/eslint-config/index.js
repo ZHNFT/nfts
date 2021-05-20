@@ -13,6 +13,7 @@ try {
 
   isUsingReact =
     "react" in (pkgJsonData.dependencies || {}) ||
+    "react" in (pkgJsonData.devDependencies || {}) ||
     "react" in (pkgJsonData.peerDependencies || {});
 } catch (e) {
   throw e;
