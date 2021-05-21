@@ -7,11 +7,9 @@ process.env.NODE_ENV = "test";
 function runTest(pack: Package) {
   run(
     [
-      "--debug",
-      "--colors",
-      "--passWithNoTests",
-      // "--runTestsByPath", resolve(pack.root, "tests"),
-      // "--testPathPattern", "<rootDir>/tests/*"
+      "--debug", ///
+      "--colors", ///
+      "--passWithNoTests", ///
     ],
     pack.root
   ).catch((e) => console.log(e));
