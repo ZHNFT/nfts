@@ -122,8 +122,11 @@ function packages(): string[] | never {
     };
 
     return [...(workspaces ?? []), ...(packages ?? [])].filter(Boolean);
-  } catch (e) {
-    console.error(e);
+  } catch (e: unknown) {
+    console.error(
+      (e as { message?: string })?.message ??
+        `Unknown error during gathering all packages. packages()`
+    );
     return [];
   }
 }
