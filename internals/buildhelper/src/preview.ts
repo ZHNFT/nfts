@@ -13,6 +13,7 @@ export default async function preview(scope: string[]) {
     root: pack.demo.root,
     mount: {
       ".": { url: "/" },
+      "../dist": { url: "/dist" },
     },
     devOptions: {
       open: "chrome",
