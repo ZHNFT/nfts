@@ -17,9 +17,7 @@ function runTest(pack) {
     jest_1.run([
         "--debug",
         "--colors",
-        "--passWithNoTests",
-        // "--runTestsByPath", resolve(pack.root, "tests"),
-        // "--testPathPattern", "<rootDir>/tests/*"
+        "--passWithNoTests", ///
     ], pack.root).catch((e) => console.log(e));
 }
 function runTests(scope, ignore) {
