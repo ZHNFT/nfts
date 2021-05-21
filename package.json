@@ -14,7 +14,8 @@
     "dev": "toolkit dev",
     "build": "toolkit build",
     "test": "toolkit runTests",
-    "release": "toolkit release"
+    "release": "toolkit release",
+    "demo": "toolkit preview"
   },
   "engines": {
     "node": ">=10",

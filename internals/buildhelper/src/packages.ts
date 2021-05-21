@@ -37,6 +37,10 @@ export interface PackageJson {
   [key: string]: unknown;
 }
 
+export interface DemoShape {
+  root?: string;
+}
+
 const packCache: Map<string, Package> = new Map([]);
 
 export class Package {
@@ -45,11 +49,14 @@ export class Package {
   dirs: readonly string[];
   tests: readonly string[];
   json: PackageJson;
+  demo: DemoShape;
 
   constructor(readonly main: string) {
     const root = resolve(cwd, main),
-      tests = resolve(root, "tests");
+      tests = resolve(root, "tests"),
+      demo = resolve(root, "demo");
     this.dirs = [];
+    this.demo = {};
 
     const dirs = [...this.dirs];
 
@@ -58,6 +65,13 @@ export class Package {
       this.tests = readdirSync(tests).filter((file) => /\*.ts/.test(file));
     } else {
       this.tests = [];
+    }
+
+    if (existsSync(demo)) {
+      // code...
+      this.demo = {
+        root: demo,
+      };
     }
 
     this.root = root;

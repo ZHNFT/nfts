@@ -18,6 +18,9 @@ export interface PackageJson {
     };
     [key: string]: unknown;
 }
+export interface DemoShape {
+    root?: string;
+}
 export declare class Package {
     readonly main: string;
     root: string;
@@ -25,6 +28,7 @@ export declare class Package {
     dirs: readonly string[];
     tests: readonly string[];
     json: PackageJson;
+    demo: DemoShape;
     constructor(main: string);
     get(main: string): Package | undefined;
 }

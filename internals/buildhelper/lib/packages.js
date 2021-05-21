@@ -30,8 +30,9 @@ const packCache = new Map([]);
 class Package {
     constructor(main) {
         this.main = main;
-        const root = path_1.resolve(cwd, main), tests = path_1.resolve(root, "tests");
+        const root = path_1.resolve(cwd, main), tests = path_1.resolve(root, "tests"), demo = path_1.resolve(root, "demo");
         this.dirs = [];
+        this.demo = {};
         const dirs = [...this.dirs];
         if (fs_1.existsSync(tests)) {
             dirs.push(tests);
@@ -39,6 +40,12 @@ class Package {
         }
         else {
             this.tests = [];
+        }
+        if (fs_1.existsSync(demo)) {
+            // code...
+            this.demo = {
+                root: demo,
+            };
         }
         this.root = root;
         this.json = JSON.parse(fs_1.readFileSync(path_1.resolve(root, "package.json")).toString("utf-8"));
