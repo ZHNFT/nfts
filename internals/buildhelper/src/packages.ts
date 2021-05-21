@@ -234,6 +234,8 @@ export function configFor(pack: Package, isDev: boolean): RollupOptions {
           declaration: true,
           outDir: resolve(pack.root, "lib"),
           declarationDir: resolve(pack.root, "temp"),
+          allowSyntheticDefaultImports: true,
+          jsx: "react",
         },
         include: [pack.src],
       },
