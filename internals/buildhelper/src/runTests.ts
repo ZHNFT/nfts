@@ -1,8 +1,10 @@
 import { run } from "jest";
-// import { resolve } from "path";
+import { log } from "./utils";
 import { filterPackages, Package } from "./packages";
 
 process.env.NODE_ENV = "test";
+
+const debug = log("test");
 
 function runTest(pack: Package) {
   run(
@@ -12,7 +14,7 @@ function runTest(pack: Package) {
       "--passWithNoTests", ///
     ],
     pack.root
-  ).catch((e) => console.log(e));
+  ).catch((e) => console.error(e));
 }
 
 export default async function runTests(
@@ -20,8 +22,7 @@ export default async function runTests(
   ignore: string[]
 ): Promise<void> {
   const packs = filterPackages(scope, ignore);
-  ///
-  console.log("testing......");
+  debug("running test cases...");
 
   for (let i = packs.length - 1; i > 0; i--) {
     const pack = packs[i];

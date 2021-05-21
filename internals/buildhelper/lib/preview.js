@@ -22,6 +22,7 @@ function preview(scope) {
             root: pack.demo.root,
             mount: {
                 ".": { url: "/" },
+                "../dist": { url: "/dist" },
             },
             devOptions: {
                 open: "chrome",

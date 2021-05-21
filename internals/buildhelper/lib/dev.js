@@ -10,26 +10,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const packages_1 = require("./packages");
+const utils_1 = require("./utils");
 process.env.NODE_ENV = "development";
+const debug = utils_1.log("dev");
+let firstRun = true;
 /// Build steps
 /// 1. find packages with CLI arguments in workspace
 /// 2. start watching process
 function development(scope, ignore) {
     return __awaiter(this, void 0, void 0, function* () {
         const packs = packages_1.filterPackages(scope, ignore);
-        // if (!packs || !packs.length) {
-        //   console.error("no package found in workspaces");
-        //   process.exit(2);
-        // }
-        console.log("");
-        console.log("[@rays/buildhelper] Starting development process");
-        packs.forEach((pack) => {
+        debug("Starting development process...");
+        for (let i = packs.length - 1; i >= 0; i--) {
+            const pack = packs[i];
             const config = packages_1.configFor(pack, true);
             config.output = [packages_1.esm(pack), packages_1.cjs(pack)];
             const rollupWatcher = packages_1.rollupWatch(config);
             rollupWatcher.on("event", (e) => {
                 if (e.code === "START") {
-                    console.log("Starting rollup watcher process....");
+                    debug(firstRun
+                        ? "Starting rollup watcher process...."
+                        : "Restarting rollup watcher process....");
+                    firstRun = false;
                 }
                 if (e.code === "BUNDLE_END") {
                     console.log(e.input, "-->", e.output.join(","));
@@ -39,7 +41,7 @@ function development(scope, ignore) {
                     console.log(e.error);
                 }
             });
-        });
+        }
         return Promise.resolve(packs);
     });
 }

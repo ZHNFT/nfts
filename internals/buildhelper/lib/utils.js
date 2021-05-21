@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateVersion = exports.revertVersion = exports.crossExecFileSync = exports.hasMoreThanOnePackageLock = exports.isUsingYarn = exports.isUsingNpm = exports.isUsingPnpm = void 0;
+exports.log = exports.updateVersion = exports.revertVersion = exports.crossExecFileSync = exports.hasMoreThanOnePackageLock = exports.isUsingYarn = exports.isUsingNpm = exports.isUsingPnpm = void 0;
 const fs_1 = require("fs");
 const path_1 = require("path");
 const child_process_1 = require("child_process");
@@ -53,5 +53,13 @@ function updateVersion(pack, type) {
     }
     copiedJson.version = [major, minor, patch].join(".");
     fs_1.writeFileSync(path_1.resolve(root, "package.json"), JSON.stringify(copiedJson, null, 2));
+    return copiedJson.version;
 }
 exports.updateVersion = updateVersion;
+function log(module) {
+    return (message) => {
+        const logTime = new Date();
+        console.log(`[${logTime.toLocaleString()}] [${module}] ${message}`);
+    };
+}
+exports.log = log;

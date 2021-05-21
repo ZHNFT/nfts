@@ -6,9 +6,11 @@ import {
   rollupWatch,
   Package,
 } from "./packages";
+import { log } from "./utils";
 
 process.env.NODE_ENV = "development";
 
+const debug = log("dev");
 let firstRun = true;
 
 /// Build steps
@@ -20,18 +22,10 @@ export default async function development(
 ): Promise<Package[]> {
   const packs = filterPackages(scope, ignore);
 
-  // if (!packs || !packs.length) {
-  //   console.error("no package found in workspaces");
-  //   process.exit(2);
-  // }
-  console.log("");
-  console.log(
-    firstRun
-      ? "[@rays/buildhelper] Starting development process......"
-      : "[@rays/buildhelper] Restarting development process......"
-  );
+  debug("Starting development process...");
 
-  packs.forEach((pack) => {
+  for (let i = packs.length - 1; i >= 0; i--) {
+    const pack = packs[i];
     const config = configFor(pack, true);
     config.output = [esm(pack), cjs(pack)];
 
@@ -39,11 +33,12 @@ export default async function development(
 
     rollupWatcher.on("event", (e) => {
       if (e.code === "START") {
-        console.log(
+        debug(
           firstRun
             ? "Starting rollup watcher process...."
             : "Restarting rollup watcher process...."
         );
+
         firstRun = false;
       }
 
@@ -56,7 +51,7 @@ export default async function development(
         console.log(e.error);
       }
     });
-  });
+  }
 
   return Promise.resolve(packs);
 }

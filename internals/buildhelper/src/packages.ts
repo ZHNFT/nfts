@@ -7,6 +7,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import ts from "rollup-plugin-typescript2";
 import eslint from "@rollup/plugin-eslint";
 import apiExtractor from "@initializer/plugin-api-extractor";
+import { isUsingNpm, isUsingPnpm, isUsingYarn } from "./utils";
 
 import { hasMoreThanOnePackageLock } from "./utils";
 import { load } from "js-yaml";
@@ -68,16 +69,13 @@ export class Package {
     }
 
     if (existsSync(demo)) {
-      // code...
       this.demo = {
         root: demo,
       };
     }
 
     this.root = root;
-    this.json = JSON.parse(
-      readFileSync(resolve(root, "package.json")).toString("utf-8")
-    ) as PackageJson;
+    this.json = Package.loadPackageJson(resolve(root, "package.json"));
     if (this.json.main) {
       this.src = resolve(root, dirname(this.json.main));
       dirs.push(this.src);
@@ -88,12 +86,51 @@ export class Package {
   }
 
   get(main: string): Package | undefined {
-    if (packCache.has(main)) {
-      return packCache.get(main);
-    }
+    if (packCache.has(main)) return packCache.get(main);
+
     const pack = new Package(main);
     packCache.set(main, pack);
     return pack;
+  }
+
+  static loadPackageJson(packageJsonPath: string): PackageJson | never {
+    if (typeof packageJsonPath !== "string" || existsSync(packageJsonPath)) {
+      throw Error(`${packageJsonPath} is not provide or not exists`);
+    }
+
+    try {
+      return JSON.parse(
+        readFileSync(packageJsonPath).toString()
+      ) as PackageJson;
+    } catch (e) {
+      throw Error(`failed to load packageJson from ${packageJsonPath}`);
+    }
+  }
+
+  static loadPnpmWorkspaceYaml(
+    pnpmWorkspaceYaml: string
+  ): { packages: string[] } | never {
+    if (
+      typeof pnpmWorkspaceYaml !== "string" ||
+      existsSync(pnpmWorkspaceYaml)
+    ) {
+      throw Error(`${pnpmWorkspaceYaml} is not provide or not exists`);
+    }
+
+    try {
+      return load(
+        readFileSync(resolve(cwd, "pnpm-workspace.yaml"), {
+          encoding: "utf-8",
+        }),
+        { json: true }
+      ) as {
+        packages: string[];
+      };
+    } catch (e) {
+      throw Error(
+        `failed to load pnpm-workspace.yaml from ${pnpmWorkspaceYaml}`
+      );
+    }
   }
 }
 
@@ -104,39 +141,35 @@ function packages(): string[] | never {
   /// multi package-manager is not allowd
   if (hasMoreThanOnePackageLock())
     throw Error(
-      `Please make sure you only using one of them (npm, pnpm, yarn)`
+      `detect two different package-manage tool, in this repo.\n please make sure you only use one of them, (npm, yarn, pnpm)`
     );
 
-  try {
-    const { workspaces } = JSON.parse(
-      readFileSync(resolve(cwd, "package.json")).toString()
-    ) as PackageJson;
-
-    const { packages } = load(
-      readFileSync(resolve(cwd, "pnpm-workspace.yaml"), {
-        encoding: "utf-8",
-      }),
-      { json: true }
-    ) as {
-      packages: string[];
-    };
-
-    return [...(workspaces ?? []), ...(packages ?? [])].filter(Boolean);
-  } catch (e: unknown) {
-    console.error(
-      (e as { message?: string })?.message ??
-        `Unknown error during gathering all packages. packages()`
+  if (isUsingPnpm) {
+    return (
+      Package.loadPackageJson(resolve(cwd, "package.json")).workspaces ?? []
     );
-    return [];
   }
+
+  if (isUsingYarn || isUsingNpm) {
+    return (
+      Package.loadPnpmWorkspaceYaml(resolve(cwd, "pnpm-workspace.yaml"))
+        .packages ?? []
+    );
+  }
+
+  ///
+  return [];
 }
 
 function getPackages(): string[] {
   const workspaces = packages();
+  const syncPacks: string[] = [];
+  for (let i = workspaces.length - 1; i >= 0; i--) {
+    const work = workspaces[i];
+    syncPacks.push(...glob.sync(work, {}));
+  }
 
-  return workspaces.reduce((a: string[], c) => {
-    return a.concat(glob.sync(c, {}));
-  }, []);
+  return syncPacks;
 }
 
 /// filter package in workspaces
@@ -147,14 +180,18 @@ export function filterPackages(scope: string[], ignore: string[]): Package[] {
     return [new Package(".")];
   }
 
-  return getPackages()
-    .filter((pack: string) => {
-      const pkg = pack.split("/")[1];
-      return scope.includes(pkg) && !ignore.includes(pkg);
-    })
-    .map((pack: string) => {
-      return new Package(pack);
-    });
+  const packs: Package[] = [];
+
+  for (let i = allPackages.length - 1; i >= 0; i--) {
+    const pack = allPackages[i];
+    /// strict match
+    const pkgName = pack.split("/")[1];
+    if (scope.includes(pkgName) && !ignore.includes(pkgName)) {
+      packs.push(new Package(pack));
+    }
+  }
+
+  return packs;
 }
 
 /// generate rollup bundle
@@ -191,7 +228,7 @@ export function cjs(pack: Package): OutputOptions {
   };
 }
 
-/// write file to fs
+/// write file to local
 export async function emit(
   bundle: RollupBuild,
   output: OutputOptions

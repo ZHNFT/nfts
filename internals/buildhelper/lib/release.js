@@ -29,6 +29,7 @@ var ReleaseTypes;
     ReleaseTypes[ReleaseTypes["minor"] = 1] = "minor";
     ReleaseTypes[ReleaseTypes["patch"] = 2] = "patch";
 })(ReleaseTypes = exports.ReleaseTypes || (exports.ReleaseTypes = {}));
+const debug = utils_1.log("release");
 /// publish package to npm repo
 function publish(pack) {
     return new Promise((resolve, reject) => {
@@ -66,8 +67,7 @@ exports.git = git;
 /// 4. publish package to npm service
 function release(scope, ignore, type) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log("");
-        console.log("[@rays/buildhelper] Start release process......");
+        debug("Start release process...");
         /// build before release
         yield build_1.default(scope, ignore).then((packs) => { var packs_1, packs_1_1; return __awaiter(this, void 0, void 0, function* () {
             var e_1, _a;
@@ -75,12 +75,12 @@ function release(scope, ignore, type) {
                 /// Release the kraken!!!!!!!!!!!!!
                 for (packs_1 = __asyncValues(packs); packs_1_1 = yield packs_1.next(), !packs_1_1.done;) {
                     const pack = packs_1_1.value;
-                    console.log("");
-                    console.log(`publish ${pack.main} 🚗...`);
+                    debug(`publish ${pack.main}...`);
                     try {
-                        utils_1.updateVersion(pack, type);
+                        const releaseVersion = utils_1.updateVersion(pack, type);
                         yield git(pack);
                         yield publish(pack);
+                        debug(`publish ${pack.main}@${releaseVersion} successfully ✨`);
                     }
                     catch (e) {
                         utils_1.revertVersion(pack);

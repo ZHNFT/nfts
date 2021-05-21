@@ -1,5 +1,5 @@
 import build from "./build";
-import { crossExecFileSync, updateVersion, revertVersion } from "./utils";
+import { crossExecFileSync, updateVersion, revertVersion, log } from "./utils";
 import { Package } from "./packages";
 
 process.env.NODE_ENV = "release";
@@ -9,6 +9,8 @@ export enum ReleaseTypes {
   "minor",
   "patch",
 }
+
+const debug = log("release");
 
 /// publish package to npm repo
 export function publish(pack: Package): Promise<void> {
@@ -52,18 +54,17 @@ export default async function release(
   ignore: string[],
   type: keyof typeof ReleaseTypes
 ): Promise<void> {
-  console.log("");
-  console.log("[@rays/buildhelper] Start release process......");
+  debug("Start release process...");
   /// build before release
   await build(scope, ignore).then(async (packs) => {
     /// Release the kraken!!!!!!!!!!!!!
     for await (const pack of packs) {
-      console.log("");
-      console.log(`publish ${pack.main} 🚗...`);
+      debug(`publish ${pack.main}...`);
       try {
-        updateVersion(pack, type);
+        const releaseVersion = updateVersion(pack, type);
         await git(pack);
         await publish(pack);
+        debug(`publish ${pack.main}@${releaseVersion} successfully ✨`);
       } catch (e) {
         revertVersion(pack);
         console.log(e);

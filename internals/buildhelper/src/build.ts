@@ -7,8 +7,23 @@ import {
   configFor,
   Package,
 } from "./packages";
+import { log } from "./utils";
+
+const debug = log("build");
 
 process.env.NODE_ENV = "production";
+
+export function help(): void {
+  console.log("Usage: ");
+  console.log("  toolkit dev [--scope=[packageName[]]]");
+  console.log("For monorepos");
+  console.log("    Example: toolkit dev --scope=package1,package2");
+  console.log("             toolkit dev --ignore=package1,package2");
+  console.log("For Single repo");
+  console.log(
+    "    Example: toolkit dev <for single repo will ignore the command options>"
+  );
+}
 
 /// TODO
 /// This function should return not only Package,
@@ -21,15 +36,13 @@ export default async function build(
   const packs = filterPackages(scope, ignore);
 
   if (!packs || !packs.length) {
-    console.log("no packages found in current workspace with option");
-    console.log(`  --scope=${scope.toString()}`);
-    console.log(`  --ignore=${ignore.toString()}`);
-    console.log("");
+    debug(
+      `No package found in workspace\n  --scope=${scope.toString()}\n  --ignore=${ignore.toString()}`
+    );
     process.exit(2);
   }
 
-  console.log(`[@rays/buildhelper] building...`);
-  console.log("");
+  debug("building...");
 
   await Promise.all(
     packs.map(async (pack) =>
@@ -38,9 +51,13 @@ export default async function build(
         await emit(bundle, esm(pack));
       })
     )
-  );
-  console.log("");
-  console.log("[@rays/buildhelper] all files generated");
-  console.log("");
+  )
+    .then(() => {
+      debug("build finished " + packs.map((pack) => pack.main).join(", "));
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+
   return Promise.resolve(packs);
 }

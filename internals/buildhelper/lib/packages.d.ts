@@ -31,6 +31,10 @@ export declare class Package {
     demo: DemoShape;
     constructor(main: string);
     get(main: string): Package | undefined;
+    static loadPackageJson(packageJsonPath: string): PackageJson | never;
+    static loadPnpmWorkspaceYaml(pnpmWorkspaceYaml: string): {
+        packages: string[];
+    } | never;
 }
 export declare function filterPackages(scope: string[], ignore: string[]): Package[];
 export declare function rollupBundle(option: InputOptions): Promise<RollupBuild>;

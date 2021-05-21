@@ -56,7 +56,7 @@ const apiExtractor: PluginImpl<ApiExtractorProps> = (props) => {
       props = combine(props);
 
       if (!runBefore) {
-        console.log("Starting api-extractor process......");
+        console.log("Starting api-extractor process...");
         const result = Extractor.invoke(
           createConfig(props.mainEntryPointFilePath, props.cwd as string)
         );

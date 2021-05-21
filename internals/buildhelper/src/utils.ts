@@ -43,7 +43,7 @@ export function revertVersion(pack: Package): void {
 export function updateVersion(
   pack: Package,
   type: keyof typeof ReleaseTypes
-): void {
+): string {
   const { json, root } = pack;
   /// make a shallow copy
   const copiedJson = Object.assign({}, json);
@@ -78,4 +78,13 @@ export function updateVersion(
     resolve(root, "package.json"),
     JSON.stringify(copiedJson, null, 2)
   );
+
+  return copiedJson.version;
+}
+
+export function log(module: string) {
+  return (message: string): void => {
+    const logTime = new Date();
+    console.log(`[${logTime.toLocaleString()}] [${module}] ${message}`);
+  };
 }

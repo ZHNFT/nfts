@@ -107,12 +107,6 @@ importers:
     devDependencies:
       '@initializer/eslint-config': link:../eslint-config
 
-  packages/test-demo:
-    specifiers:
-      '@initializer/buildhelper': workspace:*
-    dependencies:
-      '@initializer/buildhelper': link:../../internals/buildhelper
-
 packages:
 
   /@babel/code-frame/7.12.11:

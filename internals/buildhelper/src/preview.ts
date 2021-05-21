@@ -1,7 +1,7 @@
 import { createConfiguration, startServer } from "snowpack";
 import { filterPackages } from "./packages";
 
-export default async function preview(scope: string[]) {
+export default async function preview(scope: string[]): Promise<void> {
   const packages = filterPackages(scope, []);
   const pack = packages[0];
 

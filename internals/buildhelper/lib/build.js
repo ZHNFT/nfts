@@ -9,8 +9,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.help = void 0;
 const packages_1 = require("./packages");
+const utils_1 = require("./utils");
+const debug = utils_1.log("build");
 process.env.NODE_ENV = "production";
+function help() {
+    console.log("Usage: ");
+    console.log("  toolkit dev [--scope=[packageName[]]]");
+    console.log("For monorepos");
+    console.log("    Example: toolkit dev --scope=package1,package2");
+    console.log("             toolkit dev --ignore=package1,package2");
+    console.log("For Single repo");
+    console.log("    Example: toolkit dev <for single repo will ignore the command options>");
+}
+exports.help = help;
 /// TODO
 /// This function should return not only Package,
 /// also errors happend during build process,
@@ -19,23 +32,22 @@ function build(scope, ignore) {
     return __awaiter(this, void 0, void 0, function* () {
         const packs = packages_1.filterPackages(scope, ignore);
         if (!packs || !packs.length) {
-            console.log("no packages found in current workspace with option");
-            console.log(`  --scope=${scope.toString()}`);
-            console.log(`  --ignore=${ignore.toString()}`);
-            console.log("");
+            debug(`No package found in workspace\n  --scope=${scope.toString()}\n  --ignore=${ignore.toString()}`);
             process.exit(2);
         }
-        console.log(`[@rays/buildhelper] building...`);
-        console.log("");
+        debug("building...");
         yield Promise.all(packs.map((pack) => __awaiter(this, void 0, void 0, function* () {
             return packages_1.rollupBundle(packages_1.configFor(pack, false)).then((bundle) => __awaiter(this, void 0, void 0, function* () {
                 yield packages_1.emit(bundle, packages_1.cjs(pack));
                 yield packages_1.emit(bundle, packages_1.esm(pack));
             }));
-        })));
-        console.log("");
-        console.log("[@rays/buildhelper] all files generated");
-        console.log("");
+        })))
+            .then(() => {
+            debug("build finished " + packs.map((pack) => pack.main).join(", "));
+        })
+            .catch((e) => {
+            console.log(e);
+        });
         return Promise.resolve(packs);
     });
 }
