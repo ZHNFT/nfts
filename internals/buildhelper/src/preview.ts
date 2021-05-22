@@ -18,12 +18,12 @@ export default async function preview(scope: string[]): Promise<void> {
     devOptions: {
       open: "chrome",
       hostname: "localhost",
-      /// hrm + plugin-react-referesh
+      /// hrm + plugin-react-refresh
       hmr: true,
       hmrErrorOverlay: true,
     },
     plugins: [
-      /// fast referesh
+      /// fast refresh
       ["@snowpack/plugin-react-refresh", { babel: false }],
     ],
   });
