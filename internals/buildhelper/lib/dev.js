@@ -20,7 +20,6 @@ let firstRun = true;
 function development(scope, ignore) {
     return __awaiter(this, void 0, void 0, function* () {
         const packs = packages_1.filterPackages(scope, ignore);
-        debug("Starting development process...");
         for (let i = packs.length - 1; i >= 0; i--) {
             const pack = packs[i];
             const config = packages_1.configFor(pack, true);

@@ -9,7 +9,8 @@
     "toolkit": "bin/command.js"
   },
   "scripts": {
-    "prepare": "tsc"
+    "prepare": "tsc",
+    "start": "tsc -w"
   },
   "dependencies": {
     "@initializer/plugin-api-extractor": "workspace:*",

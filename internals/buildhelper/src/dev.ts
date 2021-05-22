@@ -22,8 +22,6 @@ export default async function development(
 ): Promise<Package[]> {
   const packs = filterPackages(scope, ignore);
 
-  debug("Starting development process...");
-
   for (let i = packs.length - 1; i >= 0; i--) {
     const pack = packs[i];
     const config = configFor(pack, true);

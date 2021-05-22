@@ -7,7 +7,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import ts from "rollup-plugin-typescript2";
 import eslint from "@rollup/plugin-eslint";
 import apiExtractor from "@initializer/plugin-api-extractor";
-import { isUsingNpm, isUsingPnpm, isUsingYarn } from "./utils";
+import { isUsingNpm, isUsingPnpm, isUsingYarn, log } from "./utils";
 
 import { hasMoreThanOnePackageLock } from "./utils";
 import { load } from "js-yaml";
@@ -23,6 +23,7 @@ import {
 } from "rollup";
 
 const cwd = process.cwd();
+const debug = log("packages");
 
 export interface PackageJson {
   dependencies?: { [key: string]: string };
@@ -94,7 +95,7 @@ export class Package {
   }
 
   static loadPackageJson(packageJsonPath: string): PackageJson | never {
-    if (typeof packageJsonPath !== "string" || existsSync(packageJsonPath)) {
+    if (typeof packageJsonPath !== "string" || !existsSync(packageJsonPath)) {
       throw Error(`${packageJsonPath} is not provide or not exists`);
     }
 
@@ -112,7 +113,7 @@ export class Package {
   ): { packages: string[] } | never {
     if (
       typeof pnpmWorkspaceYaml !== "string" ||
-      existsSync(pnpmWorkspaceYaml)
+      !existsSync(pnpmWorkspaceYaml)
     ) {
       throw Error(`${pnpmWorkspaceYaml} is not provide or not exists`);
     }
@@ -186,6 +187,7 @@ export function filterPackages(scope: string[], ignore: string[]): Package[] {
     const pack = allPackages[i];
     /// strict match
     const pkgName = pack.split("/")[1];
+
     if (scope.includes(pkgName) && !ignore.includes(pkgName)) {
       packs.push(new Package(pack));
     }
@@ -238,7 +240,7 @@ export async function emit(
 
   const { output: _outputs } = bundleOutput;
 
-  console.log(`[@rays/buildhelper] write file ${_outputs[0].fileName}`);
+  debug(`write file ${_outputs[0].fileName}`);
 }
 
 /// generate rollup configuration
@@ -253,8 +255,8 @@ export function configFor(pack: Package, isDev: boolean): RollupOptions {
   } = pack.json;
 
   if (!main || !moduleExports) {
-    console.error(
-      `[@rays/buildhelper] package ${pack.main} has no \`main\` and \`exports\` fields in package.json`
+    debug(
+      `package ${pack.main} has no \`main\` and \`exports\` fields in package.json`
     );
     process.exit(2);
   }

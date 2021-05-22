@@ -4,7 +4,7 @@
 const minimist = require("minimist");
 
 const {
-  // 'dev'|'build'|'test'
+  // 'dev'|'build'|'test'|'preview'
   _: [command = "dev"],
   ignore,
   scope,

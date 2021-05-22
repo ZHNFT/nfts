@@ -15,7 +15,8 @@
     "build": "toolkit build",
     "test": "toolkit runTests",
     "release": "toolkit release",
-    "demo": "toolkit preview"
+    "preview": "toolkit preview",
+    "build-helper": "toolkit build --scope=env"
   },
   "engines": {
     "node": ">=10",

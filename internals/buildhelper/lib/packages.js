@@ -27,6 +27,7 @@ const utils_2 = require("./utils");
 const js_yaml_1 = require("js-yaml");
 const rollup_1 = require("rollup");
 const cwd = process.cwd();
+const debug = utils_1.log("packages");
 const packCache = new Map([]);
 class Package {
     constructor(main) {
@@ -66,7 +67,7 @@ class Package {
         return pack;
     }
     static loadPackageJson(packageJsonPath) {
-        if (typeof packageJsonPath !== "string" || fs_1.existsSync(packageJsonPath)) {
+        if (typeof packageJsonPath !== "string" || !fs_1.existsSync(packageJsonPath)) {
             throw Error(`${packageJsonPath} is not provide or not exists`);
         }
         try {
@@ -78,7 +79,7 @@ class Package {
     }
     static loadPnpmWorkspaceYaml(pnpmWorkspaceYaml) {
         if (typeof pnpmWorkspaceYaml !== "string" ||
-            fs_1.existsSync(pnpmWorkspaceYaml)) {
+            !fs_1.existsSync(pnpmWorkspaceYaml)) {
             throw Error(`${pnpmWorkspaceYaml} is not provide or not exists`);
         }
         try {
@@ -178,7 +179,7 @@ function emit(bundle, output) {
         yield bundle.generate(output);
         const bundleOutput = yield bundle.write(output);
         const { output: _outputs } = bundleOutput;
-        console.log(`[@rays/buildhelper] write file ${_outputs[0].fileName}`);
+        debug(`write file ${_outputs[0].fileName}`);
     });
 }
 exports.emit = emit;
@@ -187,7 +188,7 @@ function configFor(pack, isDev) {
     const option = {};
     const { peerDependencies, dependencies, main, exports: moduleExports, } = pack.json;
     if (!main || !moduleExports) {
-        console.error(`[@rays/buildhelper] package ${pack.main} has no \`main\` and \`exports\` fields in package.json`);
+        debug(`package ${pack.main} has no \`main\` and \`exports\` fields in package.json`);
         process.exit(2);
     }
     option.external = [
