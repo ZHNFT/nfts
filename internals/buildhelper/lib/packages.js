@@ -101,10 +101,10 @@ function packages() {
     /// multi package-manager is not allowd
     if (utils_2.hasMoreThanOnePackageLock())
         throw Error(`detect two different package-manage tool, in this repo.\n please make sure you only use one of them, (npm, yarn, pnpm)`);
-    if (utils_1.isUsingPnpm) {
+    if (utils_1.isUsingYarn || utils_1.isUsingNpm) {
         return ((_a = Package.loadPackageJson(path_1.resolve(cwd, "package.json")).workspaces) !== null && _a !== void 0 ? _a : []);
     }
-    if (utils_1.isUsingYarn || utils_1.isUsingNpm) {
+    if (utils_1.isUsingPnpm) {
         return ((_b = Package.loadPnpmWorkspaceYaml(path_1.resolve(cwd, "pnpm-workspace.yaml"))
             .packages) !== null && _b !== void 0 ? _b : []);
     }

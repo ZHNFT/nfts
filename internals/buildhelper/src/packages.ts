@@ -145,13 +145,13 @@ function packages(): string[] | never {
       `detect two different package-manage tool, in this repo.\n please make sure you only use one of them, (npm, yarn, pnpm)`
     );
 
-  if (isUsingPnpm) {
+  if (isUsingYarn || isUsingNpm) {
     return (
       Package.loadPackageJson(resolve(cwd, "package.json")).workspaces ?? []
     );
   }
 
-  if (isUsingYarn || isUsingNpm) {
+  if (isUsingPnpm) {
     return (
       Package.loadPnpmWorkspaceYaml(resolve(cwd, "pnpm-workspace.yaml"))
         .packages ?? []
