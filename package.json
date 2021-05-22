@@ -1,10 +1,6 @@
 {
   "name": "initializer",
   "version": "0.0.0",
-  "workspaces": [
-    "packages/*",
-    "internals/*"
-  ],
   "description": "bootstrap personal project",
   "repository": "https://github.com/leiwenpeng0424/initializer.git",
   "author": "雷文鹏 <leiwenpeng1994@outlook.com>",
@@ -16,7 +12,8 @@
     "test": "toolkit runTests",
     "release": "toolkit release",
     "preview": "toolkit preview",
-    "build-helper": "toolkit build --scope=env"
+    "build-helper": "toolkit build --scope=env",
+    "onstop-push": "git add -A && git commit -m 'auto commit' && git push"
   },
   "engines": {
     "node": ">=10",
