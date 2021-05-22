@@ -17,7 +17,7 @@ export function publish(pack: Package): Promise<void> {
   return new Promise((resolve, reject) => {
     try {
       /// 虽然使用pnpm做包管理，但是我们还是选择使用npm指令来发布包。
-      crossExecFileSync("npm", ["publish"], {
+      crossExecFileSync("pnpm", ["publish"], {
         cwd: pack.root,
       });
       resolve();
@@ -28,13 +28,13 @@ export function publish(pack: Package): Promise<void> {
 }
 
 /// commit/push modified/added/staged/removed files
-export function git(pack: Package): Promise<void> {
+export function git(pack: Package, version: string): Promise<void> {
   return new Promise((resolve, reject) => {
     try {
       crossExecFileSync("git", ["add", "."], { cwd: pack.root });
       crossExecFileSync(
         "git",
-        ["commit", "-m", `release: release ${pack.main}@${pack.json.version}`],
+        ["commit", "-m", `release: release ${pack.main}@${version}`],
         { cwd: pack.root }
       );
       resolve();
@@ -55,16 +55,17 @@ export default async function release(
   type: keyof typeof ReleaseTypes
 ): Promise<void> {
   debug("Start release process...");
-  /// build before release
   await build(scope, ignore).then(async (packs) => {
     /// Release the kraken!!!!!!!!!!!!!
     for await (const pack of packs) {
       debug(`publish ${pack.main}...`);
       try {
-        const releaseVersion = updateVersion(pack, type);
-        await git(pack);
+        const releasePackageJson = updateVersion(pack, type);
+        await git(pack, releasePackageJson.version);
         await publish(pack);
-        debug(`publish ${pack.main}@${releaseVersion} successfully ✨`);
+        debug(
+          `publish ${pack.main}@${releasePackageJson.version} successfully ✨`
+        );
       } catch (e) {
         revertVersion(pack);
         console.log(e);

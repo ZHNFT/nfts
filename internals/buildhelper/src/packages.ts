@@ -95,7 +95,7 @@ export class Package {
   }
 
   static loadPackageJson(packageJsonPath: string): PackageJson | never {
-    if (typeof packageJsonPath !== "string" || !existsSync(packageJsonPath)) {
+    if (!existsSync(packageJsonPath)) {
       throw Error(`${packageJsonPath} is not provide or not exists`);
     }
 
@@ -111,10 +111,7 @@ export class Package {
   static loadPnpmWorkspaceYaml(
     pnpmWorkspaceYaml: string
   ): { packages: string[] } | never {
-    if (
-      typeof pnpmWorkspaceYaml !== "string" ||
-      !existsSync(pnpmWorkspaceYaml)
-    ) {
+    if (!existsSync(pnpmWorkspaceYaml)) {
       throw Error(`${pnpmWorkspaceYaml} is not provide or not exists`);
     }
 
@@ -139,10 +136,10 @@ export class Package {
 /// [yarn/npm] workspaces field in package.json
 ///     [pnpm] packages field in pnpm-workspace.yaml
 function packages(): string[] | never {
-  /// multi package-manager is not allowd
+  /// multi package-manager is not allowed in one repo
   if (hasMoreThanOnePackageLock())
     throw Error(
-      `detect two different package-manage tool, in this repo.\n please make sure you only use one of them, (npm, yarn, pnpm)`
+      `detect two different package-manage tool, in this repo.\n please make sure you only use one of them. (npm, yarn, pnpm)`
     );
 
   if (isUsingYarn || isUsingNpm) {

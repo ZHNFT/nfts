@@ -1,7 +1,7 @@
 import { existsSync, writeFileSync } from "fs";
 import { resolve } from "path";
 import { execFileSync, ExecFileSyncOptions } from "child_process";
-import { Package } from "./packages";
+import { Package, PackageJson } from "./packages";
 import { ReleaseTypes } from "./release";
 
 const cwd = process.cwd();
@@ -43,11 +43,12 @@ export function revertVersion(pack: Package): void {
 export function updateVersion(
   pack: Package,
   type: keyof typeof ReleaseTypes
-): string {
+): PackageJson {
   const { json, root } = pack;
   /// make a shallow copy
-  const copiedJson = Object.assign({}, json);
-  let version = copiedJson.version;
+  const shallowCopyJson = Object.assign({}, json);
+
+  let version = shallowCopyJson.version;
 
   if (!version) {
     version = "0.0.0";
@@ -72,14 +73,14 @@ export function updateVersion(
     }
   }
 
-  copiedJson.version = [major, minor, patch].join(".");
+  shallowCopyJson.version = [major, minor, patch].join(".");
 
   writeFileSync(
     resolve(root, "package.json"),
-    JSON.stringify(copiedJson, null, 2)
+    JSON.stringify(shallowCopyJson, null, 2)
   );
 
-  return copiedJson.version;
+  return shallowCopyJson;
 }
 
 export function log(module: string) {
