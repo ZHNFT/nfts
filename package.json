@@ -13,7 +13,7 @@
     "release": "toolkit release",
     "preview": "toolkit preview",
     "build-helper": "toolkit build --scope=env",
-    "onstop-push": "git add -A && git commit -m 'auto commit' && git push"
+    "onestop-push": "git add -A && git commit -m 'auto commit' && git push"
   },
   "engines": {
     "node": ">=10",
