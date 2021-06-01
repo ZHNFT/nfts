@@ -35,7 +35,7 @@ function publish(pack) {
     return new Promise((resolve, reject) => {
         try {
             /// 虽然使用pnpm做包管理，但是我们还是选择使用npm指令来发布包。
-            utils_1.crossExecFileSync("npm", ["publish"], {
+            utils_1.crossExecFileSync("pnpm", ["publish"], {
                 cwd: pack.root,
             });
             resolve();
@@ -47,11 +47,11 @@ function publish(pack) {
 }
 exports.publish = publish;
 /// commit/push modified/added/staged/removed files
-function git(pack) {
+function git(pack, version) {
     return new Promise((resolve, reject) => {
         try {
             utils_1.crossExecFileSync("git", ["add", "."], { cwd: pack.root });
-            utils_1.crossExecFileSync("git", ["commit", "-m", `release: release ${pack.main}@${pack.json.version}`], { cwd: pack.root });
+            utils_1.crossExecFileSync("git", ["commit", "-m", `release: release ${pack.main}@${version}`], { cwd: pack.root });
             resolve();
         }
         catch (e) {
@@ -68,7 +68,6 @@ exports.git = git;
 function release(scope, ignore, type) {
     return __awaiter(this, void 0, void 0, function* () {
         debug("Start release process...");
-        /// build before release
         yield build_1.default(scope, ignore).then((packs) => { var packs_1, packs_1_1; return __awaiter(this, void 0, void 0, function* () {
             var e_1, _a;
             try {
@@ -77,10 +76,10 @@ function release(scope, ignore, type) {
                     const pack = packs_1_1.value;
                     debug(`publish ${pack.main}...`);
                     try {
-                        const releaseVersion = utils_1.updateVersion(pack, type);
-                        yield git(pack);
+                        const releasePackageJson = utils_1.updateVersion(pack, type);
+                        yield git(pack, releasePackageJson.version);
                         yield publish(pack);
-                        debug(`publish ${pack.main}@${releaseVersion} successfully ✨`);
+                        debug(`publish ${pack.main}@${releasePackageJson.version} successfully ✨`);
                     }
                     catch (e) {
                         utils_1.revertVersion(pack);

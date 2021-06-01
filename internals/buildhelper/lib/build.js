@@ -30,6 +30,7 @@ exports.help = help;
 /// so we can print error after build end.
 function build(scope, ignore) {
     return __awaiter(this, void 0, void 0, function* () {
+        utils_1.clearScreen();
         const packs = packages_1.filterPackages(scope, ignore);
         if (!packs || !packs.length) {
             debug(`No package found in workspace\n  --scope=${scope.toString()}\n  --ignore=${ignore.toString()}`);

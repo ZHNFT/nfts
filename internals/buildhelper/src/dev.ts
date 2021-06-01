@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import {
   cjs,
   esm,
@@ -6,7 +7,7 @@ import {
   rollupWatch,
   Package,
 } from "./packages";
-import { log } from "./utils";
+import { clearScreen, log } from "./utils";
 
 process.env.NODE_ENV = "development";
 
@@ -20,6 +21,7 @@ export default async function development(
   scope: string[],
   ignore: string[]
 ): Promise<Package[]> {
+  clearScreen();
   const packs = filterPackages(scope, ignore);
 
   for (let i = packs.length - 1; i >= 0; i--) {
@@ -33,15 +35,19 @@ export default async function development(
       if (e.code === "START") {
         debug(
           firstRun
-            ? "Starting rollup watcher process...."
-            : "Restarting rollup watcher process...."
+            ? "Starting rollup watching process...."
+            : "Restarting rollup watching process...."
         );
 
         firstRun = false;
       }
 
       if (e.code === "BUNDLE_END") {
-        console.log(e.input, "-->", e.output.join(","));
+        console.log(
+          chalk.cyan(e.input),
+          "-->",
+          chalk.cyan(chalk.bold(e.output.join(", ")))
+        );
         console.log("");
       }
 

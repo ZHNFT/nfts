@@ -83,9 +83,13 @@ export function updateVersion(
   return shallowCopyJson;
 }
 
+export function clearScreen(): void {
+  process.stdout.write("\u001b[2J\u001b[0;0H");
+}
+
 export function log(module: string) {
   return (message: string): void => {
-    const logTime = new Date();
-    console.log(`[${logTime.toLocaleString()}] [${module}] ${message}`);
+    const logTime = new Date().toLocaleTimeString();
+    console.log(`[${logTime}] [${module}] ${message}`);
   };
 }

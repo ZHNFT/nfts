@@ -67,7 +67,7 @@ class Package {
         return pack;
     }
     static loadPackageJson(packageJsonPath) {
-        if (typeof packageJsonPath !== "string" || !fs_1.existsSync(packageJsonPath)) {
+        if (!fs_1.existsSync(packageJsonPath)) {
             throw Error(`${packageJsonPath} is not provide or not exists`);
         }
         try {
@@ -78,8 +78,7 @@ class Package {
         }
     }
     static loadPnpmWorkspaceYaml(pnpmWorkspaceYaml) {
-        if (typeof pnpmWorkspaceYaml !== "string" ||
-            !fs_1.existsSync(pnpmWorkspaceYaml)) {
+        if (!fs_1.existsSync(pnpmWorkspaceYaml)) {
             throw Error(`${pnpmWorkspaceYaml} is not provide or not exists`);
         }
         try {
@@ -98,9 +97,9 @@ exports.Package = Package;
 ///     [pnpm] packages field in pnpm-workspace.yaml
 function packages() {
     var _a, _b;
-    /// multi package-manager is not allowd
+    /// multi package-manager is not allowed in one repo
     if (utils_2.hasMoreThanOnePackageLock())
-        throw Error(`detect two different package-manage tool, in this repo.\n please make sure you only use one of them, (npm, yarn, pnpm)`);
+        throw Error(`detect two different package-manage tool, in this repo.\n please make sure you only use one of them. (npm, yarn, pnpm)`);
     if (utils_1.isUsingYarn || utils_1.isUsingNpm) {
         return ((_a = Package.loadPackageJson(path_1.resolve(cwd, "package.json")).workspaces) !== null && _a !== void 0 ? _a : []);
     }

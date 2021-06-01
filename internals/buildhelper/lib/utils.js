@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.log = exports.updateVersion = exports.revertVersion = exports.crossExecFileSync = exports.hasMoreThanOnePackageLock = exports.isUsingYarn = exports.isUsingNpm = exports.isUsingPnpm = void 0;
+exports.log = exports.clearScreen = exports.updateVersion = exports.revertVersion = exports.crossExecFileSync = exports.hasMoreThanOnePackageLock = exports.isUsingYarn = exports.isUsingNpm = exports.isUsingPnpm = void 0;
 const fs_1 = require("fs");
 const path_1 = require("path");
 const child_process_1 = require("child_process");
@@ -28,8 +28,8 @@ exports.revertVersion = revertVersion;
 function updateVersion(pack, type) {
     const { json, root } = pack;
     /// make a shallow copy
-    const copiedJson = Object.assign({}, json);
-    let version = copiedJson.version;
+    const shallowCopyJson = Object.assign({}, json);
+    let version = shallowCopyJson.version;
     if (!version) {
         version = "0.0.0";
     }
@@ -51,15 +51,19 @@ function updateVersion(pack, type) {
             break;
         }
     }
-    copiedJson.version = [major, minor, patch].join(".");
-    fs_1.writeFileSync(path_1.resolve(root, "package.json"), JSON.stringify(copiedJson, null, 2));
-    return copiedJson.version;
+    shallowCopyJson.version = [major, minor, patch].join(".");
+    fs_1.writeFileSync(path_1.resolve(root, "package.json"), JSON.stringify(shallowCopyJson, null, 2));
+    return shallowCopyJson;
 }
 exports.updateVersion = updateVersion;
+function clearScreen() {
+    process.stdout.write("\u001b[2J\u001b[0;0H");
+}
+exports.clearScreen = clearScreen;
 function log(module) {
     return (message) => {
-        const logTime = new Date();
-        console.log(`[${logTime.toLocaleString()}] [${module}] ${message}`);
+        const logTime = new Date().toLocaleTimeString();
+        console.log(`[${logTime}] [${module}] ${message}`);
     };
 }
 exports.log = log;

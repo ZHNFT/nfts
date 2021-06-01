@@ -1,7 +1,9 @@
 import { createConfiguration, startServer } from "snowpack";
 import { filterPackages } from "./packages";
+import { clearScreen } from "./utils";
 
 export default async function preview(scope: string[]): Promise<void> {
+  clearScreen();
   const packages = filterPackages(scope, []);
   const pack = packages[0];
 

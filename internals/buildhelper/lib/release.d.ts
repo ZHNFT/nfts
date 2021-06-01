@@ -5,5 +5,5 @@ export declare enum ReleaseTypes {
     "patch" = 2
 }
 export declare function publish(pack: Package): Promise<void>;
-export declare function git(pack: Package): Promise<void>;
+export declare function git(pack: Package, version: string): Promise<void>;
 export default function release(scope: string[], ignore: string[], type: keyof typeof ReleaseTypes): Promise<void>;

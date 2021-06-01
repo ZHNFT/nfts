@@ -11,8 +11,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const snowpack_1 = require("snowpack");
 const packages_1 = require("./packages");
+const utils_1 = require("./utils");
 function preview(scope) {
     return __awaiter(this, void 0, void 0, function* () {
+        utils_1.clearScreen();
         const packages = packages_1.filterPackages(scope, []);
         const pack = packages[0];
         if (!pack.demo.root) {
@@ -27,12 +29,12 @@ function preview(scope) {
             devOptions: {
                 open: "chrome",
                 hostname: "localhost",
-                /// hrm + plugin-react-referesh
+                /// hrm + plugin-react-refresh
                 hmr: true,
                 hmrErrorOverlay: true,
             },
             plugins: [
-                /// fast referesh
+                /// fast refresh
                 ["@snowpack/plugin-react-refresh", { babel: false }],
             ],
         });

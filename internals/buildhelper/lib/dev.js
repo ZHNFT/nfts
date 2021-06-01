@@ -8,7 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const chalk_1 = __importDefault(require("chalk"));
 const packages_1 = require("./packages");
 const utils_1 = require("./utils");
 process.env.NODE_ENV = "development";
@@ -19,6 +23,7 @@ let firstRun = true;
 /// 2. start watching process
 function development(scope, ignore) {
     return __awaiter(this, void 0, void 0, function* () {
+        utils_1.clearScreen();
         const packs = packages_1.filterPackages(scope, ignore);
         for (let i = packs.length - 1; i >= 0; i--) {
             const pack = packs[i];
@@ -28,12 +33,12 @@ function development(scope, ignore) {
             rollupWatcher.on("event", (e) => {
                 if (e.code === "START") {
                     debug(firstRun
-                        ? "Starting rollup watcher process...."
-                        : "Restarting rollup watcher process....");
+                        ? "Starting rollup watching process...."
+                        : "Restarting rollup watching process....");
                     firstRun = false;
                 }
                 if (e.code === "BUNDLE_END") {
-                    console.log(e.input, "-->", e.output.join(","));
+                    console.log(chalk_1.default.cyan(e.input), "-->", chalk_1.default.cyan(chalk_1.default.bold(e.output.join(", "))));
                     console.log("");
                 }
                 if (e.code === "ERROR") {

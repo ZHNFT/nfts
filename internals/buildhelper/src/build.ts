@@ -7,7 +7,7 @@ import {
   configFor,
   Package,
 } from "./packages";
-import { log } from "./utils";
+import { clearScreen, log } from "./utils";
 
 const debug = log("build");
 
@@ -33,6 +33,7 @@ export default async function build(
   scope: string[],
   ignore: string[]
 ): Promise<Package[]> {
+  clearScreen();
   const packs = filterPackages(scope, ignore);
 
   if (!packs || !packs.length) {

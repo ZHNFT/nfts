@@ -1,12 +1,16 @@
 import type { PluginImpl } from "rollup";
 import { resolve } from "path";
-import { ExtractorConfig, Extractor } from "@microsoft/api-extractor";
+import {
+  ExtractorConfig,
+  Extractor,
+  IExtractorConfigPrepareOptions,
+} from "@microsoft/api-extractor";
 
-/// TODO enhance those props
 export type ApiExtractorProps = {
   mainEntryPointFilePath: string;
   clear?: boolean;
   cwd?: string;
+  overrides?: Partial<IExtractorConfigPrepareOptions>;
 };
 
 let runBefore = false;
@@ -19,20 +23,20 @@ const combine = (
     cwd: process.cwd(),
   };
 
-  return Object.assign(defaultOpts, options);
+  return Object.assign({}, defaultOpts, options);
 };
 
 /// generate api-extractor configuration
 const createConfig = (
   mainEntryPointFilePath: string,
-  cwd: string
+  cwd: string,
+  overrides: Partial<IExtractorConfigPrepareOptions> = {}
 ): ExtractorConfig => {
   return ExtractorConfig.prepare({
     configObjectFullPath: undefined,
     configObject: {
       mainEntryPointFilePath,
       compiler: {
-        // skipLibCheck: true,
         overrideTsconfig: {},
       },
       projectFolder: cwd,
@@ -45,6 +49,7 @@ const createConfig = (
       },
     },
     packageJsonFullPath: resolve(cwd, "package.json"),
+    ...overrides,
   });
 };
 
@@ -56,9 +61,14 @@ const apiExtractor: PluginImpl<ApiExtractorProps> = (props) => {
       props = combine(props);
 
       if (!runBefore) {
+        console.log("");
         console.log("Starting api-extractor process...");
         const result = Extractor.invoke(
-          createConfig(props.mainEntryPointFilePath, props.cwd as string)
+          createConfig(
+            props.mainEntryPointFilePath,
+            props.cwd as string,
+            props.overrides
+          )
         );
         if (result.succeeded) {
           console.log("api-extractor succeeded");
