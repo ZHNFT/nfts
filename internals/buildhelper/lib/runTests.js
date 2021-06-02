@@ -18,14 +18,16 @@ function runTest(pack) {
     jest_1.run([
         "--debug",
         "--colors",
-        "--passWithNoTests", ///
+        "--passWithNoTests",
+        "--testPathPattern",
+        "tests?/.*.[jt]sx?$",
     ], pack.root).catch((e) => console.error(e));
 }
 function runTests(scope, ignore) {
     return __awaiter(this, void 0, void 0, function* () {
         const packs = packages_1.filterPackages(scope, ignore);
         debug("running test cases...");
-        for (let i = packs.length - 1; i > 0; i--) {
+        for (let i = packs.length - 1; i >= 0; i--) {
             const pack = packs[i];
             runTest(pack);
         }
