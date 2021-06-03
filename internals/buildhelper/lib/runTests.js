@@ -35,13 +35,10 @@ process.env.NODE_ENV = "test";
 const debug = utils_1.log("test");
 function runTest(pack, options) {
     jest
-        .runCLI(Object.assign({ $0: "runTests", _: [], colors: true, coverage: true, transform: JSON.stringify({
+        .runCLI(Object.assign({ $0: "runTests", _: [], colors: true, coverage: true, rootDir: pack.root, transform: JSON.stringify({
             "^.+\\.tsx?$": "ts-jest",
-        }), testNamePattern: "<rootDir>/tests?/.*.[jt]sx?$" }, options), [pack.root])
-        .then(() => {
-        console.log("test finished");
-    })
-        .catch((e) => console.log(e));
+        }) }, options), [pack.root])
+        .catch((e) => console.error(e));
 }
 function runTests(scope, ignore, extraOptions) {
     return __awaiter(this, void 0, void 0, function* () {

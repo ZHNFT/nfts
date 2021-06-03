@@ -1,5 +1,3 @@
-describe("env test cases", (): void => {
-  it("should equals to 5", (): void => {
-    expect(2 + 3).toEqual(5);
-  });
+it("aaa", (): void => {
+  expect(1 + 2).toBe(3);
 });

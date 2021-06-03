@@ -14,18 +14,15 @@ function runTest(pack: Package, options: { [key: string]: string }) {
         _: [],
         colors: true,
         coverage: true,
+        rootDir: pack.root,
         transform: JSON.stringify({
           "^.+\\.tsx?$": "ts-jest",
         }),
-        testNamePattern: "<rootDir>/tests?/.*.[jt]sx?$",
         ...options,
       },
       [pack.root]
     )
-    .then(() => {
-      console.log("test finished");
-    })
-    .catch((e) => console.log(e));
+    .catch((e) => console.error(e));
 }
 
 export default async function runTests(
