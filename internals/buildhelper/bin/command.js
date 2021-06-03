@@ -3,20 +3,21 @@
 // Execute file
 const minimist = require("minimist");
 
+const args = minimist(process.argv.slice(2), {
+  default: {
+    ignore: "",
+    scope: "",
+  },
+});
+
 const {
   // 'dev'|'build'|'test'|'preview'
   _: [command = "dev"],
   ignore,
   scope,
-  type,
-} = minimist(process.argv.slice(2), {
-  default: {
-    ignore: "",
-    scope: "",
-    type: "patch",
-  },
-});
+  ...rest
+} = args;
 
 require(`../lib/${command}`)
-  .default(scope.split(","), ignore.split(","), type)
+  .default(scope.split(","), ignore.split(","), rest)
   .catch((e) => console.error(e));

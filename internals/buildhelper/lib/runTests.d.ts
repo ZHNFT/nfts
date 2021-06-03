@@ -1,1 +1,3 @@
-export default function runTests(scope: string[], ignore: string[]): Promise<void>;
+export default function runTests(scope: string[], ignore: string[], extraOptions: {
+    [key: string]: string;
+}): Promise<void>;

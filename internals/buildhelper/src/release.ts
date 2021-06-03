@@ -16,10 +16,7 @@ const debug = log("release");
 export function publish(pack: Package): Promise<void> {
   return new Promise((resolve, reject) => {
     try {
-      /// 虽然使用pnpm做包管理，但是我们还是选择使用npm指令来发布包。
-      crossExecFileSync("pnpm", ["publish"], {
-        cwd: pack.root,
-      });
+      crossExecFileSync("pnpm", ["publish"], { cwd: pack.root });
       resolve();
     } catch (e) {
       reject(e);
@@ -52,7 +49,9 @@ export function git(pack: Package, version: string): Promise<void> {
 export default async function release(
   scope: string[],
   ignore: string[],
-  type: keyof typeof ReleaseTypes
+  extraOptions: {
+    type: keyof typeof ReleaseTypes;
+  }
 ): Promise<void> {
   debug("Start release process...");
   await build(scope, ignore).then(async (packs) => {
@@ -60,7 +59,7 @@ export default async function release(
     for await (const pack of packs) {
       debug(`publish ${pack.main}...`);
       try {
-        const releasePackageJson = updateVersion(pack, type);
+        const releasePackageJson = updateVersion(pack, extraOptions.type);
         await git(pack, releasePackageJson.version);
         await publish(pack);
         debug(

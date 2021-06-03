@@ -34,10 +34,7 @@ const debug = utils_1.log("release");
 function publish(pack) {
     return new Promise((resolve, reject) => {
         try {
-            /// 虽然使用pnpm做包管理，但是我们还是选择使用npm指令来发布包。
-            utils_1.crossExecFileSync("pnpm", ["publish"], {
-                cwd: pack.root,
-            });
+            utils_1.crossExecFileSync("pnpm", ["publish"], { cwd: pack.root });
             resolve();
         }
         catch (e) {
@@ -65,7 +62,7 @@ exports.git = git;
 /// 2. update package version
 /// 3. sync your local repo to remote service
 /// 4. publish package to npm service
-function release(scope, ignore, type) {
+function release(scope, ignore, extraOptions) {
     return __awaiter(this, void 0, void 0, function* () {
         debug("Start release process...");
         yield build_1.default(scope, ignore).then((packs) => { var packs_1, packs_1_1; return __awaiter(this, void 0, void 0, function* () {
@@ -76,7 +73,7 @@ function release(scope, ignore, type) {
                     const pack = packs_1_1.value;
                     debug(`publish ${pack.main}...`);
                     try {
-                        const releasePackageJson = utils_1.updateVersion(pack, type);
+                        const releasePackageJson = utils_1.updateVersion(pack, extraOptions.type);
                         yield git(pack, releasePackageJson.version);
                         yield publish(pack);
                         debug(`publish ${pack.main}@${releasePackageJson.version} successfully ✨`);

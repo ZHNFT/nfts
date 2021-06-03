@@ -8,6 +8,6 @@ export declare const isUsingYarn: boolean;
 export declare function hasMoreThanOnePackageLock(): boolean;
 export declare function crossExecFileSync(command: string, options?: ReadonlyArray<string>, config?: ExecFileSyncOptions): string | Buffer;
 export declare function revertVersion(pack: Package): void;
-export declare function updateVersion(pack: Package, type: keyof typeof ReleaseTypes): PackageJson;
+export declare function updateVersion(pack: Package, type?: keyof typeof ReleaseTypes): PackageJson;
 export declare function clearScreen(): void;
 export declare function log(module: string): (message: string) => void;

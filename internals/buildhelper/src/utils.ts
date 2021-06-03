@@ -42,7 +42,7 @@ export function revertVersion(pack: Package): void {
 /// update version field in package.json, before release
 export function updateVersion(
   pack: Package,
-  type: keyof typeof ReleaseTypes
+  type: keyof typeof ReleaseTypes = "minor"
 ): PackageJson {
   const { json, root } = pack;
   /// make a shallow copy

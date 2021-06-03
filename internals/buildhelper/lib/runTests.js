@@ -1,4 +1,23 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -9,27 +28,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const jest_1 = require("jest");
+const jest = __importStar(require("jest"));
 const utils_1 = require("./utils");
 const packages_1 = require("./packages");
 process.env.NODE_ENV = "test";
 const debug = utils_1.log("test");
-function runTest(pack) {
-    jest_1.run([
-        "--debug",
-        "--colors",
-        "--passWithNoTests",
-        "--testPathPattern",
-        "tests?/.*.[jt]sx?$",
-    ], pack.root).catch((e) => console.error(e));
+function runTest(pack, options) {
+    jest
+        .runCLI(Object.assign({ $0: "runTests", _: [], colors: true, coverage: true, transform: JSON.stringify({
+            "^.+\\.tsx?$": "ts-jest",
+        }), testNamePattern: "<rootDir>/tests?/.*.[jt]sx?$" }, options), [pack.root])
+        .then(() => {
+        console.log("test finished");
+    })
+        .catch((e) => console.log(e));
 }
-function runTests(scope, ignore) {
+function runTests(scope, ignore, extraOptions) {
     return __awaiter(this, void 0, void 0, function* () {
         const packs = packages_1.filterPackages(scope, ignore);
         debug("running test cases...");
         for (let i = packs.length - 1; i >= 0; i--) {
             const pack = packs[i];
-            runTest(pack);
+            runTest(pack, extraOptions);
         }
         return Promise.resolve();
     });

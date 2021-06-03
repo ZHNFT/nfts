@@ -25,7 +25,7 @@ function revertVersion(pack) {
 }
 exports.revertVersion = revertVersion;
 /// update version field in package.json, before release
-function updateVersion(pack, type) {
+function updateVersion(pack, type = "minor") {
     const { json, root } = pack;
     /// make a shallow copy
     const shallowCopyJson = Object.assign({}, json);
