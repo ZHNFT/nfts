@@ -5,4 +5,4 @@ export type CommandOptions = {
 };
 
 export { default as IProcess } from "./Process";
-export { default as IPackage } from "./Package";
+export { default as IPackage, IPackageJson } from "./Package";

@@ -1,5 +1,7 @@
+import { resolve } from "path";
+import fs from "fs";
 import { EventEmitter } from "events";
-import { CommandOptions } from "./index";
+import { CommandOptions, IPackageJson } from "./index";
 
 type Plugin = {
   name: string;
@@ -13,13 +15,17 @@ type ValuableCommandOptions = Pick<
 
 export default class IProcess extends EventEmitter {
   name: string;
+  root: string;
+  json: IPackageJson;
   pluginModules: Plugin[];
   constructor(name: string, commandOptions: ValuableCommandOptions) {
     super();
     this.name = name;
+    this.root = process.cwd();
     this.pluginModules = Object.keys(commandOptions).map((plugin) =>
       this.loadPlugin(plugin)
     );
+    this.json = this.createPackageJson(resolve(this.root, "package.json"));
   }
 
   start(): void {
@@ -33,5 +39,20 @@ export default class IProcess extends EventEmitter {
       apply: require(`@initializer/cli-plugin-${pluginName}`)
         .default as VoidFunction,
     };
+  }
+
+  createPackageJson(path: string): IPackageJson {
+    const json: IPackageJson = {
+      name: "",
+      main: "src/index.ts",
+      version: "0.0.0",
+      exports: { default: "./dist/index.js", node: "./dist/index.cjs" },
+    };
+    fs.writeFileSync(path, JSON.stringify(json, null, 2));
+    return json;
+  }
+
+  extendPackageJson() {
+    //
   }
 }

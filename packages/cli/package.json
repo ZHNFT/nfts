@@ -21,7 +21,8 @@
   "typings": "./dist/index.d.ts",
   "devDependencies": {
     "@initializer/buildhelper": "workspace:*",
-    "@initializer/eslint-config": "workspace:*"
+    "@initializer/eslint-config": "workspace:*",
+    "@initializer/cli-command-build": "workspace:*"
   },
   "eslintConfig": {
     "extends": "@initializer/eslint-config",
