@@ -16,7 +16,7 @@ process.env.NODE_ENV = "production";
 export function help(): void {
   console.log("Usage: ");
   console.log("  toolkit dev [--scope=[packageName[]]]");
-  console.log("For monorepos");
+  console.log("For monorepo");
   console.log("    Example: toolkit dev --scope=package1,package2");
   console.log("             toolkit dev --ignore=package1,package2");
   console.log("For Single repo");

@@ -12,8 +12,10 @@
     "test": "toolkit runTests",
     "release": "toolkit release",
     "preview": "toolkit preview",
+    "create": "toolkit create",
     "build-helper": "toolkit build --scope=env",
-    "onestop-push": "git add -A && git commit -m 'auto commit' && git push"
+    "onestop-push": "git add -A && git commit -m 'auto commit' && git push",
+    "boot": "toolkit create"
   },
   "engines": {
     "node": ">=10",

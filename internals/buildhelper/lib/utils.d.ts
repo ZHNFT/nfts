@@ -10,4 +10,6 @@ export declare function crossExecFileSync(command: string, options?: ReadonlyArr
 export declare function revertVersion(pack: Package): void;
 export declare function updateVersion(pack: Package, type?: keyof typeof ReleaseTypes): PackageJson;
 export declare function clearScreen(): void;
-export declare function log(module: string): (message: string) => void;
+declare type LogLevel = "info" | "warn" | "error" | "fatal";
+export declare function log(module: string): (message: string, level?: LogLevel) => void;
+export {};

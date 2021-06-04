@@ -1,9 +1,13 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.log = exports.clearScreen = exports.updateVersion = exports.revertVersion = exports.crossExecFileSync = exports.hasMoreThanOnePackageLock = exports.isUsingYarn = exports.isUsingNpm = exports.isUsingPnpm = void 0;
 const fs_1 = require("fs");
 const path_1 = require("path");
 const child_process_1 = require("child_process");
+const chalk_1 = __importDefault(require("chalk"));
 const cwd = process.cwd();
 exports.isUsingPnpm = fs_1.existsSync(path_1.resolve(cwd, "pnpm-lock.yaml"));
 exports.isUsingNpm = fs_1.existsSync(path_1.resolve(cwd, "package-lock.json"));
@@ -61,9 +65,12 @@ function clearScreen() {
 }
 exports.clearScreen = clearScreen;
 function log(module) {
-    return (message) => {
-        const logTime = new Date().toLocaleTimeString();
-        console.log(`[${logTime}] [${module}] ${message}`);
+    return (message, level = "info") => {
+        const logTime = chalk_1.default.bgGray(chalk_1.default.bold(new Date().toLocaleTimeString()));
+        process.stdin.write(`[${logTime}] ${message}\n`);
+        if (level === "fatal") {
+            process.exit(2);
+        }
     };
 }
 exports.log = log;

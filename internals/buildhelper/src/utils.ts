@@ -3,6 +3,7 @@ import { resolve } from "path";
 import { execFileSync, ExecFileSyncOptions } from "child_process";
 import { Package, PackageJson } from "./packages";
 import { ReleaseTypes } from "./release";
+import chalk from "chalk";
 
 const cwd = process.cwd();
 
@@ -87,9 +88,14 @@ export function clearScreen(): void {
   process.stdout.write("\u001b[2J\u001b[0;0H");
 }
 
+type LogLevel = "info" | "warn" | "error" | "fatal";
+
 export function log(module: string) {
-  return (message: string): void => {
-    const logTime = new Date().toLocaleTimeString();
-    console.log(`[${logTime}] [${module}] ${message}`);
+  return (message: string, level: LogLevel = "info"): void => {
+    const logTime = chalk.bgGray(chalk.bold(new Date().toLocaleTimeString()));
+    process.stdin.write(`[${logTime}] ${message}\n`);
+    if (level === "fatal") {
+      process.exit(2);
+    }
   };
 }

@@ -109,6 +109,35 @@ importers:
     devDependencies:
       '@initializer/eslint-config': link:../eslint-config
 
+  packages/cli:
+    specifiers:
+      '@initializer/buildhelper': workspace:*
+      '@initializer/eslint-config': workspace:*
+      minimist: ^1.2.5
+    dependencies:
+      minimist: 1.2.5
+    devDependencies:
+      '@initializer/buildhelper': link:../../internals/buildhelper
+      '@initializer/eslint-config': link:../../internals/eslint-config
+
+  packages/cli-command-build:
+    specifiers:
+      '@initializer/buildhelper': workspace:*
+      '@initializer/cli': workspace:*
+      '@initializer/eslint-config': workspace:*
+    devDependencies:
+      '@initializer/buildhelper': link:../../internals/buildhelper
+      '@initializer/cli': link:../cli
+      '@initializer/eslint-config': link:../../internals/eslint-config
+
+  packages/cli-plugin-react:
+    specifiers:
+      '@initializer/buildhelper': workspace:*
+      '@initializer/eslint-config': workspace:*
+    devDependencies:
+      '@initializer/buildhelper': link:../../internals/buildhelper
+      '@initializer/eslint-config': link:../../internals/eslint-config
+
 packages:
 
   /@babel/code-frame/7.12.11:

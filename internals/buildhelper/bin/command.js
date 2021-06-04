@@ -15,9 +15,9 @@ const {
   _: [command = "dev"],
   ignore,
   scope,
-  ...rest
+  ...restCommandOptions
 } = args;
 
 require(`../lib/${command}`)
-  .default(scope.split(","), ignore.split(","), rest)
+  .default(scope.split(","), ignore.split(","), restCommandOptions)
   .catch((e) => console.error(e));
