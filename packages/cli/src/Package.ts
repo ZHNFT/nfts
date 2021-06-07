@@ -1,3 +1,4 @@
+import { EventEmitter } from "events";
 export interface IPackageJson {
   dependencies?: {
     [key: string]: string;
@@ -18,8 +19,41 @@ export interface IPackageJson {
   [key: string]: unknown;
 }
 
-export default class Package {
-  constructor() {
-    //
+interface IPackage {}
+interface IPlugin {}
+
+export default class Package extends EventEmitter implements IPackage {
+  /// process command
+  command: string;
+  /// process command version
+  commandVersion: string;
+  /// current working path
+  root: string;
+  /// plugins
+  plugins: IPlugin[] = [];
+
+  constructor({
+    command,
+    commandVersion,
+  }: {
+    command: string;
+    commandVersion: string;
+  }) {
+    super();
+    this.command = command;
+    this.commandVersion = commandVersion;
+    this.root = process.cwd();
+  }
+
+  start() {
+    this.emit(`${this.command}-start`);
+  }
+
+  end() {
+    this.emit(`${this.command}-end`);
+  }
+
+  fatal() {
+    this.emit(`${this.command}-fatal`);
   }
 }

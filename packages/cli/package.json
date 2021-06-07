@@ -2,7 +2,8 @@
   "name": "@initializer/cli",
   "version": "0.0.0",
   "description": "",
-  "main": "src/index.ts",
+  "main": "./src/index.ts",
+  "type": "module",
   "bin": {
     "kit": "./bin/cli.js"
   },
