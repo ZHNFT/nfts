@@ -6,23 +6,15 @@
   "author": "雷文鹏 <leiwenpeng1994@outlook.com>",
   "license": "MIT",
   "private": true,
-  "scripts": {
-    "dev": "toolkit dev",
-    "build": "toolkit build",
-    "test": "toolkit runTests",
-    "release": "toolkit release",
-    "preview": "toolkit preview",
-    "create": "toolkit create",
-    "build-helper": "toolkit build --scope=env",
-    "onestop-push": "git add -A && git commit -m 'auto commit' && git push",
-    "boot": "toolkit create"
-  },
+  "workspaces": [
+    "packages/*",
+    "packages/cli/*"
+  ],
+  "scripts": {},
   "engines": {
-    "node": ">=10",
-    "pnpm": ">=6"
+    "node": ">=10"
   },
   "dependencies": {
-    "prettier": "^2.2.1",
-    "@initializer/buildhelper": "workspace:*"
+    "prettier": "^2.2.1"
   }
 }

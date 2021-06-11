@@ -1,0 +1,10 @@
+{
+  "version": "0.0.0",
+  "name": "@initializer-cli/core",
+  "author": {
+    "name": "ray"
+  },
+  "dependencies": {
+    "minimist": "^1.2.5"
+  }
+}
