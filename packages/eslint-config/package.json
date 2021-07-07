@@ -1,0 +1,8 @@
+{
+	"name": "@initializer/eslint-config",
+	"exports": {
+		"default": "./index.js"
+	},
+	"dependencies": {},
+	"devDependencies": {}
+}

@@ -1,0 +1,14 @@
+{
+  "version": "0.0.0",
+  "name": "@initializer/cli",
+  "author": {
+    "name": "ray"
+  },
+  "dependencies": {
+    "minimist": "^1.2.5",
+    "rollup": "^2.51.2"
+  },
+  "devDependencies": {
+    "@types/node": "^15.12.2"
+  }
+}
