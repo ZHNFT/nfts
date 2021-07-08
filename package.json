@@ -1,6 +1,7 @@
 {
   "name": "initializer",
   "version": "0.0.0",
+  "type": "module",
   "description": "bootstrap personal project",
   "repository": "https://github.com/leiwenpeng0424/initializer.git",
   "author": "雷文鹏 <leiwenpeng1994@outlook.com>",

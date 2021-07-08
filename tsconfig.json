@@ -14,7 +14,9 @@
     "declarationMap": false,
     "typeRoots": ["node_modules/@types"],
     "baseUrl": ".",
-    "paths": {},
+    "paths": {
+      "@cli/*": ["packages/cli"]
+    },
     "lib": ["DOM", "DOM.Iterable", "ESNext"]
   },
   "include": ["**/src"],
