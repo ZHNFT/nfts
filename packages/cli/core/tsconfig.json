@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@cli/*": ["./src/*"]
+      "@initializer/cli/*": ["./src/*"]
     }
   }
 }

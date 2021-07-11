@@ -1,6 +1,12 @@
 {
-	"name": "plugin-api-extractor",
+	"name": "@initializer/plugin-api-extractor",
 	"version": "0.0.0",
+	"type": "module",
+	"main": "./src/index.ts",
+	"exports": {
+		"default": "./dist/index.js"
+	},
+	"typings": "./dist/index.d.ts",
 	"author": {
 		"name": "ray"
 	},
@@ -9,5 +15,11 @@
 	},
 	"devDependencies": {
 		"rollup": "^2.52.8"
+	},
+	"eslintConfig": {
+		"parserOptions": {
+			"sourceType": "module",
+			"ecmaVersion": "latest"
+		}
 	}
 }

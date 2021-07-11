@@ -1,1 +1,3 @@
 // esm dev
+
+export default () => {};

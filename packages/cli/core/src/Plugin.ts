@@ -2,7 +2,7 @@
  * @class Plugin
  */
 import { EventEmitter } from "events";
-import { Package } from "@cli/Package";
+import { Package } from "@initializer/cli/Package";
 
 export type PluginArgs = Package;
 

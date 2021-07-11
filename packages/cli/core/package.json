@@ -1,6 +1,12 @@
 {
   "version": "0.0.0",
   "name": "@initializer/cli",
+  "type": "module",
+  "main": "./src/cli.ts",
+  "exports": {
+    "default": "./src/cli.js"
+  },
+  "typings": "./dist/cli.d.ts",
   "author": {
     "name": "ray"
   },

@@ -2,7 +2,7 @@
  * @class Command
  */
 import { EventEmitter } from "events";
-import { Plugin } from "@cli/Plugin";
+import { Plugin } from "@initializer/cli/Plugin";
 
 export interface CommandRunResult {
   [prop: string]: unknown;
@@ -25,4 +25,6 @@ export class Command extends EventEmitter {
     // implement run
     return {};
   }
+
+  // of(): Command {}
 }
