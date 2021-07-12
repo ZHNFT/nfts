@@ -8,10 +8,12 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build-plugin": "npx rollup --config=./scripts/build-single.js packages/plugin-api-extractor"
+    "build-api-extractor": "rollup -c=./scripts/build-package.js --module=plugin-api-extractor",
+    "build-eslint-config": "rollup -c=./scripts/build-package.js --module=eslint-config",
+    "build-cli-core": "rollup -c=./scripts/build-package.js --module=cli/core"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
   },
   "dependencies": {
     "@rollup/plugin-alias": "^3.1.2",
@@ -23,6 +25,7 @@
     "prettier": "^2.2.1",
     "rollup": "^2.53.0",
     "rollup-plugin-typescript2": "^0.30.0",
-    "ts-node": "^10.0.0"
+    "ts-node": "^10.0.0",
+    "tslib": "^2.3.0"
   }
 }

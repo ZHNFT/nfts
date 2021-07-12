@@ -37,9 +37,9 @@ const plugins = Object.keys(devDeps)
   );
 
 /// 当前使用的命令集合
-const commands = Object.keys(devDeps).filter((key) =>
-  /^@initializer\/cli-command-(\w+)$/.test(key)
-);
+// const commands = Object.keys(devDeps).filter((key) =>
+//   /^@initializer\/cli-command-(\w+)$/.test(key)
+// );
 
 const cmd = new Command({
   name: cliOptions.command,

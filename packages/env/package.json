@@ -1,0 +1,13 @@
+{
+  "name": "@initializer/env",
+  "version": "0.0.0",
+  "main": "index.js",
+  "exports": {
+    "default": "./dist/index.js"
+  },
+  "author": {
+    "name": "leiwenpeng"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

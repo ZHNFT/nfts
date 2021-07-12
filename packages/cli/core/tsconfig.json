@@ -1,9 +1,12 @@
 {
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
+    "declaration": true,
+    "declarationDir": "./temp",
     "baseUrl": "./",
     "paths": {
       "@initializer/cli/*": ["./src/*"]
     }
-  }
+  },
+  "include": ["./src"]
 }

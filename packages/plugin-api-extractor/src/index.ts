@@ -1,10 +1,11 @@
-import type { PluginImpl } from "rollup";
 import { resolve } from "path";
 import {
   ExtractorConfig,
   Extractor,
   IExtractorConfigPrepareOptions,
 } from "@microsoft/api-extractor";
+
+import type { PluginImpl } from "rollup";
 
 type ApiExtractorProps = {
   mainEntryPointFilePath: string;

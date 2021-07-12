@@ -4,5 +4,5 @@
     "declaration": true,
     "declarationDir": "./temp"
   },
-  "include": ["./src"]
+  "include": ["./rules.ts"]
 }

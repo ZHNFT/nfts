@@ -2,11 +2,11 @@
   "version": "0.0.0",
   "name": "@initializer/cli",
   "type": "module",
-  "main": "./src/cli.ts",
+  "main": "./src/index.ts",
   "exports": {
-    "default": "./src/cli.js"
+    "default": "./dist/index.js"
   },
-  "typings": "./dist/cli.d.ts",
+  "typings": "./dist/index.d.ts",
   "author": {
     "name": "ray"
   },
