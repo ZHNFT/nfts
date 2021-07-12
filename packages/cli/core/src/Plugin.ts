@@ -3,7 +3,8 @@
  */
 import { EventEmitter } from "events";
 import { Package } from "./Package";
-import { CommandArgs } from "./Command";
+import { Command, CommandArgs } from "./Command";
+import { BuildEvent, LogLevel } from "./flag";
 
 export type PluginFunc = <T>(api: Package) => Promise<T>;
 
@@ -36,8 +37,14 @@ export class Plugin extends EventEmitter {
   /**
    * Plugin的执行方法
    * */
-  async run(api: Package, options?: CommandArgs) {
+  async run(api: Package, cmd: Command, options?: CommandArgs) {
     //
     console.info(`Running plugin ${this.name}@${this.version}....`);
+    cmd.emit(BuildEvent.log, {
+      time: new Date().toLocaleTimeString(),
+      level: LogLevel.INFO,
+      text: `Running plugin ${this.name}@${this.version}....`,
+    });
+    await this.methods.default(api);
   }
 }

@@ -63,7 +63,7 @@ export default async ({ command, options }: CoreOpts) => {
     ),
     options
   );
-  await cmd.run();
+  await cmd.run(safeRequire(cmdPackage as string));
   await cmd.after();
 
   cmd.on(BuildPhase.finished, () => {
