@@ -2,40 +2,41 @@
  * @class Plugin
  */
 import { EventEmitter } from "events";
-import { Package } from "@initializer/cli/Package";
-
-export type PluginArgs = Package;
+import { Package } from "./Package";
+import { CommandArgs } from "./Command";
 
 export type PluginFunc = <T>(api: Package) => Promise<T>;
 
-type PluginFuncs = {
+type PluginMethods = {
   [name: string]: PluginFunc;
 };
+
+export type PluginImpl = (api: Package, options?: CommandArgs) => void;
 
 export class Plugin extends EventEmitter {
   readonly version: string;
   readonly name: string;
-  readonly funcs: PluginFuncs;
+  readonly methods: PluginMethods;
 
   constructor({
     name,
     version,
-    funcs,
+    methods,
   }: {
     name: string;
     version: string;
-    funcs: PluginFuncs;
+    methods: PluginMethods;
   }) {
     super();
 
     this.name = name;
     this.version = version;
-    this.funcs = funcs;
+    this.methods = methods;
   }
   /**
    * Plugin的执行方法
    * */
-  async run() {
+  async run(api: Package, options?: CommandArgs) {
     //
     console.info(`Running plugin ${this.name}@${this.version}....`);
   }

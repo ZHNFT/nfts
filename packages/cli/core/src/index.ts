@@ -1,53 +1,77 @@
-import path from "path";
-import minimist from "minimist";
 import { readJsonSync } from "fs-extra";
-import { Plugin } from "@initializer/cli/Plugin";
-import { Command } from "@initializer/cli/Command";
-import { safeRequire } from "@initializer/cli/utils";
+// import { safeRequire } from "./utils";
 
-const execRoot = process.cwd();
+import { Command, CommandArgs } from "./Command";
+import { Plugin } from "./Plugin";
+import { BuildPhase } from "./flag";
+import { safeRequire } from "./utils";
 
-type CommandArgs = { command: string; scope?: string; ignore?: string };
-
-/// 读取packageJson数据
-const readPackageJson = () => {
-  const packagePath = path.join(execRoot, "package.json");
-  return readJsonSync(packagePath);
+type IPackage = {
+  name: string;
+  version: string;
+  dependencies?: string[];
+  devDependencies?: string[];
+  peerDependencies?: string[];
+  [prop: string]: unknown;
 };
 
-/// 获取命令行参数
-const cliOptions = minimist<CommandArgs>(process.argv.slice(2));
+const execRoot = process.cwd(); /// 当前执行路径
 
-/// 错误处理
-if (!cliOptions.command || cliOptions.command === "help") {
-  // @ts-ignore
-  help();
-  process.exit(1);
+const readJsonFile = (file: string): IPackage =>
+  readJsonSync(file, { throws: false });
+
+const rootPackageJson = readJsonFile(`${execRoot}/package.json`);
+
+interface CoreOpts {
+  command: string;
+  options: CommandArgs;
 }
 
-const json = readPackageJson();
-const devDeps = (json.devDependencies as { [key: string]: string }) ?? {};
+const { dependencies, devDependencies, peerDependencies } = rootPackageJson;
 
-/// 当前使用的所有插件集合
-const plugins = Object.keys(devDeps)
-  .filter((key) => /^@initializer\/cli-plugin-(\w+)$/.test(key))
-  .map(
-    (name) =>
-      new Plugin({ name, version: devDeps[name], funcs: safeRequire(name) })
+const deps: Record<string, unknown> = {
+  ...(dependencies ?? {}),
+  ...(devDependencies ?? {}),
+  ...(peerDependencies ?? {}),
+};
+
+export default async ({ command, options }: CoreOpts) => {
+  /// load plugins
+  const plugins = Object.keys(deps).filter((packageName) =>
+    /cli-plugin-(\w)*/.test(packageName)
   );
 
-/// 当前使用的命令集合
-// const commands = Object.keys(devDeps).filter((key) =>
-//   /^@initializer\/cli-command-(\w+)$/.test(key)
-// );
+  /// find command package
+  const cmdPackage = Object.keys(deps).find((name) =>
+    name.endsWith(`-${command}`)
+  );
 
-const cmd = new Command({
-  name: cliOptions.command,
-  version: cliOptions.version,
-});
+  /// exec command
+  const cmd = new Command({
+    name: cmdPackage as string,
+    version: deps[cmdPackage as string] as string,
+  });
 
-cmd.run(plugins);
+  await cmd.pre(
+    plugins.map(
+      (pluginName) =>
+        new Plugin({
+          name: pluginName,
+          version: deps[pluginName as string] as string,
+          methods: safeRequire(pluginName),
+        })
+    ),
+    options
+  );
+  await cmd.run();
+  await cmd.after();
 
-const help = (): void => {
-  console.log("Avaliable Commands");
+  cmd.on(BuildPhase.finished, () => {
+    console.log(`${command} build finished`);
+    process.exit(0);
+  });
 };
+
+export { Package } from "./Package";
+export { Plugin, PluginFunc as PluginImpl } from "./Plugin";
+export { CommandImpl } from "./Command";

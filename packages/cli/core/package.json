@@ -7,6 +7,9 @@
     "default": "./dist/index.js"
   },
   "typings": "./dist/index.d.ts",
+  "bin": {
+    "devtool": "bin/devtoll.js"
+  },
   "author": {
     "name": "ray"
   },
