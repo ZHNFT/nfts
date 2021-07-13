@@ -4,11 +4,12 @@
   "type": "module",
   "main": "./src/index.ts",
   "exports": {
-    "default": "./dist/index.js"
+    "default": "./dist/index.js",
+    "node": "./dist/index.cjs"
   },
   "typings": "./dist/index.d.ts",
   "bin": {
-    "devtool": "bin/devtoll.js"
+    "devtool": "bin/devtool.js"
   },
   "author": {
     "name": "ray"

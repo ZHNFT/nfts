@@ -1,10 +1,11 @@
-import { readJsonSync } from "fs-extra";
+import * as fsExtra from "fs-extra";
 // import { safeRequire } from "./utils";
 
 import { Command, CommandArgs } from "./Command";
-import { Plugin } from "./Plugin";
 import { BuildPhase } from "./flag";
 import { safeRequire } from "./utils";
+
+const { readJsonSync } = fsExtra;
 
 type IPackage = {
   name: string;
@@ -36,11 +37,6 @@ const deps: Record<string, unknown> = {
 };
 
 export default async ({ command, options }: CoreOpts) => {
-  /// load plugins
-  const plugins = Object.keys(deps).filter((packageName) =>
-    /cli-plugin-(\w)*/.test(packageName)
-  );
-
   /// find command package
   const cmdPackage = Object.keys(deps).find((name) =>
     name.endsWith(`-${command}`)
@@ -50,21 +46,10 @@ export default async ({ command, options }: CoreOpts) => {
   const cmd = new Command({
     name: cmdPackage as string,
     version: deps[cmdPackage as string] as string,
+    options,
   });
 
-  await cmd.pre(
-    plugins.map(
-      (pluginName) =>
-        new Plugin({
-          name: pluginName,
-          version: deps[pluginName as string] as string,
-          methods: safeRequire(pluginName),
-        })
-    ),
-    options
-  );
   await cmd.run(safeRequire(cmdPackage as string));
-  await cmd.after();
 
   cmd.on(BuildPhase.finished, () => {
     console.log(`${command} build finished`);

@@ -2,11 +2,12 @@
   "name": "@initializer/eslint-config",
   "type": "module",
   "version": "0.0.1",
-  "main": "./rules.ts",
+  "main": "index.ts",
   "exports": {
-    "default": "./rules.js"
+    "default": "./dist/index.js",
+    "node": "./dist/index.cjs"
   },
-  "typings": "./rules.d.ts",
+  "typings": "./dist/index.d.ts",
   "dependencies": {
     "@babel/eslint-parser": "^7.14.7",
     "@babel/eslint-plugin": "^7.14.5",

@@ -4,6 +4,7 @@ importers:
 
   .:
     specifiers:
+      '@initializer/eslint-config': workspace:*
       '@rollup/plugin-alias': ^3.1.2
       '@rollup/plugin-commonjs': ^19.0.0
       '@rollup/plugin-json': ^4.1.0
@@ -27,6 +28,16 @@ importers:
       rollup-plugin-typescript2: 0.30.0_rollup@2.53.0
       ts-node: 10.0.0
       tslib: 2.3.0
+    devDependencies:
+      '@initializer/eslint-config': link:packages/eslint-config
+
+  demo/demo1:
+    specifiers:
+      '@initializer/cli': workspace:*
+      '@initializer/cli-command-esm': workspace:*
+    devDependencies:
+      '@initializer/cli': link:../../packages/cli/core
+      '@initializer/cli-command-esm': link:../../packages/cli/cli-command-esm
 
   packages/cli/cli-command-esm:
     specifiers:

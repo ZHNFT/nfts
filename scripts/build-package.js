@@ -53,18 +53,12 @@ const esmBuild = {
 const cjsBuild = {
   input: path.resolve(packagePath, ijson.main),
   output: {
-    file: path.resolve(packagePath, ijson.exports.default),
+    file: path.resolve(packagePath, ijson.exports.node),
     format: "cjs",
     exports: "auto",
   },
   external: Object.keys(ijson.dependencies || {}),
-  plugins: [
-    ...nodePlugins,
-    apiExtractor({
-      cwd: packagePath,
-      mainEntryPointFilePath: "./temp/index.d.ts",
-    }),
-  ],
+  plugins: [...nodePlugins],
 };
 
-export default [esmBuild];
+export default [esmBuild, cjsBuild];

@@ -44,8 +44,8 @@ export const createConfig = (
       dtsRollup: {
         enabled: true,
         untrimmedFilePath: resolve(cwd, "dist/index.d.ts"),
-        betaTrimmedFilePath: resolve(cwd, "dist/index.beta.d.ts"),
-        publicTrimmedFilePath: resolve(cwd, "dist/index.public.d.ts"),
+        // betaTrimmedFilePath: resolve(cwd, "dist/index.beta.d.ts"),
+        // publicTrimmedFilePath: resolve(cwd, "dist/index.public.d.ts"),
         omitTrimmingComments: true,
       },
     },

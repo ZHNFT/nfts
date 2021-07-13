@@ -2,7 +2,6 @@
  * @class Command
  */
 import { EventEmitter } from "events";
-import { Plugin } from "./Plugin";
 import { Package } from "./Package";
 import { BuildEvent, LogLevel } from "./flag";
 
@@ -11,10 +10,14 @@ export interface CommandRunResult {
 }
 
 export interface CommandArgs {
-  [prop: string]: string;
+  scope?: string;
+  [prop: string]: string | undefined;
 }
 
-export type CommandImpl = (options?: CommandArgs) => void | Promise<void>;
+export type CommandImpl = (
+  pack: Package,
+  options?: CommandArgs
+) => void | Promise<void>;
 
 export class Command extends EventEmitter {
   readonly name: string;
@@ -27,42 +30,37 @@ export class Command extends EventEmitter {
   commandPackage: Package | undefined;
   options: CommandArgs | undefined;
 
-  constructor({ name, version }: { name: string; version: string }) {
+  constructor({
+    name,
+    version,
+    options,
+  }: {
+    name: string;
+    version: string;
+    options: CommandArgs;
+  }) {
     super();
 
     this.name = name;
     this.version = version;
-
-    this.recordLog();
-  }
-
-  async pre(
-    plugins: Array<Plugin>,
-    options: CommandArgs = {}
-  ): Promise<Package> {
-    /// 实例化一个Package
-    /// todo 需要调整如果指定的是多个包，是否该生成多个Package实例？
-    ///      如果是monorepo，怎么生成Package实例？
-    this.commandPackage = new Package(process.cwd());
     this.options = options;
 
-    for await (let plugin of plugins) {
-      await plugin.run(this.commandPackage, this, options);
-    }
+    this.recordLog();
 
-    return this.commandPackage;
+    if (!options.scope) {
+      this.commandPackage = new Package(process.cwd());
+    } else {
+      /// analysis scope
+    }
   }
 
   /**
    * Run Command
    */
-  async run(execute: CommandImpl): Promise<CommandRunResult> {
-    /// implement run
-    await execute(this.options);
-    return {};
+  async run(execute: CommandImpl) {
+    /// binding command
+    await execute.apply(this, [this.commandPackage as Package, this.options]);
   }
-
-  async after() {}
 
   recordLog() {
     this.on(

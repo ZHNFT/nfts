@@ -10,7 +10,8 @@
   "scripts": {
     "build-api-extractor": "rollup -c=./scripts/build-package.js --module=plugin-api-extractor",
     "build-eslint-config": "rollup -c=./scripts/build-package.js --module=eslint-config",
-    "build-cli-core": "rollup -c=./scripts/build-package.js --module=cli/core"
+    "build-cli-core": "rollup -c=./scripts/build-package.js --module=cli/core",
+    "build-cmd-esm": "rollup -c=./scripts/build-package.js --module=cli/cli-command-esm"
   },
   "engines": {
     "node": ">=12"
@@ -27,5 +28,14 @@
     "rollup-plugin-typescript2": "^0.30.0",
     "ts-node": "^10.0.0",
     "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@initializer/eslint-config": "workspace:*"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@initializer/eslint-config"
+    ]
   }
 }
