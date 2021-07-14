@@ -4,8 +4,7 @@
   "type": "module",
   "main": "./src/index.ts",
   "exports": {
-    "default": "./dist/index.js",
-    "node": "./dist/index.cjs"
+    "default": "./dist/index.js"
   },
   "typings": "./dist/index.d.ts",
   "dependencies": {

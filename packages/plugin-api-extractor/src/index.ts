@@ -11,6 +11,9 @@ type ApiExtractorProps = {
   mainEntryPointFilePath: string;
   clear?: boolean;
   cwd?: string;
+  untrimmedFilePath?: string;
+  betaTrimmedFilePath?: string;
+  publicTrimmedFilePath?: string;
   overrides?: Partial<IExtractorConfigPrepareOptions>;
 };
 
@@ -28,11 +31,12 @@ export const combine = (
 };
 
 /// generate api-extractor configuration
-export const createConfig = (
-  mainEntryPointFilePath: string,
-  cwd: string,
-  overrides: Partial<IExtractorConfigPrepareOptions> = {}
-): ExtractorConfig =>
+export const createConfig = ({
+  mainEntryPointFilePath,
+  cwd = process.cwd(),
+  overrides,
+  untrimmedFilePath,
+}: ApiExtractorProps): ExtractorConfig =>
   ExtractorConfig.prepare({
     configObjectFullPath: undefined,
     configObject: {
@@ -43,9 +47,9 @@ export const createConfig = (
       projectFolder: cwd,
       dtsRollup: {
         enabled: true,
-        untrimmedFilePath: resolve(cwd, "dist/index.d.ts"),
-        // betaTrimmedFilePath: resolve(cwd, "dist/index.beta.d.ts"),
-        // publicTrimmedFilePath: resolve(cwd, "dist/index.public.d.ts"),
+        untrimmedFilePath: untrimmedFilePath ?? resolve(cwd, "dist/index.d.ts"),
+        // betaTrimmedFilePath: betaTrimmedFilePath,
+        // publicTrimmedFilePath: publicTrimmedFilePath,
         omitTrimmingComments: true,
       },
     },
@@ -63,13 +67,7 @@ const apiExtractor: PluginImpl<ApiExtractorProps> = (props) => {
       if (!runBefore) {
         console.log("");
         console.log("Starting api-extractor process...");
-        const result = Extractor.invoke(
-          createConfig(
-            props.mainEntryPointFilePath,
-            props.cwd as string,
-            props.overrides
-          )
-        );
+        const result = Extractor.invoke(createConfig(props));
         if (result.succeeded) {
           console.log("api-extractor succeeded");
         } else {

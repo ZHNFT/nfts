@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 import minimist from "minimist";
-import runCommand from "../dist/index.cjs";
+import runCommand from "../dist/index.js";
 
 const { _, ...others } = minimist(process.argv.slice(2));
 
@@ -18,7 +18,7 @@ let { scope = "" } = others;
 /// [package-a,package-b,package-c,...]
 scope = scope.split(",");
 
-void runCommand.default({
+void runCommand({
   command,
   options: { scope },
 });

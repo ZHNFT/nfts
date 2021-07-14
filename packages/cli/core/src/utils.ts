@@ -1,14 +1,11 @@
-/// require失败给出错误提示
-/// 通过模块名称，获取模块导出的方法，捕获导出异常，提供fallback的机会
-export const safeRequire = (path: string, fallback?: () => void): any => {
-  try {
-    return require(path);
-  } catch (error) {
-    console.error(`\n\n  !!! ${error.message}\n\n`);
-    if (fallback) {
-      fallback();
-    } else {
-      process.exit(1);
-    }
-  }
+import { CommandImpl } from "./Command";
+
+export const safeImport = (path: string): Promise<CommandImpl> => {
+  return new Promise<CommandImpl>((resolve, reject) => {
+    import(path)
+      .then((func) => {
+        resolve(func);
+      })
+      .catch((e) => reject(e));
+  });
 };

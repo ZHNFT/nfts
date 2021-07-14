@@ -8,7 +8,7 @@ import path from "path";
 import fsextra from "fs-extra";
 import apiExtractor from "../packages/plugin-api-extractor/dist/index.js";
 
-const { readJsonSync } = fsextra;
+const { readJSONSync } = fsextra;
 
 const args = minimist(process.argv.slice(2));
 
@@ -18,7 +18,7 @@ const execRoot = process.cwd();
 
 const packagePath = path.resolve(execRoot, "packages", packageName);
 
-const ijson = readJsonSync(path.resolve(packagePath, "package.json"));
+const ijson = readJSONSync(path.resolve(packagePath, "package.json"));
 
 const nodePlugins = [
   alias(),
@@ -50,15 +50,15 @@ const esmBuild = {
   ],
 };
 
-const cjsBuild = {
-  input: path.resolve(packagePath, ijson.main),
-  output: {
-    file: path.resolve(packagePath, ijson.exports.node),
-    format: "cjs",
-    exports: "auto",
-  },
-  external: Object.keys(ijson.dependencies || {}),
-  plugins: [...nodePlugins],
-};
+// const cjsBuild = {
+//   input: path.resolve(packagePath, ijson.main),
+//   output: {
+//     file: path.resolve(packagePath, ijson.exports.node),
+//     format: "cjs",
+//     exports: "auto",
+//   },
+//   external: Object.keys(ijson.dependencies || {}),
+//   plugins: [...nodePlugins],
+// };
 
-export default [esmBuild, cjsBuild];
+export default [esmBuild];

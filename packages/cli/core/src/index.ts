@@ -1,11 +1,9 @@
-import * as fsExtra from "fs-extra";
-// import { safeRequire } from "./utils";
-
+import fsExtra from "fs-extra";
 import { Command, CommandArgs } from "./Command";
 import { BuildPhase } from "./flag";
-import { safeRequire } from "./utils";
+import { safeImport } from "./utils";
 
-const { readJsonSync } = fsExtra;
+const { readJSONSync } = fsExtra;
 
 type IPackage = {
   name: string;
@@ -19,7 +17,7 @@ type IPackage = {
 const execRoot = process.cwd(); /// 当前执行路径
 
 const readJsonFile = (file: string): IPackage =>
-  readJsonSync(file, { throws: false });
+  readJSONSync(file, { throws: false });
 
 const rootPackageJson = readJsonFile(`${execRoot}/package.json`);
 
@@ -48,9 +46,8 @@ export default async ({ command, options }: CoreOpts) => {
     version: deps[cmdPackage as string] as string,
     options,
   });
-
-  await cmd.run(safeRequire(cmdPackage as string));
-
+  const execute = await safeImport(cmdPackage as string);
+  await cmd.run(execute);
   cmd.on(BuildPhase.finished, () => {
     console.log(`${command} build finished`);
     process.exit(0);

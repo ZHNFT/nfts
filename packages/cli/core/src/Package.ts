@@ -4,7 +4,9 @@
  */
 import path from "path";
 import { readdirSync, statSync } from "fs";
-import { readJSONSync } from "fs-extra";
+import fsExtra from "fs-extra";
+
+const { readJSONSync } = fsExtra;
 
 export class Package {
   root: string;

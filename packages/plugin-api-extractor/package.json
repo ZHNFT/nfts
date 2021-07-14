@@ -5,7 +5,6 @@
   "main": "./src/index.ts",
   "exports": {
     "default": "./dist/index.js",
-    "node": "./dist/index.cjs"
   },
   "typings": "./dist/index.d.ts",
   "author": {
