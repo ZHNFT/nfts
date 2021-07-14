@@ -10,15 +10,13 @@ if (_.length < 0) {
   process.exit(1);
 }
 
-const [command] = _;
-let { scope = "" } = others;
+const [command, ...restCommands] = _;
+let { scope = "", ...restArgs } = others;
 
 /// 通过`,`来分割多个待构建的scope
-/// "package-a,package-b,package-c,..."
-/// [package-a,package-b,package-c,...]
 scope = scope.split(",");
 
 void runCommand({
   command,
-  options: { scope },
+  options: { ...restArgs, scope, subCommands: restCommands },
 });

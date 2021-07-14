@@ -47,7 +47,8 @@ export default async ({ command, options }: CoreOpts) => {
     options,
   });
   const execute = await safeImport(cmdPackage as string);
-  await cmd.run(execute);
+  // @ts-ignore
+  await cmd.run(execute.default);
   cmd.on(BuildPhase.finished, () => {
     console.log(`${command} build finished`);
     process.exit(0);
@@ -55,5 +56,6 @@ export default async ({ command, options }: CoreOpts) => {
 };
 
 export { Package } from "./Package";
-export { Plugin, PluginFunc as PluginImpl } from "./Plugin";
+export { Plugin, PluginImpl } from "./Plugin";
 export { CommandImpl } from "./Command";
+// export { LogLevel, BuildPhase, BuildEvent } from "./flag";

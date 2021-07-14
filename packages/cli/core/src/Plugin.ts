@@ -4,7 +4,6 @@
 import { EventEmitter } from "events";
 import { Package } from "./Package";
 import { Command, CommandArgs } from "./Command";
-import { BuildEvent, LogLevel } from "./flag";
 
 export type PluginFunc = <T>(api: Package) => Promise<T>;
 
@@ -12,7 +11,7 @@ type PluginMethods = {
   [name: string]: PluginFunc;
 };
 
-export type PluginImpl = (api: Package, options?: CommandArgs) => void;
+export type PluginImpl = (api: Package, options?: CommandArgs) => Promise<void>;
 
 export class Plugin extends EventEmitter {
   readonly version: string;
@@ -40,11 +39,11 @@ export class Plugin extends EventEmitter {
   async run(api: Package, cmd: Command, options?: CommandArgs) {
     //
     console.info(`Running plugin ${this.name}@${this.version}....`);
-    cmd.emit(BuildEvent.log, {
-      time: new Date().toLocaleTimeString(),
-      level: LogLevel.INFO,
-      text: `Running plugin ${this.name}@${this.version}....`,
-    });
+    // cmd.emit(BuildEvent.log, {
+    //   time: new Date().toLocaleTimeString(),
+    //   level: LogLevel.INFO,
+    //   text: `Running plugin ${this.name}@${this.version}....`,
+    // });
     await this.methods.default(api);
   }
 }

@@ -34,12 +34,18 @@ importers:
   demo/demo1:
     specifiers:
       '@initializer/cli': workspace:*
-      '@initializer/cli-command-esm': workspace:*
+      '@initializer/command-esm': workspace:*
     devDependencies:
       '@initializer/cli': link:../../packages/cli/core
-      '@initializer/cli-command-esm': link:../../packages/cli/cli-command-esm
+      '@initializer/command-esm': link:../../packages/cli/command-esm
 
-  packages/cli/cli-command-esm:
+  packages/cli/cmd-init:
+    specifiers:
+      '@initializer/cli': workspace:*
+    dependencies:
+      '@initializer/cli': link:../core
+
+  packages/cli/command-esm:
     specifiers:
       '@initializer/cli': workspace:*
     dependencies:
@@ -61,6 +67,12 @@ importers:
       '@types/fs-extra': 9.0.12
       '@types/minimist': 1.2.2
       '@types/node': 15.14.1
+
+  packages/cli/plugin-jest:
+    specifiers:
+      '@initializer/cli': workspace:*
+    dependencies:
+      '@initializer/cli': link:../core
 
   packages/env:
     specifiers: {}

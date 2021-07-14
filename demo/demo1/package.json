@@ -2,10 +2,10 @@
   "name": "demo1",
   "version": "0.0.1",
   "scripts": {
-    "esm": "devtool esm"
+    "esm": "devtool esm dev adj --aaa --ccc ddd"
   },
   "devDependencies": {
     "@initializer/cli": "workspace:*",
-    "@initializer/cli-command-esm": "workspace:*"
+    "@initializer/command-esm": "workspace:*"
   }
 }

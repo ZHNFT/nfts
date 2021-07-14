@@ -11,7 +11,8 @@
     "build-api-extractor": "rollup -c=./scripts/build-package.js --module=plugin-api-extractor",
     "build-eslint-config": "rollup -c=./scripts/build-package.js --module=eslint-config",
     "build-cli-core": "rollup -c=./scripts/build-package.js --module=cli/core",
-    "build-cmd-esm": "rollup -c=./scripts/build-package.js --module=cli/cli-command-esm"
+    "build-command-esm": "rollup -c=./scripts/build-package.js --module=cli/command-esm",
+    "build-plugin-jest": "rollup -c=./scripts/build-package.js --module=cli/plugin-jest"
   },
   "engines": {
     "node": ">=12"

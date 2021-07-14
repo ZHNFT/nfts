@@ -1,8 +1,8 @@
 // esm dev
 import { CommandImpl } from "@initializer/cli";
 
-const esm: CommandImpl = async (api) => {
-  console.log(api);
+const esm: CommandImpl = async (cmd) => {
+  console.log(cmd);
 };
 
 export default esm;

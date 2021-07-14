@@ -25,7 +25,7 @@ const nodePlugins = [
   commonjs({
     include: "node_modules/**",
   }),
-  resolve({ extensions: [".ts", ".js,", "json", ".mjs"] }),
+  resolve({ extensions: [".ts", ".js,", "json", ".mjs", ".cjs"] }),
   json(),
   ts({
     useTsconfigDeclarationDir: true,

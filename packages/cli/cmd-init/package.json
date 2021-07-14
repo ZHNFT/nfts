@@ -1,5 +1,5 @@
 {
-  "name": "@initializer/cli-command-esm",
+  "name": "@initializer/cmd-init",
   "version": "0.0.0",
   "type": "module",
   "main": "./src/index.ts",
@@ -9,6 +9,5 @@
   "typings": "./dist/index.d.ts",
   "dependencies": {
     "@initializer/cli": "workspace:*"
-  },
-  "devDependencies": {}
+  }
 }

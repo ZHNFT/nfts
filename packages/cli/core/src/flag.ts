@@ -16,3 +16,5 @@ export enum LogLevel {
   ERROR = "ERROR",
   FATAL = "FATAL",
 }
+
+export type ILogLevel = keyof typeof LogLevel;

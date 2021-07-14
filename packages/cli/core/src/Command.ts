@@ -3,7 +3,7 @@
  */
 import { EventEmitter } from "events";
 import { Package } from "./Package";
-import { BuildEvent, LogLevel } from "./flag";
+import { ILogLevel, LogLevel } from "./flag";
 
 export interface CommandRunResult {
   [prop: string]: unknown;
@@ -14,30 +14,27 @@ export interface CommandArgs {
   [prop: string]: string | undefined;
 }
 
-export type CommandImpl = (
-  pack: Package,
-  options?: CommandArgs
-) => void | Promise<void>;
+export type CommandImpl = (cmd: Command) => void | Promise<void>;
 
 export class Command extends EventEmitter {
   readonly name: string;
   readonly version: string;
   readonly logs: {
-    time?: string;
-    text: string;
+    time: string;
+    message: string;
     level: keyof typeof LogLevel;
   }[] = [];
-  commandPackage: Package | undefined;
-  options: CommandArgs | undefined;
+  readonly commandPackage: Package | undefined;
+  readonly options: CommandArgs | undefined;
 
   constructor({
     name,
     version,
     options,
   }: {
-    name: string;
-    version: string;
-    options: CommandArgs;
+    readonly name: string;
+    readonly version: string;
+    readonly options: CommandArgs;
   }) {
     super();
 
@@ -45,47 +42,29 @@ export class Command extends EventEmitter {
     this.version = version;
     this.options = options;
 
-    this.recordLog();
-
-    if (!options.scope) {
-      this.commandPackage = new Package(process.cwd());
-    } else {
-      /// analysis scope
-    }
+    this.commandPackage = new Package(process.cwd());
   }
 
-  /**
-   * Run Command
-   */
   async run(execute: CommandImpl) {
-    /// binding command
-    await execute.apply(this, [this.commandPackage as Package, this.options]);
+    await this.loadPlugins();
+    await execute.apply(null, [this]);
   }
 
-  recordLog() {
-    this.on(
-      BuildEvent.log,
-      (
-        log:
-          | { text: string; time?: string; level?: keyof typeof LogLevel }
-          | string
-      ) => {
-        if (typeof log === "string") {
-          this.logs.push({
-            time: new Date().toLocaleTimeString(),
-            text: log,
-            level: LogLevel.INFO,
-          });
-        } else {
-          this.logs.push({
-            time: log.time ?? new Date().toLocaleTimeString(),
-            text: log.text,
-            level: log.level ?? LogLevel.INFO,
-          });
-        }
-      }
-    );
+  async loadPlugins() {
+    // const { json } = this.commandPackage as Package;
+    // const { dependencies, devDependencies, peerDependencies } = json;
+    //
+    // const plugins = {
+    //
+    // };
   }
 
-  // of(): Command {}
+  log(message: string, level: ILogLevel) {
+    this.logs.push({
+      time: new Date().toLocaleTimeString(),
+      message,
+      level,
+    });
+    console.log(message);
+  }
 }
