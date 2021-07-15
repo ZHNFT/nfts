@@ -3,3 +3,4 @@ packages:
   - "packages/cli/*"
   - "internals/*"
   - "demo/*"
+  - "dev-packages/*"
