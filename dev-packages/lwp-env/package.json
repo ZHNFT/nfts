@@ -1,0 +1,9 @@
+{
+  "name": "@lwp/env",
+  "version": "0.0.0",
+  "author": {
+    "name": "ray"
+  },
+  "description": "environment arguments",
+  "dependencies": {}
+}
