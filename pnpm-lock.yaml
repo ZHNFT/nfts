@@ -5,10 +5,21 @@ importers:
   .:
     specifiers: {}
 
-  dev-packages/liverpool:
+  dev-packages/package-scripts:
     specifiers: {}
 
-  dev-packages/liverpool-config:
+  dev-packages/raydium:
+    specifiers:
+      '@types/node': ^16.3.3
+      typescript: ^4.3.5
+    devDependencies:
+      '@types/node': 16.3.3
+      typescript: 4.3.5
+
+  dev-packages/runtime-env:
+    specifiers: {}
+
+  dev-packages/shared-config:
     specifiers: {}
 
   packages/cli/cmd-init:
@@ -45,9 +56,6 @@ importers:
       '@initializer/cli': workspace:*
     dependencies:
       '@initializer/cli': link:../core
-
-  packages/env:
-    specifiers: {}
 
   packages/eslint-config:
     specifiers:
@@ -220,6 +228,10 @@ packages:
 
   /@types/node/16.3.1:
     resolution: {integrity: sha512-N87VuQi7HEeRJkhzovao/JviiqKjDKMVKxKMfUvSKw+MbkbW8R0nA3fi/MQhhlxV2fQ+2ReM+/Nt4efdrJx3zA==}
+
+  /@types/node/16.3.3:
+    resolution: {integrity: sha512-8h7k1YgQKxKXWckzFCMfsIwn0Y61UK6tlD6y2lOb3hTOIMlK3t9/QwHOhc81TwU+RMf0As5fj7NPjroERCnejQ==}
+    dev: true
 
   /@typescript-eslint/eslint-plugin/4.28.2_@typescript-eslint+parser@4.28.2:
     resolution: {integrity: sha512-PGqpLLzHSxq956rzNGasO3GsAPf2lY9lDUBXhS++SKonglUmJypaUtcKzRtUte8CV7nruwnDxtLUKpVxs0wQBw==}
@@ -1069,7 +1081,6 @@ packages:
     resolution: {integrity: sha512-DqQgihaQ9cUrskJo9kIyW/+g0Vxsk8cDtZ52a3NGh0YNTfpUSArXSohyUGnvbPazEPLu398C0UxmKSOrPumUzA==}
     engines: {node: '>=4.2.0'}
     hasBin: true
-    dev: false
 
   /unbox-primitive/1.0.1:
     resolution: {integrity: sha512-tZU/3NqK3dA5gpE1KtyiJUrEB0lxnGkMFHptJ7q6ewdZ8s12QrODwNbhIJStmJkd1QDXa1NRA8aF2A1zk/Ypyw==}

@@ -1,0 +1,11 @@
+{
+  "name": "@raydium/package-scripts",
+  "type": "commonjs",
+  "author": {
+    "name": "ray"
+  },
+  "description": "scripts collection",
+  "dependencies": {
+    "@raydium/shared-config": "workspace:*"
+  }
+}

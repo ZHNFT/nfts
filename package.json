@@ -1,9 +1,8 @@
 {
   "name": "initializer",
   "version": "0.0.0",
-  "author": "雷文鹏",
-  "private": true,
-  "engines": {
-    "node": ">=12.22.3"
-  }
+  "author": {
+    "name": "ray"
+  },
+  "private": true
 }

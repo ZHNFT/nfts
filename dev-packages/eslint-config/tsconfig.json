@@ -1,7 +1,10 @@
 {
-  "extends": "../../../tsconfig.json",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "declaration": true,
     "declarationDir": "./temp"
-  }
+  },
+  "include": [
+    "./index.ts"
+  ]
 }
