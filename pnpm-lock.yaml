@@ -8,10 +8,21 @@ importers:
   dev-packages/command-line-tool:
     specifiers:
       '@raydium/eslint-config': workspace:*
+      '@raydium/package-scripts': workspace:*
       '@raydium/shared-config': workspace:*
+      '@types/minimist': ^1.2.2
+      minimist: ^1.2.5
+      ts-node: ^10.1.0
+      typescript: ^4.3.5
+    dependencies:
+      minimist: 1.2.5
     devDependencies:
       '@raydium/eslint-config': link:../eslint-config
+      '@raydium/package-scripts': link:../package-scripts
       '@raydium/shared-config': link:../shared-config
+      '@types/minimist': 1.2.2
+      ts-node: 10.1.0_typescript@4.3.5
+      typescript: 4.3.5
 
   dev-packages/eslint-config:
     specifiers:
@@ -47,10 +58,12 @@ importers:
 
   dev-packages/raydium:
     specifiers:
+      '@raydium/command-line-tool': workspace:*
       '@raydium/package-scripts': workspace:*
       '@types/node': ^16.3.3
       typescript: ^4.3.5
     devDependencies:
+      '@raydium/command-line-tool': link:../command-line-tool
       '@raydium/package-scripts': link:../package-scripts
       '@types/node': 16.3.3
       typescript: 4.3.5
@@ -234,8 +247,8 @@ packages:
     resolution: {integrity: sha512-509r2+yARFfHHE7T6Puu2jjkoycftovhXRqW328PDXTVGKihlb1P8Z9mMZH04ebyajfRY7dedfGynlrFHJUQCg==}
     dev: true
 
-  /@tsconfig/node16/1.0.1:
-    resolution: {integrity: sha512-FTgBI767POY/lKNDNbIzgAX6miIDBs6NTCbdlDb8TrWovHsSvaVIZDlTqym29C6UqhzwcJx4CYr+AlrMywA0cA==}
+  /@tsconfig/node16/1.0.2:
+    resolution: {integrity: sha512-eZxlbI8GZscaGS7kkc/trHTT5xgrjH3/1n2JDwusC9iahPKWMRvRjJSAN5mCXviuTGQ/lHnhvv8Q1YTpnfz9gA==}
     dev: true
 
   /@types/argparse/1.0.38:
@@ -245,6 +258,10 @@ packages:
   /@types/json-schema/7.0.8:
     resolution: {integrity: sha512-YSBPTLTVm2e2OoQIDYx8HaeWJ5tTToLH67kXR7zYNGupXMEHa2++G8k+DczX2cFVgalypqtyZIcU19AFcmOpmg==}
     dev: false
+
+  /@types/minimist/1.2.2:
+    resolution: {integrity: sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==}
+    dev: true
 
   /@types/node/10.17.13:
     resolution: {integrity: sha512-pMCcqU2zT4TjqYFrWtYHKal7Sl30Ims6ulZ4UFXxI4xbtQqK/qqKwkDoBFCfooRqqmRu9vY3xaJRwxSh673aYg==}
@@ -1202,6 +1219,10 @@ packages:
     dependencies:
       brace-expansion: 1.1.11
 
+  /minimist/1.2.5:
+    resolution: {integrity: sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==}
+    dev: false
+
   /ms/2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
 
@@ -1574,13 +1595,41 @@ packages:
       '@tsconfig/node10': 1.0.8
       '@tsconfig/node12': 1.0.9
       '@tsconfig/node14': 1.0.1
-      '@tsconfig/node16': 1.0.1
+      '@tsconfig/node16': 1.0.2
       '@types/node': 16.4.0
       arg: 4.1.3
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
       source-map-support: 0.5.19
+      yn: 3.1.1
+    dev: true
+
+  /ts-node/10.1.0_typescript@4.3.5:
+    resolution: {integrity: sha512-6szn3+J9WyG2hE+5W8e0ruZrzyk1uFLYye6IGMBadnOzDh8aP7t8CbFpsfCiEx2+wMixAhjFt7lOZC4+l+WbEA==}
+    engines: {node: '>=12.0.0'}
+    hasBin: true
+    peerDependencies:
+      '@swc/core': '>=1.2.50'
+      '@swc/wasm': '>=1.2.50'
+      '@types/node': '*'
+      typescript: '>=2.7'
+    peerDependenciesMeta:
+      '@swc/core':
+        optional: true
+      '@swc/wasm':
+        optional: true
+    dependencies:
+      '@tsconfig/node10': 1.0.8
+      '@tsconfig/node12': 1.0.9
+      '@tsconfig/node14': 1.0.1
+      '@tsconfig/node16': 1.0.2
+      arg: 4.1.3
+      create-require: 1.1.1
+      diff: 4.0.2
+      make-error: 1.3.6
+      source-map-support: 0.5.19
+      typescript: 4.3.5
       yn: 3.1.1
     dev: true
 
