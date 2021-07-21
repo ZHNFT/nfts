@@ -16,7 +16,7 @@ export default class CommandLineManager {
     return this._terminal;
   }
 
-  async parser<P>(): Promise<P> {
+  parser<P extends unknown>(): P {
     const args = process.argv.slice(2);
     return minimist<P>(args);
   }

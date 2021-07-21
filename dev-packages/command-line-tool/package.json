@@ -20,10 +20,15 @@
   },
   "eslintConfig": {
     "extends": [
-      "@raydium/eslint-config/profile/node.js"
-    ]
+      "@raydium/eslint-config/profiles/node.js"
+    ],
+    "parserOptions": {
+      "tsconfigRootDir": ".",
+      "project": "./tsconfig.json"
+    }
   },
   "dependencies": {
-    "minimist": "^1.2.5"
+    "minimist": "^1.2.5",
+    "tapable": "^2.2.0"
   }
 }

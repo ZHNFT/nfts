@@ -24,7 +24,8 @@
       "@raydium/eslint-config/profiles/node.js"
     ],
     "parserOptions": {
-      "tsconfigRootDir": "."
+      "tsconfigRootDir": ".",
+      "project": "./tsconfig.json"
     }
   }
 }

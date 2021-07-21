@@ -9,6 +9,6 @@ child
   .on('message', (buf) => {
     console.log(buf.toString());
   })
-  .on('exit', (code) => {
+  .on('exit', (code: number) => {
     console.log(`Exit with code ${code}`);
   });

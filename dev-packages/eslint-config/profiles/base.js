@@ -1,3 +1,4 @@
+// @ts-check
 /**
  *
  * @param scenario
@@ -23,7 +24,7 @@ const _buildConfig = (scenario) => {
         extends: [
           'plugin:@typescript-eslint/recommended',
           /**
-           * type checking
+           * enable type checking
            */
           'plugin:@typescript-eslint/recommended-requiring-type-checking'
         ],
