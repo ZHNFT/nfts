@@ -4,6 +4,9 @@
   "author": {
     "name": "ray"
   },
+  "scripts": {
+    "lint": "pnpx eslint --ext \".ts\""
+  },
   "devDependencies": {
     "@raydium/shared-config": "workspace:*",
     "@raydium/eslint-config": "workspace:*"

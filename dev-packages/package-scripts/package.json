@@ -4,6 +4,7 @@
   "author": {
     "name": "ray"
   },
+  "main": ".",
   "description": "scripts collection",
   "scripts": {
     "prepare": "pnpm run build",
