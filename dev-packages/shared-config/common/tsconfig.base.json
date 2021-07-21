@@ -12,8 +12,6 @@
     "strict": true,
     "declaration": true,
     "declarationMap": false,
-    "typeRoots": ["node_modules/@types"],
-    "baseUrl": ".",
     "lib": ["DOM", "DOM.Iterable", "ESNext"]
   }
 }

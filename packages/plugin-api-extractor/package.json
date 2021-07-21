@@ -14,6 +14,7 @@
     "@microsoft/api-extractor": "^7.17.1"
   },
   "devDependencies": {
+    "@raydium/shared-config": "workspace:*",
     "rollup": "^2.52.8"
   },
   "eslintConfig": {

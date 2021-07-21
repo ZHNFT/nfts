@@ -1,0 +1,16 @@
+{
+  "name": "@raydium/command-line-tool",
+  "version": "0.0.0",
+  "author": {
+    "name": "ray"
+  },
+  "devDependencies": {
+    "@raydium/shared-config": "workspace:*",
+    "@raydium/eslint-config": "workspace:*"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@raydium/eslint-config/profile/node.js"
+    ]
+  }
+}

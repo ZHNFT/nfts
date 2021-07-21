@@ -1,24 +1,18 @@
 {
-  "name": "@initializer/eslint-config",
-  "type": "module",
-  "version": "0.0.1",
-  "main": "index.ts",
-  "exports": {
-    "default": "./dist/index.js"
-  },
-  "typings": "./dist/index.d.ts",
+  "name": "@raydium/eslint-config",
+  "version": "0.0.0",
+  "keywords": [
+    "eslint",
+    "eslint-config"
+  ],
   "dependencies": {
-    "@babel/eslint-parser": "^7.14.7",
-    "@babel/eslint-plugin": "^7.14.5",
-    "@types/fs-extra": "^9.0.12",
     "@typescript-eslint/eslint-plugin": "^4.28.2",
     "@typescript-eslint/parser": "^4.28.2",
     "eslint-plugin-react": "^7.24.0",
-    "eslint-plugin-react-hooks": "^4.2.0",
-    "fs-extra": "^10.0.0"
+    "eslint-plugin-react-hooks": "^4.2.0"
   },
-  "files": [
-    "rules.js",
-    "README.md"
-  ]
+  "devDependencies": {
+    "eslint": "^7.31.0",
+    "typescript": "^4.3.5"
+  }
 }

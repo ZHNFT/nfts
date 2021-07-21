@@ -1,0 +1,3 @@
+{
+  "extends": "@raydium/shared-config/common/tsconfig.base.json"
+}

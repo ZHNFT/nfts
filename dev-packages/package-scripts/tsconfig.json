@@ -1,5 +1,9 @@
 {
+  "extends": "@raydium/shared-config/common/tsconfig.base.json",
   "compilerOptions": {
-    "resolveJsonModule": true
-  }
+    "outDir": "dist",
+    "declarationDir": "dist"
+  },
+  "include": ["./src"],
+  "exclude": ["./node_modules"]
 }

@@ -1,11 +1,29 @@
 {
   "name": "@raydium/package-scripts",
-  "type": "commonjs",
+  "type": "module",
   "author": {
     "name": "ray"
   },
   "description": "scripts collection",
+  "scripts": {
+    "prepare": "pnpm run build",
+    "build": "node --loader ts-node/esm ./src/tsc.ts --files"
+  },
   "dependencies": {
+    "@raydium/eslint-config": "workspace:*",
     "@raydium/shared-config": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^16.4.0",
+    "eslint": "^7.31.0",
+    "ts-node": "^10.1.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@raydium/eslint-config/profiles/node.js"
+    ],
+    "parserOptions": {
+      "tsconfigRootDir": "."
+    }
   }
 }
