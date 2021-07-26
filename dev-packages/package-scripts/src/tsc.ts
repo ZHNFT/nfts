@@ -10,5 +10,9 @@ child
     console.log(buf.toString());
   })
   .on('exit', (code: number) => {
-    console.log(`Exit with code ${code}`);
+    if (code === 0) {
+      console.log('Success with code 0');
+    } else {
+      console.error(`Error with code ${code}`);
+    }
   });

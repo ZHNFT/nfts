@@ -1,0 +1,10 @@
+{
+  "name": "@raydium/node-lib-tool",
+  "version": "0.0.0",
+  "author": {
+    "name": "leiwenpeng"
+  },
+  "devDependencies": {
+    "@raydium/shared-config": "workspace:*"
+  }
+}

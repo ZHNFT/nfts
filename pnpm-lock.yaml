@@ -12,10 +12,12 @@ importers:
       '@raydium/shared-config': workspace:*
       '@types/minimist': ^1.2.2
       minimist: ^1.2.5
+      tapable: ^2.2.0
       ts-node: ^10.1.0
       typescript: ^4.3.5
     dependencies:
       minimist: 1.2.5
+      tapable: 2.2.0
     devDependencies:
       '@raydium/eslint-config': link:../eslint-config
       '@raydium/package-scripts': link:../package-scripts
@@ -40,6 +42,12 @@ importers:
     devDependencies:
       eslint: 7.31.0
       typescript: 4.3.5
+
+  dev-packages/node-lib-tool:
+    specifiers:
+      '@raydium/shared-config': workspace:*
+    devDependencies:
+      '@raydium/shared-config': link:../shared-config
 
   dev-packages/package-scripts:
     specifiers:
@@ -1561,6 +1569,11 @@ packages:
       string-width: 4.2.2
       strip-ansi: 6.0.0
     dev: true
+
+  /tapable/2.2.0:
+    resolution: {integrity: sha512-FBk4IesMV1rBxX2tfiK8RAmogtWn53puLOQlvO8XuwlgxcYbP4mVPS9Ph4aeamSyyVjOl24aYWAuc8U5kCVwMw==}
+    engines: {node: '>=6'}
+    dev: false
 
   /text-table/0.2.0:
     resolution: {integrity: sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=}
