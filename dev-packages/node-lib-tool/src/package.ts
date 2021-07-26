@@ -1,13 +1,16 @@
+/**
+ * @private
+ */
 type Contributor = {
   name: string;
-  emial?: string;
+  email?: string;
   url?: string;
 };
 
 /**
- * @interface package.json
+ * @public
  */
-export interface BasePackage {
+export interface BasePackageJson {
   name: string;
   version: string;
   main?: string;
@@ -37,7 +40,28 @@ export interface BasePackage {
   browserslist?: Array<string>;
 }
 
-export function tryLoadPackageJsonInLocal<T extends BasePackage>(): T {
+/**
+ * @public
+ */
+export function tryLoadPackageJsonFromLocal<T extends BasePackageJson>(): T {
+  const pjson = {} as T;
+  return pjson;
+}
+
+/**
+ * @public
+ * @description 加载模块制定模块的package.json
+ *
+ * @example
+ * ```ts
+ * import { tryLoadPackageJsonFromPackage } from "@raydium/node-lib-tool";
+ * /// ...
+ * /// 加载指定模块的package.json数据
+ * const json = tryLoadPackageJsonFromPackage("packageName")
+ * /// ...
+ * ```
+ */
+export function tryLoadPackageJsonFromPackage<T extends BasePackageJson>(): T {
   const pjson = {} as T;
   return pjson;
 }

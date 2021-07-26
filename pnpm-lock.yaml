@@ -68,11 +68,16 @@ importers:
     specifiers:
       '@raydium/command-line-tool': workspace:*
       '@raydium/package-scripts': workspace:*
+      '@raydium/shared-config': workspace:*
       '@types/node': ^16.3.3
+      tapable: ^2.2.0
       typescript: ^4.3.5
+    dependencies:
+      tapable: 2.2.0
     devDependencies:
       '@raydium/command-line-tool': link:../command-line-tool
       '@raydium/package-scripts': link:../package-scripts
+      '@raydium/shared-config': link:../shared-config
       '@types/node': 16.3.3
       typescript: 4.3.5
 

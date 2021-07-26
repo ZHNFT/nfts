@@ -4,6 +4,9 @@
   "author": {
     "name": "ray"
   },
+  "bin": {
+    "raydium": "./bin/cli.js"
+  },
   "dependencies": {
     "@raydium/core": "workspace:*"
   }
