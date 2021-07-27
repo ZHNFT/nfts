@@ -15,10 +15,9 @@ export default class TerminalManager {
   /**
    *
    * @param msg
-   * @example  ```ts
+   * @example
    * /// 向控制台写入数据
    * TerminalManager.write('hello world');
-   * ```
    */
   write(msg: string) {
     this.rl.write(msg);
