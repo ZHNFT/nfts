@@ -3,7 +3,10 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "ES6",
-    "sourceMap": true
+    "sourceMap": true,
+    "paths": {
+      "./src/*": ["@/*"]
+    }
   },
   "exclude": ["node_modules"]
 }
