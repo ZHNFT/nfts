@@ -5,12 +5,15 @@ import readline from 'readline';
  * const terminal = new TerminalManager();
  */
 export default class TerminalManager {
-  readonly rl: readline.Interface;
+  readonly _rl: readline.Interface;
 
   constructor(rl: readline.Interface) {
-    this.rl = rl;
+    this._rl = rl;
   }
 
+  get rl(): readline.Interface {
+    return this._rl;
+  }
 
   /**
    *
@@ -19,7 +22,7 @@ export default class TerminalManager {
    * /// 向控制台写入数据
    * TerminalManager.write('hello world');
    */
-  write(msg: string) {
+  write(msg: string): void {
     this.rl.write(msg);
   }
 }

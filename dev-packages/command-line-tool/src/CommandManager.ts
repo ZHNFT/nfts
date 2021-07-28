@@ -1,3 +1,8 @@
+/**
+ * @public
+ *
+ * @class 命令注册的相关信息
+ */
 class CommandOptions {
   public readonly optionName!: string;
   public readonly shortOptionName?: string;
