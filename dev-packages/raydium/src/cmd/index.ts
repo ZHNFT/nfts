@@ -22,4 +22,13 @@ export class CommandLineParser extends CommandManager {
    *
    */
   execute() {}
+
+  /**
+   *
+   * Prepare configurations and necessary instance
+   *
+   * @private
+   *
+   */
+  async _prepareCommand(command: string): Promise<void> {}
 }
