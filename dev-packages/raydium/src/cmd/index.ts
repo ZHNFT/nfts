@@ -1,7 +1,6 @@
 import { CommandManager, TerminalManager } from '@raydium/command-line-tool';
 import { Command, CommandDescription } from '../constants/CommandNames';
 
-
 export class CommandLineParser extends CommandManager {
   private readonly _terminal: TerminalManager;
 
@@ -22,6 +21,5 @@ export class CommandLineParser extends CommandManager {
    * @public
    *
    */
-  execute() {
-  }
+  execute() {}
 }
