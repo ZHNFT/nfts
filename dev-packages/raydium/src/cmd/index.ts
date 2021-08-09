@@ -1,19 +1,24 @@
 import { CommandManager, TerminalManager } from '@raydium/command-line-tool';
-import { Command, CommandDescription } from '../constants/CommandNames';
+import { PluginManager } from 'src/plugins/PluginManager';
+import { ArgumentsParser } from 'src/cmd/arguments/ArgumentsParser';
 
 export class CommandLineParser extends CommandManager {
   private readonly _terminal: TerminalManager;
+  private readonly _pluginManager: PluginManager;
+  private readonly _argumentsParser: ArgumentsParser;
 
   constructor() {
     super({
-      commandName: Command,
-      commandDescription: CommandDescription
+      commandName: 'raydium',
+      commandDescription: 'raydium for dev'
     });
 
     this._terminal = new TerminalManager();
+    this._pluginManager = new PluginManager();
+    this._argumentsParser = new ArgumentsParser();
   }
 
-  get terminal(): TerminalManager {
+  public get terminal(): TerminalManager {
     return this._terminal;
   }
 
@@ -21,7 +26,15 @@ export class CommandLineParser extends CommandManager {
    * @public
    *
    */
-  execute() {}
+  public parser(): CommandLineParser {
+    return this;
+  }
+
+  /**
+   * @public
+   *
+   */
+  public async execute() {}
 
   /**
    *
@@ -30,5 +43,5 @@ export class CommandLineParser extends CommandManager {
    * @private
    *
    */
-  async _prepareCommand(command: string): Promise<void> {}
+  private async _prepareCommand(command: string): Promise<void> {}
 }

@@ -1,7 +1,7 @@
 // @ts-check
 /**
  *
- * @param scenario
+ * @param scenario {'node' | 'web'}
  * @return {object}
  */
 const _buildConfig = (scenario) => {
@@ -23,21 +23,13 @@ const _buildConfig = (scenario) => {
         },
         extends: [
           'plugin:@typescript-eslint/recommended',
-          /**
-           * enable type checking
-           */
+          ///enable type checking
           'plugin:@typescript-eslint/recommended-requiring-type-checking'
         ],
         rules: {}
       }
     ]
-    /// 指定这两个字段来限制@typescript-eslint/parser处理的文件数量
-    /// 可以一定程度上提升eslint的性能。
-    ////////////////////////
-    // include: [],
-    // exclude: []
-    ////////////////////////
   };
 };
 
-module.exports = _buildConfig;
+export default _buildConfig;

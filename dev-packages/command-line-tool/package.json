@@ -24,7 +24,7 @@
     ],
     "parserOptions": {
       "tsconfigRootDir": ".",
-      "project": "./tsconfig.json"
+      "project": "tsconfig.json"
     }
   },
   "dependencies": {

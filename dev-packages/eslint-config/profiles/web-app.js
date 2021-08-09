@@ -1,3 +1,5 @@
-const buildConfig = require('./base');
+// @ts-check
 
-module.exports = buildConfig('web-app');
+import buildConfig from './base';
+
+export default buildConfig('web');
