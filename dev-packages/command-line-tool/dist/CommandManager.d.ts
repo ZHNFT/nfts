@@ -12,10 +12,16 @@ declare class CommandOptions {
  * @public
  *
  * @example
- * const cmd = new CommandManager();
+ * const cmd = new CommandManager({ name: 'adv', description: 'adv description' });
  *
  */
 export default class CommandManager {
+    private readonly commandName;
+    private readonly commandDescription;
+    constructor({ name, description }: {
+        name: string;
+        description: string;
+    });
     /**
      *
      * @public

@@ -8,6 +8,7 @@
     "name": "ray"
   },
   "scripts": {
+    "prepare": "pnpm run build",
     "build": "node --loader ts-node/esm ../package-scripts/src/tsc.ts --files"
   },
   "devDependencies": {

@@ -13,10 +13,18 @@ class CommandOptions {
  * @public
  *
  * @example
- * const cmd = new CommandManager();
+ * const cmd = new CommandManager({ name: 'adv', description: 'adv description' });
  *
  */
 export default class CommandManager {
+  private readonly commandName: string;
+  private readonly commandDescription: string;
+
+  constructor({ name, description }: { name: string; description: string }) {
+    this.commandName = name;
+    this.commandDescription = description;
+  }
+
   /**
    *
    * @public
