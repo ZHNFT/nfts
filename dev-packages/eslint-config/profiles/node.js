@@ -1,5 +1,5 @@
 // @ts-check
 
-import buildConfig from './base';
+const buildConfig = require('./base');
 
-export default buildConfig('node');
+module.exports = buildConfig('node');

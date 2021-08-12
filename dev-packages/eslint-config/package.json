@@ -1,7 +1,6 @@
 {
   "name": "@raydium/eslint-config",
   "version": "0.0.0",
-  "type": "module",
   "keywords": [
     "eslint",
     "eslint-config"

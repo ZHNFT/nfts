@@ -16,6 +16,7 @@
     "@raydium/package-scripts": "workspace:*",
     "@raydium/shared-config": "workspace:*",
     "@types/minimist": "^1.2.2",
+    "prettier": "^2.3.2",
     "ts-node": "^10.1.0",
     "typescript": "^4.3.5"
   },

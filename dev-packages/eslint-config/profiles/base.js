@@ -32,4 +32,4 @@ const _buildConfig = (scenario) => {
   };
 };
 
-export default _buildConfig;
+module.exports = _buildConfig;
