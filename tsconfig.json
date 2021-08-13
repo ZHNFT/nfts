@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "sourceMap": false,
+    "paths": {
+      "@raydium/command-line-tool": ["./apps/command-line-tool"],
+      "@raydium/command-line-tool/*": ["./apps/command-line-tool/*"]
+    }
+  },
+  "exclude": ["node_modules"]
+}

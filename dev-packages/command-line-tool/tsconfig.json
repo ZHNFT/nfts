@@ -1,8 +1,0 @@
-{
-  "extends": "@raydium/shared-config/profiles/tsconfig.base.json",
-  "compilerOptions": {
-    "outDir": "dist",
-    "declaration": true,
-    "declarationDir": "dist"
-  }
-}
