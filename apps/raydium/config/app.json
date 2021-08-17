@@ -1,4 +1,5 @@
 {
+  "$schema": "../schemas/app.schema.json",
   "name": "raydium",
   "build": {
     "dist": "./lib"

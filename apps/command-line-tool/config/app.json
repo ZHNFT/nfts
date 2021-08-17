@@ -1,0 +1,4 @@
+{
+  "$schema": "../../raydium/schemas/app.schema.json",
+  "name": "command-line-tool"
+}

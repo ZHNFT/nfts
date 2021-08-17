@@ -3,9 +3,12 @@
     "module": "commonjs",
     "target": "es5",
     "sourceMap": false,
+    "baseUrl": ".",
     "paths": {
       "@raydium/command-line-tool": ["./apps/command-line-tool"],
-      "@raydium/command-line-tool/*": ["./apps/command-line-tool/*"]
+      "@raydium/command-line-tool/*": ["./apps/command-line-tool/src/*"],
+      "@raydium/core": ["./apps/raydium"],
+      "@raydium/core/*": ["./apps/raydium/src/*"]
     }
   },
   "exclude": ["node_modules"]

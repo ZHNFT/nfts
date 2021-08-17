@@ -1,6 +1,7 @@
 {
   "name": "@raydium/core",
   "version": "1.0.0",
-  "dependencies": {
+  "devDependencies": {
+    "@types/node": "^16.6.1"
   }
 }

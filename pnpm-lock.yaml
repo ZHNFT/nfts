@@ -5,6 +5,12 @@ importers:
   .:
     specifiers: {}
 
+  apps/raydium:
+    specifiers:
+      '@types/node': ^16.6.1
+    devDependencies:
+      '@types/node': 16.6.1
+
   dev-packages/command-line-tool:
     specifiers:
       '@raydium/eslint-config': workspace:*
@@ -288,6 +294,10 @@ packages:
 
   /@types/node/16.4.0:
     resolution: {integrity: sha512-HrJuE7Mlqcjj+00JqMWpZ3tY8w7EUd+S0U3L1+PQSWiXZbOgyQDvi+ogoUxaHApPJq5diKxYBQwA3iIlNcPqOg==}
+    dev: true
+
+  /@types/node/16.6.1:
+    resolution: {integrity: sha512-Sr7BhXEAer9xyGuCN3Ek9eg9xPviCF2gfu9kTfuU2HkTVAMYSDeX40fvpmo72n5nansg3nsBjuQBrsS28r+NUw==}
     dev: true
 
   /@typescript-eslint/eslint-plugin/4.28.4_b1648df9f9ba40bdeef3710a5a5af353:
