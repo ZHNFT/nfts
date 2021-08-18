@@ -1,18 +1,18 @@
 export interface LoggerOptions {
-  verbose: boolean;
-  enableTimeSummary: boolean;
+  verbose?: boolean;
+  enableTimeSummary?: boolean;
 }
 
 class Timer {
-  #_ms: number
-  #_interval: number
+  #_ms: number;
+  #_interval: number;
 
   get interval() {
-    return this.#_interval
+    return this.#_interval;
   }
 
   start() {
-    this.#_ms = new Date().getTime()
+    this.#_ms = new Date().getTime();
   }
 
   end() {
@@ -20,19 +20,22 @@ class Timer {
   }
 }
 
+export const defaultOptions: LoggerOptions = {
+  verbose: false,
+  enableTimeSummary: true
+};
+
 export default class Logger {
-  readonly #_timer: Timer
+  readonly #_timer: Timer;
   readonly #_options: LoggerOptions;
 
-  constructor(
-    options: LoggerOptions
-  ) {
+  constructor(options: LoggerOptions) {
     this.#_options = options;
     this.#_timer = new Timer();
   }
 
   get options() {
-    return this.#_options
+    return this.#_options;
   }
 
   /**
@@ -41,12 +44,10 @@ export default class Logger {
    *
    * @public
    */
-  async logCallbackTime(
-    callback: Function
-  ) {
+  async logCallbackTime(callback: Function) {
     this.#_timer.start();
     this.#_timer.end();
 
-    console.log(this.#_timer.interval)
+    console.log(this.#_timer.interval);
   }
 }

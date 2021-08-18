@@ -1,5 +1,8 @@
 import { SyncWaterfallHook, AsyncSeriesWaterfallHook } from 'tapable';
 
+/**
+ * @class Lifecycle
+ */
 class Lifecycle {
   before: AsyncSeriesWaterfallHook<string, string>;
   after: SyncWaterfallHook<string>;

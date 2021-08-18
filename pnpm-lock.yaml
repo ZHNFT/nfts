@@ -8,12 +8,14 @@ importers:
   apps/command-line-tool:
     specifiers:
       '@types/jest': ^27.0.1
+      '@types/node': ^16.6.1
       jest: ^27.0.6
       prettier: ^2.3.2
       ts-jest: ^27.0.5
       typescript: ^4.3.5
     devDependencies:
       '@types/jest': 27.0.1
+      '@types/node': 16.6.1
       jest: 27.0.6
       prettier: 2.3.2
       ts-jest: 27.0.5_92306e36c1a4cf876b1cd4839a977b9c

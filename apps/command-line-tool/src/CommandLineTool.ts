@@ -1,4 +1,5 @@
 import Logger from '@raydium/command-line-tool/Logger';
+import TerminalProvider from '@raydium/command-line-tool/TerminalProvider';
 
 interface CommandLineInfo {
   name: string;
@@ -18,7 +19,7 @@ export default class CommandLineTool {
   readonly #_name: string;
   readonly #_description: string;
   readonly #_logger: Logger;
-  // readonly #_parsedCommandLineOptions: ParsedCommandLineOptions;
+  readonly #_terminal: TerminalProvider;
 
   #_bin: string;
   #_executedFile: string;
@@ -30,6 +31,8 @@ export default class CommandLineTool {
       enableTimeSummary: true,
       verbose: true
     });
+
+    this.#_terminal = new TerminalProvider({ name });
   }
 
   get name() {
@@ -44,17 +47,20 @@ export default class CommandLineTool {
    * @description 解析命令行输入
    * @public
    */
-  process() {
+  public process() {
     const args = process.argv;
 
     const [bin, executedFile, ...options] = args;
 
     this.#_bin = bin;
     this.#_executedFile = executedFile;
+
+    this.#_terminal.log('---- Start parsing ----');
     this._parser(options);
+    this.#_terminal.log('---- End parsing ----');
   }
 
-  _parser<T extends Record<string, unknown>>(
+  private _parser<T extends Record<string, unknown>>(
     rawOptions: string[]
   ): { _: string[] } & Spread<T> {
     const obj = Object.create(null);
