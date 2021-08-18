@@ -8,7 +8,9 @@
       "@raydium/command-line-tool": ["./apps/command-line-tool"],
       "@raydium/command-line-tool/*": ["./apps/command-line-tool/src/*"],
       "@raydium/gmf": ["./apps/gmf"],
-      "@raydium/gmf/*": ["./apps/gmf/src/*"]
+      "@raydium/gmf/*": ["./apps/gmf/src/*"],
+      "@raydium/node-config": ["./apps/node-config"],
+      "@raydium/node-config/*": ["./apps/node-config/src/*"]
     }
   },
   "exclude": ["node_modules"]

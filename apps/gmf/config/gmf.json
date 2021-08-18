@@ -1,21 +1,7 @@
 {
   "name": "gmf",
   "plugins": [
-    [
-      "gmf-plugin-rollup",
-      {
-        "optionA": "A",
-        "optionB": "B",
-        "optionC": "C"
-      }
-    ]
+    ["gmf-plugin-rollup", { "optionA": "A", "optionB": "B", "optionC": "C" }]
   ],
-  "actions": [
-    {
-      "name": "action1"
-    },
-    {
-      "name": "action2"
-    }
-  ]
+  "actions": [{ "name": "action1" }, { "name": "action2" }]
 }

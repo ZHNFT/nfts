@@ -5,10 +5,9 @@ interface CommandLineInfo {
   description: string;
 }
 
-interface CommandLineParserResult<T extends Record<string, string>> {
-  _: string[];
-  // [key: keyof T]: string;
-}
+type Spread<T> = {
+  [P in keyof T]: T[P];
+};
 
 const SHORT_NAME_REGEXP = /^-\w+/;
 const LONG_NAME_REGEXP = /^--\w+/;
@@ -50,9 +49,12 @@ export default class CommandLineTool {
 
     this.#_bin = bin;
     this.#_executedFile = executedFile;
+    this._parser(options);
   }
 
-  _parser(rawOptions: string[]) {
+  _parser<T extends Record<string, unknown>>(
+    rawOptions: string[]
+  ): { _: string[] } & Spread<T> {
     const obj = Object.create(null);
 
     let noFlags: string[] = [];
@@ -60,27 +62,28 @@ export default class CommandLineTool {
     let isFlag = false, // 当前是否是标识
       prevFlagName: string; // 前一个option是否是标识
 
-    obj._ = [];
+    obj._ = [] as string[];
 
     while ((option = rawOptions.shift())) {
-      if ((isFlag = OPTION_NAME_REGEXP.test(option))) {
-        if (!prevFlagName) {
+      if (OPTION_NAME_REGEXP.test(option)) {
+        if (prevFlagName) {
           obj[prevFlagName] = true;
         }
 
-        prevFlagName = option.replace('--', '');
+        prevFlagName = LONG_NAME_REGEXP.test(option)
+          ? option.replace('--', '')
+          : option.replace('-', '');
       } else {
-        if (!prevFlagName) {
-          obj._.push(option);
-          continue;
-        }
-
         if (prevFlagName) {
           obj[prevFlagName] = option;
+        } else {
+          obj._.push(option);
         }
 
         prevFlagName = '';
       }
     }
+
+    return obj;
   }
 }
