@@ -9,7 +9,8 @@ type Spread<T> = {
   [P in keyof T]: T[P];
 };
 
-const SHORT_NAME_REGEXP = /^-\w+/;
+type ParsedCommandLineOptions<T> = { _: string[] } & Spread<T>;
+
 const LONG_NAME_REGEXP = /^--\w+/;
 const OPTION_NAME_REGEXP = /^[-]{1,2}\w/;
 
@@ -17,6 +18,7 @@ export default class CommandLineTool {
   readonly #_name: string;
   readonly #_description: string;
   readonly #_logger: Logger;
+  // readonly #_parsedCommandLineOptions: ParsedCommandLineOptions;
 
   #_bin: string;
   #_executedFile: string;
@@ -57,10 +59,8 @@ export default class CommandLineTool {
   ): { _: string[] } & Spread<T> {
     const obj = Object.create(null);
 
-    let noFlags: string[] = [];
     let option: string;
-    let isFlag = false, // 当前是否是标识
-      prevFlagName: string; // 前一个option是否是标识
+    let prevFlagName: string;
 
     obj._ = [] as string[];
 
