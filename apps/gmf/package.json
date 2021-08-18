@@ -1,7 +1,10 @@
 {
-  "name": "@raydium/core",
-  "version": "1.0.0",
-  "devDependencies": {
-    "@types/node": "^16.6.1"
+  "name": "@raydium/gmf",
+  "version": "0.0.1",
+  "scripts": {
+    "compile": "tsc --watch"
+  },
+  "dependencies": {
+    "tapable": "^2.2.0"
   }
 }

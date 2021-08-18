@@ -7,8 +7,8 @@
     "paths": {
       "@raydium/command-line-tool": ["./apps/command-line-tool"],
       "@raydium/command-line-tool/*": ["./apps/command-line-tool/src/*"],
-      "@raydium/core": ["./apps/raydium"],
-      "@raydium/core/*": ["./apps/raydium/src/*"]
+      "@raydium/gmf": ["./apps/gmf"],
+      "@raydium/gmf/*": ["./apps/gmf/src/*"]
     }
   },
   "exclude": ["node_modules"]

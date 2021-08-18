@@ -1,8 +1,0 @@
-{
-  "extends": "@raydium/shared-config/profiles/tsconfig.base.json",
-  "compilerOptions": {
-    "declaration": true,
-    "declarationDir": "./temp"
-  },
-  "include": ["./src"]
-}
