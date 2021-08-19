@@ -1,5 +1,5 @@
-import Logger from '@raydium/command-line-tool/Logger';
-import TerminalProvider from '@raydium/command-line-tool/TerminalProvider';
+import Logger from './Logger';
+import TerminalProvider from './TerminalProvider';
 
 interface CommandLineInfo {
   name: string;
@@ -10,7 +10,7 @@ type Spread<T> = {
   [P in keyof T]: T[P];
 };
 
-type ParsedCommandLineOptions<T> = { _: string[] } & Spread<T>;
+type ParsedCommandLineOptions<T extends {}> = { _: string[] } & Spread<T>;
 
 const LONG_NAME_REGEXP = /^--\w+/;
 const OPTION_NAME_REGEXP = /^[-]{1,2}\w/;
@@ -23,6 +23,7 @@ export default class CommandLineTool {
 
   #_bin: string;
   #_executedFile: string;
+  #_commandLineOptions: unknown;
 
   constructor({ name, description }: CommandLineInfo) {
     this.#_name = name;
@@ -35,6 +36,10 @@ export default class CommandLineTool {
     this.#_terminal = new TerminalProvider({ name });
   }
 
+  get commandLineOptions() {
+    return this.#_commandLineOptions;
+  }
+
   get name() {
     return this.#_name;
   }
@@ -43,53 +48,63 @@ export default class CommandLineTool {
     return this.#_description;
   }
 
-  /**
-   * @description 解析命令行输入
-   * @public
-   */
-  public process() {
-    const args = process.argv;
+  public parser(argv?: string[]) {
+    const args = argv ?? process.argv;
 
-    const [bin, executedFile, ...options] = args;
+    const [bin, executedFile, ...rawArgs] = args;
 
     this.#_bin = bin;
     this.#_executedFile = executedFile;
+    this.#_commandLineOptions = argumentsParser(rawArgs);
 
-    this.#_terminal.log('---- Start parsing ----');
-    this._parser(options);
-    this.#_terminal.log('---- End parsing ----');
+    return this;
   }
+}
 
-  private _parser<T extends Record<string, unknown>>(
-    rawOptions: string[]
-  ): { _: string[] } & Spread<T> {
-    const obj = Object.create(null);
+/**
+ *
+ * @param args
+ *
+ * @example
+ *
+ * const result = argumentsParser(['command', '--a', 'a', '-b', 'b', '--true', '--alsoTrue'])
+ *
+ * result // {
+ *   _: ['command'],
+ *   'a': 'a',
+ *   'b': 'b',
+ *   'true': true,
+ *   'alsoTrue': true,
+ *  }
+ *
+ */
+export function argumentsParser(args: string[]) {
+  const obj = Object.create(null);
 
-    let option: string;
-    let prevFlagName: string;
+  let option: string;
+  let prevFlagName: string;
 
-    obj._ = [] as string[];
+  obj._ = [] as string[];
 
-    while ((option = rawOptions.shift())) {
-      if (OPTION_NAME_REGEXP.test(option)) {
-        if (prevFlagName) {
-          obj[prevFlagName] = true;
-        }
-
-        prevFlagName = LONG_NAME_REGEXP.test(option)
-          ? option.replace('--', '')
-          : option.replace('-', '');
-      } else {
-        if (prevFlagName) {
-          obj[prevFlagName] = option;
-        } else {
-          obj._.push(option);
-        }
-
-        prevFlagName = '';
+  while ((option = args.shift())) {
+    if (OPTION_NAME_REGEXP.test(option)) {
+      if (prevFlagName) {
+        obj[prevFlagName] = true;
       }
-    }
 
-    return obj;
+      prevFlagName = LONG_NAME_REGEXP.test(option)
+        ? option.replace('--', '')
+        : option.replace('-', '');
+    } else {
+      if (prevFlagName) {
+        obj[prevFlagName] = option;
+      } else {
+        obj._.push(option);
+      }
+
+      prevFlagName = '';
+    }
   }
+
+  return obj;
 }

@@ -1,12 +1,9 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "target": "ES5",
-    "declaration": true,
-    "module": "CommonJS",
+    "rootDir": "./src",
     "outDir": "./dist",
-    "moduleResolution": "node"
+    "declaration": true
   },
-  "include": ["src"],
-  "exclude": ["node_modules"],
-  "ts-node": {}
+  "include": ["./src"]
 }

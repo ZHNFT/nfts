@@ -1,15 +1,23 @@
 {
-  "name": "@raydium/command-line-tools",
+  "name": "@raydium/command-line-tool",
   "version": "1.0.0",
+  "main": "./dist/index.js",
   "scripts": {
+    "prepare": "tsc",
     "test": "jest -c \"./config/jest.config.js\" --colors"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",
     "@types/node": "^16.6.1",
+    "@raydium/eslint-config": "workspace:*",
+    "@raydium/gmf": "workspace:*",
     "jest": "^27.0.6",
     "prettier": "^2.3.2",
     "ts-jest": "^27.0.5",
     "typescript": "^4.3.5"
-  }
+  },
+  "files": [
+    "lib",
+    "config"
+  ]
 }

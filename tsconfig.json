@@ -1,17 +1,9 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es5",
+    "target": "ES2020",
     "sourceMap": false,
-    "baseUrl": ".",
-    "paths": {
-      "@raydium/command-line-tool": ["./apps/command-line-tool"],
-      "@raydium/command-line-tool/*": ["./apps/command-line-tool/src/*"],
-      "@raydium/gmf": ["./apps/gmf"],
-      "@raydium/gmf/*": ["./apps/gmf/src/*"],
-      "@raydium/node-config": ["./apps/node-config"],
-      "@raydium/node-config/*": ["./apps/node-config/src/*"]
-    }
+    "lib": ["ES2020", "DOM"]
   },
-  "exclude": ["node_modules"]
+  "exclude": ["**/node_modules/**"]
 }

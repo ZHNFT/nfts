@@ -1,35 +1,15 @@
-import CommandLineTool from '@raydium/command-line-tool/CommandLineTool';
-import { ArgumentsParser } from '@raydium/core/cmd/ArgumentsParser';
-import * as process from 'process';
+import { CommandLineTool } from '@raydium/command-line-tool';
 
 export default class CommandLineParser extends CommandLineTool {
-  #_parser: ArgumentsParser;
-  #_rawArgs: string[];
-
   constructor() {
     super({
-      name: 'radium-cli',
-      description: 'radium-cli good good good good good !!!'
+      name: 'gmf',
+      description: 'gmf good good good good good !!!'
     });
-
-    this.#_parser = new ArgumentsParser();
   }
 
   /**
    * @public
-   * @return {CommandLineParser}
    */
-  async parser(): Promise<CommandLineParser> {
-    this.#_rawArgs = process.argv;
-
-    return this;
-  }
-
-  /**
-   * @public
-   * @return {CommandLineParser}
-   */
-  async execute(): Promise<CommandLineParser> {
-    return this;
-  }
+  async execute(): Promise<void> {}
 }

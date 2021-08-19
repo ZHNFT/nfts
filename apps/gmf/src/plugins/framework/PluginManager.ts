@@ -4,13 +4,13 @@ import { SyncWaterfallHook, AsyncSeriesWaterfallHook } from 'tapable';
  * @class Lifecycle
  */
 class Lifecycle {
-  before: AsyncSeriesWaterfallHook<string, string>;
+  before: SyncWaterfallHook<string, string>;
   after: SyncWaterfallHook<string>;
-  preocess: SyncWaterfallHook<string>;
+  process: SyncWaterfallHook<string>;
 
   constructor() {
-    this.before = new AsyncSeriesWaterfallHook<string, string>(['before']);
-    this.preocess = new SyncWaterfallHook<string>(['process']);
+    this.before = new SyncWaterfallHook<string, string>(['before']);
+    this.process = new SyncWaterfallHook<string>(['process']);
     this.after = new SyncWaterfallHook<string>(['after']);
   }
 }

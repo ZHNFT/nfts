@@ -11,10 +11,7 @@ function jestConfig() {
     transform: {
       '^.+\\.tsx?': 'ts-jest'
     },
-    testMatch: ['<rootDir>/__tests__/**/*.+(ts|tsx)'],
-    moduleNameMapper: {
-      '@raydium/command-line-tool/(.*)': '<rootDir>/src/$1'
-    }
+    testMatch: ['<rootDir>/__tests__/**/*.+(ts|tsx)']
   };
 }
 
