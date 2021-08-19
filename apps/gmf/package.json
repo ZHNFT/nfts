@@ -18,7 +18,7 @@
   },
   "eslintConfig": {
     "extends": [
-      "@raydium/eslint-config/profiles/node.js"
+      "@raydium/eslint-config"
     ]
   }
 }

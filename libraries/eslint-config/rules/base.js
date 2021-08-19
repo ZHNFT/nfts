@@ -1,4 +1,6 @@
 // @ts-check
+
+const path = require('path');
 /**
  *
  * @param scenario {'web' | 'node'}
@@ -12,8 +14,8 @@ const eslintConfig = (scenario, overrides = (config) => config) => {
    */
   const baseConfig = {
     parserOptions: {
-      ecmaVersion: 2020, // Allows for the parsing of modern ECMAScript features
-      sourceType: 'module' // Allows for the use of imports
+      ecmaVersion: 2020,
+      sourceType: 'module'
     },
     extends: ['eslint:recommended'],
     env: {
@@ -27,7 +29,10 @@ const eslintConfig = (scenario, overrides = (config) => config) => {
         parser: '@typescript-eslint/parser',
         extends: ['plugin:@typescript-eslint/recommended']
       }
-    ]
+    ],
+    ignorePatterns: ['./dist', './__tests__', './build', './config'].map(
+      (folder) => path.resolve(__dirname, folder)
+    )
   };
 
   return overrides(baseConfig);
