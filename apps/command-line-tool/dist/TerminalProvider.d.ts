@@ -8,11 +8,11 @@ export default class TerminalProvider {
      * @param msg {string | object}
      * @public
      */
-    log(msg: any): void;
+    log: (msg: string) => void;
     /**
      *
      * @param msg {string | object}
      * @public
      */
-    write(msg: string): void;
+    write: (msg: string) => void;
 }

@@ -19,16 +19,12 @@ export default class TerminalProvider {
    * @param msg {string | object}
    * @public
    */
-  log(msg: any) {
-    this.#_debug(msg);
-  }
+  log = (msg: string): void => this.#_debug(msg);
 
   /**
    *
    * @param msg {string | object}
    * @public
    */
-  write(msg: string) {
-    this.#_rl.write(msg);
-  }
+  write = (msg: string): void => this.#_rl.write(msg);
 }

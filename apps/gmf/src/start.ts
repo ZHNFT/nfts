@@ -1,6 +1,11 @@
-import CommandLineParser from './cmd/CommandLineParser';
+import { CommandLineParser } from './cmd/CommandLineParser';
 
 new CommandLineParser()
-  .parser()
-  .execute()
-  .then(() => {});
+  .prepare()
+  .exec()
+  .then(() => {
+    //
+  })
+  .catch(() => {
+    //
+  });

@@ -18,28 +18,24 @@ class TerminalProvider {
     constructor({ name }) {
         _TerminalProvider__rl.set(this, void 0);
         _TerminalProvider__debug.set(this, void 0);
+        /**
+         *
+         * @param msg {string | object}
+         * @public
+         */
+        this.log = (msg) => __classPrivateFieldGet(this, _TerminalProvider__debug, "f").call(this, msg);
+        /**
+         *
+         * @param msg {string | object}
+         * @public
+         */
+        this.write = (msg) => __classPrivateFieldGet(this, _TerminalProvider__rl, "f").write(msg);
         __classPrivateFieldSet(this, _TerminalProvider__debug, util_1.debuglog(name), "f");
         __classPrivateFieldSet(this, _TerminalProvider__rl, readline.createInterface({
             input: process.stdin,
             output: process.stdout,
             terminal: true
         }), "f");
-    }
-    /**
-     *
-     * @param msg {string | object}
-     * @public
-     */
-    log(msg) {
-        __classPrivateFieldGet(this, _TerminalProvider__debug, "f").call(this, msg);
-    }
-    /**
-     *
-     * @param msg {string | object}
-     * @public
-     */
-    write(msg) {
-        __classPrivateFieldGet(this, _TerminalProvider__rl, "f").write(msg);
     }
 }
 exports.default = TerminalProvider;

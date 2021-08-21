@@ -1,3 +1,7 @@
+/**
+ * @description 收集运行日志，同步到本地目录
+ */
+
 export interface LoggerOptions {
   verbose?: boolean;
   enableTimeSummary?: boolean;
