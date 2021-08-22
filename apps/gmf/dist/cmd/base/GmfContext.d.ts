@@ -7,14 +7,15 @@ import { SyncHook } from 'tapable';
 import { GmfAction } from './GmfAction';
 import { GmfConfiguration } from './GmfConfiguration';
 import { Logger, TerminalProvider } from '@raydium/command-line-tool';
-
 /**
  * @internal 提供给插件使用的hooks对象
  */
-export interface IGmfContextHooks {
-  [THookName: string]: SyncHook<GmfContext>;
+interface IGmfContextHooks {
+  esm: SyncHook<GmfContext>;
+  test: SyncHook<GmfContext>;
+  build: SyncHook<GmfContext>;
+  release: SyncHook<GmfContext>;
 }
-
 /**
  * @internal
  */
@@ -22,23 +23,21 @@ export interface GmfContextInitOptions {
   config: GmfConfiguration;
   terminal: TerminalProvider;
   logger: Logger;
-
-  // actions
   esm: GmfAction;
 }
-
 /**
  * @internal
  */
-export abstract class GmfContext {
+export declare abstract class GmfContext {
   /**
    * @public
    */
   hooks: IGmfContextHooks;
-
+  protected constructor(initOptions: GmfContextInitOptions);
   /**
    * @public
    * @param action
    */
   abstract addAction(action: GmfAction): void;
 }
+export {};

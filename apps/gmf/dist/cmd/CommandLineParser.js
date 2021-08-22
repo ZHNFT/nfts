@@ -1,40 +1,56 @@
 "use strict";
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
-    if (kind === "m") throw new TypeError("Private method is not writable");
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
-    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
-};
-var _CommandLineParser__parser, _CommandLineParser__rawArgs;
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.CommandLineParser = void 0;
 const command_line_tool_1 = require("@raydium/command-line-tool");
-const ArgumentsParser_1 = require("../cmd/ArgumentsParser");
+const EsmAction_1 = require("./actions/EsmAction");
+const GmfConfiguration_1 = require("./base/GmfConfiguration");
+const GmfInternalPhase_1 = require("./base/GmfInternalPhase");
 const process = require("process");
 class CommandLineParser extends command_line_tool_1.CommandLineTool {
     constructor() {
         super({
-            name: 'radium-cli',
-            description: 'radium-cli good good good good good !!!'
+            name: 'gmf',
+            description: 'gmf good good good good good !!!'
         });
-        _CommandLineParser__parser.set(this, void 0);
-        _CommandLineParser__rawArgs.set(this, void 0);
-        __classPrivateFieldSet(this, _CommandLineParser__parser, new ArgumentsParser_1.ArgumentsParser(), "f");
+        const { verbose, enableTimeSummary } = command_line_tool_1.ArgumentsParser.parser(process.argv);
+        this.argsParser = new command_line_tool_1.ArgumentsParser({ name: 'gmf' });
+        this.terminal = new command_line_tool_1.TerminalProvider({ name: 'gmf' });
+        this.logger = new command_line_tool_1.Logger({
+            verbose,
+            enableTimeSummary
+        });
+        this.gmfConfig = new GmfConfiguration_1.GmfConfiguration({
+            name: 'gmf.json',
+            description: ''
+        });
+        const initOptions = {
+            gmfConfig: this.gmfConfig,
+            gmfTerminal: this.terminal,
+            gmfLog: this.logger
+        };
+        this.internalPhase = new GmfInternalPhase_1.GmfInternalPhase(initOptions);
+        /// 添加操作
+        const esmAction = new EsmAction_1.EsmAction();
+        this.internalPhase.registerAction(esmAction);
     }
-    /**
-     * @public
-     * @return {CommandLineParser}
-     */
-    async parser() {
-        __classPrivateFieldSet(this, _CommandLineParser__rawArgs, process.argv, "f");
-        return this;
+    prepare() {
+        //
+        const { plugins } = command_line_tool_1.ArgumentsParser.parser(process.argv.slice(2));
+        if (plugins && typeof plugins === 'string') {
+            const pluginNames = plugins.split(',');
+            this.pluginsFromCommandLineOptions = pluginNames;
+        }
     }
-    /**
-     * @public
-     * @return {CommandLineParser}
-     */
-    async execute() {
-        return this;
+    async exec() {
+        //
+        const { _ } = command_line_tool_1.ArgumentsParser.parser(process.argv.slice(2));
+        const action = _[0];
+        try {
+            this.internalPhase.getActionByName(action);
+        }
+        catch (e) {
+            // 没有获取到注册的Action
+        }
     }
 }
-exports.default = CommandLineParser;
-_CommandLineParser__parser = new WeakMap(), _CommandLineParser__rawArgs = new WeakMap();
+exports.CommandLineParser = CommandLineParser;

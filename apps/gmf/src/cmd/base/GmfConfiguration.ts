@@ -1,23 +1,28 @@
 import { GmfPlugin } from './GmfPlugin';
 import { GmfAction } from './GmfAction';
+import { fileExists } from '../../node-api/pathSystem';
+import { NodeError } from '../../node-api/errors';
+
+const ConfigFileName = 'gmf.json';
 
 export class GmfConfiguration {
   #name: string;
-  #description: string;
 
   plugins: GmfPlugin[];
   actions: GmfAction[];
 
-  constructor({ name, description }: { name: string; description: string }) {
+  constructor({ name }: { name: string }) {
     this.#name = name;
-    this.#description = description;
   }
 
-  /**
-   * @param cwd
-   * @description 访问配置文件
-   */
-  public lookup({ cwd, configPath }: { cwd: string; configPath: string }) {
-    //
+  // @beta
+  public lookup({ configPath }: { cwd: string; configPath: string }): void {
+    fileExists(configPath)
+      .then(() => {
+        //  todo 读取文件，获取plugin以及event的信息
+      })
+      .catch((e: NodeError) => {
+        console.error(e.name, e.description);
+      });
   }
 }

@@ -1,7 +1,7 @@
 import { SyncHook } from 'tapable';
 import { GmfConfiguration } from './GmfConfiguration';
 import { Logger, TerminalProvider } from '@raydium/command-line-tool';
-import { GmfContext, GmfInitContextOptions } from './GmfContext';
+import { GmfContext } from './GmfContext';
 import { GmfAction } from './GmfAction';
 
 export interface IGmfInternalPhaseInitOptions {
@@ -45,13 +45,13 @@ export class GmfInternalPhase {
   /**
    * @internal
    */
-  registerAction(action: GmfAction) {
+  registerAction(action: GmfAction): void {
     this.actions.push(action);
     this.actionByName.set(action.name, action);
   }
 
   /**
-   *
+   * @internal
    */
   getActionByName(name: string): GmfAction | undefined {
     return this.actionByName.get(name);

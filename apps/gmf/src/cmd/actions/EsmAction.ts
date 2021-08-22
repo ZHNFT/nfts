@@ -1,10 +1,13 @@
 import { GmfAction } from '../base/GmfAction';
+import { GmfConfiguration } from '../base/GmfConfiguration';
+
+const ActionName = 'esm';
 
 export class EsmAction extends GmfAction {
-  constructor() {
+  constructor(config: GmfConfiguration) {
     super({
-      name: 'esm',
-      description: 'Startup esm build process'
+      name: ActionName,
+      gmfConfig: config
     });
   }
 }

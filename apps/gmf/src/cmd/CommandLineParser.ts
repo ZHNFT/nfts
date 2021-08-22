@@ -41,10 +41,7 @@ export class CommandLineParser extends CommandLineTool {
       enableTimeSummary
     });
 
-    this.gmfConfig = new GmfConfiguration({
-      name: 'gmf.json',
-      description: ''
-    });
+    this.gmfConfig = new GmfConfiguration({ name: 'gmf.json' });
 
     const initOptions: IGmfInternalPhaseInitOptions = {
       gmfConfig: this.gmfConfig,
@@ -55,12 +52,15 @@ export class CommandLineParser extends CommandLineTool {
     this.internalPhase = new GmfInternalPhase(initOptions);
 
     /// 添加操作
-    const esmAction = new EsmAction();
+    const esmAction = new EsmAction(this.gmfConfig);
 
     this.internalPhase.registerAction(esmAction);
   }
 
-  prepare() {
+  /**
+   * @public
+   */
+  public prepare(): CommandLineParser {
     //
     const { plugins } = ArgumentsParser.parser<{ plugins: string }>(
       process.argv.slice(2)
@@ -70,6 +70,8 @@ export class CommandLineParser extends CommandLineTool {
       const pluginNames = plugins.split(',');
       this.pluginsFromCommandLineOptions = pluginNames;
     }
+
+    return this;
   }
 
   async exec(): Promise<void> {
