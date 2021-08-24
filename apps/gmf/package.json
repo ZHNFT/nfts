@@ -1,24 +1,14 @@
 {
-  "name": "@raydium/gmf",
+  "name": "@gmf/gmf-cli",
   "version": "0.0.0",
   "bin": {
     "gmf": "./bin/gmf"
   },
   "scripts": {
     "prepare": "tsc",
-    "compile": "tsc --watch",
-    "lint": "eslint --debug --ext .ts,.js"
+    "compile": "tsc --watch"
   },
   "dependencies": {
-    "@raydium/command-line-tool": "workspace:*",
     "tapable": "^2.2.0"
-  },
-  "devDependencies": {
-    "@raydium/eslint-config": "workspace:*"
-  },
-  "eslintConfig": {
-    "extends": [
-      "@raydium/eslint-config"
-    ]
   }
 }

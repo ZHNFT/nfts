@@ -1,4 +1,0 @@
-{
-  "$schema": "../../gmf/schemas/app.schema.json",
-  "name": "command-line-tool"
-}

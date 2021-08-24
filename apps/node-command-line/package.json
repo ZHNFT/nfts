@@ -1,0 +1,7 @@
+{
+  "name": "@gmf/node-command-line",
+  "version": "1.0.0",
+  "dependencies": {
+    "tapable": "^2.2.0"
+  }
+}

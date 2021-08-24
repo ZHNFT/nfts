@@ -1,1 +1,0 @@
-describe('TerminalProvider test cases', () => {});
