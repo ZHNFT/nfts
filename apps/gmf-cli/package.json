@@ -2,13 +2,17 @@
   "name": "@gmf/gmf-cli",
   "version": "0.0.0",
   "bin": {
-    "gmf": "./bin/gmf"
+    "gmf": "./bin/gmf-cli"
   },
   "scripts": {
     "prepare": "tsc",
     "compile": "tsc --watch"
   },
   "dependencies": {
+    "@gmf/node-command-line": "workspace:*",
     "tapable": "^2.2.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.3.2"
   }
 }

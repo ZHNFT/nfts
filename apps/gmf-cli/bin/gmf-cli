@@ -3,5 +3,5 @@
 if (process.env.NODE_ENV === 'development') {
   require('../dist/start-with-version-check');
 } else {
-  require("../dist/start")
+  require('../dist/start');
 }

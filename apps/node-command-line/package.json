@@ -1,6 +1,10 @@
 {
   "name": "@gmf/node-command-line",
   "version": "1.0.0",
+  "main": "./dist/index.js",
+  "scripts": {
+    "prepare": "tsc"
+  },
   "dependencies": {
     "tapable": "^2.2.0"
   }
