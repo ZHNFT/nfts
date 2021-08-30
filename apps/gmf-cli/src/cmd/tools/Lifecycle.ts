@@ -2,6 +2,9 @@
 
 import { SyncHook } from 'tapable';
 
+export class InternalPluginContext {}
+
 export class Lifecycle {
-  start: SyncHook<any> = new SyncHook<any>();
+  start: SyncHook<InternalPluginContext> =
+    new SyncHook<InternalPluginContext>();
 }

@@ -9,10 +9,20 @@
     "compile": "tsc --watch"
   },
   "dependencies": {
+    "@gmf/eslint-config": "workspace:*",
     "@gmf/node-command-line": "workspace:*",
     "tapable": "^2.2.0"
   },
   "devDependencies": {
+    "@types/node": "^16.7.6",
     "prettier": "^2.3.2"
-  }
+  },
+  "eslintConfig": {
+    "extends": [
+      "@gmf/eslint-config"
+    ]
+  },
+  "eslintIgnore": [
+    "!./src"
+  ]
 }

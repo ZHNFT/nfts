@@ -6,6 +6,7 @@
     "prepare": "tsc"
   },
   "dependencies": {
+    "@gmf/eslint-config": "workspace:*",
     "tapable": "^2.2.0"
   }
 }

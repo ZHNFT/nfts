@@ -24,6 +24,12 @@ export declare class NodeCommandLine {
     });
     getActionByName(actionName: string): ActionBase | undefined;
 }
-export declare const argsParser: <T>(args: string[]) => {
+declare type CLICommandNames = {
+    _: string[];
+};
+declare type CLICommandOptions = Record<string, string | boolean>;
+export declare type CLICommandParsedArgs = CLICommandNames & CLICommandOptions;
+export declare const argsParser: <T extends CLICommandOptions>(args: string[]) => {
     _: string[];
 } & T;
+export {};

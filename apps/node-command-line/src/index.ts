@@ -55,7 +55,17 @@ export class NodeCommandLine {
   }
 }
 
-export const argsParser = <T>(args: string[]): { _: string[] } & T => {
+type CLICommandNames = {
+  _: string[];
+};
+
+type CLICommandOptions = Record<string, string | boolean>;
+
+export type CLICommandParsedArgs = CLICommandNames & CLICommandOptions;
+
+export const argsParser = <T extends CLICommandOptions>(
+  args: string[]
+): { _: string[] } & T => {
   const obj = Object.create(null);
 
   let option: string;

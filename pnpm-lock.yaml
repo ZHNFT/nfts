@@ -7,19 +7,25 @@ importers:
 
   apps/gmf-cli:
     specifiers:
+      '@gmf/eslint-config': workspace:*
       '@gmf/node-command-line': workspace:*
+      '@types/node': ^16.7.6
       prettier: ^2.3.2
       tapable: ^2.2.0
     dependencies:
+      '@gmf/eslint-config': link:../../dev-libs/eslint-config
       '@gmf/node-command-line': link:../node-command-line
       tapable: 2.2.0
     devDependencies:
+      '@types/node': 16.7.6
       prettier: 2.3.2
 
   apps/node-command-line:
     specifiers:
+      '@gmf/eslint-config': workspace:*
       tapable: ^2.2.0
     dependencies:
+      '@gmf/eslint-config': link:../../dev-libs/eslint-config
       tapable: 2.2.0
 
   dev-libs/eslint-config:
@@ -124,6 +130,10 @@ packages:
 
   /@types/json-schema/7.0.9:
     resolution: {integrity: sha512-qcUXuemtEu+E5wZSJHNxUXeCZhAfXKQ41D+duX+VYPde7xyEVZci+/oXKJL13tnRs9lR2pr4fod59GT6/X1/yQ==}
+    dev: true
+
+  /@types/node/16.7.6:
+    resolution: {integrity: sha512-VESVNFoa/ahYA62xnLBjo5ur6gPsgEE5cNRy8SrdnkZ2nwJSW0kJ4ufbFr2zuU9ALtHM8juY53VcRoTA7htXSg==}
     dev: true
 
   /@typescript-eslint/eslint-plugin/4.29.2_b01b7137116ac50f0745961d9cf72d34:
