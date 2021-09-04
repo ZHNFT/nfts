@@ -31,6 +31,12 @@ class ConfigBase {
         this.config = (0, node_utils_1.loadJsonSync)(__classPrivateFieldGet(this, _ConfigBase__configFilePath, "f"));
         return this.config;
     }
+    get cwd() {
+        return __classPrivateFieldGet(this, _ConfigBase__cwd, "f");
+    }
+    get configPath() {
+        return __classPrivateFieldGet(this, _ConfigBase__configFilePath, "f");
+    }
 }
 exports.ConfigBase = ConfigBase;
 _ConfigBase__cwd = new WeakMap(), _ConfigBase__configFilePath = new WeakMap();

@@ -5,7 +5,7 @@ export class CommandLineTool extends NodeCommandLineParser {
   toolName: string;
   toolDescription: string;
 
-  actions: ActionBase[];
+  actions: ActionBase[] = [];
   actionByName: Map<string, ActionBase> = new Map();
 
   constructor({ toolName, toolDescription }) {

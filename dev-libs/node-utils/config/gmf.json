@@ -1,3 +1,13 @@
 {
-  "$schema": ""
+  "$schema": "../../../apps/gmf-cli/schemas/gmf.schema.json",
+
+  "plugins": [
+    {
+      "name": "./plugins/demo.plugin.js",
+      "options": {
+        "from": "./public",
+        "to": "./dist"
+      }
+    }
+  ]
 }

@@ -15,6 +15,7 @@ const NodeCommandLineParser_1 = require("./framework/NodeCommandLineParser");
 class CommandLineTool extends NodeCommandLineParser_1.NodeCommandLineParser {
     constructor({ toolName, toolDescription }) {
         super();
+        this.actions = [];
         this.actionByName = new Map();
         this.toolName = toolName;
         this.toolDescription = toolDescription;

@@ -10,4 +10,6 @@ export declare class ConfigBase {
      * @description 查看配置，并记录
      */
     lookup<T>(): T;
+    get cwd(): string;
+    get configPath(): string;
 }

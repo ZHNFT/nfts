@@ -6,8 +6,8 @@ export interface ConfigInitOptions {
 }
 
 export class ConfigBase {
-  readonly #_cwd: string;
-  readonly #_configFilePath: string;
+  #_cwd: string;
+  #_configFilePath: string;
 
   config: unknown;
 
@@ -27,5 +27,13 @@ export class ConfigBase {
     this.config = loadJsonSync<T>(this.#_configFilePath);
 
     return this.config as T;
+  }
+
+  get cwd(): string {
+    return this.#_cwd;
+  }
+
+  get configPath(): string {
+    return this.#_configFilePath;
   }
 }

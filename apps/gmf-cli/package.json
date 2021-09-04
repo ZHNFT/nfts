@@ -2,7 +2,7 @@
   "name": "@gmf/gmf-cli",
   "version": "0.0.0",
   "bin": {
-    "gmf": "./bin/gmf-cli"
+    "gmf": "./bin/gmf"
   },
   "scripts": {
     "prepare": "tsc",

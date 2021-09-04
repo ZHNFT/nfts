@@ -33,7 +33,7 @@ export class ActionBase {
    * }
    *
    */
-  private hook: SyncHook<any>;
+  #_hook: SyncHook<any>;
 
   constructor(public options: ActionBaseInitOption) {
     this.actionName = options.actionName;
@@ -56,13 +56,13 @@ export class ActionBase {
    *
    */
   initializeHook(): SyncHook<any> {
-    if (this.hook) {
-      return this.hook;
+    if (this.#_hook) {
+      return this.#_hook;
     } else {
-      this.hook = new SyncHook<any>();
+      this.#_hook = new SyncHook<any>([this.actionName]);
     }
 
-    return this.hook;
+    return this.#_hook;
   }
 
   /**
@@ -72,5 +72,9 @@ export class ActionBase {
    */
   get name(): string {
     return this.actionName;
+  }
+
+  get hook(): SyncHook<any> {
+    return this.#_hook;
   }
 }

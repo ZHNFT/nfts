@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "./dist/index.js",
   "scripts": {
-    "prepare": "tsc"
+    "prepare": "tsc",
+    "build": "gmf build"
   },
   "dependencies": {
     "json5": "^2.2.0"
@@ -11,6 +12,7 @@
   "devDependencies": {
     "@types/node": "^16.7.8",
     "@gmf/eslint-config": "workspace:*",
+    "@gmf/gmf-cli": "workspace:*",
     "typescript": "^4.4.2"
   },
   "eslintConfig": {
