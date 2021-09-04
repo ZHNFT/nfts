@@ -11,8 +11,8 @@ export declare type ParsedArgs<T> = T & CommandArgs;
 export declare const argumentsParser: <T>(args: string[]) => ParsedArgs<T>;
 declare type CommandOption = {
     longName: string;
-    shortName: string;
-    description: string;
+    shortName?: string;
+    description?: string;
 };
 export declare class NodeCommandLineParser<T = ParsedOptionArgs> {
     #private;

@@ -43,8 +43,8 @@ export const argumentsParser = <T>(args: string[]): ParsedArgs<T> => {
 
 type CommandOption = {
   longName: string;
-  shortName: string;
-  description: string;
+  shortName?: string;
+  description?: string;
 };
 
 export class NodeCommandLineParser<T = ParsedOptionArgs> {

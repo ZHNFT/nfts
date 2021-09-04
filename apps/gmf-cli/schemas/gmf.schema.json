@@ -8,6 +8,21 @@
     "name": {
       "description": "App name",
       "type": "string"
+    },
+    "plugins": {
+      "description": "Where plugin configuration belong",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "options": {
+            "type": "object"
+          }
+        }
+      }
     }
   }
 }
