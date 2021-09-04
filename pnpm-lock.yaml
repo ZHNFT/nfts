@@ -8,12 +8,14 @@ importers:
   apps/gmf-cli:
     specifiers:
       '@gmf/eslint-config': workspace:*
+      '@gmf/gmf-config': workspace:*
       '@gmf/node-command-line': workspace:*
       '@types/node': ^16.7.6
       prettier: ^2.3.2
       tapable: ^2.2.0
     dependencies:
       '@gmf/eslint-config': link:../../dev-libs/eslint-config
+      '@gmf/gmf-config': link:../../dev-libs/gmf-config
       '@gmf/node-command-line': link:../node-command-line
       tapable: 2.2.0
     devDependencies:
@@ -23,9 +25,11 @@ importers:
   apps/node-command-line:
     specifiers:
       '@gmf/eslint-config': workspace:*
+      json5: ^2.2.0
       tapable: ^2.2.0
     dependencies:
       '@gmf/eslint-config': link:../../dev-libs/eslint-config
+      json5: 2.2.0
       tapable: 2.2.0
 
   dev-libs/eslint-config:
@@ -44,17 +48,26 @@ importers:
 
   dev-libs/gmf-config:
     specifiers:
+      '@gmf/eslint-config': workspace:*
+      '@gmf/node-utils': workspace:*
       '@types/node': ^16.7.6
       typescript: ^4.4.2
     devDependencies:
+      '@gmf/eslint-config': link:../eslint-config
+      '@gmf/node-utils': link:../node-utils
       '@types/node': 16.7.8
       typescript: 4.4.2
 
   dev-libs/node-utils:
     specifiers:
+      '@gmf/eslint-config': workspace:*
       '@types/node': ^16.7.8
+      json5: ^2.2.0
       typescript: ^4.4.2
+    dependencies:
+      json5: 2.2.0
     devDependencies:
+      '@gmf/eslint-config': link:../eslint-config
       '@types/node': 16.7.8
       typescript: 4.4.2
 
@@ -780,6 +793,14 @@ packages:
     resolution: {integrity: sha1-nbe1lJatPzz+8wp1FC0tkwrXJlE=}
     dev: true
 
+  /json5/2.2.0:
+    resolution: {integrity: sha512-f+8cldu7X/y7RAJurMEJmdoKXGB/X550w2Nr3tTbezL6RwEE/iMcm+tZnXeoZtKuOq6ft8+CqzEkrIgx1fPoQA==}
+    engines: {node: '>=6'}
+    hasBin: true
+    dependencies:
+      minimist: 1.2.5
+    dev: false
+
   /levn/0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
     engines: {node: '>= 0.8.0'}
@@ -825,6 +846,10 @@ packages:
     dependencies:
       brace-expansion: 1.1.11
     dev: true
+
+  /minimist/1.2.5:
+    resolution: {integrity: sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==}
+    dev: false
 
   /ms/2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}

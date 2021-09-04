@@ -9,6 +9,7 @@
     "compile": "tsc --watch"
   },
   "dependencies": {
+    "@gmf/gmf-config": "workspace:*",
     "@gmf/eslint-config": "workspace:*",
     "@gmf/node-command-line": "workspace:*",
     "tapable": "^2.2.0"

@@ -1,77 +1,49 @@
 "use strict";
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
-    if (kind === "m") throw new TypeError("Private method is not writable");
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
-    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var _ActionBase__name, _ActionBase__plugins;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.argsParser = exports.NodeCommandLine = exports.ActionBase = exports.PluginMgmt = exports.PluginContext = void 0;
-class PluginContext {
-}
-exports.PluginContext = PluginContext;
-class PluginMgmt {
-    initializePlugins() {
-        return this.hook;
-    }
-}
-exports.PluginMgmt = PluginMgmt;
-class ActionBase {
-    constructor({ name }) {
-        _ActionBase__name.set(this, void 0);
-        _ActionBase__plugins.set(this, void 0);
-        __classPrivateFieldSet(this, _ActionBase__name, name, "f");
-        __classPrivateFieldSet(this, _ActionBase__plugins, new PluginMgmt(), "f");
-    }
-    get name() {
-        return __classPrivateFieldGet(this, _ActionBase__name, "f");
-    }
-    get plugins() {
-        return __classPrivateFieldGet(this, _ActionBase__plugins, "f");
-    }
-}
-exports.ActionBase = ActionBase;
-_ActionBase__name = new WeakMap(), _ActionBase__plugins = new WeakMap();
-class NodeCommandLine {
+exports.CommandLineTool = void 0;
+const NodeCommandLineParser_1 = require("./framework/NodeCommandLineParser");
+class CommandLineTool extends NodeCommandLineParser_1.NodeCommandLineParser {
     constructor({ toolName, toolDescription }) {
+        super();
+        this.actionByName = new Map();
         this.toolName = toolName;
         this.toolDescription = toolDescription;
     }
-    getActionByName(actionName) {
-        return this.actionsByName[actionName];
+    /**
+     *
+     * @param actionName
+     * @param action
+     *
+     * @example
+     *
+     * // 注册action
+     * const buildAction = new ActionBase({ actionName: "build" })
+     * CLT.addAction('action', )
+     *
+     */
+    addAction(action) {
+        this.actionByName.set(action.name, action);
+        this.actions.push(action);
+    }
+    /**
+     * @description 获取到action，通过actionName
+     * @param actionName
+     */
+    getAction(actionName) {
+        return this.actionByName.get(actionName);
     }
 }
-exports.NodeCommandLine = NodeCommandLine;
-const argsParser = (args) => {
-    const obj = Object.create(null);
-    let option;
-    let prevFlagName;
-    obj._ = [];
-    while ((option = args.shift())) {
-        if (/^[-]{1,2}\w/.test(option)) {
-            if (prevFlagName) {
-                obj[prevFlagName] = true;
-            }
-            prevFlagName = option.startsWith('--')
-                ? option.replace('--', '')
-                : option.replace('-', '');
-        }
-        else {
-            if (prevFlagName) {
-                obj[prevFlagName] = option;
-            }
-            else {
-                obj._.push(option);
-            }
-            prevFlagName = '';
-        }
-    }
-    return obj;
-};
-exports.argsParser = argsParser;
+exports.CommandLineTool = CommandLineTool;
+__exportStar(require("./framework/ActionBase"), exports);
+__exportStar(require("./framework/EventBase"), exports);
+__exportStar(require("./framework/NodeCommandLineParser"), exports);

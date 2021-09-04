@@ -1,11 +1,19 @@
 {
   "name": "@gmf/gmf-config",
   "version": "1.0.0",
+  "main": "./dist/index.js",
   "scripts": {
     "prepare": "tsc"
   },
+  "eslintConfig": {
+    "extends": [
+      "@gmf/eslint-config"
+    ]
+  },
   "devDependencies": {
     "@types/node": "^16.7.6",
+    "@gmf/eslint-config": "workspace:*",
+    "@gmf/node-utils": "workspace:*",
     "typescript": "^4.4.2"
   }
 }
