@@ -38,8 +38,9 @@ class PluginManager {
             try {
                 for (var plugins_1 = __asyncValues(plugins), plugins_1_1; plugins_1_1 = yield plugins_1.next(), !plugins_1_1.done;) {
                     const { name, options } = plugins_1_1.value;
-                    const p = yield Promise.resolve().then(() => require(path.resolve(this._config.cwd, 'dist', name)));
-                    p.default.call(null, this._ctx, options);
+                    // import(path.resolve(this._config.cwd, 'dist', name));
+                    const p = yield this.resolvePlugin(name);
+                    p.call(null, this._ctx, options);
                 }
             }
             catch (e_1_1) { e_1 = { error: e_1_1 }; }
@@ -49,6 +50,27 @@ class PluginManager {
                 }
                 finally { if (e_1) throw e_1.error; }
             }
+        });
+    }
+    resolvePlugin(pluginModulePath) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let plugin = {};
+            try {
+                plugin = yield Promise.resolve().then(() => require(pluginModulePath));
+            }
+            catch (e) {
+                plugin.default = yield this.resolvePluginLocal(pluginModulePath);
+            }
+            return plugin.default;
+        });
+    }
+    resolvePluginLocal(pluginModulePath) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let plugin;
+            // todo: dist需要被配置替换
+            // eslint-disable-next-line prefer-const
+            plugin = yield Promise.resolve().then(() => require(path.resolve(this._config.cwd, 'dist', pluginModulePath)));
+            return plugin.default;
         });
     }
 }

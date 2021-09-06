@@ -44,8 +44,33 @@ export class PluginManager {
   async invokePlugins(): Promise<void> {
     const { plugins } = this._config.lookup<GmfConfigSchema>();
     for await (const { name, options } of plugins) {
-      const p = await import(path.resolve(this._config.cwd, 'dist', name));
-      p.default.call(null, this._ctx, options);
+      // import(path.resolve(this._config.cwd, 'dist', name));
+      const p = await this.resolvePlugin(name);
+      p.call(null, this._ctx, options);
     }
+  }
+
+  async resolvePlugin(pluginModulePath: string): Promise<PluginImpl> {
+    let plugin: { default?: PluginImpl } = {};
+
+    try {
+      plugin = await import(pluginModulePath);
+    } catch (e) {
+      plugin.default = await this.resolvePluginLocal(pluginModulePath);
+    }
+
+    return plugin.default;
+  }
+
+  async resolvePluginLocal(pluginModulePath: string): Promise<PluginImpl> {
+    let plugin: { default?: PluginImpl };
+
+    // todo: dist需要被配置替换
+    // eslint-disable-next-line prefer-const
+    plugin = await import(
+      path.resolve(this._config.cwd, 'dist', pluginModulePath)
+    );
+
+    return plugin.default;
   }
 }

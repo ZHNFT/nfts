@@ -1,0 +1,21 @@
+{
+  "name": "gmf-plugin-ts",
+  "version": "0.0.1",
+  "main": "./dist",
+  "scripts": {
+    "prepare": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@gmf/eslint-config": "workspace:*",
+    "typescript": "^4.4.2"
+  },
+  "eslintIgnore": [
+    "./dist"
+  ],
+  "eslintConfig": {
+    "extends": [
+      "@gmf/eslint-config"
+    ]
+  }
+}

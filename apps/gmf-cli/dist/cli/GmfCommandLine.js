@@ -60,7 +60,6 @@ class GmfCommandLine extends node_command_line_1.CommandLineTool {
             yield this._pluginManager.invokePlugins();
             const command = this.parser(process.argv.slice(2))._[0];
             this.getAction(command).hook.call(this);
-            console.log('exec');
         });
     }
 }

@@ -4,7 +4,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "prepare": "tsc",
-    "build": "gmf build"
+    "build": "gmf build --clean"
   },
   "dependencies": {
     "json5": "^2.2.0"
@@ -13,6 +13,7 @@
     "@types/node": "^16.7.8",
     "@gmf/eslint-config": "workspace:*",
     "@gmf/gmf-cli": "workspace:*",
+    "gmf-plugin-ts": "workspace:*",
     "typescript": "^4.4.2"
   },
   "eslintConfig": {

@@ -8,6 +8,9 @@ export interface PluginConfig {
     name: string;
     options: unknown;
 }
+/**
+ * 插件函数的上下文对象
+ */
 export interface PluginContext {
     hooks: {
         build: SyncHook<any>;
@@ -17,7 +20,7 @@ export interface PluginContext {
 }
 export declare type PluginImpl = (ctx: PluginContext, options: any) => void;
 export declare class PluginManager {
-    _ctx: any;
+    _ctx: PluginContext;
     _config: GmfConfig;
     _logger: Logger;
     _plugins: PluginImpl[];
@@ -26,4 +29,6 @@ export declare class PluginManager {
      * 从配置中读取并执行plugin方法
      */
     invokePlugins(): Promise<void>;
+    resolvePlugin(pluginModulePath: string): Promise<PluginImpl>;
+    resolvePluginLocal(pluginModulePath: string): Promise<PluginImpl>;
 }

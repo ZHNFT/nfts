@@ -3,10 +3,9 @@
 
   "plugins": [
     {
-      "name": "./plugins/demo.plugin.js",
+      "name": "gmf-plugin-ts",
       "options": {
-        "from": "./public",
-        "to": "./dist"
+        "options": "./config/tsconfig.json"
       }
     }
   ]

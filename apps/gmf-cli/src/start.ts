@@ -4,7 +4,7 @@ new GmfCommandLine()
   .prepare()
   .exec()
   .then(() => {
-    console.log('------------------------------------------------');
+    console.log('--------------------------finished---------------------');
   })
   .catch(e => {
     console.log(e);

@@ -59,6 +59,5 @@ export class GmfCommandLine extends CommandLineTool {
     await this._pluginManager.invokePlugins();
     const command = this.parser(process.argv.slice(2))._[0];
     this.getAction(command).hook.call(this);
-    console.log('exec');
   }
 }

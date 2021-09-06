@@ -52,7 +52,7 @@ class NodeCommandLineParser {
     }
     parser(rawArgs) {
         __classPrivateFieldSet(this, _NodeCommandLineParser_rawArgs, rawArgs, "f");
-        __classPrivateFieldSet(this, _NodeCommandLineParser_parsedArgs, exports.argumentsParser(rawArgs), "f");
+        __classPrivateFieldSet(this, _NodeCommandLineParser_parsedArgs, (0, exports.argumentsParser)(rawArgs), "f");
         return __classPrivateFieldGet(this, _NodeCommandLineParser_parsedArgs, "f");
     }
     get raw() {
