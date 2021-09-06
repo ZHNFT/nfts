@@ -5,22 +5,34 @@
 import { GmfConfig, GmfConfigSchema } from './GmfConfig';
 import { Logger } from './Logger';
 import * as path from 'path';
+import { SyncHook } from 'tapable';
 
 export interface PluginConfig {
   name: string;
   options: unknown;
 }
 
-export type PluginImpl = (ctx: any, options: any) => void;
+/**
+ * 插件函数的上下文对象
+ */
+export interface PluginContext {
+  hooks: {
+    build: SyncHook<any>;
+  };
+  config: GmfConfig;
+  logger: Logger;
+}
+
+export type PluginImpl = (ctx: PluginContext, options: any) => void;
 
 export class PluginManager {
-  _ctx: any;
+  _ctx: PluginContext;
   _config: GmfConfig;
   _logger: Logger;
 
   _plugins: PluginImpl[] = [];
 
-  constructor(ctx: any, config: GmfConfig, logger: Logger) {
+  constructor(ctx: PluginContext, config: GmfConfig, logger: Logger) {
     this._ctx = ctx;
     this._config = config;
     this._logger = logger;

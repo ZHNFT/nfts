@@ -1,9 +1,8 @@
 import { CommandLineTool } from '@gmf/node-command-line';
 import { ActionBuild } from './framework/actions/ActionBuild';
 import { GmfConfig } from './framework/GmfConfig';
-import { PluginManager } from './framework/PluginManager';
+import { PluginContext, PluginManager } from './framework/PluginManager';
 import { Logger } from './framework/Logger';
-import * as process from 'process';
 
 export class GmfCommandLine extends CommandLineTool {
   //
@@ -39,7 +38,7 @@ export class GmfCommandLine extends CommandLineTool {
       }
     ]);
 
-    const pluginContext = {
+    const pluginContext: PluginContext = {
       hooks: {
         build: build.initializeHook()
       },
@@ -56,13 +55,10 @@ export class GmfCommandLine extends CommandLineTool {
     return this;
   }
 
-  async exec() {
+  async exec(): Promise<void> {
     await this._pluginManager.invokePlugins();
-
     const command = this.parser(process.argv.slice(2))._[0];
-
     this.getAction(command).hook.call(this);
-
     console.log('exec');
   }
 }

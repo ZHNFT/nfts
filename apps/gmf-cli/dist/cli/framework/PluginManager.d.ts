@@ -3,17 +3,25 @@
  */
 import { GmfConfig } from './GmfConfig';
 import { Logger } from './Logger';
+import { SyncHook } from 'tapable';
 export interface PluginConfig {
     name: string;
     options: unknown;
 }
-export declare type PluginImpl = (ctx: any, options: any) => void;
+export interface PluginContext {
+    hooks: {
+        build: SyncHook<any>;
+    };
+    config: GmfConfig;
+    logger: Logger;
+}
+export declare type PluginImpl = (ctx: PluginContext, options: any) => void;
 export declare class PluginManager {
     _ctx: any;
     _config: GmfConfig;
     _logger: Logger;
     _plugins: PluginImpl[];
-    constructor(ctx: any, config: GmfConfig, logger: Logger);
+    constructor(ctx: PluginContext, config: GmfConfig, logger: Logger);
     /**
      * 从配置中读取并执行plugin方法
      */

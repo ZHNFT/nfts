@@ -15,7 +15,6 @@ const ActionBuild_1 = require("./framework/actions/ActionBuild");
 const GmfConfig_1 = require("./framework/GmfConfig");
 const PluginManager_1 = require("./framework/PluginManager");
 const Logger_1 = require("./framework/Logger");
-const process = require("process");
 class GmfCommandLine extends node_command_line_1.CommandLineTool {
     constructor() {
         super({
