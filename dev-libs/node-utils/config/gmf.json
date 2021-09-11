@@ -3,9 +3,9 @@
 
   "plugins": [
     {
-      "name": "gmf-plugin-ts",
+      "name": "@gmf/gmf-plugin-ts",
       "options": {
-        "options": "./config/tsconfig.json"
+        "tsConfigFilePath": "./config/tsconfig.json"
       }
     }
   ]

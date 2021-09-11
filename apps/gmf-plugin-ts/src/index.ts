@@ -2,11 +2,11 @@ import { PluginImpl } from '../../gmf-cli/dist/cli/framework/PluginManager';
 import { spawnSync } from 'child_process';
 
 const plugin: PluginImpl = (api, options: { configFilePath: string }) => {
-  api.hooks.build.tap('plugin-ts', () => {
-    console.log('Starting typescript compiler');
-
-    spawnSync('tsc', ['--showConfig', '--listFilesOnly'], {
-      stdio: 'inherit'
+  api.hooks.build.tap('plugin-ts', async () => {
+    /// 执行指令就完了，😩
+    spawnSync('tsc', ['--build', '--verbose'], {
+      stdio: 'inherit',
+      cwd: process.cwd()
     });
   });
 };

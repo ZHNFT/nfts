@@ -24,6 +24,6 @@
     ]
   },
   "eslintIgnore": [
-    "!./src"
+    "dist"
   ]
 }
