@@ -1,7 +1,11 @@
 import { CommandLineTool } from '@gmf/node-command-line';
 import { ActionBuild } from './framework/actions/ActionBuild';
 import { GmfConfig } from './framework/GmfConfig';
-import { PluginContext, PluginManager } from './framework/PluginManager';
+import {
+  CustomActionConfig,
+  PluginContext,
+  PluginManager
+} from './framework/PluginManager';
 import { Logger } from './framework/Logger';
 
 export class GmfCommandLine extends CommandLineTool {
@@ -43,7 +47,10 @@ export class GmfCommandLine extends CommandLineTool {
         build: build.initializeHook()
       },
       config,
-      logger
+      logger,
+      addAction: (action: CustomActionConfig) => {
+        //
+      }
     };
 
     this._pluginManager = new PluginManager(pluginContext, config, logger);

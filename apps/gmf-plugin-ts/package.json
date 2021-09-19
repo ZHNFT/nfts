@@ -3,10 +3,12 @@
   "version": "0.0.1",
   "main": "./dist",
   "scripts": {
-    "prepare": "tsc",
+    "prepare": "gmf build --clean",
     "dev": "tsc --watch"
   },
   "dependencies": {
+    "@gmf/gmf-cli": "workspace:*",
+    "@gmf/gmf-plugin-ts": "workspace:*",
     "@gmf/eslint-config": "workspace:*",
     "typescript": "^4.4.2"
   },

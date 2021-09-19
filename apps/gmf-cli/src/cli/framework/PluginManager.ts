@@ -12,6 +12,11 @@ export interface PluginConfig {
   options: unknown;
 }
 
+export interface CustomActionConfig {
+  name: string;
+  apply: () => void;
+}
+
 /**
  * 插件函数的上下文对象
  */
@@ -21,9 +26,10 @@ export interface PluginContext {
   };
   config: GmfConfig;
   logger: Logger;
+  addAction: (actionConfig: CustomActionConfig) => void;
 }
 
-export type PluginImpl = (ctx: PluginContext, options: any) => void;
+export type PluginImpl<T = unknown> = (ctx: PluginContext, options: T) => void;
 
 export class PluginManager {
   _ctx: PluginContext;

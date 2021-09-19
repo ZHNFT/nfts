@@ -25,9 +25,13 @@ importers:
   apps/gmf-plugin-ts:
     specifiers:
       '@gmf/eslint-config': workspace:*
+      '@gmf/gmf-cli': workspace:*
+      '@gmf/gmf-plugin-ts': workspace:*
       typescript: ^4.4.2
     dependencies:
       '@gmf/eslint-config': link:../../dev-libs/eslint-config
+      '@gmf/gmf-cli': link:../gmf-cli
+      '@gmf/gmf-plugin-ts': 'link:'
       typescript: 4.4.2
 
   apps/node-command-line:
