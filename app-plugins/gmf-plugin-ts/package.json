@@ -4,7 +4,7 @@
   "main": "./dist",
   "scripts": {
     "prepare": "gmf build --clean",
-    "dev": "tsc --watch"
+    "dev": "tsc"
   },
   "dependencies": {
     "@gmf/gmf-cli": "workspace:*",

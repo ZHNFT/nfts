@@ -10,6 +10,9 @@
       "@gmf/eslint-config"
     ]
   },
+  "eslintIgnore": [
+    "dist"
+  ],
   "devDependencies": {
     "@types/node": "^16.7.6",
     "@gmf/eslint-config": "workspace:*",

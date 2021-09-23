@@ -23,10 +23,23 @@ exports.PluginManager = void 0;
 const path = require("path");
 class PluginManager {
     constructor(ctx, config, logger) {
-        this._plugins = [];
+        this.ctx = ctx;
+        this.config = config;
+        this.logger = logger;
+        this._pluginConfigByName = new Map();
         this._ctx = ctx;
         this._config = config;
         this._logger = logger;
+        const gmfConfig = this._config.lookup();
+        const { name, plugins = [] } = gmfConfig;
+        this.logger.log(`解析 ${name}
+----------------------------
+`);
+        for (let i = 0; i < plugins.length; i++) {
+            const plugin = plugins[i];
+            this.logger.log(`读取插件配置： ${plugin.name}`);
+            this._pluginConfigByName.set(plugin.name, plugin);
+        }
     }
     /**
      * 从配置中读取并执行plugin方法
@@ -34,37 +47,39 @@ class PluginManager {
     invokePlugins() {
         var e_1, _a;
         return __awaiter(this, void 0, void 0, function* () {
-            const { plugins } = this._config.lookup();
+            const pluginNames = this._pluginConfigByName.keys();
             try {
-                for (var plugins_1 = __asyncValues(plugins), plugins_1_1; plugins_1_1 = yield plugins_1.next(), !plugins_1_1.done;) {
-                    const { name, options } = plugins_1_1.value;
-                    // import(path.resolve(this._config.cwd, 'dist', name));
-                    const p = yield this.resolvePlugin(name);
+                for (var pluginNames_1 = __asyncValues(pluginNames), pluginNames_1_1; pluginNames_1_1 = yield pluginNames_1.next(), !pluginNames_1_1.done;) {
+                    const name = pluginNames_1_1.value;
+                    const { options } = this._pluginConfigByName.get(name);
+                    this.logger.log(`执行插件方法： ${name}`);
+                    const p = yield this._resolvePlugin(name);
                     p.call(null, this._ctx, options);
                 }
             }
             catch (e_1_1) { e_1 = { error: e_1_1 }; }
             finally {
                 try {
-                    if (plugins_1_1 && !plugins_1_1.done && (_a = plugins_1.return)) yield _a.call(plugins_1);
+                    if (pluginNames_1_1 && !pluginNames_1_1.done && (_a = pluginNames_1.return)) yield _a.call(pluginNames_1);
                 }
                 finally { if (e_1) throw e_1.error; }
             }
+            this.logger.log(`>>>> 执行插件方法结束 <<<<`);
         });
     }
-    resolvePlugin(pluginModulePath) {
+    _resolvePlugin(pluginModulePath) {
         return __awaiter(this, void 0, void 0, function* () {
             let plugin = {};
             try {
                 plugin = yield Promise.resolve().then(() => require(pluginModulePath));
             }
             catch (e) {
-                plugin.default = yield this.resolvePluginLocal(pluginModulePath);
+                plugin.default = yield this._resolvePluginLocal(pluginModulePath);
             }
             return plugin.default;
         });
     }
-    resolvePluginLocal(pluginModulePath) {
+    _resolvePluginLocal(pluginModulePath) {
         return __awaiter(this, void 0, void 0, function* () {
             let plugin;
             // todo: dist需要被配置替换

@@ -28,12 +28,27 @@ class ConfigBase {
         if (this.config) {
             return this.config;
         }
-        this.config = (0, node_utils_1.loadJsonSync)(__classPrivateFieldGet(this, _ConfigBase__configFilePath, "f"));
-        return this.config;
+        try {
+            this.config = (0, node_utils_1.loadJsonSync)(__classPrivateFieldGet(this, _ConfigBase__configFilePath, "f"));
+            return this.config;
+        }
+        catch (e) {
+            throw Error(`加载配置文件失败，配置文件路径${__classPrivateFieldGet(this, _ConfigBase__configFilePath, "f")}`);
+        }
     }
+    /**
+     * @public
+     * @description 获取配置所处的目录路径
+     *
+     */
     get cwd() {
         return __classPrivateFieldGet(this, _ConfigBase__cwd, "f");
     }
+    /**
+     * @public
+     * @description 获取配置所处的文件路径
+     *
+     */
     get configPath() {
         return __classPrivateFieldGet(this, _ConfigBase__configFilePath, "f");
     }

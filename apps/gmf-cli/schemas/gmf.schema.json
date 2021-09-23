@@ -9,6 +9,9 @@
       "description": "App name",
       "type": "string"
     },
+    "buildPath": {
+      "type": "string"
+    },
     "plugins": {
       "description": "Where plugin configuration belong",
       "type": "array",
@@ -23,6 +26,19 @@
           }
         }
       }
-    }
+    },
+    "events": {
+      "description": "Where command-line option bind events happens",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "required": ["name", "buildPath"]
   }
 }

@@ -3,13 +3,17 @@
   "version": "1.0.0",
   "main": "./dist/index.js",
   "scripts": {
-    "prepare": "tsc"
+    "prepare": "tsc",
+    "dev": "tsc --watch"
   },
   "eslintConfig": {
     "extends": [
       "@gmf/eslint-config"
     ]
   },
+  "eslintIgnore": [
+    "dist"
+  ],
   "dependencies": {
     "@gmf/eslint-config": "workspace:*",
     "json5": "^2.2.0",

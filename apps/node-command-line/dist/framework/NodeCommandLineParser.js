@@ -15,7 +15,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _NodeCommandLineParser_rawArgs, _NodeCommandLineParser_parsedArgs;
+var _NodeCommandLineParser__rawArgs, _NodeCommandLineParser__parsedArgs, _NodeCommandLineParser__optionByName;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NodeCommandLineParser = exports.argumentsParser = void 0;
 const argumentsParser = (args) => {
@@ -47,20 +47,36 @@ const argumentsParser = (args) => {
 exports.argumentsParser = argumentsParser;
 class NodeCommandLineParser {
     constructor() {
-        _NodeCommandLineParser_rawArgs.set(this, void 0);
-        _NodeCommandLineParser_parsedArgs.set(this, void 0);
+        _NodeCommandLineParser__rawArgs.set(this, void 0);
+        _NodeCommandLineParser__parsedArgs.set(this, void 0);
+        _NodeCommandLineParser__optionByName.set(this, {});
     }
+    /**
+     * @public
+     * @param rawArgs
+     *
+     * @description 解析命令行参数
+     *
+     */
     parser(rawArgs) {
-        __classPrivateFieldSet(this, _NodeCommandLineParser_rawArgs, rawArgs, "f");
-        __classPrivateFieldSet(this, _NodeCommandLineParser_parsedArgs, (0, exports.argumentsParser)(rawArgs), "f");
-        return __classPrivateFieldGet(this, _NodeCommandLineParser_parsedArgs, "f");
+        __classPrivateFieldSet(this, _NodeCommandLineParser__rawArgs, rawArgs, "f");
+        __classPrivateFieldSet(this, _NodeCommandLineParser__parsedArgs, (0, exports.argumentsParser)(rawArgs), "f");
+        return __classPrivateFieldGet(this, _NodeCommandLineParser__parsedArgs, "f");
     }
+    /**
+     * @description 获取原始命令行参数
+     */
     get raw() {
-        return __classPrivateFieldGet(this, _NodeCommandLineParser_rawArgs, "f");
+        return __classPrivateFieldGet(this, _NodeCommandLineParser__rawArgs, "f");
+    }
+    /**
+     * @description 获取解析后命令行参数
+     */
+    get cliArgs() {
+        return __classPrivateFieldGet(this, _NodeCommandLineParser__parsedArgs, "f");
     }
     /**
      * @description 添加命令行参数，这里添加的使一些通用的命令行参数，所有的action都可以配置
-     * @param optionName
      *
      * @example
      *
@@ -78,10 +94,13 @@ class NodeCommandLineParser {
      *  ......
      * ])
      *
+     * @param options
      */
     addCommandOption(options) {
-        //
+        for (const option of options) {
+            __classPrivateFieldGet(this, _NodeCommandLineParser__optionByName, "f")[option.longName] = option;
+        }
     }
 }
 exports.NodeCommandLineParser = NodeCommandLineParser;
-_NodeCommandLineParser_rawArgs = new WeakMap(), _NodeCommandLineParser_parsedArgs = new WeakMap();
+_NodeCommandLineParser__rawArgs = new WeakMap(), _NodeCommandLineParser__parsedArgs = new WeakMap(), _NodeCommandLineParser__optionByName = new WeakMap();

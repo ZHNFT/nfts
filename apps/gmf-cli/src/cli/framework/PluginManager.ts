@@ -32,43 +32,67 @@ export interface PluginContext {
 export type PluginImpl<T = unknown> = (ctx: PluginContext, options: T) => void;
 
 export class PluginManager {
-  _ctx: PluginContext;
-  _config: GmfConfig;
-  _logger: Logger;
+  readonly _ctx: PluginContext;
+  readonly _config: GmfConfig;
+  readonly _logger: Logger;
 
-  _plugins: PluginImpl[] = [];
+  _pluginConfigByName: Map<string, PluginConfig> = new Map();
 
-  constructor(ctx: PluginContext, config: GmfConfig, logger: Logger) {
+  constructor(
+    readonly ctx: PluginContext,
+    readonly config: GmfConfig,
+    readonly logger: Logger
+  ) {
     this._ctx = ctx;
     this._config = config;
     this._logger = logger;
+
+    const gmfConfig = this._config.lookup<GmfConfigSchema>();
+
+    const { name, plugins = [] } = gmfConfig;
+
+    this.logger.log(`解析 ${name}
+----------------------------
+`);
+
+    for (let i = 0; i < plugins.length; i++) {
+      const plugin = plugins[i];
+      this.logger.log(`读取插件配置： ${plugin.name}`);
+      this._pluginConfigByName.set(plugin.name, plugin);
+    }
   }
 
   /**
    * 从配置中读取并执行plugin方法
    */
   async invokePlugins(): Promise<void> {
-    const { plugins } = this._config.lookup<GmfConfigSchema>();
-    for await (const { name, options } of plugins) {
-      // import(path.resolve(this._config.cwd, 'dist', name));
-      const p = await this.resolvePlugin(name);
+    const pluginNames = this._pluginConfigByName.keys();
+
+    for await (const name of pluginNames) {
+      const { options } = this._pluginConfigByName.get(name);
+      this.logger.log(`执行插件方法： ${name}`);
+      const p = await this._resolvePlugin(name);
       p.call(null, this._ctx, options);
     }
+
+    this.logger.log(`>>>> 执行插件方法结束 <<<<`);
   }
 
-  async resolvePlugin(pluginModulePath: string): Promise<PluginImpl> {
+  private async _resolvePlugin(pluginModulePath: string): Promise<PluginImpl> {
     let plugin: { default?: PluginImpl } = {};
 
     try {
       plugin = await import(pluginModulePath);
     } catch (e) {
-      plugin.default = await this.resolvePluginLocal(pluginModulePath);
+      plugin.default = await this._resolvePluginLocal(pluginModulePath);
     }
 
     return plugin.default;
   }
 
-  async resolvePluginLocal(pluginModulePath: string): Promise<PluginImpl> {
+  private async _resolvePluginLocal(
+    pluginModulePath: string
+  ): Promise<PluginImpl> {
     let plugin: { default?: PluginImpl };
 
     // todo: dist需要被配置替换

@@ -48,23 +48,41 @@ type CommandOption = {
 };
 
 export class NodeCommandLineParser<T = ParsedOptionArgs> {
-  #rawArgs: string[];
-  #parsedArgs: ParsedArgs<T>;
+  #_rawArgs: string[];
+  #_parsedArgs: ParsedArgs<T>;
 
+  #_optionByName: Record<string, CommandOption> = {};
+
+  /**
+   * @public
+   * @param rawArgs
+   *
+   * @description 解析命令行参数
+   *
+   */
   public parser(rawArgs: string[]): ParsedArgs<T> {
-    this.#rawArgs = rawArgs;
-    this.#parsedArgs = argumentsParser<T>(rawArgs);
+    this.#_rawArgs = rawArgs;
+    this.#_parsedArgs = argumentsParser<T>(rawArgs);
 
-    return this.#parsedArgs;
+    return this.#_parsedArgs;
   }
 
+  /**
+   * @description 获取原始命令行参数
+   */
   public get raw(): string[] {
-    return this.#rawArgs;
+    return this.#_rawArgs;
+  }
+
+  /**
+   * @description 获取解析后命令行参数
+   */
+  public get cliArgs(): ParsedArgs<T> {
+    return this.#_parsedArgs;
   }
 
   /**
    * @description 添加命令行参数，这里添加的使一些通用的命令行参数，所有的action都可以配置
-   * @param optionName
    *
    * @example
    *
@@ -82,8 +100,11 @@ export class NodeCommandLineParser<T = ParsedOptionArgs> {
    *  ......
    * ])
    *
+   * @param options
    */
   addCommandOption(options: CommandOption[]) {
-    //
+    for (const option of options) {
+      this.#_optionByName[option.longName] = option;
+    }
   }
 }

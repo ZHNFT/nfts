@@ -6,8 +6,8 @@ export interface ConfigInitOptions {
 }
 
 export class ConfigBase {
-  #_cwd: string;
-  #_configFilePath: string;
+  readonly #_cwd: string;
+  readonly #_configFilePath: string;
 
   config: unknown;
 
@@ -24,15 +24,28 @@ export class ConfigBase {
       return this.config as T;
     }
 
-    this.config = loadJsonSync<T>(this.#_configFilePath);
-
-    return this.config as T;
+    try {
+      this.config = loadJsonSync<T>(this.#_configFilePath);
+      return this.config as T;
+    } catch (e) {
+      throw Error(`加载配置文件失败，配置文件路径${this.#_configFilePath}`);
+    }
   }
 
+  /**
+   * @public
+   * @description 获取配置所处的目录路径
+   *
+   */
   get cwd(): string {
     return this.#_cwd;
   }
 
+  /**
+   * @public
+   * @description 获取配置所处的文件路径
+   *
+   */
   get configPath(): string {
     return this.#_configFilePath;
   }

@@ -21,44 +21,48 @@ class GmfCommandLine extends node_command_line_1.CommandLineTool {
             toolName: 'gmf',
             toolDescription: 'gmf personal use only!!!'
         });
-        const logger = new Logger_1.Logger();
-        const config = new GmfConfig_1.GmfConfig({
+        /// 解析命令行参数
+        this.parser(process.argv.slice(2));
+        this._logger = new Logger_1.Logger();
+        this._config = new GmfConfig_1.GmfConfig({
             configFile: './config/gmf.json',
             cwd: process.cwd()
         });
         const build = new ActionBuild_1.ActionBuild();
+        /// 通用的Options，统一注册
         this.addCommandOption([
-            {
-                longName: 'plugin',
-                description: 'Add extra command plugin'
-            },
             {
                 longName: 'clean',
                 shortName: 'c',
                 description: 'Cleanup build files'
-            },
-            {
-                longName: 'sourcemap',
-                description: 'Generate sourcemap files'
             }
         ]);
+        /// 提供给plugin的上下文对象
         const pluginContext = {
             hooks: {
                 build: build.initializeHook()
             },
-            config,
-            logger
+            config: this._config,
+            logger: this._logger,
+            addAction: (action) => {
+                //
+            }
         };
-        this._pluginManager = new PluginManager_1.PluginManager(pluginContext, config, logger);
+        this._pluginManager = new PluginManager_1.PluginManager(pluginContext, this._config, this._logger);
         this.addAction(build);
     }
     prepare() {
+        this._logger.log(`
+Preparing...
+----------------------------
+    `);
         return this;
     }
     exec() {
         return __awaiter(this, void 0, void 0, function* () {
+            const { _ } = this.cliArgs;
+            const command = _[0];
             yield this._pluginManager.invokePlugins();
-            const command = this.parser(process.argv.slice(2))._[0];
             this.getAction(command).hook.call(this);
         });
     }

@@ -3,3 +3,4 @@ packages:
   - 'libs/*'
   - 'dev-libs/*'
   - 'examples/*'
+  - 'app-plugins/*'
