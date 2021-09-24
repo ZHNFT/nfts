@@ -1,9 +1,4 @@
 "use strict";
-/**
- * @class NodeCommandLineParser
- *
- * 在这里基础类中，只有解析命令行参数的功能。
- */
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -46,10 +41,12 @@ const argumentsParser = (args) => {
 };
 exports.argumentsParser = argumentsParser;
 class NodeCommandLineParser {
-    constructor() {
+    constructor(args) {
         _NodeCommandLineParser__rawArgs.set(this, void 0);
         _NodeCommandLineParser__parsedArgs.set(this, void 0);
         _NodeCommandLineParser__optionByName.set(this, {});
+        __classPrivateFieldSet(this, _NodeCommandLineParser__rawArgs, args, "f");
+        __classPrivateFieldSet(this, _NodeCommandLineParser__parsedArgs, this.parser(args), "f");
     }
     /**
      * @public

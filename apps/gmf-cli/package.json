@@ -5,8 +5,9 @@
     "gmf": "./bin/gmf"
   },
   "scripts": {
-    "prepare": "tsc",
-    "compile": "tsc --watch"
+    "prepare": "tsc --project config/tsconfig.json",
+    "compile": "tsc  --project config/tsconfig.json --watch",
+    "dev": "node ./bin/gmf build --clean"
   },
   "dependencies": {
     "@gmf/eslint-config": "workspace:*",

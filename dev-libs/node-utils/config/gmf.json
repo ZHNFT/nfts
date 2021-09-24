@@ -1,8 +1,7 @@
 {
   "$schema": "../../../apps/gmf-cli/schemas/gmf.schema.json",
-
   "name": "@gmf/node-utils",
-
+  "buildPath": "./dist",
   "plugins": [
     {
       "name": "@gmf/gmf-plugin-ts",

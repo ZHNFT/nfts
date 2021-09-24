@@ -12,12 +12,15 @@ export interface CustomActionConfig {
     name: string;
     apply: () => void;
 }
+export interface ExecutionContext {
+    name: string;
+}
 /**
  * 插件函数的上下文对象
  */
 export interface PluginContext {
     hooks: {
-        build: SyncHook<any>;
+        build: SyncHook<ExecutionContext>;
     };
     config: GmfConfig;
     logger: Logger;

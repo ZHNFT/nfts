@@ -9,6 +9,11 @@ export interface GmfConfigSchema {
   name: string;
 
   /**
+   * 构建路径
+   */
+  buildPath: string;
+
+  /**
    * 插件配置
    */
   plugins: PluginConfig[];

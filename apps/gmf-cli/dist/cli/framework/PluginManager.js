@@ -31,15 +31,14 @@ class PluginManager {
         this._config = config;
         this._logger = logger;
         const gmfConfig = this._config.lookup();
-        const { name, plugins = [] } = gmfConfig;
-        this.logger.log(`解析 ${name}
-----------------------------
-`);
+        const { plugins = [] } = gmfConfig;
+        this.logger.log(`解析开始`);
         for (let i = 0; i < plugins.length; i++) {
             const plugin = plugins[i];
-            this.logger.log(`读取插件配置： ${plugin.name}`);
+            this.logger.log(`    读取插件配置： ${plugin.name}`);
             this._pluginConfigByName.set(plugin.name, plugin);
         }
+        this.logger.log(`解析完成`);
     }
     /**
      * 从配置中读取并执行plugin方法
@@ -48,11 +47,12 @@ class PluginManager {
         var e_1, _a;
         return __awaiter(this, void 0, void 0, function* () {
             const pluginNames = this._pluginConfigByName.keys();
+            this.logger.log(`执行插件开始`);
             try {
                 for (var pluginNames_1 = __asyncValues(pluginNames), pluginNames_1_1; pluginNames_1_1 = yield pluginNames_1.next(), !pluginNames_1_1.done;) {
                     const name = pluginNames_1_1.value;
                     const { options } = this._pluginConfigByName.get(name);
-                    this.logger.log(`执行插件方法： ${name}`);
+                    this.logger.log(`    执行插件方法： ${name}`);
                     const p = yield this._resolvePlugin(name);
                     p.call(null, this._ctx, options);
                 }
@@ -64,7 +64,7 @@ class PluginManager {
                 }
                 finally { if (e_1) throw e_1.error; }
             }
-            this.logger.log(`>>>> 执行插件方法结束 <<<<`);
+            this.logger.log(`执行插件结束`);
         });
     }
     _resolvePlugin(pluginModulePath) {

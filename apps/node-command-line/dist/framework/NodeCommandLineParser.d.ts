@@ -16,6 +16,7 @@ declare type CommandOption = {
 };
 export declare class NodeCommandLineParser<T = ParsedOptionArgs> {
     #private;
+    constructor(args: string[]);
     /**
      * @public
      * @param rawArgs

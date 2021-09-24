@@ -1,9 +1,13 @@
 {
   "$schema": "../../../apps/gmf-cli/schemas/gmf.schema.json",
   "name": "@gmf/gmf-plugin-ts",
+  "buildPath": "./dist",
   "plugins": [
     {
-      "name": "@gmf/gmf-plugin-ts"
+      "name": "@gmf/gmf-plugin-ts",
+      "options": {
+        "configFilePath": "./config/tsconfig.json"
+      }
     }
   ]
 }

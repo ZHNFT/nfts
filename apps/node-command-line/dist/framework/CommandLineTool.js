@@ -2,9 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommandLineTool = void 0;
 const NodeCommandLineParser_1 = require("./NodeCommandLineParser");
+const process = require("process");
+/**
+ * @class CommandLineTool
+ */
 class CommandLineTool extends NodeCommandLineParser_1.NodeCommandLineParser {
     constructor({ toolName, toolDescription }) {
-        super();
+        super(process.argv.slice(2));
         this.actions = [];
         this.actionByName = new Map();
         this.toolName = toolName;
@@ -12,7 +16,6 @@ class CommandLineTool extends NodeCommandLineParser_1.NodeCommandLineParser {
     }
     /**
      *
-     * @param actionName
      * @param action
      *
      * @example

@@ -21,8 +21,6 @@ class GmfCommandLine extends node_command_line_1.CommandLineTool {
             toolName: 'gmf',
             toolDescription: 'gmf personal use only!!!'
         });
-        /// 解析命令行参数
-        this.parser(process.argv.slice(2));
         this._logger = new Logger_1.Logger();
         this._config = new GmfConfig_1.GmfConfig({
             configFile: './config/gmf.json',
@@ -52,10 +50,6 @@ class GmfCommandLine extends node_command_line_1.CommandLineTool {
         this.addAction(build);
     }
     prepare() {
-        this._logger.log(`
-Preparing...
-----------------------------
-    `);
         return this;
     }
     exec() {

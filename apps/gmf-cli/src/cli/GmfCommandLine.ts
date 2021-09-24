@@ -19,8 +19,6 @@ export class GmfCommandLine extends CommandLineTool {
       toolName: 'gmf',
       toolDescription: 'gmf personal use only!!!'
     });
-    /// 解析命令行参数
-    this.parser(process.argv.slice(2));
 
     this._logger = new Logger();
     this._config = new GmfConfig({
@@ -61,18 +59,12 @@ export class GmfCommandLine extends CommandLineTool {
   }
 
   prepare(): GmfCommandLine {
-    this._logger.log(`
-Preparing...
-----------------------------
-    `);
     return this;
   }
 
   async exec(): Promise<void> {
     const { _ } = this.cliArgs;
-
     const command = _[0];
-
     await this._pluginManager.invokePlugins();
     this.getAction(command).hook.call(this);
   }

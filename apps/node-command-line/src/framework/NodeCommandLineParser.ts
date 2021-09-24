@@ -3,7 +3,6 @@
  *
  * 在这里基础类中，只有解析命令行参数的功能。
  */
-
 type CommandArgs = { _: string[] };
 
 type ParsedOptionArgs = Record<string, string | boolean>;
@@ -52,6 +51,11 @@ export class NodeCommandLineParser<T = ParsedOptionArgs> {
   #_parsedArgs: ParsedArgs<T>;
 
   #_optionByName: Record<string, CommandOption> = {};
+
+  constructor(args: string[]) {
+    this.#_rawArgs = args;
+    this.#_parsedArgs = this.parser(args);
+  }
 
   /**
    * @public

@@ -11,10 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const child_process_1 = require("child_process");
 const plugin = (api, options) => {
-    api.logger.log('执行plugin-ts插件');
-    api.hooks.build.tap('plugin-ts', () => __awaiter(void 0, void 0, void 0, function* () {
-        api.logger.log('执行plugin-ts钩子函数');
-        yield (0, child_process_1.spawn)('tsc', ['--build', '--verbose'], {
+    api.hooks.build.tap('plugin-ts', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+        yield (0, child_process_1.spawn)('tsc', ['--project', options.tsConfigFilePath || 'tsconfig.json'], {
             stdio: 'inherit',
             cwd: process.cwd()
         });

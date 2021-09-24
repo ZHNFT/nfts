@@ -17,12 +17,16 @@ export interface CustomActionConfig {
   apply: () => void;
 }
 
+export interface ExecutionContext {
+  name: string;
+}
+
 /**
  * 插件函数的上下文对象
  */
 export interface PluginContext {
   hooks: {
-    build: SyncHook<any>;
+    build: SyncHook<ExecutionContext>;
   };
   config: GmfConfig;
   logger: Logger;
@@ -49,17 +53,17 @@ export class PluginManager {
 
     const gmfConfig = this._config.lookup<GmfConfigSchema>();
 
-    const { name, plugins = [] } = gmfConfig;
+    const { plugins = [] } = gmfConfig;
 
-    this.logger.log(`解析 ${name}
-----------------------------
-`);
+    this.logger.log(`解析开始`);
 
     for (let i = 0; i < plugins.length; i++) {
       const plugin = plugins[i];
-      this.logger.log(`读取插件配置： ${plugin.name}`);
+      this.logger.log(`    读取插件配置： ${plugin.name}`);
       this._pluginConfigByName.set(plugin.name, plugin);
     }
+
+    this.logger.log(`解析完成`);
   }
 
   /**
@@ -68,14 +72,16 @@ export class PluginManager {
   async invokePlugins(): Promise<void> {
     const pluginNames = this._pluginConfigByName.keys();
 
+    this.logger.log(`执行插件开始`);
+
     for await (const name of pluginNames) {
       const { options } = this._pluginConfigByName.get(name);
-      this.logger.log(`执行插件方法： ${name}`);
+      this.logger.log(`    执行插件方法： ${name}`);
       const p = await this._resolvePlugin(name);
       p.call(null, this._ctx, options);
     }
 
-    this.logger.log(`>>>> 执行插件方法结束 <<<<`);
+    this.logger.log(`执行插件结束`);
   }
 
   private async _resolvePlugin(pluginModulePath: string): Promise<PluginImpl> {

@@ -1,19 +1,6 @@
 {
+  "$schema": "../schemas/gmf.schema.json",
   "name": "gmf",
-  "plugins": [
-    [
-      "gmf-plugin-rollup",
-      {
-        "optionA": "A",
-        "optionB": "B",
-        "optionC": "C"
-      }
-    ]
-  ],
-  "actions": [
-    {
-      "name": "action1"
-    },
-    { "name": "action2" }
-  ]
+  "buildPath": "./dist",
+  "plugins": []
 }

@@ -38,7 +38,7 @@
           }
         }
       }
-    },
-    "required": ["name", "buildPath"]
-  }
+    }
+  },
+  "required": ["name", "buildPath"]
 }

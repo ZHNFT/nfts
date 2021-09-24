@@ -1,11 +1,15 @@
 import { NodeCommandLineParser } from './NodeCommandLineParser';
 import { ActionBase } from './ActionBase';
+import * as process from 'process';
 
 interface CommandLineToolInitOptions {
   toolName: string;
   toolDescription: string;
 }
 
+/**
+ * @class CommandLineTool
+ */
 export class CommandLineTool extends NodeCommandLineParser {
   toolName: string;
   toolDescription: string;
@@ -14,14 +18,13 @@ export class CommandLineTool extends NodeCommandLineParser {
   actionByName: Map<string, ActionBase> = new Map();
 
   constructor({ toolName, toolDescription }: CommandLineToolInitOptions) {
-    super();
+    super(process.argv.slice(2));
     this.toolName = toolName;
     this.toolDescription = toolDescription;
   }
 
   /**
    *
-   * @param actionName
    * @param action
    *
    * @example

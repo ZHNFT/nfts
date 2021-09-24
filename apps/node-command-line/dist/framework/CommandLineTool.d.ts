@@ -4,6 +4,9 @@ interface CommandLineToolInitOptions {
     toolName: string;
     toolDescription: string;
 }
+/**
+ * @class CommandLineTool
+ */
 export declare class CommandLineTool extends NodeCommandLineParser {
     toolName: string;
     toolDescription: string;
@@ -12,7 +15,6 @@ export declare class CommandLineTool extends NodeCommandLineParser {
     constructor({ toolName, toolDescription }: CommandLineToolInitOptions);
     /**
      *
-     * @param actionName
      * @param action
      *
      * @example
