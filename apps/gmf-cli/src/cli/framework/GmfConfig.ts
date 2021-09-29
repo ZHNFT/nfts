@@ -29,7 +29,7 @@ export interface GmfConfigSchema {
   customActions: ActionBaseConfig[];
 }
 
-export class GmfConfig extends ConfigBase {
+export class GmfConfig extends ConfigBase<GmfConfigSchema> {
   constructor(options: ConfigInitOptions) {
     super(options);
   }

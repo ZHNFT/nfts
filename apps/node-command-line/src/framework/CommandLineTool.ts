@@ -2,10 +2,10 @@ import { NodeCommandLineParser } from './NodeCommandLineParser';
 import { ActionBase } from './ActionBase';
 import * as process from 'process';
 
-interface CommandLineToolInitOptions {
+type CommandLineToolInitOptions = {
   toolName: string;
   toolDescription: string;
-}
+};
 
 /**
  * @class CommandLineTool
@@ -34,7 +34,7 @@ export class CommandLineTool extends NodeCommandLineParser {
    * CLT.addAction('action', )
    *
    */
-  addAction(action: ActionBase) {
+  addAction(action: ActionBase): void {
     this.actionByName.set(action.name, action);
     this.actions.push(action);
   }

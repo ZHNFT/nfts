@@ -5,11 +5,11 @@ export interface ConfigInitOptions {
   configFile: string;
 }
 
-export class ConfigBase {
+export class ConfigBase<T extends unknown> {
   readonly #_cwd: string;
   readonly #_configFilePath: string;
 
-  config: unknown;
+  config: T;
 
   constructor({ cwd, configFile }: ConfigInitOptions) {
     this.#_cwd = cwd;
@@ -19,7 +19,7 @@ export class ConfigBase {
   /**
    * @description 查看配置，并记录
    */
-  lookup<T>(): T {
+  lookup(): T {
     if (this.config) {
       return this.config as T;
     }

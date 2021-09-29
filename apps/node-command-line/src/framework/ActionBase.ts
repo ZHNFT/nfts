@@ -56,13 +56,7 @@ export class ActionBase {
    *
    */
   initializeHook(): SyncHook<any> {
-    if (this.#_hook) {
-      return this.#_hook;
-    } else {
-      this.#_hook = new SyncHook<any>([this.actionName]);
-    }
-
-    return this.#_hook;
+    return this.#_hook || (this.#_hook = new SyncHook<any>([this.actionName]));
   }
 
   /**

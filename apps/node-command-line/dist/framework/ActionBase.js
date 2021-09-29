@@ -54,13 +54,7 @@ class ActionBase {
      *
      */
     initializeHook() {
-        if (__classPrivateFieldGet(this, _ActionBase__hook, "f")) {
-            return __classPrivateFieldGet(this, _ActionBase__hook, "f");
-        }
-        else {
-            __classPrivateFieldSet(this, _ActionBase__hook, new tapable_1.SyncHook([this.actionName]), "f");
-        }
-        return __classPrivateFieldGet(this, _ActionBase__hook, "f");
+        return __classPrivateFieldGet(this, _ActionBase__hook, "f") || (__classPrivateFieldSet(this, _ActionBase__hook, new tapable_1.SyncHook([this.actionName]), "f"));
     }
     /**
      * @example

@@ -2,14 +2,14 @@ export interface ConfigInitOptions {
     cwd: string;
     configFile: string;
 }
-export declare class ConfigBase {
+export declare class ConfigBase<T extends unknown> {
     #private;
-    config: unknown;
+    config: T;
     constructor({ cwd, configFile }: ConfigInitOptions);
     /**
      * @description 查看配置，并记录
      */
-    lookup<T>(): T;
+    lookup(): T;
     /**
      * @public
      * @description 获取配置所处的目录路径

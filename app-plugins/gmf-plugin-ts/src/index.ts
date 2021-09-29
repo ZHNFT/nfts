@@ -1,7 +1,11 @@
 import { PluginImpl } from '@gmf/gmf-cli/dist/cli/framework/PluginManager';
 import { spawn } from 'child_process';
 
-const plugin: PluginImpl = (api, options: { tsConfigFilePath: string }) => {
+export type TSPluginOptions = {
+  tsConfigFilePath?: string;
+};
+
+const plugin: PluginImpl = (api, options: TSPluginOptions) => {
   api.hooks.build.tap('plugin-ts', async ctx => {
     await spawn(
       'tsc',

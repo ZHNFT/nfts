@@ -2,7 +2,7 @@
  * @class PluginManager 管理所有注册到GCL中的插件
  */
 
-import { GmfConfig, GmfConfigSchema } from './GmfConfig';
+import { GmfConfig } from './GmfConfig';
 import { Logger } from './Logger';
 import * as path from 'path';
 import { SyncHook } from 'tapable';
@@ -51,7 +51,7 @@ export class PluginManager {
     this._config = config;
     this._logger = logger;
 
-    const gmfConfig = this._config.lookup<GmfConfigSchema>();
+    const gmfConfig = this._config.lookup();
 
     const { plugins = [] } = gmfConfig;
 
