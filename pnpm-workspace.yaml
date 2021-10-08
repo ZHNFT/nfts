@@ -1,6 +1,5 @@
 packages:
   - 'apps/*'
   - 'libs/*'
-  - 'dev-libs/*'
+  - 'plugins/*'
   - 'examples/*'
-  - 'app-plugins/*'

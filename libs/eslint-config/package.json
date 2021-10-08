@@ -10,6 +10,7 @@
     "typescript": "^4.3.5"
   },
   "files": [
-    "index.js"
+    "index.js",
+    "rules"
   ]
 }

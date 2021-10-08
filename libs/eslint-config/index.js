@@ -1,5 +1,3 @@
-const nodeEslintConfig = require('./rules/node');
-
 /**
  * @type {import('eslint').Linter.Config}
  */

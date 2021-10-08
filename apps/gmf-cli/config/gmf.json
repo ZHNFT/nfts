@@ -1,6 +1,0 @@
-{
-  "$schema": "../schemas/gmf.schema.json",
-  "name": "gmf",
-  "buildPath": "./dist",
-  "plugins": []
-}
