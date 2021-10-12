@@ -1,5 +1,6 @@
 // @ts-check
 
+const { Linter } = require('eslint');
 const path = require('path');
 /**
  *

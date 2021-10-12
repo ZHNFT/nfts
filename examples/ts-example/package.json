@@ -1,12 +1,8 @@
 {
   "name": "ts-example",
   "version": "1.0.0",
-  "scripts": {
-    "build": "gmf build --clean"
-  },
+  "scripts": {},
   "dependencies": {
-    "@gmf/gmf-cli": "workspace:*",
-    "@gmf/eslint-config": "workspace:*",
-    "@gmf/gmf-plugin-ts": "workspace:*"
+    "@gmf/eslint-config": "workspace:*"
   }
 }
