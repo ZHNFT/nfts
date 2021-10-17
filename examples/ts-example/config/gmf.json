@@ -1,9 +1,0 @@
-{
-  "$schema": "../../../apps/gmf-cli/schemas/gmf.schema.json",
-  "name": "ts-example",
-  "plugins": [
-    {
-      "name": "@gmf/gmf-plugin-ts"
-    }
-  ]
-}

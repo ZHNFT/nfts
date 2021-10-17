@@ -1,8 +1,0 @@
-{
-  "name": "ts-example",
-  "version": "1.0.0",
-  "scripts": {},
-  "dependencies": {
-    "@gmf/eslint-config": "workspace:*"
-  }
-}
