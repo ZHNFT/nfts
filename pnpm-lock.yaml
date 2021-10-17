@@ -5,11 +5,8 @@ importers:
   .:
     specifiers: {}
 
-  examples/ts-example:
-    specifiers:
-      '@gmf/eslint-config': workspace:*
-    dependencies:
-      '@gmf/eslint-config': link:../../libs/eslint-config
+  apps/gmf:
+    specifiers: {}
 
   libs/eslint-config:
     specifiers:
@@ -24,6 +21,15 @@ importers:
       '@typescript-eslint/parser': 4.29.2_eslint@7.32.0+typescript@4.4.2
       eslint: 7.32.0
       typescript: 4.4.2
+
+  libs/node-command-tools:
+    specifiers:
+      '@gmf/eslint-config': workspace:*
+    devDependencies:
+      '@gmf/eslint-config': link:../eslint-config
+
+  libs/node-lib-tools:
+    specifiers: {}
 
 packages:
 
