@@ -8,7 +8,7 @@ const path = require('path');
  * @param overrides {function((import('eslint').Linter.Config)): import('eslint').Linter.Config}
  * @returns {import('eslint').Linter.Config}
  */
-const eslintConfig = (scenario, overrides = config => config) => {
+function eslintConfig(scenario, overrides = config => config) {
   /**
    *
    * @type {import('eslint').Linter.Config}
@@ -37,7 +37,7 @@ const eslintConfig = (scenario, overrides = config => config) => {
   };
 
   return overrides(baseConfig);
-};
+}
 
 /**
  *

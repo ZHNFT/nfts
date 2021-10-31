@@ -1,0 +1,18 @@
+{
+	"name": "@gmf/node-args",
+	"version": "0.0.0",
+	"description": "解析命令行参数",
+	"scripts": {
+		"prepublish": "pnpx tsc"
+	},
+	"devDependencies": {
+		"@gmf/eslint-config": "workspace:*",
+		"@types/jest": "^27.0.2",
+		"jest": "^27.3.1",
+		"ts-jest": "^27.0.7",
+		"typescript": "^4.4.4"
+	},
+	"files": [
+		"dist"
+	]
+}

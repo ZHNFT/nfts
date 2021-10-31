@@ -1,5 +1,5 @@
 /**
- * @abstract CommandLineParser
+ * @class CommandLineParser
  */
 
 export interface ParserResult {
@@ -7,9 +7,7 @@ export interface ParserResult {
   [prop: string]: string | boolean;
 }
 
-export abstract class CommandLineParser {
-  constructor(parameters: string[]) {}
-
+export class CommandLineParser {
   /**
    * @method parser
    *

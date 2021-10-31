@@ -1,5 +1,4 @@
 packages:
-  - 'libs/*'
   - 'apps/*'
-  - 'examples/*'
-  - 'gmf-plugins/*'
+  - 'schemas/*'
+  - 'toolkit/*'
