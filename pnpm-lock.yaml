@@ -24,13 +24,13 @@ importers:
 
   toolkit/node-args:
     specifiers:
-      '@gmf/eslint-config': workspace:*
+      '@nfts/eslint-config': workspace:*
       '@types/jest': ^27.0.2
       jest: ^27.3.1
       ts-jest: ^27.0.7
       typescript: ^4.4.4
     devDependencies:
-      '@gmf/eslint-config': link:../../schemas/eslint-config
+      '@nfts/eslint-config': link:../../schemas/eslint-config
       '@types/jest': 27.0.2
       jest: 27.3.1
       ts-jest: 27.0.7_2c4ca6574207836d1023f54689cc81ac
@@ -38,15 +38,15 @@ importers:
 
   toolkit/node-command:
     specifiers:
-      '@gmf/eslint-config': workspace:*
+      '@nfts/eslint-config': workspace:*
     devDependencies:
-      '@gmf/eslint-config': link:../../schemas/eslint-config
+      '@nfts/eslint-config': link:../../schemas/eslint-config
 
   toolkit/node-lib:
     specifiers:
-      '@gmf/eslint-config': workspace:*
+      '@nfts/eslint-config': workspace:*
     devDependencies:
-      '@gmf/eslint-config': link:../../schemas/eslint-config
+      '@nfts/eslint-config': link:../../schemas/eslint-config
 
 packages:
 

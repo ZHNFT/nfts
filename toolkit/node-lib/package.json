@@ -1,8 +1,8 @@
 {
-	"name": "@gmf/node-lib",
+	"name": "@nfts/node-lib",
 	"version": "0.0.0",
 	"dependencies": {},
 	"devDependencies": {
-		"@gmf/eslint-config": "workspace:*"
+		"@nfts/eslint-config": "workspace:*"
 	}
 }
