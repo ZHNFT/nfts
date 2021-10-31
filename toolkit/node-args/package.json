@@ -2,6 +2,7 @@
 	"name": "@gmf/node-args",
 	"version": "0.0.0",
 	"description": "解析命令行参数",
+	"main": "./dist/index.js",
 	"scripts": {
 		"prepublish": "pnpx tsc"
 	},
