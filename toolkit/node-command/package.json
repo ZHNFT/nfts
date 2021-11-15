@@ -1,8 +1,15 @@
 {
-	"name": "@nfts/node-command",
-	"version": "0.0.0",
-	"dependencies": {},
-	"devDependencies": {
-		"@nfts/eslint-config": "workspace:*"
-	}
+  "name": "@nfts/node-command",
+  "version": "0.0.0",
+  "scripts": {
+    "prepublish": "pnpx tsc",
+    "test": "pnpx jest"
+  },
+  "devDependencies": {
+    "@nfts/eslint-config": "workspace:*",
+    "@types/jest": "^27.0.2",
+    "jest": "^27.3.1",
+    "ts-jest": "^27.0.7",
+    "typescript": "^4.4.4"
+  }
 }
