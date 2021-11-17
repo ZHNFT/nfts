@@ -5,8 +5,13 @@ importers:
   .:
     specifiers: {}
 
-  apps/cmd-tool:
-    specifiers: {}
+  apps/gmf:
+    specifiers:
+      '@nfts/eslint-config': workspace:*
+      '@nfts/node-command': workspace:*
+    dependencies:
+      '@nfts/eslint-config': link:../../schemas/eslint-config
+      '@nfts/node-command': link:../../toolkit/node-command
 
   schemas/eslint-config:
     specifiers:
@@ -50,7 +55,7 @@ importers:
       ts-jest: 27.0.7_2c4ca6574207836d1023f54689cc81ac
       typescript: 4.4.4
 
-  toolkit/node-lib:
+  toolkit/node-util:
     specifiers:
       '@nfts/eslint-config': workspace:*
     devDependencies:

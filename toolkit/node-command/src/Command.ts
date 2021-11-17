@@ -1,30 +1,30 @@
-import { ICommandAction } from '@/CommandAction';
+import { ICommandAction } from './CommandAction';
 
 export type IActionConfig = {
-	name: string;
+  name: string;
 };
 
 export interface ICommand<T> {
-	readonly commandName: string;
-	readonly commandActions: Map<string, ICommandAction<T>>;
+  readonly commandName: string;
+  readonly commandActions: Map<string, ICommandAction<T>>;
 
-	addAction(name: string, action: ICommandAction<T>): void;
-	getAction(actionName: string): ICommandAction<T>;
+  addAction(name: string, action: ICommandAction<T>): void;
+  getAction(actionName: string): ICommandAction<T>;
 
-	// addActionFromConfig(config: IActionConfig): void;
+  // addActionFromConfig(config: IActionConfig): void;
 }
 
 export class Command<T> implements ICommand<T> {
-	commandName: string;
-	commandActions: Map<string, ICommandAction<T>>;
+  commandName: string;
+  commandActions: Map<string, ICommandAction<T>>;
 
-	getAction(actionName: string) {
-		return this.commandActions.get(actionName);
-	}
+  getAction(actionName: string) {
+    return this.commandActions.get(actionName);
+  }
 
-	addAction(name: string, action: ICommandAction<T>) {
-		this.commandActions.set(name, action);
-	}
+  addAction(name: string, action: ICommandAction<T>) {
+    this.commandActions.set(name, action);
+  }
 
-	// addActionFromConfig(actionConfig: IActionConfig) {}
+  // addActionFromConfig(actionConfig: IActionConfig) {}
 }

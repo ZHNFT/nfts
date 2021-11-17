@@ -1,0 +1,8 @@
+{
+  "name": "@nfts/gmf",
+  "version": "0.0.1",
+  "dependencies": {
+    "@nfts/eslint-config": "workspace:*",
+    "@nfts/node-command": "workspace:*"
+  }
+}

@@ -1,4 +1,4 @@
-import { ICommandAction } from '@/CommandAction';
+import { ICommandAction } from './CommandAction';
 export declare type IActionConfig = {
     name: string;
 };
