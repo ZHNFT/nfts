@@ -1,5 +1,5 @@
 {
-	"name": "@nfts/node-command",
+	"name": "@nfts/node-config-manager",
 	"version": "0.0.0",
 	"scripts": {
 		"prepublish": "pnpx tsc",

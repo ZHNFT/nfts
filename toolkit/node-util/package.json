@@ -1,8 +1,0 @@
-{
-	"name": "@nfts/node-util",
-	"version": "0.0.0",
-	"dependencies": {},
-	"devDependencies": {
-		"@nfts/eslint-config": "workspace:*"
-	}
-}

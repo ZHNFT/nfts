@@ -20,7 +20,7 @@ export default function cli_args(
 	options = { ...InitialOptions, ...options };
 
 	let token: string;
-	let _args = args.slice(0);
+	const _args = args.slice(0);
 	let _lastMeetFlag: string | undefined;
 
 	while ((token = _args[0])) {
@@ -29,7 +29,7 @@ export default function cli_args(
 		}
 
 		if (isValidMark(token)) {
-			token = token.replace(/^[\-]+/, '');
+			token = token.replace(/^[-]+/, '');
 
 			if (_lastMeetFlag) {
 				res[_lastMeetFlag] = options.defaultToTrue ? true : '';
