@@ -7,9 +7,7 @@ export interface ArgsInitOptions {
 	defaultToTrue?: boolean;
 }
 
-function isValidMark(mark: string): boolean {
-	return /^[-]{1,2}\b/.test(mark);
-}
+const isValidMark = (mark: string) => /^[-]{1,2}\b/.test(mark);
 
 const InitialOptions: ArgsInitOptions = { defaultToTrue: true };
 
@@ -22,7 +20,7 @@ export default function cli_args(
 	options = { ...InitialOptions, ...options };
 
 	let token: string;
-	const _args = args.slice(0);
+	let _args = args.slice(0);
 	let _lastMeetFlag: string | undefined;
 
 	while ((token = _args[0])) {
@@ -31,7 +29,7 @@ export default function cli_args(
 		}
 
 		if (isValidMark(token)) {
-			token = token.replace(/^[-]+/, '');
+			token = token.replace(/^[\-]+/, '');
 
 			if (_lastMeetFlag) {
 				res[_lastMeetFlag] = options.defaultToTrue ? true : '';

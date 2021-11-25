@@ -4,7 +4,8 @@
 	"description": "解析命令行参数",
 	"main": "./dist/index.js",
 	"scripts": {
-		"prepublish": "pnpx tsc"
+		"prepublish": "pnpx tsc",
+		"test": "pnpx jest"
 	},
 	"publishConfig": {
 		"access": "public"
