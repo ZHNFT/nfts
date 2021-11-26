@@ -1,8 +1,19 @@
 {
   "name": "@nfts/gmf",
   "version": "0.0.1",
+  "scripts": {
+    "prepublish": "pnpx tsc",
+    "dev": "pnpx tsc --watch",
+    "jest": "pnpx jest"
+  },
   "dependencies": {
     "@nfts/eslint-config": "workspace:*",
-    "@nfts/node-command": "workspace:*"
+    "@nfts/node-command": "workspace:*",
+    "@nfts/node-args": "workspace:*"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@nfts/eslint-config"
+    ]
   }
 }

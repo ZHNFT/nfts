@@ -1,22 +1,34 @@
 export type ActionFunc<T> = (args: T) => void;
 
-export interface ICommandAction<T> {
-	name: string;
-	action: ActionFunc<T>;
+export abstract class ICommandAction<T> {
+  name: string;
+  description: string;
 
-	applyAction(ctx: T): void;
+  hooks: Record<string, () => void[]>;
+
+  abstract applyAction(ctx: T): void;
 }
 
 export class CommandAction<T> implements ICommandAction<T> {
-	name: string;
-	action: ActionFunc<T>;
+  name: string;
+  description: string;
 
-	constructor(name: string, action: ActionFunc<T>) {
-		this.name = name;
-		this.action = action;
-	}
+  hooks: Record<string, () => void[]>;
 
-	applyAction(ctx: T) {
-		this.action.call(this, ctx);
-	}
+  constructor({
+    actionName,
+    actionDescription
+  }: {
+    actionName: string;
+    actionDescription: string;
+  }) {
+    this.name = actionName;
+    this.description = actionDescription;
+
+    this.hooks = {};
+  }
+
+  applyAction(ctx: T): void {
+    console.log('apply action');
+  }
 }

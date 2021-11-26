@@ -11,7 +11,9 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var isValidMark = function (mark) { return /^[-]{1,2}\b/.test(mark); };
+function isValidMark(mark) {
+    return /^[-]{1,2}\b/.test(mark);
+}
 var InitialOptions = { defaultToTrue: true };
 function cli_args(args, options) {
     var res = {};
@@ -24,7 +26,7 @@ function cli_args(args, options) {
             res._ = token;
         }
         if (isValidMark(token)) {
-            token = token.replace(/^[\-]+/, '');
+            token = token.replace(/^[-]+/, '');
             if (_lastMeetFlag) {
                 res[_lastMeetFlag] = options.defaultToTrue ? true : '';
             }

@@ -8,9 +8,11 @@ importers:
   apps/gmf:
     specifiers:
       '@nfts/eslint-config': workspace:*
+      '@nfts/node-args': workspace:*
       '@nfts/node-command': workspace:*
     dependencies:
       '@nfts/eslint-config': link:../../schemas/eslint-config
+      '@nfts/node-args': link:../../toolkit/node-args
       '@nfts/node-command': link:../../toolkit/node-command
 
   schemas/eslint-config:
@@ -69,7 +71,7 @@ importers:
       ts-jest: 27.0.7_2c4ca6574207836d1023f54689cc81ac
       typescript: 4.4.4
 
-  toolkit/node-util:
+  toolkit/node-utils:
     specifiers:
       '@nfts/eslint-config': workspace:*
     devDependencies:
