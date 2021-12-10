@@ -12,7 +12,10 @@ class BuildLifeCycle implements LifeCycle {
 
 export class Build extends Command<any> {
   constructor() {
-    super();
+    super({
+      commandName: "build",
+      commandDescription: "Internal build command"
+    });
 
     this.commandName = 'dev';
     this.commandActions = new Map<string, ICommandAction<any>>();

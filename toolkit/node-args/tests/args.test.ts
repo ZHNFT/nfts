@@ -1,6 +1,6 @@
 import cli_args from '../src';
 
-describe('test args fucntion', () => {
+describe('test args function', () => {
   test('test with no args', () => {
     const parsedArgs = cli_args([
       'command',

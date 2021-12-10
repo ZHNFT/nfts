@@ -1,12 +1,17 @@
 export declare type ActionFunc<T> = (args: T) => void;
-export interface ICommandAction<T> {
+export declare abstract class ICommandAction<T> {
     name: string;
-    action: ActionFunc<T>;
-    applyAction(ctx: T): void;
+    description: string;
+    hooks: Record<string, () => void[]>;
+    abstract applyAction(ctx: T): void;
 }
 export declare class CommandAction<T> implements ICommandAction<T> {
     name: string;
-    action: ActionFunc<T>;
-    constructor(name: string, action: ActionFunc<T>);
+    description: string;
+    hooks: Record<string, () => void[]>;
+    constructor({ actionName, actionDescription }: {
+        actionName: string;
+        actionDescription: string;
+    });
     applyAction(ctx: T): void;
 }

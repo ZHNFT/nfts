@@ -13,6 +13,7 @@ export interface ICommand<T> {
   getAction(actionName: string): ICommandAction<T>;
 }
 
+
 export class Command<T> implements ICommand<T> {
   commandName: string;
   commandDescription: string;

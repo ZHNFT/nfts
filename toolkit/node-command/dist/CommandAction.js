@@ -1,13 +1,21 @@
 "use strict";
 exports.__esModule = true;
-exports.CommandAction = void 0;
+exports.CommandAction = exports.ICommandAction = void 0;
+var ICommandAction = /** @class */ (function () {
+    function ICommandAction() {
+    }
+    return ICommandAction;
+}());
+exports.ICommandAction = ICommandAction;
 var CommandAction = /** @class */ (function () {
-    function CommandAction(name, action) {
-        this.name = name;
-        this.action = action;
+    function CommandAction(_a) {
+        var actionName = _a.actionName, actionDescription = _a.actionDescription;
+        this.name = actionName;
+        this.description = actionDescription;
+        this.hooks = {};
     }
     CommandAction.prototype.applyAction = function (ctx) {
-        this.action.call(this, ctx);
+        console.log('apply action');
     };
     return CommandAction;
 }());
