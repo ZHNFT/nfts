@@ -1,5 +1,3 @@
 import { CommandAction } from '@nfts/node-command';
 
-export class Dev extends CommandAction<any> {
-
-}
+export class Dev extends CommandAction<unknown> {}

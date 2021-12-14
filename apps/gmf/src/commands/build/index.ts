@@ -10,14 +10,14 @@ class BuildLifeCycle implements LifeCycle {
   }
 }
 
-export class Build extends Command<any> {
+export class Build extends Command<unknown> {
   constructor() {
     super({
-      commandName: "build",
-      commandDescription: "Internal build command"
+      commandDescription: 'build command',
+      commandName: 'build'
     });
 
     this.commandName = 'dev';
-    this.commandActions = new Map<string, ICommandAction<any>>();
+    this.commandActions = new Map<string, ICommandAction<unknown>>();
   }
 }
