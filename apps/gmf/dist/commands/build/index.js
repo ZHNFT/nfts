@@ -31,7 +31,10 @@ var BuildLifeCycle = /** @class */ (function () {
 var Build = /** @class */ (function (_super) {
     __extends(Build, _super);
     function Build() {
-        var _this = _super.call(this) || this;
+        var _this = _super.call(this, {
+            commandDescription: 'build command',
+            commandName: 'build'
+        }) || this;
         _this.commandName = 'dev';
         _this.commandActions = new Map();
         return _this;

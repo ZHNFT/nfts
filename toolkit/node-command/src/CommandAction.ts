@@ -1,34 +1,65 @@
 export type ActionFunc<T> = (args: T) => void;
 
 export abstract class ICommandAction<T> {
-  name: string;
-  description: string;
+  readonly actionName: string;
+  readonly actionDescription: string;
+  readonly actionApplyHook: string;
+  readonly actionOptions?: unknown;
+  // Action对应的方法逻辑；
 
-  hooks: Record<string, () => void[]>;
+  private readonly _apply: ActionFunc<T>;
 
-  abstract applyAction(ctx: T): void;
-}
+  get apply() {
+    return this._apply;
+  }
 
-export class CommandAction<T> implements ICommandAction<T> {
-  name: string;
-  description: string;
-
-  hooks: Record<string, () => void[]>;
+  set apply() {
+    throw Error(`Can't reset action: ${this.actionName}`);
+  }
 
   constructor({
     actionName,
-    actionDescription
+    actionDescription,
+    actionApplyHook,
+    actionOptions
   }: {
     actionName: string;
     actionDescription: string;
+    actionApplyHook: string;
+    actionOptions?: unknown;
   }) {
-    this.name = actionName;
-    this.description = actionDescription;
+    this.actionName = actionName;
+    this.actionDescription = actionDescription;
+    this.actionApplyHook = actionApplyHook;
+    this.actionOptions = actionOptions;
 
-    this.hooks = {};
+    this._apply = this._initAction();
   }
 
-  applyAction(ctx: T): void {
-    console.log('apply action');
+  /**
+   * @description 通过 actionName 来引入action函数逻辑
+   */
+  private _initAction(): ActionFunc<T> {
+    const { actionName, actionOptions } = this;
+  }
+}
+
+export class CommandAction<T> extends ICommandAction<T> {
+  constructor({
+    actionName,
+    actionDescription,
+    actionApplyHook,
+    actionOptions
+  }: {
+    actionName: string;
+    actionDescription: string;
+    actionApplyHook: string;
+    actionOptions?: unknown;
+  }) {
+    super({ actionName, actionDescription, actionApplyHook, actionOptions });
+  }
+
+  actionFn<T>(args: T): void {
+    //
   }
 }

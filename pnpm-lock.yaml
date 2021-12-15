@@ -46,12 +46,14 @@ importers:
   toolkit/node-command:
     specifiers:
       '@nfts/eslint-config': workspace:*
+      '@nfts/node-args': workspace:*
       '@types/jest': ^27.0.2
       jest: ^27.3.1
       ts-jest: ^27.0.7
       typescript: ^4.4.4
     devDependencies:
       '@nfts/eslint-config': link:../../schemas/eslint-config
+      '@nfts/node-args': link:../node-args
       '@types/jest': 27.0.2
       jest: 27.3.1
       ts-jest: 27.0.7_2c4ca6574207836d1023f54689cc81ac

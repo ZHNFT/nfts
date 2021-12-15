@@ -12,4 +12,5 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 exports.__esModule = true;
 __exportStar(require("./Command"), exports);
 __exportStar(require("./CommandAction"), exports);
+__exportStar(require("./CommandTool"), exports);
 __exportStar(require("./LifeCycle"), exports);
