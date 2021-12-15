@@ -1,3 +1,5 @@
+import { Command } from '@nfts/node-command';
+
 export class Superior {
 	prepare(): Superior {
 		this._readOptionsFromConfiguration();
