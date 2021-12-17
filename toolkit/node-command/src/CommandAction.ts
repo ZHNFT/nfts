@@ -7,13 +7,13 @@ export abstract class ICommandAction<T> {
   readonly actionOptions?: unknown;
   // Action对应的方法逻辑；
 
-  private readonly _apply: ActionFunc<T>;
+  private readonly _apply!: Promise<ActionFunc<T>>;
 
   get apply() {
     return this._apply;
   }
 
-  set apply() {
+  set apply(_: unknown) {
     throw Error(`Can't reset action: ${this.actionName}`);
   }
 
@@ -39,8 +39,9 @@ export abstract class ICommandAction<T> {
   /**
    * @description 通过 actionName 来引入action函数逻辑
    */
-  private _initAction(): ActionFunc<T> {
-    const { actionName, actionOptions } = this;
+  private async _initAction() {
+    const { actionName } = this;
+    return await import(actionName);
   }
 }
 
@@ -57,9 +58,5 @@ export class CommandAction<T> extends ICommandAction<T> {
     actionOptions?: unknown;
   }) {
     super({ actionName, actionDescription, actionApplyHook, actionOptions });
-  }
-
-  actionFn<T>(args: T): void {
-    //
   }
 }

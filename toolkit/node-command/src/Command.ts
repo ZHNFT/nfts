@@ -5,10 +5,10 @@ export type IActionConfig = {
 };
 
 export abstract class ICommand<T> {
-  readonly commandName: string;
-  readonly commandActions: Map<string, ICommandAction<T>>;
+  readonly commandName!: string;
+  readonly commandActions!: Map<string, ICommandAction<T>>;
   abstract addAction(action: ICommandAction<T>): void;
-  abstract getAction(actionName: string): ICommandAction<T>;
+  abstract getAction(actionName: string): ICommandAction<T> | undefined;
 
   /**
    * @description 触发操作
@@ -33,7 +33,7 @@ export class Command<T> implements ICommand<T> {
     this.commandActions = new Map<string, ICommandAction<T>>();
   }
 
-  getAction(actionName: string): ICommandAction<T> {
+  getAction(actionName: string): ICommandAction<T> | undefined {
     return this.commandActions.get(actionName);
   }
 

@@ -1,14 +1,18 @@
+import { ArgsResult as IArgsResult } from '@nfts/node-args';
 import { ICommand } from './Command';
-export interface ICommandTool {
+export declare abstract class ICommandTool {
     toolName: string;
     toolDescription: string;
-    addCommand(commandName: any, command: ICommand<unknown>): Map<string, ICommand<unknown>>;
-    getCommand(commandName: string): ICommand<unknown>;
+    abstract addCommand(commandName: string, command: ICommand<unknown>): Map<string, ICommand<unknown>>;
+    abstract getCommand(commandName: string): ICommand<unknown>;
+    commandLineArgumentsParser(): IArgsResult;
 }
-export declare class CommandTool implements ICommandTool {
+export declare class CommandTool extends ICommandTool {
     toolName: string;
     toolDescription: string;
     commands: Map<string, ICommand<unknown>>;
+    rawArgs: string[];
+    argsParseResult: IArgsResult;
     constructor();
     addCommand: (commandName: string, command: ICommand<unknown>) => Map<string, ICommand<unknown>>;
     getCommand: (name: string) => ICommand<unknown>;
