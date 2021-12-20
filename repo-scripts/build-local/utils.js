@@ -6,8 +6,7 @@ const {
   flattenDiagnosticMessageText,
   parseConfigFileTextToJson,
   getLineAndCharacterOfPosition,
-  getPreEmitDiagnostics,
-  createSourceFile
+  getPreEmitDiagnostics
 } = require('typescript');
 
 const { NTFS_DEFAULT_CONFIG_PATH } = require('./constants');
@@ -78,7 +77,6 @@ const _createProgramAndEmit = (fileNames, options) => {
  */
 exports.runWithConfig = entry => {
   const config = _findConfigFile();
-  // 通过命令行指定入口文件，相关联的文件都会被TSC编译
   _createProgramAndEmit([entry], config.compilerOptions);
 };
 

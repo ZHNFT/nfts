@@ -1,5 +1,5 @@
 {
-  "name": "@nfts/node-library",
+  "name": "@ntfs/command-line-parser",
   "version": "0.0.0",
   "eslintConfig": {
     "extends": "../../repo-scripts/eslint-config"

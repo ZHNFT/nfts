@@ -1,16 +1,7 @@
 {
   "name": "build-local",
   "version": "0.0.0",
-  "main": "./index.js",
-  "publishConfig": {
-    "access": "restricted"
-  },
-  "files": [
-    "./index.js",
-    "./build.js",
-    "./run-test.js",
-    "README.md"
-  ],
+  "main": "./scripts.js",
   "devDependencies": {
     "@types/node": "^17.0.1"
   },
