@@ -1,27 +1,34 @@
 const { log } = require('console');
 const { join } = require('path');
+const fs = require('fs');
 const {
   createProgram,
   flattenDiagnosticMessageText,
-  readJsonConfigFile,
-  convertToObject
+  parseConfigFileTextToJson,
+  getLineAndCharacterOfPosition,
+  getPreEmitDiagnostics,
+  createSourceFile
 } = require('typescript');
-const { ModuleKind } = require('typescript');
-const { ScriptTarget } = require('typescript');
-const { getLineAndCharacterOfPosition } = require('typescript');
-const { getPreEmitDiagnostics } = require('typescript');
 
 const { NTFS_DEFAULT_CONFIG_PATH } = require('./constants');
 
+/**
+ *
+ * @returns any
+ */
 const _findConfigFile = () => {
   const tsConfigFilePath = join(NTFS_DEFAULT_CONFIG_PATH, 'tsconfig.json');
-  const configSource = readJsonConfigFile(tsConfigFilePath, path => {
-    log('path:', path);
-    return path;
-  });
-  // log('config:', configSource);
-  log('JsonConfig', convertToObject(configSource, []));
-  return configSource;
+
+  const { config, error } = parseConfigFileTextToJson(
+    tsConfigFilePath,
+    fs.readFileSync(tsConfigFilePath, { encoding: 'utf-8' }).toString()
+  );
+
+  if (error) {
+    throw Error(flattenDiagnosticMessageText(error.messageText, '\n'));
+  }
+
+  return config;
 };
 
 /**
@@ -65,22 +72,14 @@ const _createProgramAndEmit = (fileNames, options) => {
   process.exit(exitCode);
 };
 
-exports.runWithConfig = () => {
-  const cwd = process.cwd();
-
+/**
+ *
+ * @param {string} entry
+ */
+exports.runWithConfig = entry => {
   const config = _findConfigFile();
-
-  _createProgramAndEmit([join(cwd, 'src/index.ts')], {
-    noEmitOnError: true,
-    noImplicitAny: true,
-    target: ScriptTarget.ES5,
-    module: ModuleKind.CommonJS,
-    outDir: './dist'
-  });
+  // 通过命令行指定入口文件，相关联的文件都会被TSC编译
+  _createProgramAndEmit([entry], config.compilerOptions);
 };
-
-exports.runWithoutConfig = () => {};
-
-exports.unBeforeVersionCheck = () => {};
 
 module.exports = exports;
