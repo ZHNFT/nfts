@@ -1,0 +1,8 @@
+{
+  "name": "eslint-config",
+  "version": "0.0.0",
+  "devDependencies": {},
+  "files": [
+    "./index.js"
+  ]
+}

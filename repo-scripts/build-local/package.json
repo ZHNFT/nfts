@@ -1,0 +1,17 @@
+{
+  "name": "build-local",
+  "version": "0.0.0",
+  "main": "./index.js",
+  "files": [
+    "./index.js",
+    "./build.js",
+    "./run-test.js",
+    "README.md"
+  ],
+  "devDependencies": {
+    "@types/node": "^17.0.1"
+  },
+  "dependencies": {
+    "typescript": "^4.5.4"
+  }
+}

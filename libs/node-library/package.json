@@ -1,4 +1,7 @@
 {
   "name": "@nfts/node-library",
-  "version": "0.0.0"
+  "version": "0.0.0",
+  "scripts": {
+    "build-local": "node ../../repo-scripts/build-local/index.js"
+  }
 }
