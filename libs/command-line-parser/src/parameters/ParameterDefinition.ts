@@ -1,21 +1,19 @@
 export enum ParameterKinds {
   'string' = 'string',
   'number' = 'number',
-  'boolean' = 'boolean'
+  'boolean' = 'boolean',
+  'array' = 'array'
 }
 
 export type TParameterKinds = keyof typeof ParameterKinds;
 
 export abstract class ParameterDefinitionBase {
-  abstract kind: TParameterKinds;
-
   private _value: unknown;
 
-  private name: string;
-
-  private shortName: string;
-
-  private required: boolean;
+  name: string;
+  shortName: string;
+  required: boolean;
+  kind: TParameterKinds;
 
   get value() {
     return this._value;
@@ -31,7 +29,31 @@ export abstract class ParameterDefinitionBase {
     this.required = required;
   }
 
-  setValue(value: unknown) {
-    this._value = value;
+  setValue(value: string) {
+    const _kind = this.kind;
+
+    if (!_kind) {
+      console.warn(`Undetermined kind for option name: --${this.name}`);
+    }
+
+    let _value: unknown;
+
+    try {
+      switch (_kind) {
+        case 'number':
+          _value = Number(value);
+          break;
+        case 'boolean':
+          _value = Boolean(value);
+          break;
+        case 'array':
+          _value = value.split(',');
+        default:
+          _value = value;
+          break;
+      }
+    } catch (error) {}
+
+    this._value = _value;
   }
 }

@@ -1,4 +1,7 @@
+import { StdIn } from './Stdin';
+import { StdOut } from './Stdout';
 
-export interface ITerminalBase {
-
+export class Terminal {
+  _stdin: StdIn;
+  _stdout: StdOut;
 }

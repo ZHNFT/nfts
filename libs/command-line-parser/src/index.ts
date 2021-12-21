@@ -1,2 +1,2 @@
-export * from './parameters/ParameterDefinition';
-export * from './parameters/ParameterString';
+export * from './parameters';
+export * from './parser';
