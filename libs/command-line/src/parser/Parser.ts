@@ -1,3 +1,4 @@
+import { ParameterKinds } from '../parameters/ParameterDefinition';
 import {
   ParameterString,
   ParameterArray,
@@ -15,19 +16,18 @@ function isValidMark(mark: string): boolean {
 }
 
 export class Parser {
-  private readonly _rawCommandLineOptions: string[];
   private readonly _commandLineClassOptions: Map<
     string,
     ParameterDefinitionBase
   >;
 
+  public commandName: string;
+
   constructor() {
     this._commandLineClassOptions = new Map();
-    this._rawCommandLineOptions = process.argv;
-    this._parse(this._rawCommandLineOptions.slice(2));
   }
 
-  private _parse(commandLineOptions: string[]) {
+  public exec(commandLineOptions: string[]) {
     const res = {} as ArgsResult;
     let token: string;
     const _args = commandLineOptions.slice(0);
@@ -62,17 +62,23 @@ export class Parser {
   private _matchParameterWithParsedResult(result: ArgsResult) {
     const { _, ...trueCommandLineJsonOptions } = result;
 
+    this.commandName = _;
+
     for (const optionName in trueCommandLineJsonOptions) {
       if (trueCommandLineJsonOptions.hasOwnProperty(optionName)) {
         const optionValue = trueCommandLineJsonOptions[optionName];
         const paramClass = this._commandLineClassOptions.get(optionName);
-        // TODO 没有定义的参数被解析到
         if (!paramClass) {
-          console.error(`Command Option '--${optionName}' is not register,
+          // todo Print Warning Message In Console
+          console.warn(`Command Option '--${optionName}' is not register,
           please make sure you register it first;`);
+        } else {
+          if (paramClass.kind === ParameterKinds.boolean) {
+            paramClass.setValue('true');
+          } else {
+            paramClass.setValue(optionValue);
+          }
         }
-
-        paramClass.setValue(optionValue);
       }
     }
   }
@@ -84,35 +90,45 @@ export class Parser {
 
     switch (defineOpts.kind) {
       case 'string':
-        param = new ParameterString(
-          defineOpts.name,
-          defineOpts.shortName,
-          defineOpts.required
-        );
+        param = new ParameterString({
+          name: defineOpts.name,
+          shortName: defineOpts.shortName,
+          required: defineOpts.required
+        });
         break;
       case 'number':
-        param = new ParameterString(
-          defineOpts.name,
-          defineOpts.shortName,
-          defineOpts.required
-        );
+        param = new ParameterString({
+          name: defineOpts.name,
+          shortName: defineOpts.shortName,
+          required: defineOpts.required
+        });
       case 'array':
-        param = new ParameterArray(
-          defineOpts.name,
-          defineOpts.shortName,
-          defineOpts.required
-        );
+        param = new ParameterArray({
+          name: defineOpts.name,
+          shortName: defineOpts.shortName,
+          required: defineOpts.required
+        });
         break;
       case 'boolean':
-        param = new ParameterBool(
-          defineOpts.name,
-          defineOpts.shortName,
-          defineOpts.required
-        );
+        param = new ParameterBool({
+          name: defineOpts.name,
+          shortName: defineOpts.shortName,
+          required: defineOpts.required
+        });
       default:
         break;
     }
 
     this._commandLineClassOptions.set(defineOpts.name, param);
+  }
+
+  public getParameters() {
+    const params = {};
+
+    for (const iter of this._commandLineClassOptions.values()) {
+      params[iter.name] = iter.value;
+    }
+
+    return params;
   }
 }

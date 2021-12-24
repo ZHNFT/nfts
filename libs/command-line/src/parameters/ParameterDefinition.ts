@@ -2,7 +2,8 @@ export enum ParameterKinds {
   'string' = 'string',
   'number' = 'number',
   'boolean' = 'boolean',
-  'array' = 'array'
+  'array' = 'array',
+  'integer' = 'integer'
 }
 
 export type TParameterKinds = keyof typeof ParameterKinds;
@@ -11,7 +12,7 @@ export abstract class ParameterDefinitionBase {
   private _value: unknown;
 
   name: string;
-  shortName: string;
+  shortName?: string;
   required: boolean;
   kind: TParameterKinds;
 
@@ -23,7 +24,15 @@ export abstract class ParameterDefinitionBase {
     throw Error(`Unable to set readonly value`);
   }
 
-  constructor(name: string, shortName: string, required: boolean) {
+  constructor({
+    name,
+    shortName,
+    required = false
+  }: {
+    name: string;
+    shortName?: string;
+    required?: boolean;
+  }) {
     this.name = name;
     this.shortName = shortName;
     this.required = required;

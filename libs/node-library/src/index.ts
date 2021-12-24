@@ -1,3 +1,3 @@
-export * from './terminal/Terminal';
-export * from './jsonSchema/JsonSchema';
-export * from './fileSystem/FileSystem';
+export * from './Terminal';
+export * from './JsonSchema';
+export * from './FileSys';

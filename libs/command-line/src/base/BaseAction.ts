@@ -9,8 +9,6 @@ export type TCommandActionApplyAsyncFn<TContext, TCommandActionConfig> = (
   actionConfig: TCommandActionConfig
 ) => Promise<void>;
 
-export abstract class CommandActionBase<T, C> {
-  apply = () => {
-    console.log('apply ');
-  };
+export abstract class BaseAction<T, C> {
+  abstract apply(session: T, config: C): void;
 }

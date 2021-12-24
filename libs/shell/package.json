@@ -1,0 +1,10 @@
+{
+  "name": "@ntfs/shell",
+  "version": "0.0.0",
+  "eslintConfig": {
+    "extends": "../../repo-scripts/eslint-config"
+  },
+  "scripts": {
+    "build-local": "node ../../repo-scripts/build-local/scripts.js build ./src/index.ts"
+  }
+}
