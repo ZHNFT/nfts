@@ -1,3 +1,10 @@
 {
-  "$schema": ""
+  "$schema": "../libs/mono-package/schemas/mono-packages-schema.json",
+  "packageManager": "pnpm",
+  "packages": [
+    { "packageName": "libs/command-line-parser" },
+    { "packageName": "libs/node-library" },
+    { "packageName": "libs/mono-package" }
+  ],
+  "plugins": [{ "pluginName": "admin", "description": "admin" }]
 }
