@@ -1,4 +1,3 @@
-const { log } = require('console');
 const { join } = require('path');
 const fs = require('fs');
 const {
@@ -9,14 +8,14 @@ const {
   getPreEmitDiagnostics
 } = require('typescript');
 
-const { NTFS_DEFAULT_CONFIG_PATH } = require('./constants');
+const { NFTS_CWD } = require('./constants');
 
 /**
  *
  * @returns any
  */
 const _findConfigFile = () => {
-  const tsConfigFilePath = join(NTFS_DEFAULT_CONFIG_PATH, 'tsconfig.json');
+  const tsConfigFilePath = join(NFTS_CWD, 'tsconfig.json');
 
   const { config, error } = parseConfigFileTextToJson(
     tsConfigFilePath,

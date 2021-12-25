@@ -1,0 +1,13 @@
+lockfileVersion: 5.3
+
+specifiers:
+  '@types/node': ^17.0.4
+
+devDependencies:
+  '@types/node': 17.0.4
+
+packages:
+
+  /@types/node/17.0.4:
+    resolution: {integrity: sha512-6xwbrW4JJiJLgF+zNypN5wr2ykM9/jHcL7rQ8fZe2vuftggjzZeRSM4OwRc6Xk8qWjwJ99qVHo/JgOGmomWRog==}
+    dev: true

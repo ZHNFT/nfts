@@ -1,0 +1,14 @@
+{
+  "name": "@ntfs/gmf",
+  "version": "0.0.0",
+  "main": "./dist/index.js",
+  "eslintConfig": {
+    "extends": "../../repo-scripts/eslint-config"
+  },
+  "scripts": {
+    "build-local": "node ../../repo-scripts/build-local/scripts.js build ./src/index.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.4"
+  }
+}
