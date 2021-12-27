@@ -8,13 +8,7 @@ export abstract class CommandLineToolDefinition {
 
   protected _parser: Parser;
 
-  constructor({
-    toolName,
-    toolDescription
-  }: {
-    toolName: string;
-    toolDescription: string;
-  }) {
+  constructor({ toolName, toolDescription }: { toolName: string; toolDescription: string }) {
     this.toolName = toolName;
     this.toolDescription = toolDescription;
 

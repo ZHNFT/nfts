@@ -24,15 +24,7 @@ export abstract class ParameterDefinitionBase {
     throw Error(`Unable to set readonly value`);
   }
 
-  constructor({
-    name,
-    shortName,
-    required = false
-  }: {
-    name: string;
-    shortName?: string;
-    required?: boolean;
-  }) {
+  constructor({ name, shortName, required = false }: { name: string; shortName?: string; required?: boolean }) {
     this.name = name;
     this.shortName = shortName;
     this.required = required;

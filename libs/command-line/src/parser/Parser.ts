@@ -1,10 +1,5 @@
 import { ParameterKinds } from '../parameters/ParameterDefinition';
-import {
-  ParameterString,
-  ParameterArray,
-  ParameterBool,
-  ParameterDefinitionBase
-} from '../parameters';
+import { ParameterString, ParameterArray, ParameterBool, ParameterDefinitionBase } from '../parameters/index';
 
 export interface ArgsResult {
   _: string;
@@ -16,10 +11,7 @@ function isValidMark(mark: string): boolean {
 }
 
 export class Parser {
-  private readonly _commandLineClassOptions: Map<
-    string,
-    ParameterDefinitionBase
-  >;
+  private readonly _commandLineClassOptions: Map<string, ParameterDefinitionBase>;
 
   public commandName: string;
 
@@ -83,9 +75,7 @@ export class Parser {
     }
   }
 
-  public registerParameter(
-    defineOpts: Omit<ParameterDefinitionBase, 'value' | '_value' | 'setValue'>
-  ) {
+  public registerParameter(defineOpts: Omit<ParameterDefinitionBase, 'value' | '_value' | 'setValue'>) {
     let param: ParameterDefinitionBase;
 
     switch (defineOpts.kind) {
