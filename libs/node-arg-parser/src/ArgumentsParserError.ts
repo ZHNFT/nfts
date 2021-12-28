@@ -8,3 +8,12 @@ export class ArgumentsParserError extends InternalError {
     });
   }
 }
+
+export class ArgumentsParserFatalError extends InternalError {
+  constructor(message: string) {
+    super({
+      kind: ErrorKind.Fatal,
+      message: message
+    });
+  }
+}
