@@ -38,7 +38,7 @@ export class Gmf extends CommandLineToolDefinition {
     this._parser.registerParameter({
       name: '--config',
       shortName: '-c',
-      kind: ParameterKinds.string,
+      kind: ParameterKinds.STRING,
       required: false
     });
 

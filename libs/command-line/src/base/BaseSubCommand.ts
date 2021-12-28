@@ -1,27 +1,40 @@
-import { IParamDefinition, ParameterDefinitionBase } from '../parameters';
+import { ArgumentsParser } from '../../../node-arg-parser/src';
+import { BaseParameter, IBaseParameter, IBaseParameterInitOptions } from './BaseParameter';
 
-export interface ICommandLineInitOption {
-  subCommandName: string;
-  subCommandDescription: string;
+export interface ISubCommandLineInitOption {
+	/**
+	 * 子命令名称；
+	 * @type {string}
+	 */
+	subCommandName: string;
+	/**
+	 * 子命令描述；
+	 * @type {string}
+	 */
+	subCommandDescription: string;
 }
 
-export abstract class BaseSubCommand {
-  readonly subCommandName: string;
-  readonly subCommandDescription: string;
+export interface IBaseSubCommand extends ISubCommandLineInitOption {}
 
-  private readonly _parameter: Map<string, ParameterDefinitionBase>;
+export abstract class BaseSubCommand implements IBaseSubCommand {
+	readonly subCommandName: string;
+	readonly subCommandDescription: string;
 
-  protected constructor(opts: ICommandLineInitOption) {
-    this.subCommandName = opts.subCommandName;
-    this.subCommandDescription = opts.subCommandDescription;
-  }
+	/**
+	 * @desc CLI参数解析实例
+	 * @type {ArgumentsParser}
+	 */
+	protected readonly _argparser: ArgumentsParser;
 
-  /**
-   * @description 定义SubCommand的参数操作
-   *
-   * 通过配置读取的参数由此方法进行绑定操作，
-   */
-  defineParamAction(definition: IParamDefinition): void {
-    // this._parameter.set(definition.paramName);
-  }
+	public constructor(opts: ISubCommandLineInitOption) {
+		this.subCommandName = opts.subCommandName;
+		this.subCommandDescription = opts.subCommandDescription;
+	}
+
+	/**
+	 * @desc 定义子命令的参数信息
+	 */
+	protected abstract defineParameter(): void;
+
+	protected abstract onDefinedParameter(): void;
 }
