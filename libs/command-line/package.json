@@ -1,5 +1,5 @@
 {
-  "name": "@ntfs/command-line-parser",
+  "name": "@ntfs/command-line",
   "version": "0.0.0",
   "eslintConfig": {
     "extends": "../../repo-scripts/eslint-config"

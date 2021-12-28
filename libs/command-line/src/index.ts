@@ -1,4 +1,3 @@
-import { BaseCommand } from './base/BaseCommand';
 import { ParameterKinds } from './parameters';
 import { Parser } from './parser';
 

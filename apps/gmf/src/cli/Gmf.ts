@@ -1,6 +1,6 @@
 import { CommandLineToolDefinition } from '../../../../libs/command-line/src/index';
 import { ActionManager } from '../actionManager';
-import { PluginManager } from '../pluginManager';
+// import { PluginManager } from '../pluginManager';
 import { Config } from './Config';
 import { ParameterKinds } from '../../../../libs/command-line/src/parameters/ParameterDefinition';
 
@@ -18,7 +18,7 @@ export interface IGmfConfiguration {
 
 export class Gmf extends CommandLineToolDefinition {
   private _actionManager: ActionManager;
-  private _pluginManager: PluginManager;
+  // private _pluginManager: PluginManager;
 
   private _config: Config<IGmfConfiguration>;
 
@@ -29,7 +29,7 @@ export class Gmf extends CommandLineToolDefinition {
     });
 
     this._actionManager = new ActionManager();
-    this._pluginManager = new PluginManager();
+    // this._pluginManager = new PluginManager();
 
     // Register Parameter
     /**
