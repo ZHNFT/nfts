@@ -3,16 +3,15 @@
  * @type {Object}
  */
 module.exports = {
-	extends: [
-		'eslint:recommended',
-		'plugin:@typescript-eslint/recommended',
-		'plugin:@typescript-eslint/recommended-requiring-type-checking'
-	],
+	extends: ['eslint:recommended'],
 	ignorePatterns: ['*.d.ts'],
 	overrides: [
 		{
-			files: ['*.ts', '*.tsx'],
-			excludedFiles: ['*.test.ts', '*.test.tsx'],
+			files: ['src/*.ts', 'src/*.tsx'],
+			extends: [
+				'plugin:@typescript-eslint/recommended',
+				'plugin:@typescript-eslint/recommended-requiring-type-checking'
+			],
 			parser: '@typescript-eslint/parser',
 			plugins: ['@typescript-eslint'],
 			parserOptions: {
