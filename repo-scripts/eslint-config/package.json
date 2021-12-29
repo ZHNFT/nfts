@@ -1,13 +1,13 @@
 {
-  "name": "eslint-config",
-  "version": "0.0.0",
-  "main": "./index.js",
-  "module": "./index.js",
-  "devDependencies": {
-    "@typescript-eslint/parser": "^5.7.0",
-    "eslint": "^8.5.0"
-  },
-  "files": [
-    "./index.js"
-  ]
+	"name": "@ntfs/eslint-config",
+	"version": "0.0.0",
+	"main": "./index.js",
+	"module": "./index.js",
+	"devDependencies": {
+		"@typescript-eslint/parser": "^5.7.0",
+		"eslint": "^8.5.0"
+	},
+	"files": [
+		"./index.js"
+	]
 }

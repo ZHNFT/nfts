@@ -1,8 +1,14 @@
 {
-  "name": "@ntfs/node-arg-parser",
-  "version": "0.0.0",
-  "main": "./dist/index.js",
-  "devDependencies": {
-    "@types/node": "~17.0.5"
-  }
+	"name": "@ntfs/node-arg-parser",
+	"version": "0.0.0",
+	"main": "./dist/index.js",
+	"repository": {
+		"directory": "libs/node-arg-parser",
+		"type": "public",
+		"url": "*"
+	},
+	"devDependencies": {
+		"@types/node": "~17.0.5",
+		"@ntfs/eslint-config": "workspace:*"
+	}
 }
