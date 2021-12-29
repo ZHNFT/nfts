@@ -1,14 +1,13 @@
 {
-  "name": "@nfts/node-library",
-  "version": "0.0.0",
-  "main": "./dist/index.js",
-  "eslintConfig": {
-    "extends": "../../repo-scripts/eslint-config"
-  },
-  "scripts": {
-    "build-local": "node ../../repo-scripts/build-local/scripts.js build ./src/index.ts"
-  },
-  "devDependencies": {
-    "@types/node": "^17.0.4"
-  }
+	"name": "@nfts/node-utils-library",
+	"version": "0.0.0",
+	"main": "./dist/index.js",
+	"scripts": {
+		"build": "npx tsc --project ./tsconfig.json",
+		"dev": "npx tsc ./src/index.ts --watch --declaration --declarationDir ./dist",
+		"dts": "npx tsc ./src/index.ts --declaration --emitDeclarationOnly --declarationDir ./dist"
+	},
+	"devDependencies": {
+		"@types/node": "^17.0.4"
+	}
 }

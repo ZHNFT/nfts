@@ -1,6 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.JsonSchema = void 0;
-class JsonSchema {
+import { FileSys } from './FileSys';
+export class JsonSchema extends FileSys {
+    constructor({ filePath }) {
+        super(filePath);
+    }
+    validateSchema() { }
 }
-exports.JsonSchema = JsonSchema;

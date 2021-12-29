@@ -3,7 +3,9 @@
 	"version": "0.0.0",
 	"main": "./dist/index.js",
 	"scripts": {
-		"build-local": "node ../../repo-scripts/build-local/scripts.js build ./src/index.ts"
+		"build": "npx tsc ./src/index.ts --clean --dry",
+    "dev": "npx tsc ./src/index.ts --watch --declaration --declarationDir ./dist",
+		"dts": "npx tsc ./src/index.ts --declaration --emitDeclarationOnly --declarationDir ./dist"
 	},
 	"repository": {
 		"directory": "libs/node-arg-parser",

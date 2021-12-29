@@ -10,25 +10,40 @@
     },
     "packages": {
       "type": "array",
-      "items": { "$ref": "#/$defs/packageDefinition" },
+      "items": {
+        "$ref": "#/$defs/packageDefinition"
+      },
       "minItems": 1,
       "uniqueItems": true
     },
     "plugins": {
       "type": "array",
-      "items": { "$ref": "#/$defs/pluginDefinition" }
+      "items": {
+        "$ref": "#/$defs/pluginDefinition"
+      }
     },
     "packageManager": {
       "type": "string",
-      "enum": ["pnpm", "yarn", "npm"]
+      "enum": [
+        "pnpm",
+        "yarn",
+        "npm"
+      ]
     }
   },
   "$defs": {
     "packageDefinition": {
       "type": "object",
-      "required": ["packageName"],
+      "required": [
+        "directory",
+        "packageName",
+        "description"
+      ],
       "additionalProperties": false,
       "properties": {
+        "directory": {
+          "type": "string"
+        },
         "packageName": {
           "type": "string"
         },
@@ -39,7 +54,10 @@
     },
     "pluginDefinition": {
       "type": "object",
-      "required": ["pluginName", "description"],
+      "required": [
+        "pluginName",
+        "description"
+      ],
       "additionalProperties": false,
       "properties": {
         "pluginName": {

@@ -1,10 +1,12 @@
 {
   "name": "@ntfs/mono-package",
   "version": "0.0.0",
-  "eslintConfig": {
-    "extends": "../../repo-scripts/eslint-config"
-  },
   "scripts": {
-    "build-local": "node ../../repo-scripts/build-local/scripts.js build ./src/index.ts"
+    "build": "npx tsc ./src/index.ts --clean --dry",
+    "dev": "npx tsc ./src/index.ts --watch --declaration --declarationDir ./dist",
+    "dts": "npx tsc ./src/index.ts --declaration --emitDeclarationOnly --declarationDir ./dist"
+  },
+  "devDependencies": {
+    "@types/node": "~17.0.5"
   }
 }

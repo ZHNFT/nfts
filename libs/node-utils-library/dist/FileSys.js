@@ -1,17 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.FileSys = void 0;
-var fs = require("fs");
-var path = require("path");
-class FileSys {
+import * as fs from 'fs';
+import * as path from 'path';
+export class FileSys {
     constructor(filePath) {
         this._cwd = process.cwd();
         this._filePath = filePath;
     }
     get filePath() {
-        return path.isAbsolute(this._filePath)
-            ? this._filePath
-            : path.join(this._cwd, this._filePath);
+        return path.isAbsolute(this._filePath) ? this._filePath : path.join(this._cwd, this._filePath);
     }
     _readFile() {
         this._accessCheck();
@@ -47,4 +42,3 @@ class FileSys {
         this._writeFile(json);
     }
 }
-exports.FileSys = FileSys;

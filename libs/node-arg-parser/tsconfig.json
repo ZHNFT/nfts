@@ -1,6 +1,11 @@
 {
 	"compilerOptions": {
 		"target": "ES6",
-		"outDir": "./dist"
-	}
+		"outDir": "./dist",
+    "declaration": true,
+    "declarationDir": "./dist",
+    "moduleResolution": "Node"
+	},
+  "include": ["./src/*.ts", "./src/*.tsx"],
+  "exclude": ["./dist/*"]
 }

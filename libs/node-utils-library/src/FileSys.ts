@@ -34,7 +34,7 @@ export abstract class FileSys {
 	}
 
 	protected _toJson() {
-		let jsonString = this._readFile().toString('utf-8');
+		const jsonString = this._readFile().toString('utf-8');
 
 		try {
 			return JSON.parse(jsonString);
