@@ -1,53 +1,67 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import * as process from 'process';
 
-export abstract class FileSys {
-	private readonly _filePath: string;
-	private readonly _cwd: string = process.cwd();
+export class FileSys {
+  private readonly _filePath: string;
+  private readonly _cwd: string = process.cwd();
 
-	public constructor(filePath: string) {
-		this._filePath = filePath;
-	}
+  constructor(filePath: string) {
+    this._filePath = filePath;
+  }
 
-	get filePath(): string {
-		return path.isAbsolute(this._filePath) ? this._filePath : path.join(this._cwd, this._filePath);
-	}
+  public static getAbsolutePath(filePath: string): string {
+    const _isAbsPath = path.isAbsolute(filePath);
+    return _isAbsPath ? filePath : path.join(process.cwd(), filePath);
+  }
 
-	private _readFile(): Buffer {
-		this._accessCheck();
-		return fs.readFileSync(this.filePath, {});
-	}
+  get filePath(): string {
+    return FileSys.getAbsolutePath(this._filePath);
+  }
 
-	private _writeFile(json: any): void {
-		this._accessCheck();
-		fs.writeFileSync(this.filePath, JSON.stringify(json, null, 2), {
-			encoding: 'utf-8'
-		});
-	}
+  get filePathAbs(): string {
+    return path.resolve(process.cwd(), this.filePath);
+  }
 
-	private _accessCheck() {
-		try {
-			fs.accessSync(this.filePath);
-		} catch (error) {
-			console.error(`无法访问文件：${this.filePath}`);
-		}
-	}
+  private _readFile(): Buffer {
+    this._accessCheck();
+    return fs.readFileSync(this.filePath, {});
+  }
 
-	protected _toJson() {
-		const jsonString = this._readFile().toString('utf-8');
+  private _writeFile(json: any): void {
+    this._accessCheck();
+    fs.writeFileSync(this.filePath, JSON.stringify(json, null, 2), {
+      encoding: 'utf-8'
+    });
+  }
 
-		try {
-			return JSON.parse(jsonString);
-		} catch (error) {
-			console.error(error);
-		}
-	}
+  private _accessCheck() {
+    try {
+      fs.accessSync(this.filePath);
+    } catch (error) {
+      console.error(`无法访问文件：${this.filePath}`);
+    }
+  }
 
-	readJsonFile() {
-		return this._toJson();
-	}
+  private _toJson<T>(): T {
+    const jsonString = this._readFile().toString('utf-8');
 
-	writeJsonFile(json: any): void {
-		this._writeFile(json);
-	}
+    try {
+      return JSON.parse(jsonString) as T;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  public readFile(): string {
+    return this._readFile().toString('utf8');
+  }
+
+  public readJsonFile<T>(): T {
+    return this._toJson<T>();
+  }
+
+  public updateJsonFile<T>(json: Partial<T>): void {
+    this._writeFile(json);
+  }
 }

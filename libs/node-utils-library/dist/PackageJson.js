@@ -15,21 +15,25 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.InternalError = exports.ErrorKind = void 0;
-var ErrorKind;
-(function (ErrorKind) {
-    ErrorKind["Error"] = "Error";
-    ErrorKind["Fatal"] = "Fatal";
-})(ErrorKind = exports.ErrorKind || (exports.ErrorKind = {}));
-var InternalError = /** @class */ (function (_super) {
-    __extends(InternalError, _super);
-    function InternalError(_a) {
-        var message = _a.message, kind = _a.kind;
-        var _this = _super.call(this, message) || this;
-        _this._kind = kind;
-        _this._message = message;
-        return _this;
+exports.PackageJson = void 0;
+var FileSys_1 = require("./FileSys");
+var PackageJson = /** @class */ (function (_super) {
+    __extends(PackageJson, _super);
+    function PackageJson(packageJsonFilePath) {
+        return _super.call(this, packageJsonFilePath) || this;
     }
-    return InternalError;
-}(Error));
-exports.InternalError = InternalError;
+    /**
+     * 查找package.json文件
+     */
+    PackageJson.prototype.findPackageJson = function () {
+        return this.readJsonFile();
+    };
+    /**
+     * 更新 package.json 文件
+     */
+    PackageJson.prototype.updatePackageJson = function (obj) {
+        this.updateJsonFile(obj);
+    };
+    return PackageJson;
+}(FileSys_1.FileSys));
+exports.PackageJson = PackageJson;

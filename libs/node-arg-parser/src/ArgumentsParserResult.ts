@@ -1,68 +1,59 @@
 import { ArgumentsParserError } from './ArgumentsParserError';
 
+export type TGoodValueType = string;
+
 export interface IArgumentsParserResult {
-  command: string;
-  subCommands: Set<string>;
-  params: Record<string, string>;
+  getCommand(): string;
+  setCommand(command: string): void;
+
+  getSubCommands(): string[];
+  addSubCommand(subCommand: string): void;
+
+  getValueByParamName(paramName: string): TGoodValueType;
+  setValueByParamName(paramName: string, value: TGoodValueType): void;
 }
 
 export class ArgumentsParserResult implements IArgumentsParserResult {
-  command: string;
-  subCommands: Set<string>;
-
-  errors: ArgumentsParserError[];
-
+  private _command: string;
+  private readonly _subCommands: Set<string>;
+  private readonly _errors: ArgumentsParserError[];
   /**
    * 解析出来的参数对象；一旦解析完成，参数对象将被冻结，无法通过setParamValueByName更新；
-   * @type {}
    */
-  params: Record<string, string> = Object.create(null);
+  private readonly _params: Map<string, TGoodValueType> = new Map<string, TGoodValueType>();
 
-  /**
-   * 设置param值；
-   * @param paramName
-   * @param value
-   */
-  public setParamValueByName(paramName: string, value: string) {
-    this.params[paramName] = value;
+  constructor() {
+    this._subCommands = new Set<string>();
+    this._params = new Map<string, TGoodValueType>();
+    this._errors = [];
   }
 
-  /**
-   * 获取param的值；
-   * @param paramName
-   */
-  public getParamValueByName(paramName: string): string {
-    return this.params[paramName];
+  get command(): string {
+    return this._command;
   }
 
-  /**
-   * paramName是否存在与解析好的参数表中；
-   * @param paramName
-   */
-  public hasParam(paramName: string) {
-    return Object.prototype.hasOwnProperty.call(this.params, paramName);
+  set command(_: unknown) {
+    throw new ArgumentsParserError(`command field in ArgumentsParserResult can not be set directly`);
   }
 
-  /**
-   * 设置command名称
-   * @param commandName
-   */
-  public setCommand(commandName: string) {
-    this.command = commandName;
+  public hasParam(paramName: string): boolean {
+    return this._params.has(paramName);
   }
 
-  public addSubCommands(commandName: string) {
-    if (this.subCommands.has(commandName)) {
-      this.errors.push(new ArgumentsParserError(`SubCommandName: ${commandName} is already defined`));
-      // todo Throw Error?
+  public setCommand(commandName: string): void {
+    this._command = commandName;
+  }
+
+  public getCommand = (): string => this._command;
+
+  public addSubCommand(subCommand: string): void {
+    if (this._subCommands.has(subCommand)) {
+      this._errors.push(new ArgumentsParserError(`SubCommandName: ${subCommand} is already defined`));
     }
-    this.subCommands.add(commandName);
+    this._subCommands.add(subCommand);
   }
+  public getSubCommands = (): string[] => Array.from(this._subCommands);
 
-  /**
-   * 冻结params对象，使其无法再次被更新；
-   */
-  private _frozen() {
-    this.params = Object.freeze(this.params);
-  }
+  public setValueByParamName = (paramName: string, value: TGoodValueType) => this._params.set(paramName, value);
+  public getValueByParamName = (paramName: string): TGoodValueType => this._params.get(paramName);
 }

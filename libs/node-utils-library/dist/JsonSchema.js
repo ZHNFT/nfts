@@ -1,7 +1,8 @@
-import { FileSys } from './FileSys';
-export class JsonSchema extends FileSys {
-    constructor({ filePath }) {
-        super(filePath);
+/**
+ * 根据JsonSchema校验
+ */
+export class JsonSchema {
+    validate() {
+        //
     }
-    validateSchema() { }
 }

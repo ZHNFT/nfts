@@ -1,12 +1,15 @@
-export declare abstract class FileSys {
+export declare class FileSys {
     private readonly _filePath;
     private readonly _cwd;
     constructor(filePath: string);
+    static getAbsolutePath(filePath: string): string;
     get filePath(): string;
+    get filePathAbs(): string;
     private _readFile;
     private _writeFile;
     private _accessCheck;
-    protected _toJson(): any;
-    readJsonFile(): any;
-    writeJsonFile(json: any): void;
+    private _toJson;
+    readFile(): string;
+    readJsonFile<T>(): T;
+    updateJsonFile<T>(json: Partial<T>): void;
 }
