@@ -1,14 +1,15 @@
 import { ArgumentsParserResult } from './ArgumentsParserResult';
 export declare type TGoodParameterValueTypes = string | string[] | boolean | number;
-export declare enum ArgumentParamKind {
+export declare enum ArgumentParamKinds {
     String = "String",
     Bool = "Bool",
     Array = "Array",
     Number = "Number"
 }
-export declare type TArgumentParamKind = keyof typeof ArgumentParamKind;
+export declare type TArgumentParamKind = keyof typeof ArgumentParamKinds;
 export interface IArgumentParam {
-    name: string;
+    longName: string;
+    shortName?: string;
     summary?: string;
     required?: boolean;
     kind?: TArgumentParamKind;
@@ -41,8 +42,7 @@ export declare class ArgumentsParser {
      * 解析结果
      * @type {ArgumentsParserResult}
      */
-    _result: ArgumentsParserResult;
-    private _executed;
+    result: ArgumentsParserResult;
     constructor();
     /**
      * 缓存定义的参数配置
@@ -53,14 +53,7 @@ export declare class ArgumentsParser {
      * @param paramName
      */
     getParamValue(paramName: string): TGoodParameterValueTypes;
-    /**
-     * 获取command
-     */
-    getCommand(): string;
-    /**
-     * 获取子命令集合
-     */
-    getSubCommands(): string[];
+    printParamMessage(): void;
     /**
      * 通过kind，将数据转换称需要的类型，默认是string
      * @param kind
@@ -75,5 +68,5 @@ export declare class ArgumentsParser {
     exec(args: string): ArgumentsParserResult;
     private _getParamsFromTokens;
     private _tokenKind;
-    private _processVerify;
+    private _checkParamValueAccordingToParamDefinition;
 }

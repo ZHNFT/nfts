@@ -2,7 +2,7 @@ export interface IBaseConfigInitOptions {
   configPath: string;
 }
 
-export abstract class BaseConfig {
+export class BaseConfig {
   _configPath: string;
 
   protected constructor(opts: IBaseConfigInitOptions) {

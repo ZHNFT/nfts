@@ -32,6 +32,7 @@ describe('CLI 命令行解析工具测试', () => {
     try {
       arg.exec('gmf dev --clean --outputDir');
     } catch (e) {
+      console.log(e.message);
       expect(1).toEqual(1);
     }
   });

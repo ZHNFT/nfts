@@ -1,42 +1,28 @@
-import { ArgumentsParserError } from './ArgumentsParserError';
+export declare type TGoodValueType = string;
 export interface IArgumentsParserResult {
-    command: string;
-    subCommands: Set<string>;
-    params: Record<string, string>;
+    getCommand(): string;
+    setCommand(command: string): void;
+    getSubCommands(): string[];
+    addSubCommand(subCommand: string): void;
+    getValueByParamName(paramName: string): TGoodValueType;
+    setValueByParamName(paramName: string, value: TGoodValueType): void;
 }
 export declare class ArgumentsParserResult implements IArgumentsParserResult {
-    command: string;
-    subCommands: Set<string>;
-    errors: ArgumentsParserError[];
+    private _command;
+    private readonly _subCommands;
+    private readonly _errors;
     /**
      * 解析出来的参数对象；一旦解析完成，参数对象将被冻结，无法通过setParamValueByName更新；
-     * @type {}
      */
-    params: Record<string, string>;
-    /**
-     * 设置param值；
-     * @param paramName
-     * @param value
-     */
-    setParamValueByName(paramName: string, value: string): void;
-    /**
-     * 获取param的值；
-     * @param paramName
-     */
-    getParamValueByName(paramName: string): string;
-    /**
-     * paramName是否存在与解析好的参数表中；
-     * @param paramName
-     */
-    hasParam(paramName: string): any;
-    /**
-     * 设置command名称
-     * @param commandName
-     */
+    private readonly _params;
+    constructor();
+    get command(): string;
+    set command(_: unknown);
+    hasParam(paramName: string): boolean;
     setCommand(commandName: string): void;
-    addSubCommands(commandName: string): void;
-    /**
-     * 冻结params对象，使其无法再次被更新；
-     */
-    private _frozen;
+    getCommand: () => string;
+    addSubCommand(subCommand: string): void;
+    getSubCommands: () => string[];
+    setValueByParamName: (paramName: string, value: TGoodValueType) => Map<string, string>;
+    getValueByParamName: (paramName: string) => TGoodValueType;
 }

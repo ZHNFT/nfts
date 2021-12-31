@@ -1,0 +1,21 @@
+{
+  "$schema": "../../../schemas/mono-packages-schema.json",
+  "packageManager": "pnpm",
+  "packages": [
+    {
+      "packageName": "package1",
+      "directory": "test-packages/package1",
+      "description": "package1"
+    },
+    {
+      "packageName": "package2",
+      "directory": "test-packages/package2",
+      "description": "package2"
+    },
+    {
+      "packageName": "package3",
+      "directory": "test-packages/package3",
+      "description": "package3"
+    }
+  ]
+}

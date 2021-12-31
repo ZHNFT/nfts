@@ -1,8 +1,13 @@
-export type TCommandLineInitOption = {
-	version: string;
-	commandName: string;
-	commandDescription: string;
-};
+import { ArgumentsParser } from '@ntfs/node-arg-parser';
+import { BaseSubCommand, ISubCommandLineInitOption } from './BaseSubCommand';
+
+export interface ICommandLineInitOption {
+  commandName: string;
+  commandDescription: string;
+}
+
+export interface ISubCommandLineInitOptionWithCallback
+  extends ISubCommandLineInitOption {}
 
 /**
  * @desc 使用BaseCommand来构建命令行工具；
@@ -14,15 +19,28 @@ export type TCommandLineInitOption = {
  *
  *
  */
-export abstract class BaseCommand {
-	readonly _version: string;
-	readonly commandName: string;
-	readonly commandDescription: string;
+export class BaseCommand implements ICommandLineInitOption {
+  readonly commandName: string;
+  readonly commandDescription: string;
 
-	protected constructor(opts: TCommandLineInitOption) {
-		this.commandName = opts.commandName;
-		this.commandDescription = opts.commandDescription;
-	}
+  protected _subCommandsByName: Map<string, BaseSubCommand>;
+  private readonly _parser: ArgumentsParser;
 
-	public abstract defineSubCommand(): void;
+  protected constructor(opts: ICommandLineInitOption) {
+    this.commandName = opts.commandName;
+    this.commandDescription = opts.commandDescription;
+
+    this._parser = new ArgumentsParser();
+
+    /**
+     * 通用参数；即使没有SubCommand；这些设置的通用参也需要能起作用；
+     */
+    this._parser.defineParam({
+      longName: '--version',
+      shortName: '-V',
+      summary: 'Display version'
+    });
+  }
+
+  defineSubCommand(subCommand: ISubCommandLineInitOptionWithCallback) {}
 }
