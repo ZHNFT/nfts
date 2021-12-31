@@ -4,6 +4,8 @@ export interface ICommandLineInitOption {
     commandName: string;
     commandDescription: string;
 }
+export interface ISubCommandLineInitOptionWithCallback extends ISubCommandLineInitOption {
+}
 /**
  * @desc 使用BaseCommand来构建命令行工具；
  * 			 Command实现类需要具备一下几种必须属性
@@ -17,8 +19,11 @@ export interface ICommandLineInitOption {
 export declare class BaseCommand implements ICommandLineInitOption {
     readonly commandName: string;
     readonly commandDescription: string;
-    protected _parser: ArgumentsParser;
     protected _subCommandsByName: Map<string, BaseSubCommand>;
+    protected readonly _parser: ArgumentsParser;
     protected constructor(opts: ICommandLineInitOption);
-    defineSubCommand(subCommand: ISubCommandLineInitOption): void;
+    /**
+     * 直接添加SubCommand类；
+     */
+    defineSubCommand(subCommand: BaseSubCommand): void;
 }

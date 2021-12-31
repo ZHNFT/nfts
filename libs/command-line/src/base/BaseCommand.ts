@@ -24,13 +24,14 @@ export class BaseCommand implements ICommandLineInitOption {
   readonly commandDescription: string;
 
   protected _subCommandsByName: Map<string, BaseSubCommand>;
-  private readonly _parser: ArgumentsParser;
+  protected readonly _parser: ArgumentsParser;
 
   protected constructor(opts: ICommandLineInitOption) {
     this.commandName = opts.commandName;
     this.commandDescription = opts.commandDescription;
 
     this._parser = new ArgumentsParser();
+    this._subCommandsByName = new Map<string, BaseSubCommand>();
 
     /**
      * 通用参数；即使没有SubCommand；这些设置的通用参也需要能起作用；
@@ -42,5 +43,10 @@ export class BaseCommand implements ICommandLineInitOption {
     });
   }
 
-  defineSubCommand(subCommand: ISubCommandLineInitOptionWithCallback) {}
+  /**
+   * 直接添加SubCommand类；
+   */
+  public defineSubCommand(subCommand: BaseSubCommand) {
+    this._subCommandsByName.set(subCommand.subCommandName, subCommand);
+  }
 }

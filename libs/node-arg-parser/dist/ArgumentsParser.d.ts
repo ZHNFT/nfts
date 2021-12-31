@@ -7,7 +7,7 @@ export declare enum ArgumentParamKinds {
     Number = "Number"
 }
 export declare type TArgumentParamKind = keyof typeof ArgumentParamKinds;
-export interface IArgumentParam {
+export interface IArgumentParamDefinition {
     longName: string;
     shortName?: string;
     summary?: string;
@@ -31,7 +31,7 @@ export declare class ArgumentsParser {
     static argShortNameRegex: RegExp;
     /**
      * 缓存defineParam设置的参数配置；
-     * @type {Map<string, IArgumentParam>}
+     * @type {Map<string, IArgumentParamDefinition>}
      */
     private _definedParams;
     /**
@@ -47,7 +47,7 @@ export declare class ArgumentsParser {
     /**
      * 缓存定义的参数配置
      */
-    defineParam(param: IArgumentParam): void;
+    defineParam(param: IArgumentParamDefinition): void;
     /**
      * 获取参数值
      * @param paramName

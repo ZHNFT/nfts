@@ -1,6 +1,7 @@
-import * as process from 'process';
-import { CommandLineToolDefinition } from '@ntfs/command-line';
+import { BaseSubCommand, CommandLineToolDefinition } from '@ntfs/command-line';
 import { MonoPackageConfig } from '../base/MonoPackageConfig';
+import { InstallSubCommand } from '../sub-commands/InstallSubCommand';
+import { ArgumentsParser } from '@ntfs/node-arg-parser';
 
 export class MonoPackages extends CommandLineToolDefinition {
   private _config: MonoPackageConfig;
@@ -11,31 +12,18 @@ export class MonoPackages extends CommandLineToolDefinition {
       toolDescription: 'this is a mono-package description'
     });
 
-    this._parser.defineParam({
-      longName: '--list',
-      shortName: '-l',
-      summary: '罗列所有被管理的包'
-    });
-
-    this._parser.defineParam({
-      longName: '--config',
-      summary: '指定配置文件位置'
-    });
-
-    this._parser.defineParam({
-      longName: '--version',
-      shortName: '-V',
-      summary: '版本信息'
-    });
-
     this._config = new MonoPackageConfig();
-    this._parser.exec(process.argv.slice(1).join(' '));
 
-    this.defineSubCommand({
-      subCommandName: 'install',
-      subCommandDescription: '安装包',
-      parser: this._parser
-    });
+    const SubCommandContext = {
+      parser: this._parser,
+      config: this._config
+    };
+
+    const install = new InstallSubCommand(SubCommandContext).initialize();
+
+    this.defineSubCommand(install);
+
+    this._parser.exec(process.argv.slice(1).join(' '));
   }
 
   public prepare() {
@@ -44,7 +32,26 @@ export class MonoPackages extends CommandLineToolDefinition {
   }
 
   public exec(): Promise<void> {
-    return Promise.resolve();
+    if (!(this._parser as ArgumentsParser).result.getCommand()) {
+      throw Error('需要一个命令');
+    }
+
+    const subCommands = this._subCommandsByName.values();
+    let _targetSubCommand: BaseSubCommand;
+
+    for (const subCommand of subCommands) {
+      if (
+        this._parser.result.getSubCommands().includes(subCommand.subCommandName)
+      ) {
+        _targetSubCommand = subCommand;
+      }
+    }
+
+    if (!_targetSubCommand) {
+      throw Error('没有匹配到任何子命令');
+    }
+
+    return _targetSubCommand.apply();
   }
 
   private _readConfigFromCommandLine() {

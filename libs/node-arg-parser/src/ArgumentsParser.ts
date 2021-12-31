@@ -37,7 +37,7 @@ type Token = {
   kind: TTokenKind;
 };
 
-export interface IArgumentParam {
+export interface IArgumentParamDefinition {
   longName: string;
   shortName?: string;
   summary?: string;
@@ -63,9 +63,9 @@ export class ArgumentsParser {
   static argShortNameRegex: RegExp = /^-\w/;
   /**
    * 缓存defineParam设置的参数配置；
-   * @type {Map<string, IArgumentParam>}
+   * @type {Map<string, IArgumentParamDefinition>}
    */
-  private _definedParams: Map<string, IArgumentParam>;
+  private _definedParams: Map<string, IArgumentParamDefinition>;
 
   /**
    * 解析错误
@@ -80,13 +80,13 @@ export class ArgumentsParser {
 
   public constructor() {
     this.result = new ArgumentsParserResult();
-    this._definedParams = new Map<string, IArgumentParam>();
+    this._definedParams = new Map<string, IArgumentParamDefinition>();
   }
 
   /**
    * 缓存定义的参数配置
    */
-  public defineParam(param: IArgumentParam): void {
+  public defineParam(param: IArgumentParamDefinition): void {
     this._definedParams.set(param.longName, param);
     param.shortName && this._definedParams.set(param.shortName, param);
   }
@@ -120,7 +120,10 @@ export class ArgumentsParser {
    * @param str
    * @private
    */
-  private static _transValueByKind(kind: TArgumentParamKind, str: string | undefined): TGoodParameterValueTypes {
+  private static _transValueByKind(
+    kind: TArgumentParamKind,
+    str: string | undefined
+  ): TGoodParameterValueTypes {
     switch (kind) {
       case ArgumentParamKinds.Array:
         return str.split(',');
@@ -152,7 +155,10 @@ export class ArgumentsParser {
     while (end <= END_OF_WHILE_LOOP_LENGTH) {
       const walkIndexStr = args.slice(end, end + 1);
 
-      if (new RegExp(STOP_WHILE_LOOP_INDICATOR).test(walkIndexStr) || end === END_OF_WHILE_LOOP_LENGTH) {
+      if (
+        new RegExp(STOP_WHILE_LOOP_INDICATOR).test(walkIndexStr) ||
+        end === END_OF_WHILE_LOOP_LENGTH
+      ) {
         strBuf = args.slice(start, end);
 
         if (/\s/.exec(strBuf)) {
@@ -202,7 +208,9 @@ export class ArgumentsParser {
           this.result.setValueByParamName(
             _token.buffer,
             // @todo 默认填充undefined，需要配置这个字段
-            _nextMaybeValueToken?.kind === TokenKind.ValueFlag ? _nextMaybeValueToken.buffer : undefined
+            _nextMaybeValueToken?.kind === TokenKind.ValueFlag
+              ? _nextMaybeValueToken.buffer
+              : undefined
           );
           break;
       }
@@ -211,7 +219,11 @@ export class ArgumentsParser {
     this._checkParamValueAccordingToParamDefinition();
   }
 
-  private _tokenKind(str: string, pos: Token['pos'], prevToken: Token | undefined): TTokenKind {
+  private _tokenKind(
+    str: string,
+    pos: Token['pos'],
+    prevToken: Token | undefined
+  ): TTokenKind {
     if (ArgumentsParser.argLongNameRegex.test(str)) {
       return TokenKind.LongNameFlag;
     }
@@ -220,7 +232,10 @@ export class ArgumentsParser {
       return TokenKind.ShortNameFlag;
     }
 
-    if (prevToken?.kind === TokenKind.LongNameFlag || prevToken?.kind === TokenKind.ShortNameFlag) {
+    if (
+      prevToken?.kind === TokenKind.LongNameFlag ||
+      prevToken?.kind === TokenKind.ShortNameFlag
+    ) {
       return TokenKind.ValueFlag;
     }
 
@@ -234,16 +249,22 @@ export class ArgumentsParser {
   private _checkParamValueAccordingToParamDefinition() {
     const paramDefinitions = this._definedParams.values();
 
-    for (const paramDefinition of paramDefinitions) {
-      const { longName, shortName, kind, required } = paramDefinition;
-      if (required && !this.result.getValueByParamName(longName) && !this.result.getValueByParamName(shortName)) {
+    for (const paramDefinition of paramDefinitions as unknown as Array<IArgumentParamDefinition>) {
+      const { longName, shortName, required } = paramDefinition;
+      if (
+        required &&
+        !this.result.getValueByParamName(longName) &&
+        !this.result.getValueByParamName(shortName)
+      ) {
         throw new ArgumentsParserError(
           `Argument ${longName}/${shortName} is required, but not find in the parse result.`
         );
       }
 
       if (this.result.hasParam(longName) && this.result.hasParam(shortName)) {
-        console.warn(`Both long name(${longName}) and short name(${shortName}) exist, will ignore short name`);
+        console.warn(
+          `Both long name(${longName}) and short name(${shortName}) exist, will ignore short name`
+        );
       }
     }
   }

@@ -1,11 +1,13 @@
-import { MonoPackages } from './cli/MonoPackages';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var MonoPackages_1 = require("./cli/MonoPackages");
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-new MonoPackages()
+new MonoPackages_1.MonoPackages()
     .prepare()
     .exec()
-    .then(() => {
+    .then(function () {
     console.log('aaa');
 })
-    .catch(e => {
+    .catch(function (e) {
     throw e;
 });

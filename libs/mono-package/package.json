@@ -2,7 +2,7 @@
   "name": "@ntfs/mono-package",
   "version": "0.0.0",
   "bin": {
-    "mono-package": "bin/mono-package.js"
+    "mono-package": "bin/mono-package"
   },
   "scripts": {
     "build": "npx tsc",

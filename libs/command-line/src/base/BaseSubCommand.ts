@@ -12,25 +12,24 @@ export interface ISubCommandLineInitOption {
   readonly parser: ArgumentsParser;
 }
 
-export interface IBaseSubCommand extends ISubCommandLineInitOption {}
+export interface IBaseSubCommand {}
 
-export class BaseSubCommand implements IBaseSubCommand {
+export abstract class BaseSubCommand implements IBaseSubCommand {
   readonly subCommandName: string;
   readonly subCommandDescription: string;
 
-  readonly parser: ArgumentsParser;
+  private readonly parser: ArgumentsParser;
 
   protected constructor({
     subCommandName,
-    subCommandDescription
+    subCommandDescription,
+    parser
   }: ISubCommandLineInitOption) {
     this.subCommandName = subCommandName;
     this.subCommandDescription = subCommandDescription;
-
-    /**
-     * 独立解析
-     */
-    this.parser = new ArgumentsParser();
+    this.parser = parser;
   }
-  apply() {}
+
+  public abstract apply(): Promise<void>;
+  public abstract initialize(): IBaseSubCommand;
 }

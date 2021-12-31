@@ -10,11 +10,13 @@ export interface ISubCommandLineInitOption {
     readonly subCommandDescription: string;
     readonly parser: ArgumentsParser;
 }
-export interface IBaseSubCommand extends ISubCommandLineInitOption {
+export interface IBaseSubCommand {
 }
-export declare class BaseSubCommand implements IBaseSubCommand {
+export declare abstract class BaseSubCommand implements IBaseSubCommand {
     readonly subCommandName: string;
     readonly subCommandDescription: string;
-    readonly parser: ArgumentsParser;
-    constructor({ subCommandDescription, subCommandName, parser }: ISubCommandLineInitOption);
+    private readonly parser;
+    protected constructor({ subCommandName, subCommandDescription, parser }: ISubCommandLineInitOption);
+    abstract apply(): Promise<void>;
+    abstract initialize(): IBaseSubCommand;
 }
