@@ -109,3 +109,4 @@ typings/
 
 **/.DS_Store
 **/temp
+**/dist

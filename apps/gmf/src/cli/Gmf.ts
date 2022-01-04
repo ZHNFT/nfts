@@ -5,61 +5,61 @@ import { Config } from './Config';
 import { ParameterKinds } from '../../../../libs/command-line/src/parameters/ParameterDefinition';
 
 export interface IGmfSession {
-  hooks: unknown;
-  gmfConfig: unknown;
+	hooks: unknown;
+	gmfConfig: unknown;
 }
 
 export interface IGmfConfiguration {
-  parameters: {
-    paramName: string;
-    paramDescription?: string;
-  }[];
+	parameters: {
+		paramName: string;
+		paramDescription?: string;
+	}[];
 }
 
 export class Gmf extends CommandLineToolDefinition {
-  private _actionManager: ActionManager;
-  // private _pluginManager: PluginManager;
+	private _actionManager: ActionManager;
+	// private _pluginManager: PluginManager;
 
-  private _config: Config<IGmfConfiguration>;
+	private _config: Config<IGmfConfiguration>;
 
-  public constructor() {
-    super({
-      toolName: 'gmf',
-      toolDescription: 'Command Line Tool For Package Development'
-    });
+	public constructor() {
+		super({
+			toolName: 'gmf',
+			toolDescription: 'Command Line Tool For Package Development'
+		});
 
-    this._actionManager = new ActionManager();
-    // this._pluginManager = new PluginManager();
+		this._actionManager = new ActionManager();
+		// this._pluginManager = new PluginManager();
 
-    // Register Parameter
-    /**
-     * --config Specify Configuration File Path
-     */
-    this._parser.registerParameter({
-      name: '--config',
-      shortName: '-c',
-      kind: ParameterKinds.STRING,
-      required: false
-    });
+		// Register Parameter
+		/**
+		 * --config Specify Configuration File Path
+		 */
+		this._parser.registerParameter({
+			name: '--config',
+			shortName: '-c',
+			kind: ParameterKinds.STRING,
+			required: false
+		});
 
-    this._config = this._prepareConfiguration();
-    this._mergeConfigurationFromCommandLineOptions();
-    this._parser.exec(process.argv.slice(2));
-  }
+		this._config = this._prepareConfiguration();
+		this._mergeConfigurationFromCommandLineOptions();
+		this._parser.exec(process.argv.slice(2));
+	}
 
-  /**
-   *
-   * @returns {Config} Read Configuration From Config File
-   */
-  private _prepareConfiguration(): Config<IGmfConfiguration> {
-    return new Config();
-  }
+	/**
+	 *
+	 * @returns {Config} Read Configuration From Config File
+	 */
+	private _prepareConfiguration(): Config<IGmfConfiguration> {
+		return new Config();
+	}
 
-  /**
-   * @returns {Config} Read Configuration From CommandLine Arguments
-   */
-  private _mergeConfigurationFromCommandLineOptions(): IGmfConfiguration {
-    const config = this._parser.getParameters();
-    return this._config.mergeConfig(config);
-  }
+	/**
+	 * @returns {Config} Read Configuration From CommandLine Arguments
+	 */
+	private _mergeConfigurationFromCommandLineOptions(): IGmfConfiguration {
+		const config = this._parser.getParameters();
+		return this._config.mergeConfig(config);
+	}
 }

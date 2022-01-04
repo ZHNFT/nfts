@@ -8,7 +8,7 @@ export interface IBasePackage {
   /**
    * package.json的对象
    */
-  readonly PackageJson: PackageJson;
+  readonly packageJson: PackageJson;
 }
 
 export interface IBasePackageInitOptions extends IBasePackage {}
@@ -25,10 +25,16 @@ export class BasePackage implements IBasePackage {
   /**
    * `package.json` 文件对象
    */
-  PackageJson: PackageJson;
+  packageJson: PackageJson;
+  /**
+   * 范围包名称
+   */
+  scopedName?: string;
 
-  public constructor({ packagePath }: IBasePackageInitOptions) {
+  public static scopedPackage = /^@[a-z]+(\/).+$/;
+
+  public constructor({ packagePath, packageJson }: IBasePackageInitOptions) {
     this.packagePath = packagePath;
-    this.PackageJson = new PackageJson('./package.json');
+    this.packageJson = packageJson;
   }
 }

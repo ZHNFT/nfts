@@ -1,0 +1,26 @@
+{
+  "$schema": "../libs/mono-package/schemas/mono-packages-schema.json",
+  "packageManager": "pnpm",
+  "packages": [
+    {
+      "packageName": "@nfts/command-line",
+      "directory": "libs/command-line",
+      "description": "命令行工具构建框架"
+    },
+    {
+      "packageName": "@nfts/node-utils-library",
+      "directory": "libs/node-utils-library",
+      "description": "NodeJS工具集"
+    },
+    {
+      "packageName": "@nfts/mono-package",
+      "directory": "libs/mono-package",
+      "description": "一仓多包管理工具"
+    },
+    {
+      "packageName": "@nfts/node-arg-parser",
+      "directory": "libs/node-arg-parser",
+      "description": "CLI命令行参数解析"
+    }
+  ]
+}

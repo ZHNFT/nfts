@@ -1,13 +1,13 @@
 {
-  "name": "@ntfs/command-line",
-  "version": "0.0.0",
-  "main": "./dist/index.js",
-  "scripts": {
-    "build": "npx tsc",
-    "dev": "npx tsc --watch --declaration --declarationDir ./dist",
-    "dts": "npx tsc --declaration --emitDeclarationOnly --declarationDir ./dist"
-  },
-  "devDependencies": {
-    "@types/node": "~17.0.5"
-  }
+	"name": "@ntfs/command-line",
+	"version": "0.0.0",
+	"main": "./dist/index.js",
+	"scripts": {
+		"build": "npx tsc",
+		"dev": "npx tsc --watch --declaration --declarationDir ./dist",
+		"dts": "npx tsc --declaration --emitDeclarationOnly --declarationDir ./dist"
+	},
+	"devDependencies": {
+		"@types/node": "~17.0.5"
+	}
 }

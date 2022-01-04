@@ -1,4 +1,4 @@
-import { ErrorKind, InternalError } from '@nfts/node-utils-library';
+import { ErrorKind, InternalError } from '@ntfs/node-utils-library';
 
 export class ArgumentsParserError extends InternalError {
   constructor(message: string) {

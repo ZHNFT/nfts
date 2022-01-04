@@ -14,11 +14,23 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __values = (this && this.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MonoPackages = void 0;
 var command_line_1 = require("@ntfs/command-line");
 var MonoPackageConfig_1 = require("../base/MonoPackageConfig");
 var InstallSubCommand_1 = require("../sub-commands/InstallSubCommand");
+var LinkSubCommand_1 = require("../sub-commands/LinkSubCommand");
 var MonoPackages = /** @class */ (function (_super) {
     __extends(MonoPackages, _super);
     function MonoPackages() {
@@ -31,8 +43,10 @@ var MonoPackages = /** @class */ (function (_super) {
             parser: _this._parser,
             config: _this._config
         };
-        var install = new InstallSubCommand_1.InstallSubCommand(SubCommandContext).initialize();
-        _this.defineSubCommand(install);
+        var installCommand = new InstallSubCommand_1.InstallSubCommand(SubCommandContext).initialize();
+        var linkCommand = new LinkSubCommand_1.LinkSubCommand(SubCommandContext).initialize();
+        _this.defineSubCommand(installCommand);
+        _this.defineSubCommand(linkCommand);
         _this._parser.exec(process.argv.slice(1).join(' '));
         return _this;
     }
@@ -41,16 +55,26 @@ var MonoPackages = /** @class */ (function (_super) {
         return this;
     };
     MonoPackages.prototype.exec = function () {
+        var e_1, _a;
         if (!this._parser.result.getCommand()) {
             throw Error('需要一个命令');
         }
         var subCommands = this._subCommandsByName.values();
         var _targetSubCommand;
-        for (var _i = 0, subCommands_1 = subCommands; _i < subCommands_1.length; _i++) {
-            var subCommand = subCommands_1[_i];
-            if (this._parser.result.getSubCommands().includes(subCommand.subCommandName)) {
-                _targetSubCommand = subCommand;
+        try {
+            for (var subCommands_1 = __values(subCommands), subCommands_1_1 = subCommands_1.next(); !subCommands_1_1.done; subCommands_1_1 = subCommands_1.next()) {
+                var subCommand = subCommands_1_1.value;
+                if (this._parser.result.getSubCommands().includes(subCommand.subCommandName)) {
+                    _targetSubCommand = subCommand;
+                }
             }
+        }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (subCommands_1_1 && !subCommands_1_1.done && (_a = subCommands_1.return)) _a.call(subCommands_1);
+            }
+            finally { if (e_1) throw e_1.error; }
         }
         if (!_targetSubCommand) {
             throw Error('没有匹配到任何子命令');

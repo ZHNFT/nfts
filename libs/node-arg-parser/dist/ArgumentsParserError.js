@@ -16,7 +16,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArgumentsParserFatalError = exports.ArgumentsParserError = void 0;
-var node_utils_library_1 = require("@nfts/node-utils-library");
+var node_utils_library_1 = require("@ntfs/node-utils-library");
 var ArgumentsParserError = /** @class */ (function (_super) {
     __extends(ArgumentsParserError, _super);
     function ArgumentsParserError(message) {

@@ -17,6 +17,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InstallSubCommand = void 0;
 var command_line_1 = require("@ntfs/command-line");
+var console = require("console");
 var InstallSubCommand = /** @class */ (function (_super) {
     __extends(InstallSubCommand, _super);
     function InstallSubCommand(_a) {
@@ -34,11 +35,12 @@ var InstallSubCommand = /** @class */ (function (_super) {
         return _this;
     }
     InstallSubCommand.prototype.initialize = function () {
-        console.log('Install SubCommand initialization');
         return this;
     };
     InstallSubCommand.prototype.apply = function () {
-        console.log('ggg');
+        console.log('install command');
+        var json = this.config.readFile();
+        console.log(json);
         return Promise.resolve(undefined);
     };
     return InstallSubCommand;

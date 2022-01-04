@@ -17,6 +17,20 @@ export declare abstract class BaseSubCommand implements IBaseSubCommand {
     readonly subCommandDescription: string;
     private readonly parser;
     protected constructor({ subCommandName, subCommandDescription, parser }: ISubCommandLineInitOption);
+    /**
+     * 主要的执行方法
+     * @method apply
+     * @return {Promise<void>} [description]
+     */
     abstract apply(): Promise<void>;
-    abstract initialize(): IBaseSubCommand;
+    /**
+     * 初始化子命令
+     * @type {[type]}
+     */
+    abstract initialize<T>(args?: T): IBaseSubCommand;
+    /**
+     * 在该方法中定义命令行参数
+     * @method onParametersDefine
+     */
+    abstract onParametersDefine(): void;
 }

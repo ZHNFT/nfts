@@ -1,10 +1,17 @@
 import { BaseSubCommand, CommandLineToolDefinition } from '@ntfs/command-line';
-import { MonoPackageConfig } from '../base/MonoPackageConfig';
+import { MonoPackagesConfig } from '../base/MonoPackagesConfig';
 import { InstallSubCommand } from '../sub-commands/InstallSubCommand';
 import { ArgumentsParser } from '@ntfs/node-arg-parser';
+import { LinkSubCommand } from '../sub-commands/LinkSubCommand';
+import { PnpmPackagesManager } from '../manager/pnpm';
+import { BasePackagesManager } from '../base/BasePackagesManager';
+
+export interface IInitialContext {
+  pnpm: PnpmPackagesManager;
+}
 
 export class MonoPackages extends CommandLineToolDefinition {
-  private _config: MonoPackageConfig;
+  private _config: MonoPackagesConfig;
 
   public constructor() {
     super({
@@ -12,16 +19,27 @@ export class MonoPackages extends CommandLineToolDefinition {
       toolDescription: 'this is a mono-package description'
     });
 
-    this._config = new MonoPackageConfig();
+    this._config = new MonoPackagesConfig();
 
     const SubCommandContext = {
       parser: this._parser,
       config: this._config
     };
 
-    const install = new InstallSubCommand(SubCommandContext).initialize();
+    const InitialContext: IInitialContext = {
+      pnpm: new PnpmPackagesManager({ config: this._config })
+    };
 
-    this.defineSubCommand(install);
+    const installCommand = new InstallSubCommand(SubCommandContext).initialize<IInitialContext>(
+      InitialContext
+    );
+
+    const linkCommand = new LinkSubCommand(SubCommandContext).initialize<IInitialContext>(
+      InitialContext
+    );
+
+    this.defineSubCommand(installCommand);
+    this.defineSubCommand(linkCommand);
 
     this._parser.exec(process.argv.slice(1).join(' '));
   }
@@ -40,9 +58,7 @@ export class MonoPackages extends CommandLineToolDefinition {
     let _targetSubCommand: BaseSubCommand;
 
     for (const subCommand of subCommands) {
-      if (
-        this._parser.result.getSubCommands().includes(subCommand.subCommandName)
-      ) {
+      if (this._parser.result.getSubCommands().includes(subCommand.subCommandName)) {
         _targetSubCommand = subCommand;
       }
     }
@@ -54,11 +70,11 @@ export class MonoPackages extends CommandLineToolDefinition {
     return _targetSubCommand.apply();
   }
 
-  private _readConfigFromCommandLine() {
+  private _readConfigFromCommandLine(): void {
     const _configPath = this._parser.result.getValueByParamName('--config');
     if (_configPath) {
       // @todo 这里需要使用JsonSchema来验证指定的配置的文件格式是否正确
-      this._config = new MonoPackageConfig(_configPath);
+      this._config = new MonoPackagesConfig(_configPath);
     }
   }
 }
