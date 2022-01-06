@@ -15,7 +15,7 @@ export interface IBaseSubCommand {
 export declare abstract class BaseSubCommand implements IBaseSubCommand {
     readonly subCommandName: string;
     readonly subCommandDescription: string;
-    private readonly parser;
+    protected readonly parser: ArgumentsParser;
     protected constructor({ subCommandName, subCommandDescription, parser }: ISubCommandLineInitOption);
     /**
      * 主要的执行方法

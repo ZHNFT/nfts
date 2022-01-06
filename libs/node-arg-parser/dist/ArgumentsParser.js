@@ -146,8 +146,7 @@ var ArgumentsParser = /** @class */ (function () {
         if (ArgumentsParser.argShortNameRegex.test(str)) {
             return TokenKind.ShortNameFlag;
         }
-        if ((prevToken === null || prevToken === void 0 ? void 0 : prevToken.kind) === TokenKind.LongNameFlag ||
-            (prevToken === null || prevToken === void 0 ? void 0 : prevToken.kind) === TokenKind.ShortNameFlag) {
+        if ((prevToken === null || prevToken === void 0 ? void 0 : prevToken.kind) === TokenKind.LongNameFlag || (prevToken === null || prevToken === void 0 ? void 0 : prevToken.kind) === TokenKind.ShortNameFlag) {
             return TokenKind.ValueFlag;
         }
         if (!this.result.command && pos.start === 0 && pos.end !== 0) {

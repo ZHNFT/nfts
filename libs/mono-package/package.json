@@ -9,6 +9,12 @@
     "dev": "npx tsc --watch --declaration --declarationDir ./dist",
     "dts": "npx tsc --declaration --emitDeclarationOnly --declarationDir ./dist"
   },
+  "$devDependencies": {
+    "@ntfs/eslint-config": "workspace:*",
+    "@ntfs/command-line": "workspace:*",
+    "@ntfs/node-utils-librayr": "workspace:*",
+    "@ntfs/node-arg-parser": "workspace:*"
+  },
   "devDependencies": {
     "@types/jest": "^27.4.0",
     "@types/node": "~17.0.5",
