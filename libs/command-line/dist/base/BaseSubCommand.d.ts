@@ -11,6 +11,8 @@ export interface ISubCommandLineInitOption {
     readonly parser: ArgumentsParser;
 }
 export interface IBaseSubCommand {
+    readonly subCommandName: string;
+    readonly subCommandDescription: string;
 }
 export declare abstract class BaseSubCommand implements IBaseSubCommand {
     readonly subCommandName: string;
@@ -26,11 +28,12 @@ export declare abstract class BaseSubCommand implements IBaseSubCommand {
     /**
      * 初始化子命令
      * @type {[type]}
+     * @deprecated
      */
-    abstract initialize<T>(args?: T): IBaseSubCommand;
+    abstract initialize<T extends unknown>(args?: T): BaseSubCommand;
     /**
      * 在该方法中定义命令行参数
      * @method onParametersDefine
      */
-    abstract onParametersDefine(): void;
+    abstract onParametersDefine(parser: ArgumentsParser): void;
 }

@@ -4,38 +4,42 @@ import { MonoPackagesConfig } from '../base/MonoPackagesConfig';
 import { BasePackagesManager } from '../base/BasePackagesManager';
 
 export class InstallSubCommand extends BaseSubCommand {
-  config: MonoPackagesConfig;
-  manager: BasePackagesManager;
+  private _config: MonoPackagesConfig;
+  private _manager: BasePackagesManager;
 
-  constructor({ parser, config }: { parser: ArgumentsParser; config: MonoPackagesConfig }) {
+  constructor({
+    parser,
+    config,
+    manager
+  }: {
+    parser: ArgumentsParser;
+    config: MonoPackagesConfig;
+    manager: BasePackagesManager;
+  }) {
     super({
       subCommandName: 'install',
       subCommandDescription: 'install dependencies for all packages',
       parser: parser
     });
 
-    this.config = config;
-  }
-
-  initialize<IInitialContext>(opts): BaseSubCommand {
-    const { pnpm } = opts;
-    this.manager = pnpm;
-    return this;
+    this._config = config;
+    this._manager = manager;
   }
 
   onParametersDefine(): void {
     this.parser.defineParam({
-      longName: '--adj',
-      summary: '子命令参数设置'
+      longName: '--config',
+      shortName: '-C',
+      summary: '这个配置会在终端打印出一串文字'
     });
   }
 
   apply(): Promise<void> {
     console.log('install command');
-    const json = this.config.readFile();
-    console.log(json);
-    this.manager.install();
+    return this._manager.installPackages();
+  }
 
-    return Promise.resolve(undefined);
+  initialize<T extends unknown>(args?: T): BaseSubCommand {
+    return undefined;
   }
 }

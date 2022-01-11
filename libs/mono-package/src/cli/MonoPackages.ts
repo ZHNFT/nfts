@@ -7,7 +7,7 @@ import { PnpmPackagesManager } from '../manager/pnpm';
 import { BasePackagesManager } from '../base/BasePackagesManager';
 
 export interface IInitialContext {
-  pnpm: PnpmPackagesManager;
+  readonly manager: BasePackagesManager;
 }
 
 export class MonoPackages extends CommandLineToolDefinition {
@@ -23,20 +23,12 @@ export class MonoPackages extends CommandLineToolDefinition {
 
     const SubCommandContext = {
       parser: this._parser,
-      config: this._config
+      config: this._config,
+      manager: new PnpmPackagesManager({ config: this._config })
     };
 
-    const InitialContext: IInitialContext = {
-      pnpm: new PnpmPackagesManager({ config: this._config })
-    };
-
-    const installCommand = new InstallSubCommand(SubCommandContext).initialize<IInitialContext>(
-      InitialContext
-    );
-
-    const linkCommand = new LinkSubCommand(SubCommandContext).initialize<IInitialContext>(
-      InitialContext
-    );
+    const installCommand = new InstallSubCommand(SubCommandContext);
+    const linkCommand = new LinkSubCommand(SubCommandContext);
 
     this.defineSubCommand(installCommand);
     this.defineSubCommand(linkCommand);
@@ -50,7 +42,7 @@ export class MonoPackages extends CommandLineToolDefinition {
   }
 
   public exec(): Promise<void> {
-    if (!(this._parser as ArgumentsParser).result.getCommand()) {
+    if (!this._parser.result.getCommand()) {
       throw Error('需要一个命令');
     }
 

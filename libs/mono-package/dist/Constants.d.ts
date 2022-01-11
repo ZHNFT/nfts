@@ -1,7 +1,10 @@
 export declare class Constants {
     /**
-     * 默认的配置文件地址
-     * @type {String}
+     * mono-packages 配置文件的默认位置
      */
     static readonly monoPackagesConfigurationDefaultPath = "./config/mono-packages.json";
+    /**
+     * package.json 的默认位置
+     */
+    static readonly packageJsonFilePath = "./package.json";
 }

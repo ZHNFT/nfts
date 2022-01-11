@@ -93,4 +93,11 @@ export class PackageJson extends FileSys {
   updatePackageJson(obj: Partial<IPackageJson>): void {
     this.updateJsonFile(obj);
   }
+
+  /**
+   * 搜索距离执行命令处最近的package.json文件
+   */
+  findPackageJsonWithoutExplicitPath() {
+    //
+  }
 }

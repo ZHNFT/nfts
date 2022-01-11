@@ -8,36 +8,21 @@ import { join } from 'path';
 import { PackageJson } from '@ntfs/node-utils-library';
 import * as process from 'process';
 import { Constants } from '../../Constants';
+import * as console from 'console';
 
 export class PnpmPackagesManager extends BasePackagesManager {
-  private _packages: BasePackage[];
+  private readonly _packages: BasePackage[] = [];
 
   constructor(options: TPackagesManagerInitOptions) {
     super(options);
-
-    const __localConfig = this._config.readJsonFile<{ packages: IPackageDefinition[] }>();
-
+    const __localConfig = this.config.readJsonFile<{ packages: IPackageDefinition[] }>();
     this._preparePackagesFromConfigFile(__localConfig.packages);
   }
 
-  async install(): Promise<void> {}
-
-  uninstall(): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-
-  link(): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-
-  workspace(): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-
   /**
-   * 从文件读取配置信息l
+   * 从文件读取配置信息
    */
-  _preparePackagesFromConfigFile(packages: IPackageDefinition[]) {
+  _preparePackagesFromConfigFile(packages: IPackageDefinition[]): void {
     for (const packageDefinition of packages) {
       const packagePath = join(process.cwd(), packageDefinition.directory);
       const packageJsonPath = join(packagePath, Constants.packageJsonFilePath);
@@ -51,5 +36,14 @@ export class PnpmPackagesManager extends BasePackagesManager {
         })
       );
     }
+  }
+
+  public installPackages(): Promise<void> {
+    console.log(this._packages);
+    return Promise.resolve();
+  }
+
+  public linkPackage(): Promise<void> {
+    return Promise.resolve();
   }
 }

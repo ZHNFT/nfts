@@ -1,11 +1,11 @@
 export interface IBaseConfigInitOptions {
-  configPath: string;
+	configPath: string;
 }
 
 export class BaseConfig {
-  _configPath: string;
+	_configPath: string;
 
-  protected constructor(opts: IBaseConfigInitOptions) {
-    this._configPath = opts.configPath;
-  }
+	protected constructor(opts: IBaseConfigInitOptions) {
+		this._configPath = opts.configPath;
+	}
 }

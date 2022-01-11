@@ -15,12 +15,16 @@ export class PublishSubCommand extends BaseSubCommand {
     this.config = config;
   }
 
-  initialize<IInitialContext>(opts): BaseSubCommand {
+  initialize(): BaseSubCommand {
     return this;
   }
 
   apply(): Promise<void> {
     console.log('Link command');
-    return Promise.resolve(undefined);
+    return Promise.resolve();
+  }
+
+  onParametersDefine(parser: ArgumentsParser): void {
+    //
   }
 }

@@ -17,31 +17,32 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InstallSubCommand = void 0;
 var command_line_1 = require("@ntfs/command-line");
-var console = require("console");
 var InstallSubCommand = /** @class */ (function (_super) {
     __extends(InstallSubCommand, _super);
     function InstallSubCommand(_a) {
-        var parser = _a.parser, config = _a.config;
+        var parser = _a.parser, config = _a.config, manager = _a.manager;
         var _this = _super.call(this, {
             subCommandName: 'install',
-            subCommandDescription: '',
+            subCommandDescription: 'install dependencies for all packages',
             parser: parser
         }) || this;
-        _this.config = config;
-        parser.defineParam({
-            longName: '--adj',
-            summary: '子命令参数设置'
-        });
+        _this._config = config;
+        _this._manager = manager;
         return _this;
     }
-    InstallSubCommand.prototype.initialize = function () {
-        return this;
+    InstallSubCommand.prototype.onParametersDefine = function () {
+        this.parser.defineParam({
+            longName: '--config',
+            shortName: '-C',
+            summary: '这个配置会在终端打印出一串文字'
+        });
     };
     InstallSubCommand.prototype.apply = function () {
         console.log('install command');
-        var json = this.config.readFile();
-        console.log(json);
-        return Promise.resolve(undefined);
+        return this._manager.installPackages();
+    };
+    InstallSubCommand.prototype.initialize = function (args) {
+        return undefined;
     };
     return InstallSubCommand;
 }(command_line_1.BaseSubCommand));

@@ -6,8 +6,8 @@ var path = require("path");
 var process = require("process");
 var FileSys = /** @class */ (function () {
     function FileSys(filePath) {
-        this._cwd = process.cwd();
         this._filePath = filePath;
+        this._cwd = path.dirname(filePath);
     }
     FileSys.getAbsolutePath = function (filePath) {
         var _isAbsPath = path.isAbsolute(filePath);
@@ -27,6 +27,15 @@ var FileSys = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
+    FileSys.prototype.readFile = function () {
+        return this._readFile().toString('utf8');
+    };
+    FileSys.prototype.readJsonFile = function () {
+        return this._toJson();
+    };
+    FileSys.prototype.updateJsonFile = function (json) {
+        this._writeFile(json);
+    };
     FileSys.prototype._readFile = function () {
         this._accessCheck();
         return fs.readFileSync(this.filePath, {});
@@ -53,15 +62,6 @@ var FileSys = /** @class */ (function () {
         catch (error) {
             console.error(error);
         }
-    };
-    FileSys.prototype.readFile = function () {
-        return this._readFile().toString('utf8');
-    };
-    FileSys.prototype.readJsonFile = function () {
-        return this._toJson();
-    };
-    FileSys.prototype.updateJsonFile = function (json) {
-        this._writeFile(json);
     };
     return FileSys;
 }());

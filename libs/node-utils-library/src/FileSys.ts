@@ -4,10 +4,11 @@ import * as process from 'process';
 
 export class FileSys {
   private readonly _filePath: string;
-  private readonly _cwd: string = process.cwd();
+  private readonly _cwd: string;
 
   constructor(filePath: string) {
     this._filePath = filePath;
+    this._cwd = path.dirname(filePath);
   }
 
   public static getAbsolutePath(filePath: string): string {
@@ -21,6 +22,18 @@ export class FileSys {
 
   get filePathAbs(): string {
     return path.resolve(process.cwd(), this.filePath);
+  }
+
+  public readFile(): string {
+    return this._readFile().toString('utf8');
+  }
+
+  public readJsonFile<T>(): T {
+    return this._toJson<T>();
+  }
+
+  public updateJsonFile<T>(json: Partial<T>): void {
+    this._writeFile(json);
   }
 
   private _readFile(): Buffer {
@@ -51,17 +64,5 @@ export class FileSys {
     } catch (error) {
       console.error(error);
     }
-  }
-
-  public readFile(): string {
-    return this._readFile().toString('utf8');
-  }
-
-  public readJsonFile<T>(): T {
-    return this._toJson<T>();
-  }
-
-  public updateJsonFile<T>(json: Partial<T>): void {
-    this._writeFile(json);
   }
 }

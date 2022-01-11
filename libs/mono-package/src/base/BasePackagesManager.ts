@@ -1,29 +1,27 @@
 import { MonoPackagesConfig } from './MonoPackagesConfig';
 
+/**
+ * 包/库的定义结构
+ */
 export interface IPackageDefinition {
   packageName: string;
   description: string;
   directory: string;
 }
 
-export interface IPackagesManager {}
-
-export interface TPackagesManagerInitOptions {
+export interface IPackagesManager {
   config: MonoPackagesConfig;
 }
 
+export interface TPackagesManagerInitOptions extends IPackagesManager {
+  '//'?: string;
+}
+
 export abstract class BasePackagesManager implements IPackagesManager {
-  protected readonly _config: MonoPackagesConfig;
-
+  readonly config: MonoPackagesConfig;
   protected constructor({ config }: TPackagesManagerInitOptions) {
-    this._config = config;
+    this.config = config;
   }
-
-  abstract install(): Promise<void>;
-
-  abstract uninstall(): Promise<void>;
-
-  abstract link(): Promise<void>;
-
-  abstract workspace(): Promise<void>;
+  abstract installPackages(): Promise<void>;
+  abstract linkPackage(): Promise<void>;
 }

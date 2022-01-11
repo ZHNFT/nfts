@@ -6,7 +6,9 @@ export interface ICommandLineInitOption {
   commandDescription: string;
 }
 
-export interface ISubCommandLineInitOptionWithCallback extends ISubCommandLineInitOption {}
+export interface ISubCommandLineInitOptionWithCallback extends ISubCommandLineInitOption {
+  callback: VoidFunction;
+}
 
 /**
  * @desc 使用BaseCommand来构建命令行工具；
@@ -33,19 +35,19 @@ export class BaseCommand implements ICommandLineInitOption {
     this._subCommandsByName = new Map<string, BaseSubCommand>();
 
     /**
-     * 通用参数；即使没有SubCommand；这些设置的通用参也需要能起作用；
+     * 通用参数；即使没有SubCommand；这些设置的通用参也需要能有作用；
      */
     this._parser.defineParam({
-      longName: '--version',
       shortName: '-V',
-      summary: 'Display version'
+      longName: '--version',
+      summary: 'Current package version'
     });
   }
 
   /**
    * 直接添加SubCommand类；
    */
-  public defineSubCommand(subCommand: BaseSubCommand) {
+  public defineSubCommand(subCommand: BaseSubCommand): void {
     this._subCommandsByName.set(subCommand.subCommandName, subCommand);
   }
 }

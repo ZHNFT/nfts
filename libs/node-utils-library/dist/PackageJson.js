@@ -34,6 +34,12 @@ var PackageJson = /** @class */ (function (_super) {
     PackageJson.prototype.updatePackageJson = function (obj) {
         this.updateJsonFile(obj);
     };
+    /**
+     * 搜索距离执行命令处最近的package.json文件
+     */
+    PackageJson.prototype.findPackageJsonWithoutExplicitPath = function () {
+        //
+    };
     return PackageJson;
 }(FileSys_1.FileSys));
 exports.PackageJson = PackageJson;

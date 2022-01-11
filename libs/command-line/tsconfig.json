@@ -6,6 +6,6 @@
     "declarationDir": "./dist",
     "moduleResolution": "Node"
   },
-  "include": ["./src/*.ts", "./src/*.tsx"],
-  "exclude": ["./dist/*"]
+  "include": ["src/"],
+  "exclude": ["dist/"]
 }

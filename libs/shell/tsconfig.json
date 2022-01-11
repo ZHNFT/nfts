@@ -3,5 +3,7 @@
     "target": "ES6",
     "outDir": "./dist",
     "moduleResolution": "node"
-  }
+  },
+  "include": ["src/"],
+  "exclude": ["dist/"]
 }

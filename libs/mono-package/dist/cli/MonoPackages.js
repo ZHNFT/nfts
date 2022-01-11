@@ -28,9 +28,10 @@ var __values = (this && this.__values) || function(o) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MonoPackages = void 0;
 var command_line_1 = require("@ntfs/command-line");
-var MonoPackageConfig_1 = require("../base/MonoPackageConfig");
+var MonoPackagesConfig_1 = require("../base/MonoPackagesConfig");
 var InstallSubCommand_1 = require("../sub-commands/InstallSubCommand");
 var LinkSubCommand_1 = require("../sub-commands/LinkSubCommand");
+var pnpm_1 = require("../manager/pnpm");
 var MonoPackages = /** @class */ (function (_super) {
     __extends(MonoPackages, _super);
     function MonoPackages() {
@@ -38,13 +39,14 @@ var MonoPackages = /** @class */ (function (_super) {
             toolName: 'mono-package',
             toolDescription: 'this is a mono-package description'
         }) || this;
-        _this._config = new MonoPackageConfig_1.MonoPackageConfig();
+        _this._config = new MonoPackagesConfig_1.MonoPackagesConfig();
         var SubCommandContext = {
             parser: _this._parser,
-            config: _this._config
+            config: _this._config,
+            manager: new pnpm_1.PnpmPackagesManager({ config: _this._config })
         };
-        var installCommand = new InstallSubCommand_1.InstallSubCommand(SubCommandContext).initialize();
-        var linkCommand = new LinkSubCommand_1.LinkSubCommand(SubCommandContext).initialize();
+        var installCommand = new InstallSubCommand_1.InstallSubCommand(SubCommandContext);
+        var linkCommand = new LinkSubCommand_1.LinkSubCommand(SubCommandContext);
         _this.defineSubCommand(installCommand);
         _this.defineSubCommand(linkCommand);
         _this._parser.exec(process.argv.slice(1).join(' '));
@@ -85,7 +87,7 @@ var MonoPackages = /** @class */ (function (_super) {
         var _configPath = this._parser.result.getValueByParamName('--config');
         if (_configPath) {
             // @todo 这里需要使用JsonSchema来验证指定的配置的文件格式是否正确
-            this._config = new MonoPackageConfig_1.MonoPackageConfig(_configPath);
+            this._config = new MonoPackagesConfig_1.MonoPackagesConfig(_configPath);
         }
     };
     return MonoPackages;

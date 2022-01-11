@@ -1,12 +1,16 @@
 import { BaseSubCommand } from '@ntfs/command-line';
 import { ArgumentsParser } from '@ntfs/node-arg-parser';
-import { MonoPackageConfig } from '../base/MonoPackageConfig';
+import { MonoPackagesConfig } from '../base/MonoPackagesConfig';
+import { BasePackagesManager } from '../base/BasePackagesManager';
 export declare class InstallSubCommand extends BaseSubCommand {
-    config: MonoPackageConfig;
-    constructor({ parser, config }: {
+    private _config;
+    private _manager;
+    constructor({ parser, config, manager }: {
         parser: ArgumentsParser;
-        config: MonoPackageConfig;
+        config: MonoPackagesConfig;
+        manager: BasePackagesManager;
     });
-    initialize(): BaseSubCommand;
+    onParametersDefine(): void;
     apply(): Promise<void>;
+    initialize<T extends unknown>(args?: T): BaseSubCommand;
 }

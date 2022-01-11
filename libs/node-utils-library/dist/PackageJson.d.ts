@@ -81,5 +81,9 @@ export declare class PackageJson extends FileSys {
      * 更新 package.json 文件
      */
     updatePackageJson(obj: Partial<IPackageJson>): void;
+    /**
+     * 搜索距离执行命令处最近的package.json文件
+     */
+    findPackageJsonWithoutExplicitPath(): void;
 }
 export {};
