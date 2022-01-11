@@ -1,7 +1,6 @@
 import { BaseSubCommand, CommandLineToolDefinition } from '@ntfs/command-line';
 import { MonoPackagesConfig } from '../base/MonoPackagesConfig';
 import { InstallSubCommand } from '../sub-commands/InstallSubCommand';
-import { ArgumentsParser } from '@ntfs/node-arg-parser';
 import { LinkSubCommand } from '../sub-commands/LinkSubCommand';
 import { PnpmPackagesManager } from '../manager/pnpm';
 import { BasePackagesManager } from '../base/BasePackagesManager';
@@ -36,7 +35,7 @@ export class MonoPackages extends CommandLineToolDefinition {
     this._parser.exec(process.argv.slice(1).join(' '));
   }
 
-  public prepare() {
+  public prepare(): MonoPackages {
     this._readConfigFromCommandLine();
     return this;
   }

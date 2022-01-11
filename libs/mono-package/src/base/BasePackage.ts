@@ -34,8 +34,6 @@ export class BasePackage implements IBasePackage {
    */
   scopedName?: string;
 
-  public static scopedPackage = /^@[a-z]+(\/).+$/;
-
   public constructor({ packagePath, packageJson }: IBasePackageInitOptions) {
     const _packageJsonData = packageJson.readJsonFile<IPackageJson>();
 
