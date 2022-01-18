@@ -4,8 +4,10 @@ exports.BaseParameter = void 0;
 var BaseParameter = /** @class */ (function () {
     function BaseParameter(opts) {
         this.longName = opts.longName;
-        this.summary = opts.summary;
+        this.shortName = opts.shortName;
+        this.required = opts.required;
         this.callback = opts.callback;
+        this.summary = opts.summary;
     }
     return BaseParameter;
 }());

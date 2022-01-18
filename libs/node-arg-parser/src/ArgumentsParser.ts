@@ -4,261 +4,255 @@ import { ArgumentsParserError } from './ArgumentsParserError';
 export type TGoodParameterValueTypes = string | string[] | boolean | number;
 
 export enum ArgumentParamKinds {
-	String = 'String',
-	Bool = 'Bool',
-	Array = 'Array',
-	Number = 'Number'
-	// StringArray = 'StringArray',
-	// NumberArray = 'NumberArray'
+  String = 'String',
+  Bool = 'Bool',
+  Array = 'Array',
+  Number = 'Number'
+  // StringArray = 'StringArray',
+  // NumberArray = 'NumberArray'
 }
 
 export type TArgumentParamKind = keyof typeof ArgumentParamKinds;
 
 enum TokenKind {
-	CommandFlag = 'CommandFlag',
-	SubCommandFlag = 'SubCommandFlag',
-	ShortNameFlag = 'ShortNameFlag',
-	LongNameFlag = 'LongNameFlag',
-	ValueFlag = 'ValueFlag',
+  CommandFlag = 'CommandFlag',
+  SubCommandFlag = 'SubCommandFlag',
+  ShortNameFlag = 'ShortNameFlag',
+  LongNameFlag = 'LongNameFlag',
+  ValueFlag = 'ValueFlag',
 
-	// preserved
-	EolFlag = 'EolFlag',
-	SpaceFlag = 'SpaceFlag'
+  // preserved
+  EolFlag = 'EolFlag',
+  SpaceFlag = 'SpaceFlag'
 }
 
 type TTokenKind = keyof typeof TokenKind;
 
 type Token = {
-	pos: {
-		start: number;
-		end: number;
-	};
-	buffer: string;
-	kind: TTokenKind;
+  pos: {
+    start: number;
+    end: number;
+  };
+  buffer: string;
+  kind: TTokenKind;
 };
 
 export interface IArgumentParamDefinition {
-	longName: string;
-	shortName?: string;
-	summary?: string;
-	required?: boolean;
-	kind?: TArgumentParamKind;
+  longName: string;
+  shortName?: string;
+  summary?: string;
+  required?: boolean;
+  kind?: TArgumentParamKind;
 }
 
 export enum StepType {
-	BeforeExec = 'BeforeExec',
-	AfterExec = 'AfterExec'
+  BeforeExec = 'BeforeExec',
+  AfterExec = 'AfterExec'
 }
 
 export class ArgumentsParser {
-	/**
-	 * 长参数名校验正则
-	 * @type {RegExp}
-	 */
-	static argLongNameRegex: RegExp = /^--\w/;
-	/**
-	 * 短参数名校验正则
-	 * @type {RegExp}
-	 */
-	static argShortNameRegex: RegExp = /^-\w/;
-	/**
-	 * 缓存defineParam设置的参数配置；
-	 * @type {Map<string, IArgumentParamDefinition>}
-	 */
-	private _definedParams: Map<string, IArgumentParamDefinition>;
+  /**
+   * 长参数名校验正则
+   * @type {RegExp}
+   */
+  static argLongNameRegex = /^--\w/;
 
-	/**
-	 * 解析错误
-	 * @type {ArgumentsParserError[]}
-	 */
-	// _errors: ArgumentsParserError[];
-	/**
-	 * 解析结果
-	 * @type {ArgumentsParserResult}
-	 */
-	public result: ArgumentsParserResult;
+  /**
+   * 短参数名校验正则
+   * @type {RegExp}
+   */
+  static argShortNameRegex = /^-\w/;
 
-	public constructor() {
-		this.result = new ArgumentsParserResult();
-		this._definedParams = new Map<string, IArgumentParamDefinition>();
-	}
+  /**
+   * 缓存defineParam设置的参数配置；
+   * @type {Map<string, IArgumentParamDefinition>}
+   */
+  private _definedParams: Map<string, IArgumentParamDefinition>;
 
-	/**
-	 * 缓存定义的参数配置
-	 */
-	public defineParam(param: IArgumentParamDefinition): void {
-		this._definedParams.set(param.longName, param);
-		param.shortName && this._definedParams.set(param.shortName, param);
-	}
+  /**
+   * 解析结果
+   * @type {ArgumentsParserResult}
+   */
+  public result: ArgumentsParserResult;
 
-	/**
-	 * 获取参数值
-	 * @param paramName
-	 */
-	public getParamValue(paramName: string): TGoodParameterValueTypes {
-		const strParamValue = this.result.getValueByParamName(paramName);
+  public constructor() {
+    this.result = new ArgumentsParserResult();
+    this._definedParams = new Map<string, IArgumentParamDefinition>();
+  }
 
-		const paramDefine = this._definedParams.get(paramName);
+  /**
+   * 缓存定义的参数配置
+   */
+  public defineParam(param: IArgumentParamDefinition): void {
+    this._definedParams.set(param.longName, param);
+    param.shortName && this._definedParams.set(param.shortName, param);
+  }
 
-		if (!paramDefine) {
-			console.error(`parameter: ${paramName} is not defined`);
-			return undefined;
-		}
+  /**
+   * 获取参数值
+   * @param paramName
+   */
+  public getParamValue(paramName: string): TGoodParameterValueTypes {
+    const strParamValue = this.result.getValueByParamName(paramName);
 
-		const { kind } = paramDefine;
+    const paramDefine = this._definedParams.get(paramName);
 
-		return ArgumentsParser._transValueByKind(kind, strParamValue);
-	}
+    if (!paramDefine) {
+      console.error(`parameter: ${paramName} is not defined`);
+      return undefined;
+    }
 
-	public printParamMessage() {
-		//
-	}
+    const { kind } = paramDefine;
 
-	/**
-	 * 通过kind，将数据转换称需要的类型，默认是string
-	 * @param kind
-	 * @param str
-	 * @private
-	 */
-	private static _transValueByKind(
-		kind: TArgumentParamKind,
-		str: string | undefined
-	): TGoodParameterValueTypes {
-		switch (kind) {
-			case ArgumentParamKinds.Array:
-				return str.split(',');
-			case ArgumentParamKinds.Bool:
-				return Boolean(str);
-			case ArgumentParamKinds.Number:
-				return Number(str);
-			case ArgumentParamKinds.String:
-				return str;
-		}
-	}
+    return ArgumentsParser._transValueByKind(kind, strParamValue);
+  }
 
-	/**
-	 * 将参数解析成Token形式
-	 * @return {void}
-	 */
-	exec(args: string): ArgumentsParserResult {
-		const tokens: Token[] = [];
+  /**
+   * 通过kind，将数据转换称需要的类型，默认是string
+   * @param kind
+   * @param str
+   * @private
+   */
+  private static _transValueByKind(
+    kind: TArgumentParamKind,
+    str: string | undefined
+  ): TGoodParameterValueTypes {
+    switch (kind) {
+      case ArgumentParamKinds.Array:
+        return str.split(',');
+      case ArgumentParamKinds.Bool:
+        return Boolean(str);
+      case ArgumentParamKinds.Number:
+        return Number(str);
+      case ArgumentParamKinds.String:
+        return str;
+    }
+  }
 
-		let strBuf: string;
-		let start = 0;
-		let end = 0;
+  /**
+   * 将参数解析成Token形式
+   * @return {void}
+   */
+  exec(args: string): ArgumentsParserResult {
+    const tokens: Token[] = [];
 
-		let prevToken: Token;
+    let strBuf: string;
+    let start = 0;
+    let end = 0;
 
-		const STOP_WHILE_LOOP_INDICATOR = '\\s{1,}';
-		const END_OF_WHILE_LOOP_LENGTH = args.trim().length;
+    let prevToken: Token;
 
-		while (end <= END_OF_WHILE_LOOP_LENGTH) {
-			const walkIndexStr = args.slice(end, end + 1);
+    const STOP_WHILE_LOOP_INDICATOR = '\\s{1,}';
+    const END_OF_WHILE_LOOP_LENGTH = args.trim().length;
 
-			if (
-				new RegExp(STOP_WHILE_LOOP_INDICATOR).test(walkIndexStr) ||
-				end === END_OF_WHILE_LOOP_LENGTH
-			) {
-				strBuf = args.slice(start, end);
+    while (end <= END_OF_WHILE_LOOP_LENGTH) {
+      const walkIndexStr = args.slice(end, end + 1);
 
-				if (/\s/.exec(strBuf)) {
-					start++;
-					end++;
-					continue;
-				}
+      if (
+        new RegExp(STOP_WHILE_LOOP_INDICATOR).test(walkIndexStr) ||
+        end === END_OF_WHILE_LOOP_LENGTH
+      ) {
+        strBuf = args.slice(start, end);
 
-				const token: Token = {
-					pos: { start, end },
-					buffer: strBuf,
-					kind: this._tokenKind(strBuf, { start, end }, prevToken)
-				};
+        if (/\s/.exec(strBuf)) {
+          start++;
+          end++;
+          continue;
+        }
 
-				tokens.push(token);
-				prevToken = token;
-				start = end + 1;
-			}
-			end++;
-		}
+        const token: Token = {
+          pos: { start, end },
+          buffer: strBuf,
+          kind: this._tokenKind(strBuf, { start, end }, prevToken)
+        };
 
-		this._getParamsFromTokens(tokens);
+        tokens.push(token);
+        prevToken = token;
+        start = end + 1;
+      }
 
-		return this.result;
-	}
+      end++;
+    }
 
-	private _getParamsFromTokens(tokens: Token[]) {
-		for (let i = 0; i < tokens.length; i++) {
-			const _token = tokens[i];
+    this._getParamsFromTokens(tokens);
 
-			/**
-			 * 假设NameFlag Token的下一个Token时ValueFlag Token；
-			 * 如果是的话，直接设置为当前NameFlag的值写入result；
-			 * 如果不是，那就是一个独立的Flag，默认为undefined，设置选项可以将其设置成true；
-			 */
-			const _nextMaybeValueToken = tokens[i + 1];
+    return this.result;
+  }
 
-			switch (_token.kind) {
-				case TokenKind.CommandFlag:
-					this.result.setCommand(_token.buffer);
-					break;
-				case TokenKind.SubCommandFlag:
-					this.result.addSubCommand(_token.buffer);
-					break;
-				case TokenKind.LongNameFlag:
-				case TokenKind.ShortNameFlag:
-					this.result.setValueByParamName(
-						_token.buffer,
-						// @todo 默认填充undefined，需要配置这个字段
-						_nextMaybeValueToken?.kind === TokenKind.ValueFlag
-							? _nextMaybeValueToken.buffer
-							: undefined
-					);
-					break;
-			}
-		}
+  private _getParamsFromTokens(tokens: Token[]) {
+    for (let i = 0; i < tokens.length; i++) {
+      const _token = tokens[i];
 
-		this._checkParamValueAccordingToParamDefinition();
-	}
+      /**
+       * 假设NameFlag Token的下一个Token时ValueFlag Token；
+       * 如果是的话，直接设置为当前NameFlag的值写入result；
+       * 如果不是，那就是一个独立的Flag，默认为undefined，设置选项可以将其设置成true；
+       */
+      const _nextMaybeValueToken = tokens[i + 1];
 
-	private _tokenKind(str: string, pos: Token['pos'], prevToken: Token | undefined): TTokenKind {
-		if (ArgumentsParser.argLongNameRegex.test(str)) {
-			return TokenKind.LongNameFlag;
-		}
+      switch (_token.kind) {
+        case TokenKind.CommandFlag:
+          this.result.setCommand(_token.buffer);
+          break;
+        case TokenKind.SubCommandFlag:
+          this.result.addSubCommand(_token.buffer);
+          break;
+        case TokenKind.LongNameFlag:
+        case TokenKind.ShortNameFlag:
+          this.result.setValueByParamName(
+            _token.buffer,
+            // @todo 默认填充undefined，需要配置这个字段
+            _nextMaybeValueToken?.kind === TokenKind.ValueFlag
+              ? _nextMaybeValueToken.buffer
+              : undefined
+          );
+          break;
+      }
+    }
 
-		if (ArgumentsParser.argShortNameRegex.test(str)) {
-			return TokenKind.ShortNameFlag;
-		}
+    this._checkParamValueAccordingToParamDefinition();
+  }
 
-		if (prevToken?.kind === TokenKind.LongNameFlag || prevToken?.kind === TokenKind.ShortNameFlag) {
-			return TokenKind.ValueFlag;
-		}
+  private _tokenKind(str: string, pos: Token['pos'], prevToken: Token | undefined): TTokenKind {
+    if (ArgumentsParser.argLongNameRegex.test(str)) {
+      return TokenKind.LongNameFlag;
+    }
 
-		if (!this.result.command && pos.start === 0 && pos.end !== 0) {
-			return TokenKind.CommandFlag;
-		} else {
-			return TokenKind.SubCommandFlag;
-		}
-	}
+    if (ArgumentsParser.argShortNameRegex.test(str)) {
+      return TokenKind.ShortNameFlag;
+    }
 
-	private _checkParamValueAccordingToParamDefinition() {
-		const paramDefinitions = this._definedParams.values();
+    if (prevToken?.kind === TokenKind.LongNameFlag || prevToken?.kind === TokenKind.ShortNameFlag) {
+      return TokenKind.ValueFlag;
+    }
 
-		for (const paramDefinition of paramDefinitions as unknown as Array<IArgumentParamDefinition>) {
-			const { longName, shortName, required } = paramDefinition;
-			if (
-				required &&
-				!this.result.getValueByParamName(longName) &&
-				!this.result.getValueByParamName(shortName)
-			) {
-				throw new ArgumentsParserError(
-					`Argument ${longName}/${shortName} is required, but not find in the parse result.`
-				);
-			}
+    if (!this.result.command && pos.start === 0 && pos.end !== 0) {
+      return TokenKind.CommandFlag;
+    } else {
+      return TokenKind.SubCommandFlag;
+    }
+  }
 
-			if (this.result.hasParam(longName) && this.result.hasParam(shortName)) {
-				console.warn(
-					`Both long name(${longName}) and short name(${shortName}) exist, will ignore short name`
-				);
-			}
-		}
-	}
+  private _checkParamValueAccordingToParamDefinition() {
+    const paramDefinitions = this._definedParams.values();
+
+    for (const paramDefinition of paramDefinitions as unknown as Array<IArgumentParamDefinition>) {
+      const { longName, shortName, required } = paramDefinition;
+      if (
+        required &&
+        !this.result.getValueByParamName(longName) &&
+        !this.result.getValueByParamName(shortName)
+      ) {
+        throw new ArgumentsParserError(
+          `Argument ${longName}/${shortName} is required, but not find in the parse result.`
+        );
+      }
+
+      if (this.result.hasParam(longName) && this.result.hasParam(shortName)) {
+        console.warn(
+          `Both long name(${longName}) and short name(${shortName}) exist, will ignore short name`
+        );
+      }
+    }
+  }
 }

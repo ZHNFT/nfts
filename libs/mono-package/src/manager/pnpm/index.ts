@@ -1,16 +1,16 @@
 import {
-  BasePackagesManager,
+  PackagesManager,
   IPackageDefinition,
   TPackagesManagerInitOptions
-} from '../../base/BasePackagesManager';
-import { BasePackage } from '../../base/BasePackage';
+} from '../PackagesManager';
+import { BasePackage } from '../../BasePackage';
 import { join } from 'path';
 import { PackageJson } from '@ntfs/node-utils-library';
 import * as process from 'process';
 import { Constants } from '../../Constants';
 import * as console from 'console';
 
-export class PnpmPackagesManager extends BasePackagesManager {
+export class PnpmPackagesManager extends PackagesManager {
   private readonly _packages: BasePackage[] = [];
 
   constructor(options: TPackagesManagerInitOptions) {

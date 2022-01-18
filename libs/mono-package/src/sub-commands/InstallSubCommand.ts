@@ -1,11 +1,11 @@
 import { BaseSubCommand } from '@ntfs/command-line';
 import { ArgumentsParser } from '@ntfs/node-arg-parser';
-import { MonoPackagesConfig } from '../base/MonoPackagesConfig';
-import { BasePackagesManager } from '../base/BasePackagesManager';
+import { MonoPackagesConfig } from '../config/MonoPackagesConfig';
+import { PackagesManager } from '../manager/PackagesManager';
 
 export class InstallSubCommand extends BaseSubCommand {
   private _config: MonoPackagesConfig;
-  private _manager: BasePackagesManager;
+  private _manager: PackagesManager;
 
   constructor({
     parser,
@@ -14,7 +14,7 @@ export class InstallSubCommand extends BaseSubCommand {
   }: {
     parser: ArgumentsParser;
     config: MonoPackagesConfig;
-    manager: BasePackagesManager;
+    manager: PackagesManager;
   }) {
     super({
       subCommandName: 'install',
@@ -37,9 +37,5 @@ export class InstallSubCommand extends BaseSubCommand {
   apply(): Promise<void> {
     console.log('install command');
     return this._manager.installPackages();
-  }
-
-  initialize<T extends unknown>(args?: T): BaseSubCommand {
-    return undefined;
   }
 }

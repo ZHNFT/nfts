@@ -1,13 +1,7 @@
 import { ArgumentsParser } from '@ntfs/node-arg-parser';
 
 export interface ISubCommandLineInitOption {
-  /**
-   * 子命令名称；
-   */
   readonly subCommandName: string;
-  /**
-   * 子命令描述；
-   */
   readonly subCommandDescription: string;
   readonly parser: ArgumentsParser;
 }
@@ -31,9 +25,6 @@ export abstract class BaseSubCommand implements IBaseSubCommand {
     this.subCommandName = subCommandName;
     this.subCommandDescription = subCommandDescription;
     this.parser = parser;
-    /**
-     * 初始化子命令的同时，也需要注册子命令接受的一些命令行参数信息；
-     */
     this.onParametersDefine(parser);
   }
 
@@ -43,12 +34,7 @@ export abstract class BaseSubCommand implements IBaseSubCommand {
    * @return {Promise<void>} [description]
    */
   public abstract apply(): Promise<void>;
-  /**
-   * 初始化子命令
-   * @type {[type]}
-   * @deprecated
-   */
-  public abstract initialize<T extends unknown>(args?: T): BaseSubCommand;
+
   /**
    * 在该方法中定义命令行参数
    * @method onParametersDefine

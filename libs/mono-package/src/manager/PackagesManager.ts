@@ -1,4 +1,4 @@
-import { MonoPackagesConfig } from './MonoPackagesConfig';
+import { MonoPackagesConfig } from '../config/MonoPackagesConfig';
 
 /**
  * 包/库的定义结构
@@ -17,7 +17,7 @@ export interface TPackagesManagerInitOptions extends IPackagesManager {
   '//'?: string;
 }
 
-export abstract class BasePackagesManager implements IPackagesManager {
+export abstract class PackagesManager implements IPackagesManager {
   readonly config: MonoPackagesConfig;
   protected constructor({ config }: TPackagesManagerInitOptions) {
     this.config = config;

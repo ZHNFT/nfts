@@ -1,11 +1,11 @@
-import { MonoPackages } from './cli/MonoPackages';
+import { MonoPackagesTool } from './cli/MonoPackages';
 
-new MonoPackages()
-	.prepare()
-	.exec()
-	.then(() => {
-		console.log('aaa');
-	})
-	.catch(e => {
-		throw e;
-	});
+new MonoPackagesTool()
+  .prepare()
+  .run()
+  .then(() => {
+    console.log('aaa');
+  })
+  .catch(e => {
+    throw e;
+  });
