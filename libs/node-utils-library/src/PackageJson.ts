@@ -1,4 +1,4 @@
-import { FileSys } from './FileSys';
+import { FileSystem } from './FileSystem';
 
 interface IPackageAuthor {
   name: string;
@@ -75,7 +75,7 @@ export interface IPackageJson {
   browserslist?: string[];
 }
 
-export class PackageJson extends FileSys {
+export class PackageJson extends FileSystem {
   constructor(packageJsonFilePath: string) {
     super(packageJsonFilePath);
   }

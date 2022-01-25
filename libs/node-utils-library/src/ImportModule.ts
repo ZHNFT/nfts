@@ -1,1 +1,5 @@
-export class ImportClass {}
+export class ImportModule {
+  lazy(): void {
+    //
+  }
+}

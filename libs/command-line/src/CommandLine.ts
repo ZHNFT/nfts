@@ -23,6 +23,17 @@ export class CommandLine {
     });
   }
 
+  /**
+   * @public
+   * @param longName
+   * @param shortName
+   * @param required
+   * @param kind
+   * @param callback
+   * @param summary
+   *
+   * 向parser中定义参数
+   */
   public defineParameter({
     longName,
     shortName,

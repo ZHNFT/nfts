@@ -1,9 +1,9 @@
 import {
-  PackagesManager,
   IPackageDefinition,
+  PackagesManager,
   TPackagesManagerInitOptions
 } from '../PackagesManager';
-import { BasePackage } from '../../BasePackage';
+import { BasePackage } from '../../packages/Package';
 import { join } from 'path';
 import { PackageJson } from '@ntfs/node-utils-library';
 import * as process from 'process';

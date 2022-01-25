@@ -37,8 +37,6 @@ export class BasePackage implements IBasePackage {
   public constructor({ packagePath, packageJson }: IBasePackageInitOptions) {
     const _packageJsonData = packageJson.readJsonFile<IPackageJson>();
 
-    console.log(_packageJsonData);
-
     if (!_packageJsonData.name || !_packageJsonData.version) {
       throw new InternalError({
         message: 'No name and version fields in package.json' + '[Module path] ' + packagePath,

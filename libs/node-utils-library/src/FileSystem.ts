@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as process from 'process';
 
-export class FileSys {
+export class FileSystem {
   private readonly _filePath: string;
   private readonly _cwd: string;
 
@@ -17,7 +17,7 @@ export class FileSys {
   }
 
   get filePath(): string {
-    return FileSys.getAbsolutePath(this._filePath);
+    return FileSystem.getAbsolutePath(this._filePath);
   }
 
   get filePathAbs(): string {

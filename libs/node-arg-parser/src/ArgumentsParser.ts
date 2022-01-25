@@ -8,8 +8,6 @@ export enum ArgumentParamKinds {
   Bool = 'Bool',
   Array = 'Array',
   Number = 'Number'
-  // StringArray = 'StringArray',
-  // NumberArray = 'NumberArray'
 }
 
 export type TArgumentParamKind = keyof typeof ArgumentParamKinds;
@@ -20,7 +18,6 @@ enum TokenKind {
   ShortNameFlag = 'ShortNameFlag',
   LongNameFlag = 'LongNameFlag',
   ValueFlag = 'ValueFlag',
-
   // preserved
   EolFlag = 'EolFlag',
   SpaceFlag = 'SpaceFlag'
@@ -91,6 +88,7 @@ export class ArgumentsParser {
   /**
    * 获取参数值
    * @param paramName
+   * @public
    */
   public getParamValue(paramName: string): TGoodParameterValueTypes {
     const strParamValue = this.result.getValueByParamName(paramName);
@@ -131,9 +129,9 @@ export class ArgumentsParser {
 
   /**
    * 将参数解析成Token形式
-   * @return {void}
+   * @param args
    */
-  exec(args: string): ArgumentsParserResult {
+  public exec(args: string): ArgumentsParserResult {
     const tokens: Token[] = [];
 
     let strBuf: string;

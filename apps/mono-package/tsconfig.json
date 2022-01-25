@@ -7,6 +7,10 @@
     "moduleResolution": "Node",
     "downlevelIteration": true
   },
-  "include": ["src/"],
-  "exclude": ["dist/"]
+  "include": [
+    "src/"
+  ],
+  "exclude": [
+    "../../apps/mono-package/dist/"
+  ]
 }

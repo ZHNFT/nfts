@@ -1,5 +1,5 @@
 {
-  "$schema": "../libs/mono-package/schemas/mono-packages-schema.json",
+  "$schema": "../apps/mono-package/schemas/mono-packages-schema.json",
   "packageManager": "pnpm",
   "packages": [
     {

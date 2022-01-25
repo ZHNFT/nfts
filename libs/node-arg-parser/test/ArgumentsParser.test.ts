@@ -6,7 +6,9 @@ describe('CLI 命令行解析工具测试', () => {
     const arg2 = new ArgumentsParser();
 
     const result1 = arg1.exec('gmf dev --clean --outDir ./dir');
-    const result2 = arg2.exec('gmf test --a abc dev -b --c -d --e 12 -f 12 --g 12 -h -i --j --k 你好 -l HELLO,WORLD');
+    const result2 = arg2.exec(
+      'gmf test --a abc dev -b --c -d --e 12 -f 12 --g 12 -h -i --j --k 你好 -l HELLO,WORLD'
+    );
 
     expect(result1.command).toEqual('gmf');
     expect(result1.getSubCommands()).toEqual(['dev']);

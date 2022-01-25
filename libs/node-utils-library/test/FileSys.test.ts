@@ -1,33 +1,35 @@
-import { FileSys } from '../src/FileSys';
+import { FileSystem } from '../src/FileSystem';
 
 describe('FileSys 单元测试', () => {
   const relative_json = './test/dump-files/dump1.json';
   const relative_txt = './test/dump-files/dump2.txt';
-  const absolute_txt = '/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/test/dump-files/dump2.txt';
-  const absolute_json = '/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/test/dump-files/dump1.json';
+  const absolute_txt =
+    '/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/test/dump-files/dump2.txt';
+  const absolute_json =
+    '/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/test/dump-files/dump1.json';
   test('使用相对路径', () => {
-    const dumpFile = new FileSys(relative_json);
+    const dumpFile = new FileSystem(relative_json);
     expect(dumpFile.filePath).toEqual(absolute_json);
   });
 
   test('静态方法测试', () => {
-    expect(FileSys.getAbsolutePath(relative_json)).toEqual(absolute_json);
+    expect(FileSystem.getAbsolutePath(relative_json)).toEqual(absolute_json);
   });
 
   test('使用绝对路径', () => {
-    const dumpFile = new FileSys(absolute_json);
+    const dumpFile = new FileSystem(absolute_json);
     expect(dumpFile.filePath).toEqual(absolute_json);
   });
 
   test('读写text文件', () => {
-    const txtFile1 = new FileSys(relative_txt);
-    const txtFile2 = new FileSys(absolute_txt);
+    const txtFile1 = new FileSystem(relative_txt);
+    const txtFile2 = new FileSystem(absolute_txt);
     expect(txtFile1.readFile()).toEqual(txtFile2.readFile());
   });
 
   test('读写JSON文件', () => {
-    const jsonFile1 = new FileSys(relative_json);
-    const jsonFile2 = new FileSys(absolute_json);
+    const jsonFile1 = new FileSystem(relative_json);
+    const jsonFile2 = new FileSystem(absolute_json);
     expect(jsonFile1.readFile()).toEqual(jsonFile2.readFile());
     jsonFile1.updateJsonFile({
       name: 'test-case-1'
