@@ -4,6 +4,7 @@
     "outDir": "./dist",
     "declaration": true,
     "moduleResolution": "Node",
+    "downlevelIteration": true,
     "lib": ["ES6"]
   },
   "include": ["src/"],

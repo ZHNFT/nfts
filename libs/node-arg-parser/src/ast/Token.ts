@@ -1,24 +1,26 @@
-export default class Token {
-  type: string;
-  value?: string;
-  pos: {
-    start: number;
-    end: number;
-  };
+export type TTokenPos = {
+  start: number;
+  end: number;
+};
 
-  public constructor({ value, pos }: { value: string; pos: { start: number; end: number } }) {
+export default class Token {
+  kind: number;
+  buffer?: string;
+  pos: TTokenPos;
+
+  public constructor({ value, pos, kind }: { value: string; pos: TTokenPos; kind: number }) {
     this.setValue(value);
     this.setPos(pos);
+
+    this.kind = kind;
   }
 
   /**
    * 设置位置信息
-   * @param start
-   * @param end
+   * @param pos
    */
-  public setPos({ start, end }: { start: number; end: number }): void {
-    this.pos.end = end;
-    this.pos.start = start;
+  public setPos(pos: TTokenPos): void {
+    this.pos = pos;
   }
 
   /**
@@ -26,6 +28,6 @@ export default class Token {
    * @param value
    */
   public setValue(value: string): void {
-    this.value = value;
+    this.buffer = value;
   }
 }
