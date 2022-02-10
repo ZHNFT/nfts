@@ -1,10 +1,7 @@
-import { BaseSubCommand, ISubCommandLineInitOption } from './BaseSubCommand';
+import { BaseSubCommand } from './BaseSubCommand';
 export interface ICommandLineInitOption {
     commandName: string;
     commandDescription: string;
-}
-export interface ISubCommandLineInitOptionWithCallback extends ISubCommandLineInitOption {
-    callback: VoidFunction;
 }
 /**
  * @desc 使用BaseCommand来构建命令行工具；

@@ -1,10 +1,14 @@
 {
   "compilerOptions": {
-    "target": "ES5",
+    "target": "ES6",
     "outDir": "./dist",
     "declaration": true,
     "declarationDir": "./dist",
-    "moduleResolution": "Node"
+    "moduleResolution": "Node",
+    "lib": [
+      "ESNext",
+      "dom"
+    ]
   },
   "include": ["src/"],
   "exclude": ["dist/"]

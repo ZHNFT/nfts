@@ -1,4 +1,4 @@
-import { FileSystem } from '../src/FileSystem';
+import { FileSystem } from '../src';
 
 describe('FileSys 单元测试', () => {
   const relative_json = './test/dump-files/dump1.json';
@@ -7,41 +7,14 @@ describe('FileSys 单元测试', () => {
     '/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/test/dump-files/dump2.txt';
   const absolute_json =
     '/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/test/dump-files/dump1.json';
-  test('使用相对路径', () => {
-    const dumpFile = new FileSystem(relative_json);
-    expect(dumpFile.filePath).toEqual(absolute_json);
-  });
-
-  test('静态方法测试', () => {
-    expect(FileSystem.getAbsolutePath(relative_json)).toEqual(absolute_json);
-  });
-
-  test('使用绝对路径', () => {
-    const dumpFile = new FileSystem(absolute_json);
-    expect(dumpFile.filePath).toEqual(absolute_json);
-  });
 
   test('读写text文件', () => {
-    const txtFile1 = new FileSystem(relative_txt);
-    const txtFile2 = new FileSystem(absolute_txt);
-    expect(txtFile1.readFile()).toEqual(txtFile2.readFile());
+    expect(FileSystem.readFile(relative_txt)).toEqual(FileSystem.readFile(absolute_txt));
   });
 
   test('读写JSON文件', () => {
-    const jsonFile1 = new FileSystem(relative_json);
-    const jsonFile2 = new FileSystem(absolute_json);
-    expect(jsonFile1.readFile()).toEqual(jsonFile2.readFile());
-    jsonFile1.updateJsonFile({
-      name: 'test-case-1'
-    });
-    expect(jsonFile2.readJsonFile<{ name: string }>().name).toEqual('test-case-1');
-
-    jsonFile2.updateJsonFile({
-      name: 'test-case-2',
-      version: '1.0.0'
-    });
-
-    expect(jsonFile1.readJsonFile<{ name: string; version: string }>().name).toEqual('test-case-2');
-    expect(jsonFile1.readJsonFile<{ name: string; version: string }>().version).toEqual('1.0.0');
+    expect(FileSystem.readFile(relative_json)).toEqual(
+      FileSystem.readFile(absolute_json)
+    );
   });
 });

@@ -1,14 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.BaseSubCommand = void 0;
-var BaseSubCommand = /** @class */ (function () {
-    function BaseSubCommand(_a) {
-        var subCommandName = _a.subCommandName, subCommandDescription = _a.subCommandDescription, parser = _a.parser;
+export class BaseSubCommand {
+    constructor({ subCommandName, subCommandDescription, parser }) {
         this.subCommandName = subCommandName;
         this.subCommandDescription = subCommandDescription;
         this.parser = parser;
         this.onParametersDefine(parser);
     }
-    return BaseSubCommand;
-}());
-exports.BaseSubCommand = BaseSubCommand;
+}

@@ -1,11 +1,3 @@
-import { BaseParameter, IBaseParameterInitOptions } from '../base/BaseParameter';
+import { BaseParameter } from '../base/BaseParameter';
 
-export interface IBooleanParameterInitOptions extends IBaseParameterInitOptions {
-  //
-}
-
-export class BooleanParameter extends BaseParameter {
-  constructor(options: IBooleanParameterInitOptions) {
-    super(options);
-  }
-}
+export class BooleanParameter extends BaseParameter {}

@@ -1,8 +1,8 @@
-import { ArgumentsParser } from '@ntfs/node-arg-parser';
+import { Parser } from '@ntfs/node-arg-parser';
 export interface ISubCommandLineInitOption {
     readonly subCommandName: string;
     readonly subCommandDescription: string;
-    readonly parser: ArgumentsParser;
+    readonly parser: Parser;
 }
 export interface IBaseSubCommand {
     readonly subCommandName: string;
@@ -11,7 +11,7 @@ export interface IBaseSubCommand {
 export declare abstract class BaseSubCommand implements IBaseSubCommand {
     readonly subCommandName: string;
     readonly subCommandDescription: string;
-    protected readonly parser: ArgumentsParser;
+    protected readonly parser: Parser;
     protected constructor({ subCommandName, subCommandDescription, parser }: ISubCommandLineInitOption);
     /**
      * 主要的执行方法
@@ -23,5 +23,5 @@ export declare abstract class BaseSubCommand implements IBaseSubCommand {
      * 在该方法中定义命令行参数
      * @method onParametersDefine
      */
-    abstract onParametersDefine(parser: ArgumentsParser): void;
+    abstract onParametersDefine(parser: Parser): void;
 }

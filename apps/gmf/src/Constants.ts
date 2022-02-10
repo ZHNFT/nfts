@@ -1,1 +1,3 @@
-export const GMF_CONFIG_FILE_PATH = './config/gmf.json';
+export class Constants {
+  public static GmfConfigFilePath = './config/gmf.json';
+}

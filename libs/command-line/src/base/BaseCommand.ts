@@ -5,10 +5,6 @@ export interface ICommandLineInitOption {
   commandDescription: string;
 }
 
-export interface ISubCommandLineInitOptionWithCallback extends ISubCommandLineInitOption {
-  callback: VoidFunction;
-}
-
 /**
  * @desc 使用BaseCommand来构建命令行工具；
  *        Command实现类需要具备一下几种必须属性

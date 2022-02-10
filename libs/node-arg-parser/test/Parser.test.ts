@@ -18,18 +18,9 @@ describe('新的Parser测试', function () {
 
   test('设置参数', () => {
     parser.defineParam([
-      {
-        flagName: '--a',
-        desc: 'Sample flag name --a'
-      },
-      {
-        flagName: '-b',
-        desc: 'Sample flag name -b'
-      },
-      {
-        flagName: '--c',
-        desc: 'Sample flag name --c'
-      }
+      { flagName: '--a', desc: 'Sample flag name --a' },
+      { flagName: '-b', desc: 'Sample flag name -b' },
+      { flagName: '--c', desc: 'Sample flag name --c' }
     ]);
 
     const res = parser.exec('a b --a -b --c 12 -d');
@@ -42,8 +33,8 @@ describe('新的Parser测试', function () {
       res.strictGetParamValueByName('-e');
     }).toThrowError();
 
-    expect(res.command).toBe('a');
-    expect(res.subCommands).toContain('b');
+    expect(res.cmd).toBe('a');
+    expect(res.subCmds).toContain('b');
     res.printParams();
   });
 });

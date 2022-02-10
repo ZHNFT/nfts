@@ -1,15 +1,20 @@
-import { ArgumentsParser } from '@ntfs/node-arg-parser';
-import { IBaseParameterInitOptions } from './base/BaseParameter';
+import { Parser } from '@ntfs/node-arg-parser';
+import { TParameterDefinition } from './base/BaseParameter';
 
 export class CommandLine {
-  static parser = new ArgumentsParser();
+  private readonly toolName: string;
+  private readonly toolDescription: string;
+  private readonly _callbackByName: Map<string, VoidFunction>;
 
-  toolName: string;
-  toolDescription: string;
+  public static parser: Parser = Parser.getParser();
 
-  private _callbackByName: Map<string, VoidFunction>;
-
-  constructor({ toolName, toolDescription }: { toolName: string; toolDescription: string }) {
+  constructor({
+    toolName,
+    toolDescription
+  }: {
+    toolName: string;
+    toolDescription: string;
+  }) {
     this.toolName = toolName;
     this.toolDescription = toolDescription;
 
@@ -38,17 +43,16 @@ export class CommandLine {
     longName,
     shortName,
     required,
-    kind,
     callback,
     summary
-  }: IBaseParameterInitOptions): void {
-    CommandLine.parser.defineParam({
-      longName,
-      shortName,
-      required,
-      kind,
-      summary
-    });
+  }: TParameterDefinition): void {
+    CommandLine.parser.defineParam([
+      {
+        flagName: shortName,
+        desc: summary,
+        required
+      }
+    ]);
     this._callbackByName.set(longName, callback);
     shortName && this._callbackByName.set(shortName, callback);
   }

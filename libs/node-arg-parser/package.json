@@ -5,12 +5,16 @@
   "scripts": {
     "build": "npx tsc",
     "dev": "npx tsc --watch --declaration --declarationDir ./dist",
-    "dts": "npx tsc --declaration --emitDeclarationOnly --declarationDir ./dist"
+    "dts": "npx tsc --declaration --emitDeclarationOnly --declarationDir ./dist",
+    "test": "jest"
   },
   "repository": {
     "directory": "libs/node-arg-parser",
     "type": "public",
     "url": "*"
+  },
+  "//devDependencies": {
+    "@ntfs/node-utils-library": "workspace:*"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",

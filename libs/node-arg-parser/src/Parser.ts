@@ -1,6 +1,7 @@
 import Token, { TTokenPos } from './ast/Token';
 import { ParserResult } from './ParserResult';
-import { FlagNameRegex, TokenKind } from './Constants';
+import { TokenKind } from './Constants';
+import { Ast } from './ast/Ast';
 
 /* 参数定义 */
 export interface TParamDefinition {
@@ -28,6 +29,7 @@ export abstract class ParserProvider {
 export class Parser implements ParserProvider {
   /* 大小写敏感 */
   caseSensitive: boolean;
+
   private readonly result: ParserResult;
 
   protected constructor() {
@@ -88,7 +90,7 @@ export class Parser implements ParserProvider {
 
   private static _emitToken(pos: TTokenPos, buf: string, prevToken: Token): Token {
     //
-    if (FlagNameRegex.ShortNameRegex.test(buf)) {
+    if (Ast.argShortNameRegex.test(buf)) {
       return new Token({
         value: buf,
         pos,
@@ -96,7 +98,7 @@ export class Parser implements ParserProvider {
       });
     }
 
-    if (FlagNameRegex.LongNameRegex.test(buf)) {
+    if (Ast.argLongNameRegex.test(buf)) {
       return new Token({
         value: buf,
         pos,

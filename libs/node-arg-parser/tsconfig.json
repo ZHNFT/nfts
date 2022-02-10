@@ -5,8 +5,7 @@
     "declaration": true,
     "moduleResolution": "Node",
     "downlevelIteration": true,
-    "lib": ["ES6"]
+    "lib": ["ESNext"]
   },
-  "include": ["src/"],
-  "exclude": ["dist/"]
+  "include": ["src/"]
 }

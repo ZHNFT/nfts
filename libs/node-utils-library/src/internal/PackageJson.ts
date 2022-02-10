@@ -1,12 +1,10 @@
-import { FileSystem } from './FileSystem';
-
-interface IPackageAuthor {
+export interface IPackageAuthor {
   name: string;
   email?: string;
   url: string;
 }
 
-interface IPackageRepository {
+export interface IPackageRepository {
   type: 'git' | 'svn';
   url: string;
 }
@@ -73,31 +71,4 @@ export interface IPackageJson {
    * Babel、Autoprefixer 和其他工具会用到它，以将所需的 polyfill 和 fallback 添加到目标浏览器。
    */
   browserslist?: string[];
-}
-
-export class PackageJson extends FileSystem {
-  constructor(packageJsonFilePath: string) {
-    super(packageJsonFilePath);
-  }
-
-  /**
-   * 查找package.json文件
-   */
-  findPackageJson(): IPackageJson {
-    return this.readJsonFile<IPackageJson>();
-  }
-
-  /**
-   * 更新 package.json 文件
-   */
-  updatePackageJson(obj: Partial<IPackageJson>): void {
-    this.updateJsonFile(obj);
-  }
-
-  /**
-   * 搜索距离执行命令处最近的package.json文件
-   */
-  findPackageJsonWithoutExplicitPath() {
-    //
-  }
 }

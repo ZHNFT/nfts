@@ -1,6 +1,7 @@
 import type { TParamDefinition } from './Parser';
 import Token from './ast/Token';
 import { TokenKind } from './Constants';
+import { ScopedError } from '@ntfs/node-utils-library';
 import * as console from 'console';
 
 interface TParamDefinitionWithValue extends TParamDefinition {
@@ -8,14 +9,19 @@ interface TParamDefinitionWithValue extends TParamDefinition {
 }
 
 export class ParserResult {
-  command: string;
-  subCommands: string[] = [];
+  protected command: string;
+  protected subCommands: string[] = [];
+  private _paramByName: Map<string, TParamDefinitionWithValue> = new Map();
 
-  private _paramByName: Map<string, TParamDefinitionWithValue>;
-
-  public constructor() {
-    this._paramByName = new Map();
+  get cmd(): string {
+    return this.command;
   }
+
+  get subCmds(): string[] {
+    return this.subCommands;
+  }
+
+  public static error: ScopedError = new ScopedError('ParserResult');
 
   public setParam(definition: TParamDefinition): void {
     this._paramByName.set(definition.flagName, definition);
@@ -30,7 +36,7 @@ export class ParserResult {
   public strictGetParamValueByName(name: string): string | never {
     const value = this.getParamValueByName(name);
     if (!value) {
-      throw new Error(`获取不到参数"${name}"的值。`);
+      throw ParserResult.error.fatal(`Can't get value by key name: ${name}`);
     }
 
     return value;
@@ -57,7 +63,7 @@ export class ParserResult {
   public strictSetParserParamValueByName(name: string, value: string): void {
     const param = this._paramByName.get(name);
     if (!param) {
-      throw new Error(
+      throw ParserResult.error.fatal(
         '设置参数值错误' + `参数"${name}"的值无法设置，因为没有通过Parser.defineParam定义`
       );
     }
@@ -107,7 +113,9 @@ export class ParserResult {
     console.log(`---- command ${this.command} ----`);
     console.log(`options`);
     for (const value of this._paramByName.values()) {
-      console.log(`  ${(value as TParamDefinition).flagName}  ${(value as TParamDefinition).desc}`);
+      console.log(
+        `  ${(value as TParamDefinition).flagName}  ${(value as TParamDefinition).desc}`
+      );
     }
   }
 }

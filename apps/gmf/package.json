@@ -6,9 +6,19 @@
     "extends": "../../repo-scripts/eslint-config"
   },
   "scripts": {
-    "build-local": "node ../../repo-scripts/build-local/scripts.js build ./src/index.ts"
+    "build": "npx tsc",
+    "dev": "npx tsc --watch --declaration --declarationDir ./dist",
+    "dts": "npx tsc --declaration --emitDeclarationOnly --declarationDir ./dist"
+  },
+  "//devDependencies": {
+    "@ntfs/node-utils-library": "workspace:*",
+    "@ntfs/command-line": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "^17.0.4"
+    "@types/jest": "^27.0.3",
+    "@types/node": "~17.0.5",
+    "jest": "^27.4.5",
+    "ts-jest": "^27.1.2",
+    "typescript": "^4.5.4"
   }
 }
