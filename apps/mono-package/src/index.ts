@@ -1,6 +1,6 @@
-import { MonoPackagesTool } from './cli/MonoPackages';
+import { Mono } from './cli/Mono';
 
-new MonoPackagesTool()
+new Mono()
   .prepare()
   .run()
   .then(() => {

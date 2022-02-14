@@ -1,5 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env ast-node
 
 console.log(process.argv);
-
 require('../dist');

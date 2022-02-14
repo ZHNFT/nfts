@@ -1,42 +1,73 @@
-import Token from './Token';
+import { Tokenizer } from './Tokenizer';
+import { Token, TokenTypes } from './Token';
+
+export enum AstNodeTypes {
+  'Script' = 'Script',
+  'Command' = 'Command',
+  'Variable' = 'Variable'
+}
+
+export abstract class AstBaseNode {
+  abstract kind: keyof typeof AstNodeTypes;
+}
+
+export class AstScriptNode extends AstBaseNode {
+  readonly kind: AstNodeTypes.Script;
+  body: AstNode;
+}
+
+export class AstCommandNode extends AstBaseNode {
+  readonly kind: AstNodeTypes.Command;
+  arguments: AstNode[];
+}
+
+export class AstTextNode extends AstBaseNode {
+  readonly kind: AstNodeTypes.Variable;
+  token: Token;
+}
+
+export type AstNode = AstScriptNode | AstCommandNode;
 
 export class Ast {
-  txt: string;
-  private index: number;
-  private tokenValue: string;
+  private _tokenizer: Tokenizer;
+  private _peekedToken: Token;
 
-  private tokens: Token[] = [];
-
-  constructor(s: string) {
-    this.txt = s;
+  constructor(input: string) {
+    this._tokenizer = new Tokenizer(input);
   }
 
-  /**
-   * 解析
-   */
-  parse(): void {
-    this.index = 0;
-    this.tokenValue = '';
+  public parse(): AstScriptNode {
+    const astScript = new AstScriptNode();
 
-    while ((this.tokenValue = this._getChar())) {
-      //
+    this._peekToken();
+    const astCommand = this._getCommand();
+
+    if (!astCommand) {
+      throw Error(`需要一个指令`);
     }
+
+    astScript.body = astCommand;
+
+    return astScript;
   }
 
-  private _getChar(): string {
-    ++this.index;
-    return this.tokenValue + this.txt[this.index];
+  private _peekToken(): Token | undefined {
+    if (!this._peekedToken) {
+      this._peekedToken = this._tokenizer.readToken();
+    }
+
+    return this._peekedToken;
   }
 
-  /**
-   * 长参数名校验正则
-   * @type {RegExp}
-   */
-  static argLongNameRegex = /^--\w/;
+  private _getCommand(): AstCommandNode | undefined {
+    if (!this._peekedToken) {
+      throw Error('error');
+    }
 
-  /**
-   * 短参数名校验正则
-   * @type {RegExp}
-   */
-  static argShortNameRegex = /^-\w/;
+    const astCommand = new AstCommandNode();
+
+    return astCommand;
+  }
+
+  private _getCommandArguments() {}
 }

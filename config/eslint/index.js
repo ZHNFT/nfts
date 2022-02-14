@@ -1,11 +1,12 @@
-/**
- *
- * @type {import('eslint')}
- */
+/**  @type {import('@types/eslint').Linter.Config} */
 module.exports = {
   extends: ['eslint:recommended'],
   ignorePatterns: ['*.d.ts'],
-  env: { node: true, jest: true },
+  env: {
+    node: true,
+    jest: true,
+    es6: true
+  },
   parser: '@typescript-eslint/parser',
   overrides: [
     {
@@ -18,7 +19,8 @@ module.exports = {
       parserOptions: {
         project: './tsconfig.json',
         ecmaVersion: 2018,
-        sourceType: 'module'
+        sourceType: 'module',
+        tsconfigRootDir: process.cwd()
       }
     }
   ],

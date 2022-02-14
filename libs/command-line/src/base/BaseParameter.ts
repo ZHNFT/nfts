@@ -23,13 +23,7 @@ export class BaseParameter {
     callback,
     shortName,
     required
-  }: {
-    longName: string;
-    summary: string;
-    callback: TFunction;
-    shortName?: string;
-    required?: boolean;
-  }) {
+  }: TParameterDefinition) {
     this.shortName = shortName;
     this.summary = summary;
     this.callback = callback;

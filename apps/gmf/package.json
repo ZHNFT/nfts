@@ -12,7 +12,8 @@
   },
   "//devDependencies": {
     "@ntfs/node-utils-library": "workspace:*",
-    "@ntfs/command-line": "workspace:*"
+    "@ntfs/command-line": "workspace:*",
+    "@ntfs/eslint-config": "workspace:*"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",

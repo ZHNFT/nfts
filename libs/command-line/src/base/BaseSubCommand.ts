@@ -15,8 +15,6 @@ export abstract class BaseSubCommand implements IBaseSubCommand {
   readonly subCommandName: string;
   readonly subCommandDescription: string;
 
-  protected readonly parser: Parser;
-
   protected constructor({
     subCommandName,
     subCommandDescription,
@@ -24,7 +22,6 @@ export abstract class BaseSubCommand implements IBaseSubCommand {
   }: ISubCommandLineInitOption) {
     this.subCommandName = subCommandName;
     this.subCommandDescription = subCommandDescription;
-    this.parser = parser;
     this.onParametersDefine(parser);
   }
 

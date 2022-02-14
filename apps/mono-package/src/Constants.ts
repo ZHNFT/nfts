@@ -1,10 +1,15 @@
 export class Constants {
   /**
-   * mono-packages 配置文件的默认位置
+   * mono 配置文件的默认位置
    */
-  static readonly monoPackagesConfigurationDefaultPath = './config/mono-packages.json';
+  static readonly MonoPackagesConfigurationDefaultPath = './config/mono-packages.json';
+  /**
+   * mono 配置的schema配置文件位置
+   */
+  static readonly MonoPackagesConfigurationSchema =
+    '../schemas/mono-packages-schema.json';
   /**
    * package.json 的默认位置
    */
-  static readonly packageJsonFilePath = './package.json';
+  static readonly PackageJsonFilePath = './package.json';
 }

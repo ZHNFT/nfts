@@ -415,7 +415,7 @@ packages:
       - bufferutil
       - canvas
       - supports-color
-      - ts-node
+      - ts-ast-node
       - utf-8-validate
     dev: true
 
@@ -1486,7 +1486,7 @@ packages:
       - bufferutil
       - canvas
       - supports-color
-      - ts-node
+      - ts-ast-node
       - utf-8-validate
     dev: true
 
@@ -1886,7 +1886,7 @@ packages:
       - bufferutil
       - canvas
       - supports-color
-      - ts-node
+      - ts-ast-node
       - utf-8-validate
     dev: true
 

@@ -51,7 +51,7 @@ export interface IPackageJson {
    */
   private?: boolean;
   /**
-   * 可以定义一组可以运行的 node 脚本。
+   * 可以定义一组可以运行的 ast-node 脚本。
    */
   scripts?: Readonly<Record<string, string>>;
   /**
@@ -63,7 +63,7 @@ export interface IPackageJson {
    */
   devDependencies?: Record<string, string>;
   /**
-   * 设置此软件包/应用程序要运行的 Node.js 或其他命令的版本。
+   * 设置此软件包/应用程序要运行的 Node.ts.js 或其他命令的版本。
    */
   engines?: Record<string, string>;
   /**
