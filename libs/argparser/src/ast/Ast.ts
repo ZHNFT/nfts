@@ -1,10 +1,13 @@
 import { Tokenizer } from './Tokenizer';
-import { Token, TokenTypes } from './Token';
+import { Token } from './Token';
 
 export enum AstNodeTypes {
+  'None' = 'None',
   'Script' = 'Script',
   'Command' = 'Command',
-  'Variable' = 'Variable'
+  'Text' = 'Text',
+  'EqualityFlag' = 'EqualityFlag',
+  'CommonFlag' = 'CommonFlag'
 }
 
 export abstract class AstBaseNode {
@@ -22,8 +25,22 @@ export class AstCommandNode extends AstBaseNode {
 }
 
 export class AstTextNode extends AstBaseNode {
-  readonly kind: AstNodeTypes.Variable;
+  readonly kind: AstNodeTypes.Text;
   token: Token;
+}
+
+export class AstEqualityArgumentNode extends AstBaseNode {
+  readonly kind: AstNodeTypes.Text;
+
+  flagName: string;
+  flagValue: string;
+}
+
+export class AstCommonArgumentNode extends AstBaseNode {
+  readonly kind: AstNodeTypes.Text;
+
+  flagName: string;
+  flagValue: string;
 }
 
 export type AstNode = AstScriptNode | AstCommandNode;
