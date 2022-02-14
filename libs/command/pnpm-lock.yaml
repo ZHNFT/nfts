@@ -1,0 +1,29 @@
+lockfileVersion: 5.3
+
+specifiers:
+  '@types/node': ~17.0.5
+  '@types/tapable': ^2.2.2
+  tapable: ^2.2.1
+
+dependencies:
+  tapable: 2.2.1
+
+devDependencies:
+  '@types/node': 17.0.17
+  '@types/tapable': 2.2.2
+
+packages:
+
+  /@types/node/17.0.17:
+    resolution: {integrity: sha512-e8PUNQy1HgJGV3iU/Bp2+D/DXh3PYeyli8LgIwsQcs1Ar1LoaWHSIT6Rw+H2rNJmiq6SNWiDytfx8+gYj7wDHw==}
+    dev: true
+
+  /@types/tapable/2.2.2:
+    resolution: {integrity: sha512-ujqOVJEeLcwpDVJPnp/k3u1UXmTKq5urJq9fO8aUKg8Vlel5RNOFbVKEfqfh6wGfF/M+HiTJlBJMLC1aDfyf0Q==}
+    dependencies:
+      tapable: 2.2.1
+    dev: true
+
+  /tapable/2.2.1:
+    resolution: {integrity: sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==}
+    engines: {node: '>=6'}

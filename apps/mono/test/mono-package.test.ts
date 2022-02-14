@@ -1,4 +1,4 @@
-import { MonoPackages } from '../src/cli/MonoPackages';
+import { MonoPackages } from '../src/cli/Mono';
 
 describe('测试', () => {
   test('MonoPackages实例化', () => {

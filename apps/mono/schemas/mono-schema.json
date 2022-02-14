@@ -24,21 +24,13 @@
     },
     "packageManager": {
       "type": "string",
-      "enum": [
-        "pnpm",
-        "yarn",
-        "npm"
-      ]
+      "enum": ["pnpm", "yarn", "npm"]
     }
   },
   "$defs": {
     "packageDefinition": {
       "type": "object",
-      "required": [
-        "directory",
-        "packageName",
-        "description"
-      ],
+      "required": ["directory", "packageName", "description"],
       "additionalProperties": false,
       "properties": {
         "directory": {
@@ -54,10 +46,7 @@
     },
     "pluginDefinition": {
       "type": "object",
-      "required": [
-        "pluginName",
-        "description"
-      ],
+      "required": ["pluginName", "description"],
       "additionalProperties": false,
       "properties": {
         "pluginName": {

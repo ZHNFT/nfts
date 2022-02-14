@@ -1,16 +1,12 @@
 {
   "compilerOptions": {
-    "target": "ES5",
+    "target": "ES6",
     "outDir": "./dist",
     "declaration": true,
     "declarationDir": "./dist",
     "moduleResolution": "Node",
-    "downlevelIteration": true
+    "lib": ["ESNext", "dom"]
   },
-  "include": [
-    "src/"
-  ],
-  "exclude": [
-    "../../apps/mono-package/dist/"
-  ]
+  "include": ["src/"],
+  "exclude": ["dist/"]
 }

@@ -1,0 +1,17 @@
+{
+  "name": "@ntfs/command",
+  "version": "0.0.0",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "dev": "npx tsc --watch --declaration --declarationDir ./dist",
+    "dts": "npx tsc --declaration --emitDeclarationOnly --declarationDir ./dist"
+  },
+  "devDependencies": {
+    "@types/node": "~17.0.5",
+    "@types/tapable": "^2.2.2"
+  },
+  "dependencies": {
+    "tapable": "^2.2.1"
+  }
+}
