@@ -1,5 +1,5 @@
 {
-  "name": "@ntfs/command-line",
+  "name": "@ntfs/noddy",
   "version": "0.0.0",
   "main": "./dist/index.js",
   "scripts": {
@@ -8,6 +8,10 @@
     "dts": "npx tsc --declaration --emitDeclarationOnly --declarationDir ./dist"
   },
   "devDependencies": {
-    "@types/node": "~17.0.5"
+    "@types/node": "~17.0.5",
+    "@types/tapable": "^2.2.2"
+  },
+  "dependencies": {
+    "tapable": "^2.2.1"
   }
 }
