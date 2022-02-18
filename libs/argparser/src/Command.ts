@@ -16,6 +16,7 @@ export enum ArgsFrom {
 export class Command extends Events.EventEmitter {
   private readonly _version: string;
   private readonly _name: string;
+  private readonly _description: string;
   private _argsFrom: ArgsFrom;
   private _rawArgs: string[];
 
@@ -23,15 +24,21 @@ export class Command extends Events.EventEmitter {
   // 当前激活的操作
   private _action: Action | undefined;
   private _unknown: string[];
-  private readonly _argOptions: any[];
+  private _argOptions: any[];
 
   private _opts: TCommandOptions;
 
-  constructor(name: string, version: string, opts: Partial<TCommandOptions> = {}) {
+  constructor(
+    name: string,
+    description: string,
+    version: string,
+    opts: Partial<TCommandOptions> = {}
+  ) {
     super();
 
     this._name = name;
     this._version = version;
+    this._description = description;
     this._actions = [];
     this._unknown = [];
     this._argOptions = [];
@@ -45,7 +52,7 @@ export class Command extends Events.EventEmitter {
     );
   }
 
-  public parse(args: string[] = []): Record<string, string | boolean> {
+  public parse(args?: string[]): Record<string, string | boolean> {
     if (args === undefined) {
       args = process.argv;
     } else {
@@ -54,32 +61,69 @@ export class Command extends Events.EventEmitter {
 
     this._parseOptions(args);
 
-    const _res = Object.fromEntries(this._argOptions);
+    const _res = Object.fromEntries(
+      this._argOptions.map((_pair: [string, string | boolean], i) => {
+        const [_key, _value] = _pair;
+        return [Command.stripMidline(_key), _value];
+      })
+    );
+
     this.emit(`action:${this._action.name}`, _res);
 
     return _res;
   }
 
+  // 版本
+  public get version(): string {
+    return this._version;
+  }
+
   // 添加操作
-  public addAction(action: { name: string; description: string }): Action {
+  public addActionByConfig(action: { name: string; description: string }): Action {
     const _action = new Action(action);
     this._actions.push(_action);
 
     return _action.bindTo(this);
   }
 
-  /** 判断是否是一个option */
-  static maybeOptionName(name: string): boolean {
-    return /^-{1,2}([a-z-]+)/.test(name);
+  // 添加操作
+  public addAction(action: Action): void {
+    this._actions.push(action);
+    action.bindTo(this);
   }
 
-  private _parseOptions(args: string[]) {
+  static optionNameRegex = /^-{1,2}([a-z-]+)/;
+
+  /** 判断是否是一个option */
+  static maybeOptionName(name: string): boolean {
+    return Command.optionNameRegex.test(name);
+  }
+
+  static stripMidline(option: string): string {
+    if (!Command.maybeOptionName(option)) {
+      return option;
+    }
+
+    return Command.optionNameRegex.exec(option)[1];
+  }
+
+  static getAction(option: { name: string; description: string }): Action {
+    return new Action(option);
+  }
+
+  private _parseOptions(args: string[]): void {
+    this._argOptions = [];
     this._rawArgs = args.slice(0);
     if (this._argsFrom !== ArgsFrom.User) {
       args = args.slice(2);
     }
 
     let _peekedOption = args.shift();
+
+    if (!_peekedOption) {
+      return;
+    }
+
     let pair: string[] = [];
 
     this._action = this._findAction(_peekedOption);

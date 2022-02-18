@@ -1,4 +1,5 @@
 export { Command, TCommandOptions } from './Command';
+export { Action } from './Action';
 
 /*
  *

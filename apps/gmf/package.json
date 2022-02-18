@@ -2,8 +2,8 @@
   "name": "@ntfs/gmf",
   "version": "0.0.0",
   "main": "./dist/index.js",
-  "eslintConfig": {
-    "extends": "../../repo-scripts/eslint-config"
+  "bin": {
+    "gmf": "bin/gmf"
   },
   "scripts": {
     "build": "npx tsc",
@@ -12,7 +12,7 @@
   },
   "//devDependencies": {
     "@ntfs/node-utils-library": "workspace:*",
-    "@ntfs/command-line": "workspace:*",
+    "@ntfs/noddy": "workspace:*",
     "@ntfs/eslint-config": "workspace:*"
   },
   "devDependencies": {

@@ -1,3 +1,3 @@
 module.exports = {
-  extends: ['@ntfs/eslint-config']
+	extends: ['@ntfs/eslint-config']
 };
