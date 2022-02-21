@@ -15,13 +15,19 @@ describe('测试新的parser代码', function () {
       })
       .option({
         name: '--adj',
-        description: '形容词'
+        description: '形容词',
+        required: true
       })
-      .callback((args: { server?: string; adj?: boolean }) => {
-        expect(args).toBe({});
+      .callback((args: { '--server'?: string; '--adj'?: boolean }) => {
+        console.log(args);
       });
+
+    // 缺少参数
     expect(() => {
-      cmd.parse(['gmf', 'dev']);
+      cmd.parse(['gmf', 'dev', '--server', '127.0.0.1']);
     }).toThrow();
+
+    // 完整参数
+    cmd.parse(['gmf', 'dev', '--server', '127.0.0.1', '--adj']);
   });
 });

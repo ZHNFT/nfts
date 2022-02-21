@@ -1,3 +1,3 @@
-#! /usr/env/bin node
+#!/usr/env/bin node
 
 require('../dist/start');

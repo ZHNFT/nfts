@@ -15,7 +15,7 @@ export class Option implements TBaseDefinition {
     throw Error("Don't set a readonly value");
   }
 
-  public static mybeOption(optionName: string): boolean {
+  public static maybeOption(optionName: string): boolean {
     return /^-{1,2}([a-z-]+)/.test(optionName);
   }
 

@@ -1,10 +1,3 @@
-// export enum ErrorKinds {
-//   Error,
-//   Fatal
-// }
-//
-// export type TErrorKinds = keyof typeof ErrorKinds;
-
 export class ErrorProvider {
   public static fatal(msg: string): Error {
     return new Error(msg);

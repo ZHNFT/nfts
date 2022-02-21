@@ -69,7 +69,7 @@ export class Command extends EventEmitter implements BaseCommand {
   }[] = [];
 
   /**/
-  // 开启遇见未知选项会抛出异常
+  // 处理未知选项
   private _ignoreUnknownOption = false;
   /**/
 
@@ -85,53 +85,31 @@ export class Command extends EventEmitter implements BaseCommand {
 
     let _i = 0; // 遍历指针
     let _option: Option; // 已经访问过的 Option
-    let _argument: Argument; // 已经访问的 Argument
+    let _argument: Argument = new Argument({
+      name: this.name,
+      description: this.description
+    }); // 初始的 Argument
 
     while (_i < args.length) {
       const _arg = args[_i];
 
-      // 是否是option格式。--xx/-x
-      if (Option.mybeOption(_arg)) {
-        // 存在已经访问过的Option，当前访问的任然是Option。则更新已访问的Option的值，默认为true
+      if (Option.maybeOption(_arg)) {
         if (_option) {
-          this.emit(`option-${_option.name}`, true);
-          // 重置访问过的Option
-          _option = undefined;
-        } else {
-          // 不存在已访问的Option，则处理Option是否已定义；
-          _option = this._findOption(_arg);
-          // 上一个访问的Option不存在，且当前的访问的Option未定义，则抛出异常。
-          if (!_option && !this._ignoreUnknownOption) {
-            throw Error(`Unknown option [${_arg}]`);
-          }
+          this.emit(`option-${_argument?.name || this.name}-${_option.name}`, true);
+        }
+        _option = this._findOption(_arg);
+        if (!_option && !this._ignoreUnknownOption) {
+          throw Error(`Unknown option [${_arg}]`);
         }
       } else {
         if (_option) {
-          // 存在上一个访问的Option
           if (_argument) {
-            // 存在上一个访问的Argument，直接设置参数
             this.emit(`option-${_argument.name}-${_option.name}`, _arg);
-          } else {
-            // 不存在上一个访问的参数，参数直接设置到Command下面
-            this.emit(`option-${this.name}-${_option.name}`, _arg);
+            _option = undefined;
           }
-          // 处理完上一个访问的Option之后，重置该值
-          _option = undefined;
         } else {
-          if (_argument) {
-            // 存在上一个访问的Argument但是不存在Option
-            // 则需要开始下一Argument指令的解析操作，检查一下必须的option都已经设置；如果有未设置的抛出异常
-            this._invokeArgumentCallback(_argument.name);
-          }
-          //  也许是一个argument
-          _argument = this._findArgument(_arg);
-
-          // 初始化的时候，Command.name作为argument被解析，
-          if (_arg === this.name && _i === 0) {
-            _argument = new Argument({
-              name: this.name,
-              description: this.description
-            });
+          if (_i > 0) {
+            _argument = this._findArgument(_arg);
           }
           if (!_argument) {
             throw Error(`Unknown argument <${_arg}>`);
@@ -141,11 +119,11 @@ export class Command extends EventEmitter implements BaseCommand {
       _i += 1;
     }
 
-    if (_argument) this._invokeArgumentCallback(_argument.name);
     if (_option) {
       const belongTo = _argument ? _argument.name : this.name;
       this.emit(`option-${belongTo}-${_option.name}`, true);
     }
+    if (_argument) this._invokeArgumentCallback(_argument.name);
   }
 
   /**
@@ -199,11 +177,13 @@ export class Command extends EventEmitter implements BaseCommand {
     argumentName: string
   ): Record<string, string | boolean> {
     const _value = {};
-    const _options: Option[] = this._options.filter(
-      option => option.belongTo === argumentName
-    );
+    const _argument = this._findArgument(argumentName);
 
-    for (const option of _options) {
+    if (!_argument) {
+      return _value;
+    }
+
+    for (const option of _argument.collectDefinedOptions(this._options)) {
       _value[option.name] = this._findOptionValue(option.name);
     }
 
@@ -216,11 +196,13 @@ export class Command extends EventEmitter implements BaseCommand {
    * @private
    */
   private _checkRequiredOptions(argumentName: string) {
-    const _options: Option[] = this._options.filter(
-      option => option.belongTo === argumentName
-    );
+    const _argument = this._findArgument(argumentName);
 
-    for (const option of _options) {
+    if (!_argument) {
+      return;
+    }
+
+    for (const option of _argument.collectDefinedOptions(this._options)) {
       if (option.required && this._findOptionValue(option.name) === undefined) {
         throw Error(
           `Required option [${option.name}] for command <${argumentName}> is missing`
@@ -271,6 +253,7 @@ export class Command extends EventEmitter implements BaseCommand {
       args = process.argv.slice(2);
     }
     this._executePath = process.argv[0];
+    this._values = [];
     this._parseOptions(args);
   }
 
@@ -303,7 +286,6 @@ export class Command extends EventEmitter implements BaseCommand {
     );
 
     this.on(`option-${belongTo}-${name}`, (args: any) => {
-      console.log(args);
       this._values.push({
         option: name,
         value: args as string | boolean
@@ -338,7 +320,7 @@ export class Command extends EventEmitter implements BaseCommand {
     this._currentArgument = new Argument({
       name,
       description,
-      belongTo: this._currentArgument?.name
+      belongTo: this._currentArgument?.name ?? this.name
     });
     this._arguments.push(this._currentArgument);
     this.on(`argument-${name}`, (args: any) => {
@@ -375,7 +357,7 @@ export class Command extends EventEmitter implements BaseCommand {
 
     if (this._argsCallback[_callbackName]) {
       console.log(
-        `Callback for command <${_callbackName}> is already set，will be relapsed by this time; ${func.name}`
+        `Callback for command <${_callbackName}> is already set，old value will be replaced; ${func.name}`
       );
     }
 
