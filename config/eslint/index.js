@@ -7,6 +7,7 @@ module.exports = {
     jest: true,
     es6: true
   },
+  parser: '@typescript-eslint/parser',
   overrides: [
     {
       files: ['*.ts', '*.tsx'],
@@ -14,7 +15,6 @@ module.exports = {
         'plugin:@typescript-eslint/recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking'
       ],
-      parser: '@typescript-eslint/parser',
       plugins: ['@typescript-eslint'],
       parserOptions: {
         project: './tsconfig.json',
