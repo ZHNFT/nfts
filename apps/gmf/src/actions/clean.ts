@@ -1,4 +1,4 @@
-import { CommandAction, CommandLine } from '@ntfs/noddy';
+import { CommandAction } from '@ntfs/noddy';
 
 // 构建操作
 export class CleanAction extends CommandAction {
