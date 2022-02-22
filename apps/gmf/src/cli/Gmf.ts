@@ -1,24 +1,32 @@
 import { CommandLine } from '@ntfs/noddy';
-import { CleanAction } from '../actions/CleanAction';
-import { BuildAction } from '../actions/BuildAction';
-import { TestAction } from '../actions/TestAction';
-import { PublishAction } from '../actions/PublishAction';
 
-export class GmfTool extends CommandLine {
+import { BuildArg } from '../args/BuildArg';
+import { DevArg } from '../args/DevArg';
+import { IArgDefinition } from '../args/BaseArg';
+
+export class Gmf extends CommandLine {
   constructor() {
     super({
-      toolName: 'gmf',
-      toolVersion: '0.0.0',
-      toolDescription: '一个简单的命令行工具；'
+      name: 'gmf',
+      description: `这是一个简单的说明`
     });
 
-    this._onDefineAction();
+    const argContext: IArgDefinition = {
+      parser: this._parser
+    };
+
+    this.addArg(new BuildArg(argContext));
+    this.addArg(new DevArg(argContext));
   }
 
-  private _onDefineAction() {
-    this.addAction(new CleanAction());
-    this.addAction(new BuildAction());
-    this.addAction(new TestAction());
-    this.addAction(new PublishAction());
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async execute(): Promise<void> {
+    this._parser.parse(['gmf', 'amg']);
+  }
+
+  prepare(): Gmf {
+    // 解析参数数据；
+    // 读取配置文件信息；
+    return this;
   }
 }

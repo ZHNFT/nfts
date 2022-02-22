@@ -1,19 +1,24 @@
 # @ntfs/argparser
 
-- 结构设计
+```typescript
+import { Command } from '@ntfs/argparser';
 
-  Command
+Command.command('commandName', 'This is a command description')
+  .argument({
+    name: 'sub_command',
+    description: 'This is a sub-command description'
+  })
+  .option({
+    name: '--option',
+    alias: '-o',
+    description: 'This is an option description'
+  })
+  .callback(() => {
+    // do something
+  })
+  .parse(['gmf', 'give', '--adj']);
+```
 
-  ```
-  Command 类提供对外接口来构建应用程序；
-  1. 添加子命令
-  1. 设置子命令参数
-  ```
+fix:
 
-  Action
-
-  Option
-
-  Error
-
-  Help
+- [ ] 多次设置同一个参数，最后可以解析成一个集合

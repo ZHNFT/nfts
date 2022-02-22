@@ -1,8 +1,7 @@
 import { EventEmitter } from 'events';
 import { Argument } from './Argument';
 import { Option } from './Option';
-import * as process from 'process';
-import * as console from 'console';
+import { Help } from './Help';
 
 enum ArgsFrom {
   User = 'User',
@@ -11,22 +10,14 @@ enum ArgsFrom {
 
 type TArgsFrom = keyof typeof ArgsFrom;
 
-interface IParseResultNode {
-  optionByName: Record<string, string>;
-  argument: string;
-  next?: IParseResultNode;
-}
+type TArgumentCallback<T> = (args?: T) => void;
 
-type TArgumentCallback = (args?: any) => void;
-
-type TOptionCallback = (value?: any) => void;
-
-export type TBaseDefinition = {
+export interface IBaseDefinition {
   readonly name: string;
   readonly description: string;
-};
+}
 
-export abstract class BaseCommand implements TBaseDefinition {
+export abstract class BaseCommand implements IBaseDefinition {
   abstract readonly name: string;
   abstract readonly description: string;
 
@@ -40,7 +31,7 @@ export abstract class BaseCommand implements TBaseDefinition {
     description: string;
     required: boolean | undefined;
   }): Command;
-  abstract argument({ name, description }: TBaseDefinition): Command;
+  abstract argument({ name, description }: IBaseDefinition): Command;
 }
 
 /*
@@ -59,7 +50,7 @@ export class Command extends EventEmitter implements BaseCommand {
   private _executePath = '';
 
   private _rawArgs: string[];
-  private _argsCallback: Record<string, TArgumentCallback> = {};
+  private _argsCallback: Record<string, TArgumentCallback<unknown>> = {};
 
   private _currentArgument: Argument;
 
@@ -73,11 +64,17 @@ export class Command extends EventEmitter implements BaseCommand {
   private _ignoreUnknownOption = false;
   /**/
 
+  private _help: Help = new Help();
+
   constructor({ name, description }: { name: string; description: string }) {
     super();
 
     this.name = name;
     this.description = description;
+
+    // 根据command本身，创建第一个argument参数
+    this._arguments.push(new Argument({ name, description }));
+    this._addHelpArgument();
   }
 
   private _parseOptions(args: string[]) {
@@ -184,7 +181,7 @@ export class Command extends EventEmitter implements BaseCommand {
     }
 
     for (const option of _argument.collectDefinedOptions(this._options)) {
-      _value[option.name] = this._findOptionValue(option.name);
+      _value[option.strippedName()] = this._findOptionValue(option.name);
     }
 
     return _value;
@@ -221,8 +218,29 @@ export class Command extends EventEmitter implements BaseCommand {
     // 执行设置好的callback
     const callback = this._argsCallback[argumentName];
     if (callback && typeof callback === 'function') {
-      callback.call(null, this._getArgumentOptionsValue(argumentName));
+      callback.call(this, this._getArgumentOptionsValue(argumentName));
     }
+  }
+
+  /**
+   *
+   * @private
+   */
+  private _addHelpArgument() {
+    this.argument({
+      name: 'help',
+      description: '输出帮助信息'
+    }).callback(() => {
+      console.log(`  Usage: ${this.name} <commmand> [options]`);
+      console.log(`  `);
+      console.log(`  Commands`);
+
+      for (const arg of this._arguments) {
+        this._help.printHelp(arg, this._options);
+      }
+    });
+
+    this._currentArgument = this._arguments[0];
   }
 
   /**
@@ -262,14 +280,16 @@ export class Command extends EventEmitter implements BaseCommand {
    * @param name
    * @param description
    * @param required
+   * @param alias
    *
    * @public
    */
   public option({
     name,
     description,
-    required
-  }: TBaseDefinition & { required?: boolean }): Command {
+    required,
+    alias
+  }: IBaseDefinition & { required?: boolean; alias?: string }): Command {
     const belongTo = this._currentArgument?.name || this.name;
 
     if (this._findOption(name)?.belongTo === belongTo) {
@@ -279,6 +299,7 @@ export class Command extends EventEmitter implements BaseCommand {
     this._options.push(
       new Option({
         name,
+        alias,
         belongTo,
         description,
         required: !!required
@@ -316,7 +337,7 @@ export class Command extends EventEmitter implements BaseCommand {
    *
    * @public
    */
-  public argument({ name, description }: TBaseDefinition): Command {
+  public argument({ name, description }: IBaseDefinition): Command {
     this._currentArgument = new Argument({
       name,
       description,
@@ -352,7 +373,7 @@ export class Command extends EventEmitter implements BaseCommand {
    *
    * @public
    */
-  public callback(func: TArgumentCallback): Command {
+  public callback<T extends unknown>(func: TArgumentCallback<T>): Command {
     const _callbackName = this._currentArgument?.name || this.name;
 
     if (this._argsCallback[_callbackName]) {
@@ -364,13 +385,5 @@ export class Command extends EventEmitter implements BaseCommand {
     this._argsCallback[_callbackName] = func;
 
     return this;
-  }
-
-  /**
-   * @desc 设置帮助信息，信息会在执行`command -h`后打印
-   */
-  public help(): string {
-    //
-    return '';
   }
 }
