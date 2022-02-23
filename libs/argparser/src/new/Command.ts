@@ -90,7 +90,8 @@ export class Command extends EventEmitter implements BaseCommand {
 
       if (Option.maybeOption(_arg)) {
         if (_option) {
-          this.emit(`option-${_argument?.name || this.name}-${_option.name}`, true);
+          // this.emit(`option-${_argument?.name || this.name}-${_option.name}`, true);
+          _argument.setValue(_option.strippedName(), true);
         }
         _option = Command.findOption(_argument, _arg);
         if (!_option) {
@@ -110,7 +111,8 @@ export class Command extends EventEmitter implements BaseCommand {
       } else {
         if (_option) {
           if (_argument) {
-            this.emit(`option-${_argument.name}-${_option.name}`, _arg);
+            // this.emit(`option-${_argument.name}-${_option.name}`, _arg);
+            _argument.setValue(_option.strippedName(), _arg);
             _option = undefined;
           }
         } else {
@@ -126,10 +128,12 @@ export class Command extends EventEmitter implements BaseCommand {
     }
 
     if (_option) {
-      const belongTo = _argument ? _argument.name : this.name;
-      this.emit(`option-${belongTo}-${_option.name}`, true);
+      // const belongTo = _argument ? _argument.name : this.name;
+      // this.emit(`option-${belongTo}-${_option.name}`, true);
+      _argument.setValue(_option.strippedName(), true);
     }
-    if (_argument) this._invokeArgumentCallback(_argument.name);
+
+    this._invokeArgumentCallback(_argument.name);
   }
 
   /**
