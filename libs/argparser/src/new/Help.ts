@@ -13,8 +13,8 @@ export class Help {
   /* 输出终端的宽度 */
   private _width = process.stdout.columns;
 
-  private static _formatHelp(arg: Argument, options: Option[]): string {
-    const _options = arg.collectDefinedOptions(options);
+  private static _formatHelp(arg: Argument): string {
+    const _options = arg.options;
     const _msg = [arg.name, '  ', arg.description, '\r'];
 
     if (_options.length > 0) {
@@ -43,6 +43,6 @@ export class Help {
   }
 
   public printHelp(arg: Argument, options: Option[]): void {
-    console.log(Help._formatHelp(arg, options));
+    console.log(Help._formatHelp(arg));
   }
 }

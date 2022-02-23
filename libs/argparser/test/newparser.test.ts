@@ -112,7 +112,7 @@ describe('测试新的parser代码', function () {
         description: 'aaaa'
       })
       .callback<{ aaa?: boolean; aaaa?: boolean }>(args => {
-        expect(args).toEqual({ _: 'a', aaa: true, aaaa: true });
+        expect(args).toEqual({ aaa: true, aaaa: true });
       })
       .argument({
         name: 'b',
@@ -127,7 +127,7 @@ describe('测试新的parser代码', function () {
         description: 'bbbb'
       })
       .callback(args => {
-        expect(args).toEqual({ _: 'b', bbb: true, bbbb: true });
+        expect(args).toEqual({ bbb: true, bbbb: true });
       })
       .argument({
         name: 'c',
@@ -142,7 +142,7 @@ describe('测试新的parser代码', function () {
         description: 'cccc'
       })
       .callback(args => {
-        expect(args).toEqual({ _: 'c', ccc: true, cccc: true });
+        expect(args).toEqual({ ccc: true, cccc: true });
       });
 
     cmd.parse(['gmf', 'a', '--aaa', '--aaaa']);

@@ -4,5 +4,7 @@
     "target": "ES5",
     "moduleResolution": "node"
   },
-  "include": ["src/"]
+  "include": [
+    "src/"
+  ]
 }

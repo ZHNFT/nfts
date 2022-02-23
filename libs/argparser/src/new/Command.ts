@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
-import { Argument } from './Argument';
-import { Option } from './Option';
+import { Argument, TArgumentValues } from './Argument';
+import { IBaseOption, Option } from './Option';
 import { Help } from './Help';
 
 enum ArgsFrom {
@@ -73,7 +73,8 @@ export class Command extends EventEmitter implements BaseCommand {
     this.description = description;
 
     // 根据command本身，创建第一个argument参数
-    this._arguments.push(new Argument({ name, description }));
+    this._currentArgument = new Argument({ name, description });
+    this._arguments.push(this._currentArgument);
     this._addHelpArgument();
   }
 
@@ -82,10 +83,7 @@ export class Command extends EventEmitter implements BaseCommand {
 
     let _i = 0; // 遍历指针
     let _option: Option; // 已经访问过的 Option
-    let _argument: Argument = new Argument({
-      name: this.name,
-      description: this.description
-    }); // 初始的 Argument
+    let _argument: Argument = this._currentArgument;
 
     while (_i < args.length) {
       const _arg = args[_i];
@@ -94,7 +92,7 @@ export class Command extends EventEmitter implements BaseCommand {
         if (_option) {
           this.emit(`option-${_argument?.name || this.name}-${_option.name}`, true);
         }
-        _option = this._findOption(_arg);
+        _option = Command.findOption(_argument, _arg);
         if (!_option) {
           if (!this._ignoreUnknownOption) {
             throw Error(`Unknown option [${_arg}]`);
@@ -136,14 +134,15 @@ export class Command extends EventEmitter implements BaseCommand {
 
   /**
    *
+   * @param arg
    * @param name
    *
    * @private
    */
-  private _findOption(name: string): Option | undefined {
-    for (let i = 0; i < this._options.length; i++) {
-      if (this._options[i].name === name) {
-        return this._options[i];
+  private static findOption(arg: Argument, name: string): Option | undefined {
+    for (let i = 0; i < arg.options.length; i++) {
+      if (arg.options[i].name === name) {
+        return arg.options[i];
       }
     }
 
@@ -167,31 +166,18 @@ export class Command extends EventEmitter implements BaseCommand {
 
   /**
    *
-   * @param name
-   * @private
-   */
-  private _findOptionValue(name: string): string | boolean | undefined {
-    return this._values.find(value => {
-      return value.option === name;
-    })?.value;
-  }
-
-  /**
-   *
    * @param argumentName
    * @private
    */
-  private _getArgumentOptionValues(
-    argumentName: string
-  ): Record<string, string | boolean> {
-    const _value = {};
+  private _getArgumentOptionValues(argumentName: string): TArgumentValues {
+    const _value = {} as TArgumentValues;
     const _argument = this._findArgument(argumentName);
 
     if (!_argument) {
       return _value;
     }
 
-    return _argument.getOptionValues(this._options, this._values);
+    return _argument.values;
   }
 
   /**
@@ -206,10 +192,10 @@ export class Command extends EventEmitter implements BaseCommand {
       return;
     }
 
-    for (const option of _argument.collectDefinedOptions(this._options)) {
-      if (option.required && this._findOptionValue(option.name) === undefined) {
+    for (const opt of _argument.options) {
+      if (opt.required && _argument.values[opt.strippedName()] === undefined) {
         throw Error(
-          `Required option [${option.name}] for command <${argumentName}> is missing`
+          `Required option [${opt.name}] for command <${argumentName}> is missing`
         );
       }
     }
@@ -291,33 +277,29 @@ export class Command extends EventEmitter implements BaseCommand {
    *
    * @public
    */
-  public option({
-    name,
-    description,
-    required,
-    alias
-  }: IBaseDefinition & { required?: boolean; alias?: string }): Command {
-    const belongTo = this._currentArgument?.name || this.name;
-
-    if (this._findOption(name)?.belongTo === belongTo) {
-      console.log(`Repeated setting option [${name}] for command <${belongTo}>\r`);
+  public option({ name, description, required, alias }: IBaseOption): Command {
+    if (!this._currentArgument) {
+      // throw error ?
+      return this;
     }
 
-    this._options.push(
-      new Option({
-        name,
-        alias,
-        belongTo,
-        description,
-        required: !!required
-      })
-    );
+    const belong = this._currentArgument.name ?? this.name;
 
-    this.on(`option-${belongTo}-${name}`, (args: any) => {
-      this._values.push({
-        option: name,
-        value: args as string | boolean
-      });
+    const _option = this._currentArgument.option({
+      name,
+      alias,
+      description,
+      required: !!required
+    });
+
+    this.on(`option-${belong}-${name}`, (value: any) => {
+      this._values[_option.strippedName()] = value;
+      const _arg = this._findArgument(belong);
+
+      _arg.setValue(_option.strippedName(), value);
+      if (_option.alias) {
+        _arg.setValue(alias, value);
+      }
     });
 
     return this;

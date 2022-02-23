@@ -1,4 +1,5 @@
 import { IBaseOption, Option } from './Option';
+import { Command } from './Command';
 
 export interface IBaseArgument {
   readonly name: string;
@@ -10,13 +11,13 @@ export abstract class ArgumentBase implements IBaseArgument {
   abstract readonly name: string;
   abstract readonly description: string;
   abstract readonly belongTo: string;
+  abstract readonly options: Option[];
 
-  abstract collectDefinedOptions(options: Option[]): Option[];
   abstract option(option: IBaseOption): void;
 }
 
 export type TArgumentValues = {
-  _: string;
+  _?: string;
   [key: string]: string | boolean | undefined;
 };
 
@@ -26,6 +27,7 @@ export class Argument implements ArgumentBase {
 
   readonly belongTo: string;
 
+  private readonly _values: Record<string, string | boolean | undefined> = {};
   private readonly _options: Option[] = [];
 
   constructor({ name, description, belongTo }: IBaseArgument & { belongTo?: string }) {
@@ -34,51 +36,42 @@ export class Argument implements ArgumentBase {
     this.belongTo = belongTo;
   }
 
-  public option(definition: IBaseOption): void {
-    this._options.push(
-      new Option({
-        name: definition.name,
-        description: definition.description,
-        required: definition.required,
-        alias: definition.alias,
-        belongTo: ''
-      })
-    );
+  public option(definition: IBaseOption): Option {
+    const _option = new Option({
+      name: definition.name,
+      description: definition.description,
+      required: definition.required,
+      alias: definition.alias,
+      belongTo: this.name
+    });
+
+    this._options.push(_option);
+
+    return _option;
   }
 
   /**
-   * @desc 返回当前 Arg 设置的参数
-   * @param options
    *
-   * @override
    */
-  public collectDefinedOptions(options: Option[] = []): Option[] {
-    return options.filter(option => option.belongTo === this.name);
+  get options(): Option[] {
+    return this._options;
   }
 
-  public getOptionValues(
-    options: Option[] = [],
-    values: { option: string; value: string | boolean | undefined }[]
-  ): TArgumentValues {
-    const _obj = {
-      _: this.name
+  /**
+   *
+   */
+  get values(): TArgumentValues {
+    return {
+      ...this._values
     } as TArgumentValues;
-    const _opts = this.collectDefinedOptions(options);
+  }
 
-    for (let i = 0; i < _opts.length; i++) {
-      const _opt = _opts[i];
-      const { option, value } = values.find(({ option }) => option === _opt.name) ?? {};
-
-      if (option) {
-        Object.defineProperty(_obj, _opt.strippedName(), {
-          value,
-          enumerable: true,
-          configurable: false,
-          writable: false
-        });
-      }
-    }
-
-    return _obj;
+  /**
+   *
+   * @param key
+   * @param value
+   */
+  public setValue(key: string, value: string | boolean | undefined) {
+    this._values[key] = value;
   }
 }
