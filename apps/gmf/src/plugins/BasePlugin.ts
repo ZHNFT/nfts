@@ -4,13 +4,8 @@ export interface IBasePluginDefinition {
 }
 
 export abstract class BasePlugin implements IBasePluginDefinition {
-  readonly description: string;
-  readonly name: string;
-
-  protected constructor({ name, description }: IBasePluginDefinition) {
-    this.name = name;
-    this.description = description;
-  }
+  abstract readonly description: string;
+  abstract readonly name: string;
 
   abstract apply<T extends unknown>(args: T): void;
 }

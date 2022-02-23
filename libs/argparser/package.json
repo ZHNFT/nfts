@@ -16,6 +16,19 @@
   "//devDependencies": {
     "@ntfs/node-utils-library": "workspace:*"
   },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@ntfs/eslint-config"
+    ]
+  },
+  "eslintIgnore": [
+    "/dist",
+    "/test"
+  ],
   "devDependencies": {
     "@types/jest": "^27.0.3",
     "@types/node": "~17.0.5",

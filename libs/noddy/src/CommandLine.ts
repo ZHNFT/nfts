@@ -1,9 +1,8 @@
 import { Command as CommandParser } from '@ntfs/argparser';
-import { CommandLineOptions } from './CommandLineOptions';
 import { Argument } from './classes/ArgumentClasses';
 import { Hooks } from './Hooks';
 
-export abstract class CommandLine extends CommandLineOptions {
+export abstract class CommandLine {
   private _name: string;
   private _description: string;
 
@@ -11,8 +10,6 @@ export abstract class CommandLine extends CommandLineOptions {
   protected _hook: Hooks<unknown>;
 
   protected constructor({ name, description }: { name: string; description: string }) {
-    super();
-
     this._name = name;
     this._description = description;
     this._hook = new Hooks();

@@ -56,7 +56,7 @@ export class Command extends EventEmitter implements BaseCommand {
 
   private _values: {
     option: string;
-    value: string | boolean;
+    value: string | boolean | undefined;
   }[] = [];
 
   /**/
@@ -181,7 +181,7 @@ export class Command extends EventEmitter implements BaseCommand {
    * @param argumentName
    * @private
    */
-  private _getArgumentOptionsValue(
+  private _getArgumentOptionValues(
     argumentName: string
   ): Record<string, string | boolean> {
     const _value = {};
@@ -191,11 +191,7 @@ export class Command extends EventEmitter implements BaseCommand {
       return _value;
     }
 
-    for (const option of _argument.collectDefinedOptions(this._options)) {
-      _value[option.strippedName()] = this._findOptionValue(option.name);
-    }
-
-    return _value;
+    return _argument.getOptionValues(this._options, this._values);
   }
 
   /**
@@ -229,7 +225,7 @@ export class Command extends EventEmitter implements BaseCommand {
     // 执行设置好的callback
     const callback = this._argsCallback[argumentName];
     if (callback && typeof callback === 'function') {
-      callback.call(this, this._getArgumentOptionsValue(argumentName));
+      callback.call(this, this._getArgumentOptionValues(argumentName));
     }
   }
 

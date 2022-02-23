@@ -1,12 +1,8 @@
 import { BasePlugin } from './BasePlugin';
 
 export class CleanPlugin extends BasePlugin {
-  constructor() {
-    super({
-      name: 'clean',
-      description: 'clean that shit'
-    });
-  }
+  name: 'clean';
+  description: 'Clean up dist';
 
   async apply(): Promise<void> {
     //

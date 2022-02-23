@@ -11,6 +11,8 @@ export class Gmf extends CommandLine {
       description: `这是一个简单的说明`
     });
 
+    this._hook = new Hooks<IArgDefinition>();
+
     this._addHooksForPlugin();
 
     const argContext: IArgDefinition = {
@@ -34,7 +36,6 @@ export class Gmf extends CommandLine {
   }
 
   private _addHooksForPlugin() {
-    this._hook = new Hooks<IArgDefinition>();
     this._hook.addHook('build');
     this._hook.addHook('dev');
     this._hook.addHook('test');

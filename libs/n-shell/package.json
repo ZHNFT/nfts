@@ -1,5 +1,5 @@
 {
-  "name": "@ntfs/shell",
+  "name": "@ntfs/n-shell",
   "version": "0.0.0",
   "eslintConfig": {
     "extends": "../../repo-scripts/eslint-config"

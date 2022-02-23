@@ -1,6 +1,8 @@
 export interface IBaseOption {
   readonly name: string;
   readonly description: string;
+  readonly required?: boolean;
+  readonly alias?: string;
 }
 
 export class Option implements IBaseOption {
