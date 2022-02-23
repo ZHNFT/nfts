@@ -95,8 +95,19 @@ export class Command extends EventEmitter implements BaseCommand {
           this.emit(`option-${_argument?.name || this.name}-${_option.name}`, true);
         }
         _option = this._findOption(_arg);
-        if (!_option && !this._ignoreUnknownOption) {
-          throw Error(`Unknown option [${_arg}]`);
+        if (!_option) {
+          if (!this._ignoreUnknownOption) {
+            throw Error(`Unknown option [${_arg}]`);
+          } else {
+            this._unknownOptions.push(
+              new Option({
+                name: _arg,
+                description: 'Unknown option',
+                belongTo: _argument.name ?? this.name,
+                required: false
+              })
+            );
+          }
         }
       } else {
         if (_option) {

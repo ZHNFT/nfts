@@ -15,3 +15,4 @@ export {
 } from './classes/OptionClasses';
 
 export { IArgument, Argument } from './classes/ArgumentClasses';
+export { Hooks } from './Hooks';

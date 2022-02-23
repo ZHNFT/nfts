@@ -1,19 +1,21 @@
 import { Command as CommandParser } from '@ntfs/argparser';
 import { CommandLineOptions } from './CommandLineOptions';
-import { IBaseOptionDefinition } from './classes/OptionClasses';
 import { Argument } from './classes/ArgumentClasses';
+import { Hooks } from './Hooks';
 
 export abstract class CommandLine extends CommandLineOptions {
   private _name: string;
   private _description: string;
 
   protected _parser: CommandParser;
+  protected _hook: Hooks<unknown>;
 
   protected constructor({ name, description }: { name: string; description: string }) {
     super();
 
     this._name = name;
     this._description = description;
+    this._hook = new Hooks();
     this._parser = CommandParser.command(name, description);
   }
 

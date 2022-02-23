@@ -1,3 +1,3 @@
 export class Constant {
-  static ConfigFilePath: './config.json';
+  static ConfigFilePath: './gmf.json';
 }
