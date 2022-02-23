@@ -54,11 +54,6 @@ export class Command extends EventEmitter implements BaseCommand {
 
   private _currentArgument: Argument;
 
-  private _values: {
-    option: string;
-    value: string | boolean | undefined;
-  }[] = [];
-
   /**/
   // 处理未知选项
   private _ignoreUnknownOption = false;
@@ -268,7 +263,6 @@ export class Command extends EventEmitter implements BaseCommand {
       args = process.argv.slice(2);
     }
     this._executePath = process.argv[0];
-    this._values = [];
     this._parseOptions(args);
   }
 
@@ -287,23 +281,11 @@ export class Command extends EventEmitter implements BaseCommand {
       return this;
     }
 
-    const belong = this._currentArgument.name ?? this.name;
-
-    const _option = this._currentArgument.option({
+    this._currentArgument.option({
       name,
       alias,
       description,
       required: !!required
-    });
-
-    this.on(`option-${belong}-${name}`, (value: any) => {
-      this._values[_option.strippedName()] = value;
-      const _arg = this._findArgument(belong);
-
-      _arg.setValue(_option.strippedName(), value);
-      if (_option.alias) {
-        _arg.setValue(alias, value);
-      }
     });
 
     return this;
