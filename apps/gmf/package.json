@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "main": "./dist/index.js",
   "bin": {
-    "gmf": "bin/gmf"
+    "gmf": "bin/gmf.js"
   },
   "scripts": {
     "build": "npx tsc",
@@ -22,5 +22,8 @@
     "jest": "^27.4.5",
     "ts-jest": "^27.1.2",
     "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "hookable": "^5.1.1"
   }
 }

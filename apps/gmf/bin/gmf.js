@@ -1,3 +1,3 @@
-#!/usr/env/bin node
+#!/usr/bin/env node
 
-require('../dist/execute');
+require('../dist/exec');

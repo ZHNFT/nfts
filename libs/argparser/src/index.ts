@@ -1,3 +1,3 @@
-export { Command } from './new/Command';
-export { IBaseArgument } from './new/Argument';
-export { IBaseOption } from './new/Option';
+export { Command } from './Command';
+export { IArgumentDefinition, Argument } from './Argument';
+export { IOptionDefinition, Option } from './Option';

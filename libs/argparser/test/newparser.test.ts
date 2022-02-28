@@ -2,7 +2,10 @@ import { Command } from '../src';
 
 describe('测试新的parser代码', function () {
   test('简单模式', () => {
-    let cmd = Command.command('gmf', "I don't give it a shit")
+    let cmd = Command.command({
+      name: 'gmf',
+      description: "I don't give it a shit"
+    })
       .option({ name: '-h', description: 'help' })
       .argument({
         name: 'dev',
@@ -23,17 +26,20 @@ describe('测试新的parser代码', function () {
       });
     // 缺少参数
     expect(() => {
-      cmd.parse(['gmf', 'dev', '--server', '127.0.0.1']);
+      cmd.parse(['dev', '--server', '127.0.0.1']);
     }).toThrowError('Required option [--adj] for command <dev> is missing');
 
     expect(() => {
-      cmd.parse(['gmf', 'dev', '--server', '127.0.0.1', 'clean', '--adj']);
+      cmd.parse(['dev', '--server', '127.0.0.1', 'clean', '--adj']);
     }).toThrowError('Unknown argument <clean>');
   });
 
   //
   test('测试未设置argument的情况', () => {
-    const cmd = Command.command('gmf', "I don't give it a shit")
+    const cmd = Command.command({
+      name: 'gmf',
+      description: "I don't give it a shit"
+    })
       .option({
         name: '-h',
         description: '打印帮助信息'
@@ -47,13 +53,16 @@ describe('测试新的parser代码', function () {
         expect(args.help).toBeUndefined();
       });
 
-    cmd.parse(['gmf', '-h']);
+    cmd.parse(['-h']);
   });
 
   test('设置多层的参数', () => {
     const cb = jest.fn();
 
-    const cmd = Command.command('gmf', "I don't give it a shit")
+    const cmd = Command.command({
+      name: 'gmf',
+      description: "I don't give it a shit"
+    })
       .argument({
         name: 'a',
         description: 'a argument'
@@ -85,12 +94,12 @@ describe('测试新的parser代码', function () {
       })
       .callback(cb);
 
-    cmd.parse(['gmf', 'a']);
-    cmd.parse(['gmf', 'b']);
-    cmd.parse(['gmf', 'c']);
-    cmd.parse(['gmf', 'd']);
-    cmd.parse(['gmf', 'e']);
-    cmd.parse(['gmf', 'f']);
+    cmd.parse(['a']);
+    cmd.parse(['b']);
+    cmd.parse(['c']);
+    cmd.parse(['d']);
+    cmd.parse(['e']);
+    cmd.parse(['f']);
 
     expect(cb).toBeCalledTimes(6);
   });
@@ -98,7 +107,10 @@ describe('测试新的parser代码', function () {
   test('设置多个argument并且带不定数量的参数', () => {
     const cb = jest.fn();
 
-    const cmd = Command.command('gmf', "I don't give it a shit")
+    const cmd = Command.command({
+      name: 'gmf',
+      description: "I don't give it a shit"
+    })
       .argument({
         name: 'a',
         description: 'a argument'
@@ -145,13 +157,16 @@ describe('测试新的parser代码', function () {
         expect(args).toEqual({ ccc: true, cccc: true });
       });
 
-    cmd.parse(['gmf', 'a', '--aaa', '--aaaa']);
-    cmd.parse(['gmf', 'b', '--bbb', '--bbbb']);
-    cmd.parse(['gmf', 'c', '--ccc', '--cccc']);
+    cmd.parse(['a', '--aaa', '--aaaa']);
+    cmd.parse(['b', '--bbb', '--bbbb']);
+    cmd.parse(['c', '--ccc', '--cccc']);
   });
 
   test('测试help指令的输出', () => {
-    const cmd = Command.command('gmf', "I don't give it a shit")
+    const cmd = Command.command({
+      name: 'gmf',
+      description: "I don't give it a shit"
+    })
       .argument({
         name: 'aa',
         description: 'aaaaaa'
@@ -164,6 +179,6 @@ describe('测试新的parser代码', function () {
         name: 'bb',
         description: 'bbbbbb'
       });
-    cmd.parse(['gmf', 'help']);
+    cmd.parse(['aa']);
   });
 });

@@ -1,0 +1,8 @@
+{
+  "plugins": [
+    {
+      "name": "clean",
+      "description": "Clean up build folder"
+    }
+  ]
+}

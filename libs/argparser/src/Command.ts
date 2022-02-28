@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 import { Argument, TArgumentValues } from './Argument';
-import { IBaseOption, Option } from './Option';
+import { IOptionDefinition, Option } from './Option';
 import { Help } from './Help';
 
 enum ArgsFrom {
@@ -21,7 +21,15 @@ export abstract class BaseCommand implements IBaseDefinition {
   abstract readonly name: string;
   abstract readonly description: string;
 
+  /*
+   * 解析命令行指令
+   * */
   abstract parse(args: string[]): void;
+
+  /*
+   * 添加option；
+   * 如果是跟在.argument()之后调用.option()，option会被添加到对应的argument上；
+   * */
   abstract option({
     name,
     description,
@@ -31,13 +39,20 @@ export abstract class BaseCommand implements IBaseDefinition {
     description: string;
     required: boolean | undefined;
   }): Command;
-  abstract argument({ name, description }: IBaseDefinition): Command;
+
+  /*
+   * 添加argument；
+   * */
+  abstract argument(definition: IBaseDefinition): Command;
+  /*
+   * 添加argument的回调方法;
+   * */
+  abstract callback<T extends unknown>(fn: TArgumentCallback<T>): Command;
 }
 
-/*
+/**
  * @class Command
- * */
-
+ */
 export class Command extends EventEmitter implements BaseCommand {
   readonly name: string;
   readonly description: string;
@@ -45,7 +60,6 @@ export class Command extends EventEmitter implements BaseCommand {
   readonly _unknownOptions: Option[] = [];
 
   private _arguments: Argument[] = [];
-  private _options: Option[] = [];
   private _from: TArgsFrom = ArgsFrom.Sys;
   private _executePath = '';
 
@@ -68,9 +82,11 @@ export class Command extends EventEmitter implements BaseCommand {
     this.description = description;
 
     // 根据command本身，创建第一个argument参数
-    this._currentArgument = new Argument({ name, description });
+    this._currentArgument = new Argument({
+      name,
+      description
+    });
     this._arguments.push(this._currentArgument);
-    this._addHelpArgument();
   }
 
   private _parseOptions(args: string[]) {
@@ -85,10 +101,9 @@ export class Command extends EventEmitter implements BaseCommand {
 
       if (Option.maybeOption(_arg)) {
         if (_option) {
-          // this.emit(`option-${_argument?.name || this.name}-${_option.name}`, true);
           _argument.setValue(_option.strippedName(), true);
         }
-        _option = Command.findOption(_argument, _arg);
+        _option = _argument.getOption(_arg);
         if (!_option) {
           if (!this._ignoreUnknownOption) {
             throw Error(`Unknown option [${_arg}]`);
@@ -97,7 +112,7 @@ export class Command extends EventEmitter implements BaseCommand {
               new Option({
                 name: _arg,
                 description: 'Unknown option',
-                belongTo: _argument.name ?? this.name,
+                belong: _argument.name ?? this.name,
                 required: false
               })
             );
@@ -106,14 +121,11 @@ export class Command extends EventEmitter implements BaseCommand {
       } else {
         if (_option) {
           if (_argument) {
-            // this.emit(`option-${_argument.name}-${_option.name}`, _arg);
             _argument.setValue(_option.strippedName(), _arg);
             _option = undefined;
           }
         } else {
-          if (_i > 0) {
-            _argument = this._findArgument(_arg);
-          }
+          _argument = this._findArgument(_arg);
           if (!_argument) {
             throw Error(`Unknown argument <${_arg}>`);
           }
@@ -123,29 +135,10 @@ export class Command extends EventEmitter implements BaseCommand {
     }
 
     if (_option) {
-      // const belongTo = _argument ? _argument.name : this.name;
-      // this.emit(`option-${belongTo}-${_option.name}`, true);
       _argument.setValue(_option.strippedName(), true);
     }
 
     this._invokeArgumentCallback(_argument.name);
-  }
-
-  /**
-   *
-   * @param arg
-   * @param name
-   *
-   * @private
-   */
-  private static findOption(arg: Argument, name: string): Option | undefined {
-    for (let i = 0; i < arg.options.length; i++) {
-      if (arg.options[i].name === name) {
-        return arg.options[i];
-      }
-    }
-
-    return undefined;
   }
 
   /**
@@ -215,36 +208,14 @@ export class Command extends EventEmitter implements BaseCommand {
   }
 
   /**
-   *
-   * @private
-   */
-  private _addHelpArgument() {
-    this.argument({
-      name: 'help',
-      description: '输出帮助信息'
-    }).callback(() => {
-      console.log(`  Usage: ${this.name} <commmand> [options]`);
-      console.log(`  `);
-      console.log(`  Commands`);
-
-      for (const arg of this._arguments) {
-        this._help.printHelp(arg, this._options);
-      }
-    });
-
-    this._currentArgument = this._arguments[0];
-  }
-
-  /**
-   * @param name
-   * @param description
+   * @param definition
    *
    * @static
    */
-  static command(name: string, description: string): Command {
+  static command(definition: IBaseDefinition): Command {
     return new Command({
-      name,
-      description
+      name: definition.name,
+      description: definition.description
     });
   }
 
@@ -263,11 +234,30 @@ export class Command extends EventEmitter implements BaseCommand {
       args = process.argv.slice(2);
     }
     this._executePath = process.argv[0];
+    this._currentArgument = this._arguments[0];
     this._parseOptions(args);
   }
 
   /**
-   * @desc 添加option参数，可以通过链式调用添加
+   * 添加option参数，可以通过链式调用添加
+   *
+   * @example
+   *
+   * import { Command } from "@ntfs/argparser";
+   *
+   * const toolName = "xxx";
+   * const toolDescription = "xxx is good"
+   *
+   * Command
+   *  .command({
+   *    name: toolName,
+   *    description: toolDescription
+   *  })
+   *  .option({
+   *    name: '--name',
+   *    description: 'specify name'
+   *  });
+   *
    * @param name
    * @param description
    * @param required
@@ -275,7 +265,7 @@ export class Command extends EventEmitter implements BaseCommand {
    *
    * @public
    */
-  public option({ name, description, required, alias }: IBaseOption): Command {
+  public option({ name, description, required, alias }: IOptionDefinition): Command {
     if (!this._currentArgument) {
       // throw error ?
       return this;
@@ -292,7 +282,8 @@ export class Command extends EventEmitter implements BaseCommand {
   }
 
   /**
-   * @desc 添加回调参数，链式调用的终点
+   * 添加回调参数，链式调用的终点
+   *
    * @example
    *
    * import { Command } from "@ntfs/argparser";
@@ -305,23 +296,28 @@ export class Command extends EventEmitter implements BaseCommand {
    *    name: toolName,
    *    description: toolDescription
    *  })
-   *  .argument({ name: 'dev', description: 'development' });
+   *  .argument({
+   *    name: 'dev',
+   *    description: 'development'
+   *  });
    *
    * @params name
    * @params description
    *
    * @public
    */
-  public argument({ name, description }: IBaseDefinition): Command {
-    this._currentArgument = new Argument({
-      name,
-      description,
-      belongTo: this._currentArgument?.name ?? this.name
-    });
-    this._arguments.push(this._currentArgument);
-    this.on(`argument-${name}`, (args: any) => {
-      console.log(args);
-    });
+  public argument(definition: IBaseDefinition | Argument): Command {
+    if (definition instanceof Argument) {
+      this._currentArgument = definition;
+      this._arguments.push(this._currentArgument);
+    } else {
+      this._currentArgument = new Argument({
+        name: definition.name,
+        description: definition.description,
+        belong: this._currentArgument?.name ?? this.name
+      });
+      this._arguments.push(this._currentArgument);
+    }
 
     return this;
   }

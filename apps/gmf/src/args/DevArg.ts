@@ -1,16 +1,27 @@
-import { Argument } from '@ntfs/noddy';
-import { IArgDefinition } from './BaseArg';
+import { BaseArg } from './BaseArg';
 
-export class DevArg extends Argument {
-  constructor({ parser }: IArgDefinition) {
-    super({
-      name: 'dev',
-      description: '本地运行构建',
-      parser
+export interface IDevArgOptions {
+  clean: boolean;
+}
+
+export class DevArg extends BaseArg {
+  constructor() {
+    super({ name: 'dev', description: 'Start up local development server' });
+  }
+
+  onOptionsDefine(): void {
+    this.option({
+      name: '--clean',
+      required: false,
+      description: 'Cleanup dist folder'
     });
   }
 
-  exec(): void {
-    console.log('Dev you app in local');
+  exec(args: IDevArgOptions): void {
+    console.log('development');
+  }
+
+  initPlugins(): void {
+    //
   }
 }

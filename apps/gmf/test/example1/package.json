@@ -1,0 +1,10 @@
+{
+  "name": "example1",
+  "version": "1.0.0",
+  "dependencies": {},
+  "scripts": {
+    "build": "gmf build --clean",
+    "dev": "gmf dev",
+    "test": "gmf test"
+  }
+}
