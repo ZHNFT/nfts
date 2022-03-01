@@ -1,4 +1,5 @@
 import { CommandLine } from '@ntfs/noddy';
+import { PackageJsonLookup } from '@ntfs/node-utils-library';
 
 import { BuildArg } from '../args/BuildArg';
 import { DevArg } from '../args/DevArg';
