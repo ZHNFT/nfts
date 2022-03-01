@@ -21,7 +21,7 @@ export class DevArg extends BaseArg {
     console.log('development');
   }
 
-  initPlugins(): void {
-    //
+  onLoadPlugins<T>(args: T): void {
+    /**/
   }
 }

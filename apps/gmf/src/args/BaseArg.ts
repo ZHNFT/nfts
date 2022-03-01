@@ -10,8 +10,10 @@ export abstract class BaseArg extends CommandArgument {
    * execute when activate
    * */
   abstract exec(args: unknown): void;
-
-  abstract initPlugins(): void;
+  /**
+   * load plugin by config
+   * */
+  abstract onLoadPlugins<T>(args: T): void;
 
   protected constructor(definition: IArgumentDefinition) {
     super({

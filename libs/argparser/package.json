@@ -20,11 +20,6 @@
     "preset": "ts-jest",
     "testEnvironment": "node"
   },
-  "eslintConfig": {
-    "extends": [
-      "@ntfs/eslint-config"
-    ]
-  },
   "eslintIgnore": [
     "/dist",
     "/test"

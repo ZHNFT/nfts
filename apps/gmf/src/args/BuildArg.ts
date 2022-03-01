@@ -1,54 +1,66 @@
-import { Hookable, HookCallback } from 'hookable';
+import { Hook, THookCallback } from '@ntfs/hook';
+
 import { BaseArg } from './BaseArg';
+import { GmfConfiguration } from '../config/GmfConfiguration';
 
 export interface IBuildArgOptions {
   clean: boolean;
 }
 
 export interface IBuildHooks {
-  preBuildPhase: Hookable;
-  buildPhase: Hookable;
-  afterBuildPhase: Hookable;
+  readonly preBuildPhase: Hook;
+  readonly buildPhase: Hook;
+  readonly afterBuildPhase: Hook;
 }
 
 export interface IBuildPluginContext {
-  hooks: IBuildHooks;
+  readonly hooks: IBuildHooks;
+  readonly config: GmfConfiguration;
 }
 
 export class BuildArg extends BaseArg implements IBuildHooks {
-  readonly preBuildPhase: Hookable<Record<string, HookCallback>, string>;
-  readonly buildPhase: Hookable<Record<string, HookCallback>, string>;
-  readonly afterBuildPhase: Hookable<Record<string, HookCallback>, string>;
+  readonly preBuildPhase: Hook;
+  readonly buildPhase: Hook;
+  readonly afterBuildPhase: Hook;
 
-  constructor() {
+  constructor(opts: { config: GmfConfiguration }) {
     super({ name: 'build', description: 'build your app' });
 
-    this.preBuildPhase = new Hookable<Record<string, HookCallback>, string>();
-    this.buildPhase = new Hookable<Record<string, HookCallback>, string>();
-    this.afterBuildPhase = new Hookable<Record<string, HookCallback>, string>();
+    this.preBuildPhase = new Hook();
+    this.buildPhase = new Hook();
+    this.afterBuildPhase = new Hook();
 
     const buildArgContext: IBuildPluginContext = {
+      config: opts.config,
       hooks: {
         preBuildPhase: this.preBuildPhase,
         buildPhase: this.buildPhase,
         afterBuildPhase: this.afterBuildPhase
       }
     };
+
+    this.onLoadPlugins<IBuildPluginContext>(buildArgContext);
   }
 
-  onOptionsDefine(): void {
+  public onOptionsDefine(): void {
     this.option({
       name: '--clean',
       required: false,
       description: 'Cleanup dist folder'
     });
+
+    this.option({
+      name: '--web',
+      required: true,
+      description: 'Using web config'
+    });
   }
 
-  exec(args: IBuildArgOptions): void {
+  public exec(args: IBuildArgOptions): void {
     console.log('build');
   }
 
-  initPlugins(): void {
-    //
+  onLoadPlugins<T>(args: T): void {
+    /**/
   }
 }

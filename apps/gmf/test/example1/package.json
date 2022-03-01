@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "dependencies": {},
   "scripts": {
-    "build": "gmf build --clean",
+    "build": "gmf build --web",
     "dev": "gmf dev",
     "test": "gmf test"
   }
