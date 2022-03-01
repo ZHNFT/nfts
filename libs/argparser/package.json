@@ -24,6 +24,9 @@
     "/dist",
     "/test"
   ],
+  "eslintConfig": {
+    "extends": "@ntfs/eslint-config"
+  },
   "devDependencies": {
     "@types/jest": "^27.0.3",
     "@types/node": "~17.0.5",

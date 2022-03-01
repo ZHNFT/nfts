@@ -20,7 +20,7 @@ module.exports = {
         project: './tsconfig.json',
         ecmaVersion: 2018,
         sourceType: 'module',
-        tsconfigRootDir: process.cwd()
+        tsconfigRootDir: '.'
       }
     }
   ],
