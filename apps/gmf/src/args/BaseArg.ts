@@ -13,7 +13,7 @@ export abstract class BaseArg extends CommandArgument {
   /**
    * load plugin by config
    * */
-  abstract onLoadPlugins<T>(args: T): void;
+  abstract onLoadPlugins(args: unknown): void;
 
   protected constructor(definition: IArgumentDefinition) {
     super({

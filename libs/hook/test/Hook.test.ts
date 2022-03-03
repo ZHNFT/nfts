@@ -1,4 +1,5 @@
 import { Hook } from '../src';
+import * as console from 'console';
 
 jest.setTimeout(10000);
 
@@ -18,6 +19,9 @@ describe('Hook 测试', function () {
                 resolve();
               }, 3000);
             }),
+          () => {
+            console.log('abcdefghijklmnopqrstuvwxyz');
+          },
           () =>
             new Promise<void>(resolve => {
               setTimeout(() => {

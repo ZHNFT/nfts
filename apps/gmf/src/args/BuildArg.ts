@@ -39,7 +39,7 @@ export class BuildArg extends BaseArg implements IBuildHooks {
       }
     };
 
-    this.onLoadPlugins<IBuildPluginContext>(buildArgContext);
+    this.onLoadPlugins(buildArgContext);
   }
 
   public onOptionsDefine(): void {
@@ -60,7 +60,7 @@ export class BuildArg extends BaseArg implements IBuildHooks {
     console.log('build');
   }
 
-  onLoadPlugins<T>(args: T): void {
-    /**/
+  onLoadPlugins(args: IBuildPluginContext): void {
+    //
   }
 }

@@ -1,5 +1,3 @@
-/* JsonType Shape */
-
 export type TypedArray<T> = T[];
 
 export interface IJson {

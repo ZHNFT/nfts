@@ -7,7 +7,7 @@ export abstract class CommandArgument implements ICommandArgumentDefinition {
   readonly name: string;
   readonly _arg: Argument;
 
-  constructor(definition: IArgumentDefinition) {
+  protected constructor(definition: IArgumentDefinition) {
     this.name = definition.name;
     this.description = definition.description;
     this._arg = new Argument({
