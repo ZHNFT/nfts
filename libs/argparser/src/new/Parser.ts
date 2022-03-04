@@ -29,6 +29,7 @@ export interface IParserOptionDefinition {
    * 在type=Choices的情况下的待选项；
    * */
   alternatives?: string[];
+  required?: boolean;
 }
 
 export class Parser {
@@ -176,21 +177,29 @@ export abstract class ParserOption implements IParserOptionDefinition {
    * */
   readonly alternatives?: string[];
 
+  readonly required?: boolean;
+
   constructor(definition: IParserOptionDefinition) {
     this.name = definition.name;
     this.usage = definition.usage;
     this.alias = definition.alias;
     this.alternatives = definition.alternatives;
     this.type = definition.type;
+    this.required = definition.required;
   }
 
-  abstract validate(): void;
+  /*
+   * 校验value值是否符合定义
+   * */
+  abstract validate(value: unknown): void;
 }
 
 class StringOption extends ParserOption {
   readonly type = OptionTypes.String;
-  validate(): void {
-    //
+  public validate(value): void {
+    if (typeof value !== 'string') {
+      throw new TypeError('Type error');
+    }
   }
 }
 
