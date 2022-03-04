@@ -21,7 +21,7 @@ export abstract class CommandLine {
    * 注册argument以及回调函数
    * */
   protected argument(commandArg: CommandArgument) {
-    this._parser.argument(commandArg._arg).callback(commandArg.exec);
+    this._parser.argument(commandArg._arg).callback(commandArg.exec.bind(null));
   }
 
   execute() {

@@ -1,13 +1,13 @@
 import { IOptionDefinition, Option } from '@ntfs/argparser';
 
-export interface ICommandLineOptionDefinition extends IOptionDefinition {}
+export type ICommandLineOptionDefinition = IOptionDefinition;
 
 export abstract class CommandOption implements ICommandLineOptionDefinition {
   readonly description: string;
   readonly name: string;
   readonly required: boolean;
 
-  protected constructor(definition: IOptionDefinition) {
+  protected constructor(definition: ICommandLineOptionDefinition) {
     this.name = definition.name;
     this.description = definition.description;
     this.required = definition.required;
