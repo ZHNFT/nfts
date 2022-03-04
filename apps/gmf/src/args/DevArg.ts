@@ -20,8 +20,4 @@ export class DevArg extends BaseArg {
   exec(args: IDevArgOptions): void {
     console.log('development');
   }
-
-  onLoadPlugins<T>(args: T): void {
-    /**/
-  }
 }

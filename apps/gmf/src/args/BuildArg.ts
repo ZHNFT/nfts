@@ -22,9 +22,15 @@ export class BuildArg extends BaseArg implements IBuildHooks {
   readonly preBuildPhase: Hook;
   readonly buildPhase: Hook;
   readonly afterBuildPhase: Hook;
+  readonly _config: GmfConfiguration;
 
   constructor(opts: { config: GmfConfiguration }) {
-    super({ name: 'build', description: 'build your app' });
+    super({
+      name: 'build',
+      description: 'build your app'
+    });
+
+    this._config = opts.config;
 
     this.preBuildPhase = new Hook();
     this.buildPhase = new Hook();
@@ -38,8 +44,6 @@ export class BuildArg extends BaseArg implements IBuildHooks {
         afterBuildPhase: this.afterBuildPhase
       }
     };
-
-    this.onLoadPlugins(buildArgContext);
   }
 
   public onOptionsDefine(): void {
@@ -58,9 +62,5 @@ export class BuildArg extends BaseArg implements IBuildHooks {
 
   public exec(args: IBuildArgOptions): void {
     console.log('build');
-  }
-
-  onLoadPlugins(args: IBuildPluginContext): void {
-    //
   }
 }

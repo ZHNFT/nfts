@@ -1,7 +1,9 @@
 import { IArgumentDefinition } from '@ntfs/argparser';
 import { CommandArgument } from '@ntfs/noddy';
+import { GmfConfiguration } from '../config/GmfConfiguration';
 
 export abstract class BaseArg extends CommandArgument {
+  abstract readonly _config: GmfConfiguration;
   /**
    * setting argument options
    * */
@@ -10,10 +12,6 @@ export abstract class BaseArg extends CommandArgument {
    * execute when activate
    * */
   abstract exec(args: unknown): void;
-  /**
-   * load plugin by config
-   * */
-  abstract onLoadPlugins(args: unknown): void;
 
   protected constructor(definition: IArgumentDefinition) {
     super({
@@ -23,4 +21,6 @@ export abstract class BaseArg extends CommandArgument {
 
     this.onOptionsDefine();
   }
+
+  protected onLoadPlugins() {}
 }

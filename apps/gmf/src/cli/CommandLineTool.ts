@@ -1,9 +1,9 @@
 import { CommandLine } from '@ntfs/noddy';
-import { PackageJsonLookup } from '@ntfs/node-utils-library';
 
 import { BuildArg } from '../args/BuildArg';
 import { DevArg } from '../args/DevArg';
 import { GmfConfiguration } from '../config/GmfConfiguration';
+import { Constant } from '../Constant';
 
 export class CommandLineTool extends CommandLine {
   constructor() {
@@ -12,7 +12,9 @@ export class CommandLineTool extends CommandLine {
       description: 'gmf tool'
     });
 
-    const _config = new GmfConfiguration();
+    const _config = new GmfConfiguration({
+      path: Constant.ConfigFilePath
+    });
 
     this.argument(new DevArg());
     this.argument(new BuildArg({ config: _config }));

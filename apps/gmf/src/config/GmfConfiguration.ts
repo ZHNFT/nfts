@@ -1,4 +1,4 @@
-import { Schema, IJson } from '@ntfs/node-utils-library';
+import { Schema, IJson, FileSystem } from '@ntfs/node-utils-library';
 
 /**
  * 定义plugin
@@ -15,5 +15,13 @@ export interface IGmfConfiguration {
 
 export class GmfConfiguration {
   private _schema: Schema;
-  private _json: IJson;
+  private readonly _json: IGmfConfiguration;
+
+  constructor({ path }: { path: string }) {
+    this._json = FileSystem.readJsonSync(path) as unknown as IGmfConfiguration;
+  }
+
+  public get json(): IGmfConfiguration {
+    return this._json;
+  }
 }
