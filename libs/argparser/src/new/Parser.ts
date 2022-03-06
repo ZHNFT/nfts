@@ -1,8 +1,8 @@
 import * as process from 'process';
 
 export interface IParserDefinition {
-  command: string;
-  commandDescription: string;
+  name: string;
+  description: string;
 }
 
 export enum OptionTypes {
@@ -18,13 +18,13 @@ export type TOptionTypes = keyof typeof OptionTypes;
 
 export interface IParserOptionDefinition {
   name: string;
+  type: TOptionTypes;
   /*
    * 可以设置option的别名，一个或者多个；
    * 通常别名只有一个字母：-x
    * */
   alias?: string | string[];
   usage?: string;
-  type?: TOptionTypes;
   /*
    * 在type=Choices的情况下的待选项；
    * */
@@ -36,10 +36,9 @@ export class Parser {
   private readonly _command: string;
   private readonly _commandDescription: string;
 
-  /**
-   * 指向最近一个添加的解析器/子解析器
-   * */
   private _parser: Parser;
+
+  private _executeParser: Parser | SubParser;
 
   private _parsers: SubParser[];
 
@@ -54,23 +53,33 @@ export class Parser {
     string | boolean | number | Array<string>
   >;
 
-  private static getArgs(): string[] {
+  private static _getArgs(): string[] {
     return process.argv.slice(1);
   }
 
-  constructor({ command, commandDescription }: IParserDefinition) {
-    this._command = command;
-    this._commandDescription = commandDescription;
-
+  constructor({ name, description }: IParserDefinition) {
+    this._command = name;
+    this._commandDescription = description;
     this._parser = this;
+    this._parsers = [];
+    this._parserOptions = [];
+    this._parserOptionValueByName = new Map();
   }
 
-  public addParser(parserDefinition: IParserDefinition): Parser | SubParser {
+  /**
+   * 添加子解析器
+   *
+   * @param parserDefinition
+   * @public
+   */
+  public addParser(parserDefinition: IParserDefinition | SubParser): Parser | SubParser {
     /**
-     * 添加子解析器；
-     *
+     * 支持传入SubParser实例，也支持传入定义；
      * */
-    const parser = new SubParser(parserDefinition);
+    let parser: SubParser =
+      parserDefinition instanceof SubParser
+        ? parserDefinition
+        : new SubParser(parserDefinition);
     parser.parent = this._parser;
     this._parsers.push(parser);
     this._parser = parser;
@@ -83,19 +92,21 @@ export class Parser {
     return this._parser;
   }
 
-  public parse(): void {
-    //
+  public parse(args?: string[]): void {
+    if (!args) {
+      args = Parser._getArgs();
+      args = args.slice(1);
+    }
+    this._args = args;
+    this._executeFile = args[0];
+    this._executeParser = this._findParser(args[0]);
+    if (!this._executeParser) {
+      throw new Error(`No parser found for \`${args[0]}\``);
+    }
+    this._executeParser._parse(args);
   }
 
   private _parse(args?: string[]): void {
-    if (!args) {
-      args = Parser.getArgs();
-      this._executeFile = args[0];
-      args = args.slice(1);
-      this._args = args;
-    }
-    //
-
     let index = 0;
 
     while (index < args.length) {
@@ -121,25 +132,24 @@ export class Parser {
 
   private _optionValue(index: number): [number, string | boolean] {
     const _maybeValue = this._args[index + 1];
+
+    if (!_maybeValue) {
+      return [index, true];
+    }
+
     if (_maybeValue.startsWith('--') || _maybeValue.startsWith('-')) {
       return [index, true];
     }
 
-    return [index++, this._args[index + 1]];
+    return [(index += 1), _maybeValue];
   }
 
   private _findOption(name: string): ParserOption | undefined {
-    return this._parserOptions.find(opt => {
-      if (opt.name === name) {
-        return opt;
-      }
-
-      return undefined;
-    });
+    return this._parserOptions.find(_opt => _opt.name === name);
   }
 
-  private _optionValidator() {
-    //
+  private _findParser(name: string): Parser | SubParser {
+    return this._parsers.find(_parser => _parser.command === name);
   }
 
   get command(): string {
@@ -149,6 +159,8 @@ export class Parser {
   get commandDescription(): string {
     return this._commandDescription;
   }
+
+  public options() {}
 }
 
 class SubParser extends Parser {
@@ -165,13 +177,13 @@ class SubParser extends Parser {
 
 export abstract class ParserOption implements IParserOptionDefinition {
   readonly name: string;
+  readonly type: TOptionTypes;
   /*
    * 可以设置option的别名，一个或者多个；
    * 通常别名只有一个字母：-x
    * */
   readonly alias?: string | string[];
   readonly usage?: string;
-  readonly type?: TOptionTypes;
   /*
    * 在type=Choices的情况下的待选项；
    * */
