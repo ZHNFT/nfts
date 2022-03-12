@@ -1,17 +1,14 @@
-import { OptionTypes, Parser } from '../src/new/Parser';
+import { OptionTypes, Parser, SubParser } from '../src/new/Parser';
 
 describe('parser', function () {
   test('test-new-parser', () => {
     const parser = new Parser({
-      command: 'gmf',
-      commandDescription: 'gmf my my my my my my '
+      name: 'gmf',
+      description: 'gmf my my my my my my'
     });
 
     parser
-      .addParser({
-        command: 'dev',
-        commandDescription: 'dev'
-      })
+      .addParser({ name: 'dev', description: 'dev' })
       .addOption({
         name: '--config',
         usage: 'Find config files',
@@ -23,8 +20,9 @@ describe('parser', function () {
         usage: 'test test test test',
         required: false,
         type: OptionTypes.Flag
-      });
+      })
+      .addParser(new SubParser({ name: 'prod', description: 'production' }));
 
-    parser.parse(['dev', '--config', '../../aaa', '--my-local=123']);
+    parser.parse(['dev', 'prod', '--config', '../../aaa', '--my-local=123']);
   });
 });
