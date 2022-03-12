@@ -1,10 +1,16 @@
 import * as process from 'process';
-import {
-  IParserDefinition,
-  IParserOptionDefinition,
-  ParserOption,
-  optionFactory
-} from './Option';
+import { IParserOptionDefinition, ParserOption } from './Option';
+
+export interface IParserConfigOptions {
+  allowUnknownOptions?: boolean;
+}
+
+export interface IParserDefinition {
+  name: string;
+  description: string;
+
+  opts?: IParserConfigOptions;
+}
 
 /**
  * todo
@@ -26,6 +32,9 @@ export class Parser {
     string | boolean | number | Array<string>
   >;
 
+  private _unknownOptions: string[];
+  private _opts: IParserConfigOptions;
+
   private static _getArgs(): string[] {
     return process.argv.slice(1);
   }
@@ -33,13 +42,18 @@ export class Parser {
   private static _maybeOption = (arg: string): boolean =>
     arg.startsWith('-') || arg.startsWith('--');
 
-  constructor({ name, description }: IParserDefinition) {
+  constructor({ name, description, opts = {} }: IParserDefinition) {
     this._name = name;
     this._description = description;
+    this._opts = opts;
     this._lastParser = this;
     this._parsers = [];
     this._parserOptions = [];
     this._parserOptionValueByName = new Map();
+
+    if (this._parser) {
+      return this._parser;
+    }
   }
 
   /**
@@ -49,13 +63,6 @@ export class Parser {
    * @public
    */
   public addParser(parserDefinition: IParserDefinition | SubParser): Parser | SubParser {
-    /**
-     * 支持传入SubParser实例，也支持传入定义；
-     * */
-    if (parserDefinition instanceof Parser) {
-      throw new Error('.addParser() can only add SubParser instance!');
-    }
-
     let parser: SubParser =
       parserDefinition instanceof SubParser
         ? parserDefinition
@@ -70,7 +77,7 @@ export class Parser {
   }
 
   public addOption(definition: IParserOptionDefinition): Parser | SubParser {
-    this._parserOptions.push(optionFactory(definition));
+    this._parserOptions.push(ParserOption.optionFactory(definition));
     return this._lastParser;
   }
 
@@ -108,24 +115,43 @@ export class Parser {
   }
 
   private _parse(args?: string[], startIndex: number = 0): void {
+    const _executeParser = this._executeParser;
+    const _optionsWithValue: [string, string | number | boolean | undefined][] = [];
+
+    /**
+     * 收集参数
+     * */
     while (startIndex < args.length) {
       const arg = args[startIndex];
-
       if (Parser._maybeOption(arg)) {
-        /*
-         * 处理等式参数的情况；--abc=abc
-         * */
         const parts = arg.split('=');
         if (parts.length > 1) {
-          this._parserOptionValueByName.set(parts[0], parts[1]);
+          const [_option, _value] = parts;
+          _optionsWithValue.push([_option, _value]);
         } else {
           const [_index, _value] = this._optionValue(startIndex);
-          this._parserOptionValueByName.set(arg, _value);
+          _optionsWithValue.push([arg, _value]);
           startIndex = _index;
         }
       }
-
       startIndex++;
+    }
+
+    /**
+     * 统一校验
+     * */
+    for (const optionsWithValueElem of _optionsWithValue) {
+      const [_name, _value] = optionsWithValueElem;
+      const _optionDef = _executeParser._findOption(_name);
+      if (_optionDef) {
+        _optionDef.strictSetValue(_value);
+      } else {
+        if (this._opts?.allowUnknownOptions) {
+          this._unknownOptions.push(_name);
+        } else {
+          throw new Error(`Unknown option <${_name}>`);
+        }
+      }
     }
 
     /**
@@ -176,10 +202,10 @@ export class Parser {
 
   public options<T>(): Readonly<T> {
     const _obj = {} as T;
-    const inter = this._parserOptionValueByName.entries();
+    const inter = this._executeParser._parserOptions;
 
-    for (const [optionName, value] of inter) {
-      Object.defineProperty(_obj, optionName, {
+    for (const { value, strippedName } of inter) {
+      Object.defineProperty(_obj, strippedName, {
         value,
         writable: false,
         enumerable: true,
