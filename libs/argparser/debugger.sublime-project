@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"debugger_configurations": [
+		{
+			"type": "node",
+			"name": "debug test",
+			"request": "launch",
+			"runtimeExecutable": "npm",
+			"runtimeArgs": ["run-script", "test"]
+		}
+	]
+}

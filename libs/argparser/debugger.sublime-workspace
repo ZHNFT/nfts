@@ -1,0 +1,1427 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"Emitt",
+				"EventEmitter"
+			],
+			[
+				"rea",
+				"readline"
+			],
+			[
+				"Parser",
+				"ParserOptionImpl"
+			],
+			[
+				"IPa",
+				"IParserOptionDefinition"
+			],
+			[
+				"s",
+				"struct"
+			],
+			[
+				"fi",
+				"filterB"
+			],
+			[
+				"IconTank",
+				"IconTankD"
+			],
+			[
+				"IconB",
+				"IconBeaker"
+			],
+			[
+				"IconFi",
+				"IconFilterA"
+			],
+			[
+				"co",
+				"cordon"
+			],
+			[
+				"IconAgi",
+				"IconAgitatorB"
+			],
+			[
+				"IconCal",
+				"IconCalorifier"
+			],
+			[
+				"tan",
+				"tankF"
+			],
+			[
+				"tank",
+				"tankC"
+			],
+			[
+				"IconPip",
+				"IconPiplineReduction"
+			],
+			[
+				"pip",
+				"piplineReduction"
+			],
+			[
+				"hot",
+				"hotWaterPipe"
+			],
+			[
+				"IconWater",
+				"IconWaterPipeJoint"
+			],
+			[
+				"water",
+				"waterPipeJoint"
+			],
+			[
+				"ass",
+				"access"
+			],
+			[
+				"ut",
+				"utf8"
+			],
+			[
+				"to",
+				"toString"
+			],
+			[
+				"readFIle",
+				"readFile"
+			],
+			[
+				"u",
+				"utf8"
+			],
+			[
+				"readFile",
+				"readFileSync"
+			],
+			[
+				"read",
+				"readFile"
+			],
+			[
+				"import",
+				"ImportModule"
+			],
+			[
+				"a",
+				"accessSync"
+			],
+			[
+				"try",
+				"truncateSync"
+			],
+			[
+				"create",
+				"createRequire"
+			],
+			[
+				"Impo",
+				"ImportModuleProvider"
+			],
+			[
+				"termina",
+				"TerminalProvider"
+			],
+			[
+				"Terminal",
+				"TerminalProvider"
+			],
+			[
+				"std",
+				"stdout"
+			],
+			[
+				"Read",
+				"ReadLine"
+			],
+			[
+				"Termin",
+				"TerminalProvider"
+			],
+			[
+				"crea",
+				"createInterface"
+			],
+			[
+				"ex",
+				"extends"
+			],
+			[
+				"Inter",
+				"InternalError"
+			],
+			[
+				"pro",
+				"protected"
+			],
+			[
+				"nu",
+				"number"
+			],
+			[
+				"arg",
+				"argLongNameRegex"
+			],
+			[
+				"Pa",
+				"PartialOrd"
+			],
+			[
+				"Base",
+				"BaseParameter"
+			],
+			[
+				"c",
+				"config"
+			],
+			[
+				"module",
+				"\"moduleResolution\""
+			],
+			[
+				"out",
+				"\"outDir\""
+			],
+			[
+				"e",
+				"\"ES6\""
+			],
+			[
+				"pa",
+				"\"parserOptions\""
+			],
+			[
+				"utf",
+				"utf8"
+			],
+			[
+				"string",
+				"stringBuf"
+			],
+			[
+				"comma",
+				"commandName"
+			],
+			[
+				"comm",
+				"commandName"
+			],
+			[
+				"set",
+				"setParamValueByName"
+			],
+			[
+				"_",
+				"_result"
+			],
+			[
+				"Token",
+				"TokenKind"
+			],
+			[
+				"A",
+				"ArgumentsParserError"
+			],
+			[
+				"stop",
+				"stopindicator"
+			],
+			[
+				"Argumen",
+				"ArgumentsParserResult"
+			],
+			[
+				"Refe",
+				"Reflect"
+			],
+			[
+				"Ba",
+				"BaseParameter"
+			],
+			[
+				"param",
+				"paramKind"
+			],
+			[
+				"para",
+				"paramName"
+			],
+			[
+				"ArgumentsParser",
+				"ArgumentsParser"
+			],
+			[
+				"parame",
+				"ParameterKinds"
+			],
+			[
+				"IArg",
+				"IArgsResult"
+			],
+			[
+				"cat",
+				"catch"
+			],
+			[
+				"fir",
+				":first-of-type"
+			],
+			[
+				"margin",
+				"marginRight"
+			],
+			[
+				"wid",
+				"width"
+			],
+			[
+				"Ma",
+				"Map"
+			],
+			[
+				"IComman",
+				"ICommand"
+			],
+			[
+				"command",
+				"commmands"
+			],
+			[
+				"unkno",
+				"unknown"
+			],
+			[
+				"comman",
+				"commmands"
+			],
+			[
+				"Comman",
+				"Command"
+			],
+			[
+				"cons",
+				"constructor"
+			],
+			[
+				"reu",
+				"required"
+			],
+			[
+				"rule",
+				"rules"
+			],
+			[
+				"onRow",
+				"onRowClick"
+			],
+			[
+				"pane",
+				"panelID"
+			],
+			[
+				"sq",
+				"sqlType"
+			],
+			[
+				"spa",
+				"span"
+			],
+			[
+				"init",
+				"initial"
+			],
+			[
+				"get",
+				"getFieldsValue"
+			],
+			[
+				"SqlConf",
+				"SqlConfigType"
+			],
+			[
+				"da",
+				"dataSource"
+			],
+			[
+				"on",
+				"onCheck"
+			],
+			[
+				"map",
+				"relatedMapPanelID"
+			],
+			[
+				"Dyna",
+				"DynamicTableListType"
+			],
+			[
+				"selec",
+				"selectedChart"
+			],
+			[
+				"ma",
+				"relatedMapPanelID"
+			],
+			[
+				"fin",
+				"findIndex"
+			],
+			[
+				"find",
+				"findIndex"
+			],
+			[
+				"curen",
+				"currentDashboard"
+			],
+			[
+				"Dynamic",
+				"DynamicTableListType"
+			],
+			[
+				"attrs",
+				"attrs"
+			],
+			[
+				"fil",
+				"filter"
+			],
+			[
+				"chec",
+				"checkedNodes"
+			],
+			[
+				"update",
+				"updateByPathName"
+			],
+			[
+				"useDashboa",
+				"useDashboardPanelUpdater"
+			],
+			[
+				"TableLis",
+				"TableListType"
+			],
+			[
+				"sho",
+				"showLine"
+			],
+			[
+				"ty",
+				"valueType"
+			],
+			[
+				"dataAssetList",
+				"dataAssetListAssetAttribute"
+			],
+			[
+				"nt",
+				"@nfts/node-command"
+			],
+			[
+				"ntf",
+				"@nfts/node-command"
+			],
+			[
+				"es",
+				"\"eslintConfig\""
+			],
+			[
+				"print",
+				"println!"
+			],
+			[
+				"prin",
+				"println!"
+			],
+			[
+				"Props",
+				"PropsWithChildren"
+			],
+			[
+				"remove",
+				"removeChild"
+			],
+			[
+				"appen",
+				"appendChild"
+			],
+			[
+				"clas",
+				"className"
+			],
+			[
+				"useRe",
+				"useRef"
+			],
+			[
+				"F",
+				"FC"
+			],
+			[
+				"ver",
+				"\"version\""
+			],
+			[
+				"IComm",
+				"ICommandAction"
+			],
+			[
+				"IC",
+				"ICommandAction"
+			],
+			[
+				"IComma",
+				"ICommandAction"
+			],
+			[
+				"com",
+				"commandName"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"debugger",
+				"Debugger: Add Configuration"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"pull",
+				"Git: Pull"
+			],
+			[
+				"diff",
+				"Git: Diff Current File"
+			],
+			[
+				"git pull",
+				"Git: Pull"
+			],
+			[
+				"push",
+				"Git: Push"
+			],
+			[
+				"commit",
+				"Git: Commit"
+			],
+			[
+				"add",
+				"Git: Add All"
+			],
+			[
+				"ayu",
+				"ayu: Activate theme"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"git check",
+				"Git: Checkout Current File"
+			],
+			[
+				"rust: ",
+				"Rust: Open Debug Log"
+			],
+			[
+				"LSP: ",
+				"LSP: Enable Language Server in Project"
+			],
+			[
+				"Lsp",
+				"LSP: Enable Language Server Globally"
+			],
+			[
+				"git ",
+				"Git: Pull"
+			],
+			[
+				"terminal",
+				"Terminus: Open Default Shell in Panel"
+			],
+			[
+				"open",
+				"Debugger: Open"
+			],
+			[
+				"break",
+				"Debugger: Add Function Breakpoint"
+			],
+			[
+				"op",
+				"Debugger: Open"
+			],
+			[
+				"debuger",
+				"Debugger: Open"
+			],
+			[
+				"add break",
+				"Debugger: Add Function Breakpoint"
+			],
+			[
+				"terminus",
+				"Terminus Utilities: Select Theme"
+			],
+			[
+				"npm",
+				"npm: Run Script"
+			],
+			[
+				"start",
+				"Debugger: Start"
+			],
+			[
+				"Debugger",
+				"Debugger: Open"
+			],
+			[
+				"pre",
+				"Project: Edit"
+			],
+			[
+				"Preference: De",
+				"Preferences: Debugger Settings"
+			],
+			[
+				"qui",
+				"Debugger: Quit"
+			],
+			[
+				"add config",
+				"Debugger: Add Configuration"
+			],
+			[
+				"debu",
+				"Debugger: Quit"
+			],
+			[
+				"insa",
+				"Package Control: Install Package"
+			],
+			[
+				"Pree",
+				"Preferences: LSP Settings"
+			],
+			[
+				"setting",
+				"Preferences: Settings"
+			],
+			[
+				"LSP: refere",
+				"LSP: Find References"
+			],
+			[
+				"code action",
+				"LSP: Run Code Action"
+			],
+			[
+				"colo",
+				"UI: Select Color Scheme"
+			],
+			[
+				"color",
+				"UI: Select Color Scheme"
+			],
+			[
+				"git",
+				"Git: Pull"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"theme",
+				"UI: Select Theme"
+			],
+			[
+				"sync",
+				"Sync Settings: Download"
+			],
+			[
+				"resresh",
+				"Preferences: Rust Enhanced Settings"
+			],
+			[
+				"a file icon",
+				"Preferences: A File Icon Settings"
+			],
+			[
+				"comi",
+				"Git: Commit"
+			],
+			[
+				"run",
+				"npm: Run Script"
+			],
+			[
+				"mon",
+				"Monokai Pro: select theme"
+			],
+			[
+				"monokai",
+				"Monokai Pro: select theme"
+			],
+			[
+				"mono",
+				"Monokai Pro: select theme"
+			],
+			[
+				"monik",
+				"Monokai Pro: select theme"
+			],
+			[
+				"the",
+				"UI: Select Theme"
+			],
+			[
+				"log to",
+				"LSP: Toggle Log Panel"
+			],
+			[
+				"log togg",
+				"LSP: Toggle Log Panel"
+			],
+			[
+				"mater",
+				"Activate Materialize Theme"
+			],
+			[
+				"script",
+				"npm: Run Script"
+			],
+			[
+				"comm",
+				"Git: Commit"
+			],
+			[
+				"add a",
+				"Git: Add All"
+			],
+			[
+				"scrip",
+				"npm: Run Script"
+			],
+			[
+				"commi",
+				"Git: Commit"
+			],
+			[
+				"toggle panel",
+				"Terminus: Toggle Panel"
+			],
+			[
+				"lsp out",
+				"LSP: Troubleshoot Server"
+			],
+			[
+				"add ",
+				"Git: Add All"
+			],
+			[
+				"panel",
+				"LSP: Toggle Diagnostics Panel"
+			],
+			[
+				"lsp setting",
+				"Preferences: LSP Settings"
+			],
+			[
+				"lsp-eslint",
+				"Preferences: LSP-eslint Settings"
+			],
+			[
+				"refresh",
+				"Project: Refresh Folders"
+			],
+			[
+				"INst",
+				"Package Control: Install Package"
+			],
+			[
+				"pretier",
+				"JsPrettier: Format Code"
+			],
+			[
+				"termin",
+				"Terminus: Toggle Panel"
+			],
+			[
+				"or",
+				"LSP-typescript: Organize Imports"
+			],
+			[
+				"git push",
+				"Git: Push"
+			],
+			[
+				"git comm",
+				"Git: Commit"
+			],
+			[
+				"git add",
+				"Git: Add All"
+			],
+			[
+				"dock",
+				"DocBlockr: Reparse comment block"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"orgi",
+				"LSP-typescript: Organize Imports"
+			],
+			[
+				"package control lis",
+				"Package Control: List Packages"
+			],
+			[
+				"unins",
+				"npm: Remove/Uninstall Package"
+			],
+			[
+				"type",
+				"TypeScript: Format Document"
+			],
+			[
+				"lsp: forma",
+				"LSP: Format File"
+			],
+			[
+				"lsp-",
+				"Preferences: LSP-typescript Settings"
+			],
+			[
+				"a",
+				"A File Icon: Revert to a Freshly Installed State"
+			],
+			[
+				"lsp-ty",
+				"Preferences: LSP-typescript Settings"
+			],
+			[
+				"lsp",
+				"LSP-typescript: Organize Imports"
+			],
+			[
+				"LSP: Sett",
+				"LSP: Restart Server"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"rebase",
+				"Git: Pull Using Rebase"
+			],
+			[
+				"merge",
+				"Git: Merge Branch"
+			],
+			[
+				"git sta",
+				"Git: Status"
+			],
+			[
+				"lsp: res",
+				"LSP: Restart Server"
+			],
+			[
+				"settin",
+				"Preferences: Settings"
+			],
+			[
+				"oran",
+				"TypeScript: Organize Imports"
+			],
+			[
+				"organiz",
+				"TypeScript: Organize Imports"
+			],
+			[
+				"icon",
+				"A File Icon: Revert to a Freshly Installed State"
+			],
+			[
+				"colorsche",
+				"UI: Select Color Scheme"
+			],
+			[
+				"orgin",
+				"TypeScript: Organize Imports"
+			],
+			[
+				"npm ",
+				"npm: Run Script"
+			],
+			[
+				"lsp or",
+				"LSP-typescript: Organize Imports"
+			],
+			[
+				"blae",
+				"Git: Blame"
+			],
+			[
+				"lsp-ori",
+				"LSP-typescript: Organize Imports"
+			],
+			[
+				"comit",
+				"Git: Commit"
+			],
+			[
+				"g co",
+				"Git: Commit"
+			],
+			[
+				"g a",
+				"Git: Add All"
+			],
+			[
+				"anf",
+				"ANF: New File"
+			],
+			[
+				"new file",
+				"File: New File Relative to Current View"
+			],
+			[
+				"Sync",
+				"Sync Settings: Edit User Settings"
+			],
+			[
+				"g add",
+				"Git: Add All"
+			],
+			[
+				"g push",
+				"Git: Push"
+			],
+			[
+				"g pull",
+				"Git: Pull"
+			],
+			[
+				"g commit",
+				"Git: Commit"
+			],
+			[
+				"G add ",
+				"Git: Add All"
+			],
+			[
+				"G pull",
+				"Git: Pull"
+			],
+			[
+				"termi",
+				"Terminus: Toggle Panel"
+			],
+			[
+				"g commi",
+				"Git: Commit"
+			],
+			[
+				"lsp glo",
+				"LSP: Enable Language Server Globally"
+			],
+			[
+				"terminu",
+				"Terminus: Toggle Panel"
+			],
+			[
+				"colorsc",
+				"UI: Select Color Scheme"
+			],
+			[
+				"lsp-t",
+				"Preferences: LSP-tailwindcss Settings"
+			],
+			[
+				"G push",
+				"Git: Push"
+			],
+			[
+				"G ",
+				"Git: Commit"
+			],
+			[
+				"fmt",
+				"LSP: Format File"
+			],
+			[
+				"cargo build",
+				"Build With: Cargo"
+			],
+			[
+				"terminus the",
+				"Terminus Utilities: Select Theme"
+			],
+			[
+				"git add ",
+				"Git: Add All"
+			],
+			[
+				"sche",
+				"UI: Select Color Scheme"
+			],
+			[
+				"a fi",
+				"A File Icon: Revert to a Freshly Installed State"
+			],
+			[
+				"thee",
+				"UI: Select Theme"
+			],
+			[
+				"com",
+				"Git: Commit"
+			],
+			[
+				"git p",
+				"Git: Pull"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 262.0,
+		"history":
+		[
+			"asd"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/argparser"
+	],
+	"file_history":
+	[
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/argparser/src/new/Option.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/interactive-query/README.md",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/interactive-query/src/index.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/interactive-query/.eslintignore",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/interactive-query/package.json",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/interactive-query/tsconfig.json",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/noddy/src/CommandArgument.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/noddy/src/CommandLine.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/argparser/src/new/Parser.ts",
+		"/Users/leiwenpeng/Documents/rockontrol/webapp-iot/src-app/iot/digital-asset/components/AttrDetail.tsx",
+		"/Users/leiwenpeng/Documents/rockontrol/webapp-iot/src-app/iot/digital-asset/attributes/Database.tsx",
+		"/Users/leiwenpeng/.config/clash/Clash_1626943576.yaml",
+		"/Users/leiwenpeng/Documents/github/algorithm/num-sum/src/array_stack.rs",
+		"/Users/leiwenpeng/Documents/github/rushstack/libraries/node-core-library/src/FileSystem.ts",
+		"/Users/leiwenpeng/Documents/github/rushstack/apps/heft/src/cli/actions/BuildAction.ts",
+		"/Users/leiwenpeng/Documents/github/rushstack/apps/heft/src/stages/StageBase.ts",
+		"/Users/leiwenpeng/Documents/github/rushstack/apps/heft/src/stages/BuildStage.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/ntfs.sublime-project",
+		"/Users/leiwenpeng/Documents/github/ntfs/apps/gmf/src/start.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/apps/gmf/package.json",
+		"/Users/leiwenpeng/Library/Application Support/Sublime Text/Packages/Debugger/debugger.sublime-settings",
+		"/Users/leiwenpeng/Library/Application Support/Sublime Text/Packages/User/debugger.sublime-settings",
+		"/Users/leiwenpeng/Documents/github/ntfs/untitled.sublime-project",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/argparser/test/argparser.test.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/argparser/src/index.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/argparser/src/Command.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/argparser/.eslintrc.js",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/argparser/src/Parser.ts",
+		"/Users/leiwenpeng/Documents/rockontrol/digital-asset-visual/src-app/iot/data-dashboard/v2/canvas/Sidebar.tsx",
+		"/Users/leiwenpeng/Documents/rockontrol/digital-asset-visual/src-app/iot/data-dashboard/v1/panels/chart/IconCharts/SidebarIcon.tsx",
+		"/Users/leiwenpeng/Documents/rockontrol/digital-asset-visual/src-app/iot/data-dashboard/v2/canvas/configuration-diagram/index.tsx",
+		"/Users/leiwenpeng/Documents/github/algorithm/num-sum/src/new_array.rs",
+		"/Users/leiwenpeng/Documents/github/algorithm/num-sum/src/main.rs",
+		"/Users/leiwenpeng/Documents/github/algorithm/num-sum/src/lru.rs",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/src/internal/Json.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/src/PackageJson.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/src/internal/Fs.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/node_modules/.pnpm/@types+node@17.0.4/node_modules/@types/node/fs.d.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/src/internal/JsonType.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/src/internal/Debug.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/src/internal/Error.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/src/ImportModule.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/src/FileSystem.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/src/index.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/node_modules/.pnpm/@types+node@17.0.4/node_modules/@types/node/module.d.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/node_modules/.pnpm/@types+node@17.0.4/node_modules/@types/node/globals.d.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/src/internal/Terminal.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/src/internal/JsonFile.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-arg-parser/.eslintignore",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-arg-parser/dist/ArgumentsParser.js",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-arg-parser/tsconfig.json",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-arg-parser/dist/index.js",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-arg-parser/test/Parser.test.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-arg-parser/src/ParserResult.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-arg-parser/src/index.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/apps/mono-package/.eslintignore",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-arg-parser/src/Constants.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-arg-parser/src/Parser.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-arg-parser/package.json",
+		"/Users/leiwenpeng/Documents/github/ntfs/.prettierrc",
+		"/Users/leiwenpeng/Documents/github/generic_types_traits_and_lifetimes/src/main.rs",
+		"/Users/leiwenpeng/Documents/github/rushstack/libraries/rushell/src/Tokenizer.ts",
+		"/Users/leiwenpeng/Documents/github/rushstack/libraries/package-deps-hash/src/getRepoState.ts",
+		"/Users/leiwenpeng/Documents/github/rushstack/libraries/node-core-library/src/PrimitiveTypes.ts",
+		"/Users/leiwenpeng/Documents/github/rushstack/libraries/node-core-library/src/IPackageJson.ts",
+		"/Users/leiwenpeng/Documents/rockontrol/webapp-iot/src-app/iot/device-manage/Products/details/data-analysis/binary-develop/icons/FuncComponentIcon.tsx",
+		"/Users/leiwenpeng/Documents/rockontrol/webapp-iot/src-app/iot/device-manage/Products/details/data-analysis/binary-develop/dag/server-encode/form/BlockBox.tsx",
+		"/Users/leiwenpeng/Documents/rockontrol/webapp-iot/src-app/iot/device-manage/Products/details/data-analysis/binary-develop/dag/server-encode/DndFlow.tsx",
+		"/Users/leiwenpeng/Documents/rockontrol/webapp-iot/src-app/iot/device-manage/Products/details/data-analysis/binary-develop/dag/server-encode/DndRender.tsx",
+		"/Users/leiwenpeng/Documents/rockontrol/webapp-iot/src-app/iot/device-manage/Products/details/data-analysis/binary-develop/dag/server-encode/form/BitReflow.tsx",
+		"/Users/leiwenpeng/Documents/rockontrol/webapp-iot/src-app/iot/Bootstrap.tsx",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/command-line/src/base/BaseConfig.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-arg-parser/dist/ArgumentsParser.d.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/command-line/src/base/BaseSubCommand.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/command-line/src/base/ISubCommandLineInitOptionWithCallback.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/mono-package/src/sub-commands/InstallSubCommand.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/command-line/src/base/BaseParameter.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/mono-package/src/sub-commands/PublishSubCommand.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/command-line/src/CommandLineDefinition.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/command-line/src/base/BaseCommand.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/mono-package/src/cli/MonoPackages.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/repo-scripts/eslint-config/index.js",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/command-line/src/index.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/command-line/.eslintrc.js",
+		"/Users/leiwenpeng/Documents/github/ntfs/.editorconfig",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/src/JsonSchema.ts",
+		"/Users/leiwenpeng/Library/Application Support/Sublime Text/Packages/User/SideBarEnhancements/Open With/Side Bar.sublime-menu",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-arg-parser/.eslintrc.js",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-arg-parser/pnpm-lock.yaml",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/src/FileSys.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/mono-package/src/base/BasePackagesManager.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/mono-package/src/manager/pnpm/index.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/package.json",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/tsconfig.json",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/.eslintignore",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/.eslintrc.js",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/mono-package/src/manager/base/BasePackage.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/mono-package/src/manager/base/BasePackagesManager.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-arg-parser/src/ArgumentsParser.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/repo-scripts/eslint-config/utils.js",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-arg-parser/src/ArgumentsParserError.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/repo-scripts/eslint-config/package.json",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-arg-parser/src/ArgumentsParserResult.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-arg-parser/test/ArgumentsParser.test.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-arg-parser/src/ast/Ast.ts",
+		"/Users/leiwenpeng/Library/Application Support/Sublime Text/Packages/DocBlockr/Base File.sublime-settings",
+		"/Users/leiwenpeng/Documents/github/ntfs/repo-scripts/build-local/constants.js",
+		"/Users/leiwenpeng/Documents/github/ntfs/repo-scripts/build-local/README.md",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/command-line/src/parser/Parser.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/libs/node-utils-library/src/Import.ts",
+		"/Users/leiwenpeng/Documents/github/rushstack/libraries/ts-command-line/src/providers/CommandLineParameterProvider.ts",
+		"/Users/leiwenpeng/Documents/github/rushstack/heft-plugins/heft-dev-cert-plugin/.eslintrc.js",
+		"/Users/leiwenpeng/Documents/github/rushstack/apps/heft/src/pluginFramework/IHeftPlugin.ts",
+		"/Users/leiwenpeng/Documents/github/rushstack/apps/heft/src/pluginFramework/HeftSession.ts",
+		"/Users/leiwenpeng/Documents/github/rushstack/libraries/node-core-library/src/Constants.ts",
+		"/Users/leiwenpeng/Documents/github/rushstack/apps/rush-lib/src/pluginFramework/RushLifeCycle.ts",
+		"/Users/leiwenpeng/Documents/github/rushstack/apps/rush-lib/src/pluginFramework/RushSession.ts",
+		"/Users/leiwenpeng/Downloads/alacritty.yml",
+		"/Users/leiwenpeng/Documents/github/ntfs/toolkit/node-command/src/CommandTool.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/toolkit/node-command/src/Command.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/toolkit/node-command/package.json",
+		"/Users/leiwenpeng/Documents/github/ntfs/toolkit/node-command/src/LifeCycle.ts",
+		"/Users/leiwenpeng/Documents/github/ntfs/toolkit/node-command/src/index.ts",
+		"/Users/leiwenpeng/Documents/rockontrol/digital-asset-visual/src-app/iot/digital-asset/components/AttrDetail.tsx",
+		"/Users/leiwenpeng/Documents/rockontrol/digital-asset-visual/src-app/iot/config.ts",
+		"/Users/leiwenpeng/Library/Application Support/Sublime Text/Packages/TypeScript/TypeScript.sublime-settings",
+		"/Users/leiwenpeng/Library/Application Support/Sublime Text/Packages/TypeScript/TypeScriptReact.sublime-settings",
+		"/Users/leiwenpeng/Library/Application Support/Sublime Text/Packages/TypeScript/Preferences.sublime-settings"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 156.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": true,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"scrollbar_highlights": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"use_gitignore": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 73.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.Debugger":
+	{
+		"height": 277.0
+	},
+	"output.GitSavvy":
+	{
+		"height": 172.0
+	},
+	"output.Protocol":
+	{
+		"height": 184.0
+	},
+	"output.Protocol(4336357584)":
+	{
+		"height": 0.0
+	},
+	"output.Protocol(4338369248)":
+	{
+		"height": 0.0
+	},
+	"output.Protocol(4351266672)":
+	{
+		"height": 0.0
+	},
+	"output.Protocol(4378400176)":
+	{
+		"height": 0.0
+	},
+	"output.Terminus":
+	{
+		"height": 312.0
+	},
+	"output.diagnostics":
+	{
+		"height": 200.0
+	},
+	"output.doc":
+	{
+		"height": 0.0
+	},
+	"output.exec":
+	{
+		"height": 192.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.git":
+	{
+		"height": 227.0
+	},
+	"output.language servers":
+	{
+		"height": 295.0
+	},
+	"output.mdpopups":
+	{
+		"height": 0.0
+	},
+	"output.references":
+	{
+		"height": 329.0
+	},
+	"pinned_build_system": "",
+	"project": "debugger.sublime-project",
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"config",
+				"src-app/iot/config.ts"
+			],
+			[
+				"index.ts",
+				"src-clients/iot-core-proxy-gateway/index.ts"
+			],
+			[
+				"tree/index",
+				"src-app/iot/data-dashboard/v2/canvas/data-adaptor/tree/index.tsx"
+			],
+			[
+				"VirtualTable",
+				"src-app/iot/components/table/VirtualTable.tsx"
+			],
+			[
+				"AttrDetail",
+				"src-app/iot/digital-asset/components/AttrDetail.tsx"
+			],
+			[
+				"package",
+				"package.json"
+			],
+			[
+				"canvas/data-ada",
+				"src-app/iot/data-dashboard/v2/canvas/data-adaptor/index.ts"
+			],
+			[
+				"SimpleCompo",
+				"src-app/iot/data-dashboard/v2/canvas/data-adaptor/components/SimpleComponentList.tsx"
+			],
+			[
+				"data-adaptor/main/TableTypeConfigurationPanel.tsx",
+				"src-app/iot/data-dashboard/v2/canvas/data-adaptor/main/TableTypeConfigurationPanel.tsx"
+			],
+			[
+				"canvas/data-adaptor/main/index.tsx",
+				"src-app/iot/data-dashboard/v2/canvas/data-adaptor/main/index.tsx"
+			],
+			[
+				"canvas/inter",
+				"src-app/iot/data-dashboard/v2/canvas/interface.ts"
+			],
+			[
+				"useGetData",
+				"src-app/iot/data-dashboard/v2/canvas/g2/useGetData.ts"
+			],
+			[
+				"canvas/interface",
+				"src-app/iot/data-dashboard/v2/canvas/interface.ts"
+			],
+			[
+				"v2/canvas/data-adaptor/main/index.tsx",
+				"src-app/iot/data-dashboard/v2/canvas/data-adaptor/main/index.tsx"
+			],
+			[
+				"/main/index.tsx",
+				"src-app/iot/main/index.tsx"
+			],
+			[
+				"components/DynamicTableColumnConfigPanel",
+				"src-app/iot/data-dashboard/v2/canvas/data-adaptor/components/DynamicTableColumnConfigPanel.tsx"
+			],
+			[
+				"Tree",
+				"src-app/iot/digital-asset/components/TreeList.tsx"
+			],
+			[
+				"canvas/interface.ts",
+				"src-app/iot/data-dashboard/v2/canvas/interface.ts"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 271.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
