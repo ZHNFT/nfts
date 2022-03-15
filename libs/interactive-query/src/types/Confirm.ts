@@ -29,7 +29,7 @@ export class Confirm extends Query<boolean> {
             `${this._config.summary}${
               this._input.toLowerCase().startsWith('y')
                 ? Colors.cyan('Yes')
-                : Colors.bold(Colors.red('No'))
+                : Colors.red('No')
             }`
           );
           resolve(this._input.toLowerCase().startsWith('y'));

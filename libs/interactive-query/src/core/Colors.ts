@@ -45,20 +45,11 @@ export class Colors {
   }
 
   public static bold(text: string): string {
-    return Colors._print(text, 0, 0, [TextEffects.bold]);
+    return Colors._print(text, 0, 0);
   }
 
-  private static _print(text: string, textColor = 0, bgColor = 0, effects = [0]): string {
-    const {
-      text: relText,
-      textColor: prevTextColor,
-      bgColor: prevBgColor,
-      effects: prevEffects
-    } = Colors._extractBeforeJoint(text);
-
-    return `\\x1b[${bgColor ?? prevBgColor};${textColor ?? prevTextColor};${effects.join(
-      ';'
-    )}m${relText}\\x1b[0m`;
+  private static _print(text: string, textColor = 0, bgColor = 0): string {
+    return `\x1b[${bgColor};${textColor}m${text}\x1b[0m`;
   }
 
   private static _extractBeforeJoint(text: string): {

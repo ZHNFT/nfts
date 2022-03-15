@@ -8,7 +8,7 @@ import * as readline from 'readline';
 export abstract class Query<TAnswer extends unknown> {
   protected _rl: readline.Interface;
 
-  constructor({ prompt }: { prompt?: string }) {
+  protected constructor({ prompt }: { prompt?: string }) {
     this._rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
