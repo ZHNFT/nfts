@@ -23,16 +23,21 @@ export class Confirm extends Query<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       this._rl
         .on('close', () => {
-          moveCursor(process.stdin, 0, -1);
-          clearScreenDown(process.stdin);
-          process.stdout.write(
-            `${this._config.summary}${
-              this._input.toLowerCase().startsWith('y')
-                ? Colors.cyan('Yes')
-                : Colors.red('No')
-            }`
-          );
-          resolve(this._input.toLowerCase().startsWith('y'));
+          this._screen
+            .upLine()
+            .clearScreenDown()
+            .hardWrite(
+              `${this._config.summary}${
+                this._isTruthyInput() ? Colors.cyan('Yes') : Colors.red('No')
+              }`,
+              e => {
+                if (e) {
+                  reject(e);
+                } else {
+                  resolve(this._isTruthyInput());
+                }
+              }
+            );
         })
         .on('error', (e: Error) => {
           reject(e);
@@ -40,15 +45,18 @@ export class Confirm extends Query<boolean> {
     });
   }
 
+  private _isTruthyInput = (): boolean => this._input.toLowerCase().startsWith('y');
+
   onKeyPress(input: string, key: Key): void {
     if (Keys.isEnterKey(key.sequence)) {
       this._rl.pause();
       this._rl.emit('close');
     } else {
       this._input += input ?? '';
-      moveCursor(process.stdin, -this._input.length, 0);
-      clearLine(process.stdin, 1);
-      this._rl.write(this._input);
+      this._screen
+        .moveCursorToLineStart(this._input.length)
+        .clearScreenDown()
+        .write(this._input);
     }
   }
 }

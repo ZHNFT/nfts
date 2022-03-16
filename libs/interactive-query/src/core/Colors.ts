@@ -20,6 +20,10 @@ export enum BgColorNumbers {
   white = 47
 }
 
+const prefix = '\x1b[';
+const suffix = '\x1b[0m';
+const textWrapper = (text?: string) => `m${text}`;
+
 export enum TextEffects {
   none = 0,
   bold = 1,
@@ -29,48 +33,27 @@ export enum TextEffects {
 }
 
 export class Colors {
-  private static _regex =
-    /^\\x1b\[(?<bgColor>\d+);(?<textColor>\d+);(?<effects>\w+)m(?<text>\w.+)\\x1b\[0m$/;
-
   public static red(text: string): string {
-    return Colors._print(text, TextColorNumbers.red);
+    return Colors.print(text, [TextColorNumbers.red]);
   }
 
   public static cyan(text: string): string {
-    return Colors._print(text, TextColorNumbers.cyan);
+    return Colors.print(text, [TextColorNumbers.cyan]);
   }
 
   public static yellow(text: string): string {
-    return Colors._print(text, TextColorNumbers.yellow);
+    return Colors.print(text, [TextColorNumbers.yellow]);
+  }
+
+  public static green(text: string): string {
+    return Colors.print(text, [TextColorNumbers.green]);
   }
 
   public static bold(text: string): string {
-    return Colors._print(text, 0, 0);
+    return Colors.print(text, [TextEffects.bold]);
   }
 
-  private static _print(text: string, textColor = 0, bgColor = 0): string {
-    return `\x1b[${bgColor};${textColor}m${text}\x1b[0m`;
-  }
-
-  private static _extractBeforeJoint(text: string): {
-    effects?: number[];
-    textColor?: number;
-    bgColor?: number;
-    text: string;
-  } {
-    const result = Colors._regex.exec(text);
-
-    if (!result) {
-      return {
-        text
-      };
-    }
-
-    return {
-      text: result.groups.text,
-      textColor: Number(result.groups.textColor),
-      bgColor: Number(result.groups.bgColor),
-      effects: result.groups.effects.split(';').map(effect => Number(effect))
-    };
+  public static print(text: string, effects: number[]): string {
+    return `${prefix}${effects.join(';')}${textWrapper(text)}${suffix}`;
   }
 }
