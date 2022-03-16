@@ -1,9 +1,15 @@
 import * as readline from 'readline';
 
+export enum InlineClearType {
+  Left = -1,
+  Right = 1,
+  Entire = 0
+}
+
 export class Screen {
-  private _rl: readline.Interface;
-  private _stdin: NodeJS.Process['stdin'];
-  private _stdout: NodeJS.Process['stdout'];
+  private readonly _rl: readline.Interface;
+  private readonly _stdin: NodeJS.Process['stdin'];
+  private readonly _stdout: NodeJS.Process['stdout'];
 
   constructor({
     stdin = process.stdin,
@@ -20,34 +26,76 @@ export class Screen {
   }
 
   nextLine(): Screen {
-    this.moveCursorToLineStart(1);
+    this.goToLine(1);
 
     return this;
   }
 
+  /**
+   * @remark
+   *  相对于光标当前的位置对光标进行上下移动，
+   *  偏移数值如下所示；
+   *  |--- -2
+   *  |--- -1
+   *  |---  0 <- 当前光标位置
+   *  |---  1
+   *  |---  2
+   * @param lineOffset
+   */
+  goToLine(lineOffset: number): Screen {
+    readline.moveCursor(this._stdin, 0, lineOffset);
+
+    return this;
+  }
+
+  /**
+   * @remark
+   *  光标向上移动；
+   */
   upLine(): Screen {
-    this.moveCursorToLineStart(-1);
+    this.goToLine(-1);
 
     return this;
   }
 
-  moveCursorToLineStart(lineOffset: number): Screen {
-    const prompt = this._rl.getPrompt();
-    readline.moveCursor(this._stdin, -(prompt.length - lineOffset), 0);
+  /**
+   * @remark
+   *  光标在行内移动；
+   * @param lineOffset
+   */
+  moveCursorInline(lineOffset: number): Screen {
+    readline.moveCursor(this._stdin, lineOffset, 0);
 
     return this;
   }
 
+  /**
+   * @remark
+   *  清楚光标所在行的数据；
+   *  target
+   *    -1：清除光标左侧；
+   *     0：清除光标所在行的所有数据；
+   *     1：清除右侧；
+   * @param target
+   */
+  clearInline(target: InlineClearType): Screen {
+    readline.clearLine(this._stdin, target);
+
+    return this;
+  }
+
+  /**
+   * @remark
+   *  清屏
+   */
   clearScreen(): void {
     //
   }
 
-  resetLineCursor(lineOffset: number): Screen {
-    readline.moveCursor(this._stdin, -lineOffset, 0);
-    readline.clearLine(this._stdin, 1);
-    return this;
-  }
-
+  /**
+   * @remark
+   *  清除光标下方所有数据，不包括光标所在行；
+   */
   clearScreenDown(): Screen {
     const { cols } = this._rl.getCursorPos();
     readline.moveCursor(this._stdin, -cols, 0);
@@ -56,12 +104,23 @@ export class Screen {
     return this;
   }
 
+  /**
+   * @remark
+   *  向 readline.Interface 写入数据
+   * @param text
+   */
   write(text: string): Screen {
     this._rl.write(text);
 
     return this;
   }
 
+  /**
+   * @remark
+   *  向 stdin 写入数据
+   * @param text
+   * @param cb
+   */
   hardWrite(text: string, cb?: (e?: Error) => void): Screen {
     this._stdin.write(text, cb);
 

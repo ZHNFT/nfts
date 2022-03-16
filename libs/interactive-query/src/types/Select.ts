@@ -1,8 +1,9 @@
-import { clearLine, Key, moveCursor, clearScreenDown } from 'readline';
+import { clearLine, clearScreenDown, Key, moveCursor } from 'readline';
 import { Query } from '../core/Query';
 import { Keys } from '../core/Keys';
 import { Colors } from '../core/Colors';
 import { Shapes } from '../core/Shapes';
+import { InlineClearType } from '../core/Screen';
 
 export interface ISelectConfig {
   summary: string;
@@ -12,7 +13,7 @@ export interface ISelectConfig {
 }
 
 export class Select extends Query<string> {
-  private _config: ISelectConfig;
+  private readonly _config: ISelectConfig;
   private _cursorIndex = 0;
   private _output = '';
 
@@ -37,7 +38,17 @@ export class Select extends Query<string> {
 
           const item = this._config.alternatives[this._cursorIndex];
 
-          process.stdout.write(`${this._config.summary}${Colors.cyan(item.name)}`);
+          this._screen
+            .goToLine(0)
+            .clearInline(InlineClearType.Right)
+            .hardWrite(`${this._config.summary}${Colors.cyan(item.name)}`, e => {
+              if (e) {
+                resolve(item.name);
+              } else {
+                reject(e);
+              }
+            });
+
           resolve(item.name);
         })
         .on('error', (e: Error) => {
@@ -69,7 +80,12 @@ export class Select extends Query<string> {
   }
 
   private _nextCursorIndex(type: 'add' | 'minus') {
-    this._cursorIndex = type == 'add' ? this._cursorIndex + 1 : this._cursorIndex - 1;
+    this._cursorIndex =
+      type == 'add'
+        ? this._cursorIndex + 1
+        : this._cursorIndex - 1 < 0
+        ? this._config.alternatives.length - 1
+        : this._cursorIndex - 1;
     this._cursorIndex = this._cursorIndex % this._config.alternatives.length;
   }
 
@@ -93,13 +109,14 @@ export class Select extends Query<string> {
   private _writeOutput() {
     const { cols } = this._rl.getCursorPos();
 
-    moveCursor(
-      process.stdin,
-      -cols,
-      this._init ? 0 : -(this._config.alternatives.length - 1)
-    );
-    clearScreenDown(process.stdin);
-    this._rl.write(this._output);
+    if (this._init) {
+      this._screen.moveCursorInline(-cols);
+    } else {
+      this._screen
+        .goToLine(-(this._config.alternatives.length - 1))
+        .moveCursorInline(-cols);
+    }
+    this._screen.clearScreenDown().write(this._output);
     this._init = false;
   }
 }

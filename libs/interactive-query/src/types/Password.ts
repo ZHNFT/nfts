@@ -1,7 +1,8 @@
-import { clearLine, clearScreenDown, Key, moveCursor } from 'readline';
+import { Key } from 'readline';
 import { Query } from '../core/Query';
 import { Keys } from '../core/Keys';
 import { Colors } from '../core/Colors';
+import { InlineClearType } from '../core/Screen';
 
 export interface IPasswordConfig {
   summary: string;
@@ -47,12 +48,12 @@ export class Password extends Query<string> {
   onKeyPress(input: string, key: Key): void {
     if (Keys.isEnterKey(key.sequence)) {
       this._rl.pause();
-      this._rl.emit('close');
+      this._rl.close();
     } else {
       this._input += input ?? '';
       this._screen
-        .moveCursorToLineStart(this._input.length)
-        .clearScreenDown()
+        .moveCursorInline(-this._input.length)
+        .clearInline(InlineClearType.Right)
         .write(this._maskPassword());
     }
   }

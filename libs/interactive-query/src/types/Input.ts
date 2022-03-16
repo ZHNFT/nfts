@@ -1,7 +1,8 @@
-import { clearLine, Key, moveCursor } from 'readline';
+import { Key } from 'readline';
 import { Query } from '../core/Query';
 import { Keys } from '../core/Keys';
 import { Colors } from '../core/Colors';
+import { InlineClearType } from '../core/Screen';
 
 export interface IInputConfig {
   summary: string;
@@ -23,7 +24,7 @@ export class Input extends Query<string> {
         .on('close', () => {
           this._screen
             .upLine()
-            .clearScreenDown()
+            .clearInline(InlineClearType.Right)
             .hardWrite(`${this._config.summary}${Colors.cyan(this._input)}`, e => {
               if (e) {
                 reject(e);
@@ -44,7 +45,10 @@ export class Input extends Query<string> {
       this._rl.close();
     } else {
       this._input += input ?? '';
-      this._screen.resetLineCursor(this._input.length).write(this._input);
+      this._screen
+        .moveCursorInline(-this._input.length)
+        .clearInline(InlineClearType.Right)
+        .write(this._input);
     }
   }
 }
