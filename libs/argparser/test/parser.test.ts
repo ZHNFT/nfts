@@ -1,6 +1,5 @@
 import { Parser, SubParser } from '../src/new/Parser';
 import { OptionTypes } from '../src/new/Option';
-import { parse } from 'ts-jest';
 
 describe('parser', function () {
   test('test-new-parser', () => {
@@ -9,7 +8,7 @@ describe('parser', function () {
       description: 'gmf my my my my my my'
     });
 
-    parser.addParser({ name: 'dev', description: 'dev' }).addParser(
+    parser.addParser({ name: 'dev', description: 'development' }).addParser(
       new SubParser({ name: 'prod', description: 'production' })
         .addOption({
           name: '--config',

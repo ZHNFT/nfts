@@ -1,5 +1,5 @@
 import * as process from 'process';
-import { IParserOptionDefinition, ParserOption } from './Option';
+import { IParserOptionDefinition, ParserOptionAbstract } from './Option';
 
 export interface IParserConfigOptions {
   allowUnknownOptions?: boolean;
@@ -16,7 +16,6 @@ export interface IParserDefinition {
  * todo
  *  -[ ] 支持从 rc 文件中获取命令参数
  * */
-
 export class Parser {
   private readonly _name: string;
   private readonly _description: string;
@@ -24,7 +23,7 @@ export class Parser {
   private _lastParser: Parser;
   private _executeParser: Parser | SubParser;
   private _parsers: SubParser[];
-  private _parserOptions: ParserOption[];
+  private _parserOptions: ParserOptionAbstract[];
   private _executeFile: string;
   private _args: string[];
   private _parserOptionValueByName: Map<
@@ -77,7 +76,7 @@ export class Parser {
   }
 
   public addOption(definition: IParserOptionDefinition): Parser | SubParser {
-    this._parserOptions.push(ParserOption.optionFactory(definition));
+    this._parserOptions.push(ParserOptionAbstract.optionFactory(definition));
     return this._lastParser;
   }
 
@@ -174,7 +173,7 @@ export class Parser {
     return [index + 1, _maybeValue];
   }
 
-  private _findOption(name: string): ParserOption | undefined {
+  private _findOption(name: string): ParserOptionAbstract | undefined {
     return this._parserOptions.find(_opt => _opt.name === name);
   }
 
