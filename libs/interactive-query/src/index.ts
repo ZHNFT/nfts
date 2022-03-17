@@ -3,7 +3,6 @@ import { IInputConfig, Input } from './types/Input';
 import { IPasswordConfig, Password } from './types/Password';
 import { ISelectConfig, Select } from './types/Select';
 import { QueriesManager } from './QueryManager';
-import * as process from 'process';
 
 export type TQueryConfig = (
   | IConfirmConfig
@@ -49,3 +48,5 @@ export { Confirm, IConfirmConfig };
 export { IInputConfig, Input };
 export { IPasswordConfig, Password };
 export { ISelectConfig, Select };
+export { Screen } from './core/Screen';
+export { Colors } from './core/Colors';
