@@ -50,3 +50,4 @@ export { IPasswordConfig, Password };
 export { ISelectConfig, Select };
 export { Screen } from './core/Screen';
 export { Colors } from './core/Colors';
+export { Query } from './core/Query';

@@ -11,7 +11,10 @@ export class QueriesManager {
     const Ctor = this._ctors.get(type);
 
     if (!Ctor) {
-      throw new Error(`No constructor found for type ${type}`);
+      throw new Error(`No constructor found for type ${type}
+      Using 'InteractiveQuery.registerQuery(queryType, QueryConstructor)'
+      to register you own query type.
+      `);
     }
 
     return new Ctor(options);
