@@ -1,4 +1,51 @@
-export { Confirm, IConfirmConfig } from './types/Confirm';
-export { Input, IInputConfig } from './types/Input';
-export { Password, IPasswordConfig } from './types/Password';
-export { Select, ISelectConfig } from './types/Select';
+import { Confirm, IConfirmConfig } from './types/Confirm';
+import { IInputConfig, Input } from './types/Input';
+import { IPasswordConfig, Password } from './types/Password';
+import { ISelectConfig, Select } from './types/Select';
+import { QueriesManager } from './QueryManager';
+import * as process from 'process';
+
+export type TQueryConfig = (
+  | IConfirmConfig
+  | IInputConfig
+  | IPasswordConfig
+  | ISelectConfig
+) & { type: 'confirm' | 'input' | 'password' | 'select' };
+
+// Query Manager
+export class InteractiveQuery extends QueriesManager {
+  private readonly _queries: TQueryConfig[] = [];
+
+  constructor(queries: TQueryConfig[]) {
+    super();
+
+    this.registerQuery('input', Input);
+    this.registerQuery('confirm', Confirm);
+    this.registerQuery('password', Password);
+    this.registerQuery('select', Select);
+
+    this._queries = queries;
+  }
+
+  public async prompt<T>(): Promise<T> {
+    const answers = {} as T;
+
+    for await (const _query of this._queries) {
+      const { type, ...restOptions } = _query;
+      const _instance = this.createQueryInstance(type, restOptions);
+      const _answer = await _instance.execute();
+      _instance.screen
+        .nextLine(() => {
+          answers[restOptions.name] = _answer;
+        })
+        .clearInline(-1);
+    }
+
+    return answers;
+  }
+}
+
+export { Confirm, IConfirmConfig };
+export { IInputConfig, Input };
+export { IPasswordConfig, Password };
+export { ISelectConfig, Select };

@@ -1,4 +1,4 @@
-import { clearLine, clearScreenDown, Key, moveCursor } from 'readline';
+import { clearLine, Key, moveCursor } from 'readline';
 import { Query } from '../core/Query';
 import { Keys } from '../core/Keys';
 import { Colors } from '../core/Colors';
@@ -6,6 +6,7 @@ import { Shapes } from '../core/Shapes';
 import { InlineClearType } from '../core/Screen';
 
 export interface ISelectConfig {
+  name: string;
   summary: string;
   defaultValue?: string;
   multi?: boolean;
@@ -17,31 +18,37 @@ export class Select extends Query<string> {
   private _cursorIndex = 0;
   private _output = '';
 
-  private _selectedIndex: number[] = [];
   private _init = true;
 
   constructor(config: ISelectConfig) {
     super({ prompt: config.summary });
+    if (
+      typeof config.alternatives === 'undefined' ||
+      !Array.isArray(config.alternatives)
+    ) {
+      throw Error('Expected `alternatives` to be an array');
+    }
     this._config = config;
   }
 
   execute(): Promise<string> {
-    this._rl.prompt();
-    moveCursor(process.stdin, 0, 1);
-    this._generateOutput();
-    this._writeOutput();
+    this.rl.prompt();
+    this.screen.nextLine(() => {
+      this._generateOutput();
+      this._writeOutput();
+    });
     return new Promise<string>((resolve, reject) => {
-      this._rl
+      this.rl
         .on('close', () => {
           moveCursor(process.stdin, 0, -this._config.alternatives.length - 1);
           clearLine(process.stdin, 1);
 
           const item = this._config.alternatives[this._cursorIndex];
 
-          this._screen
+          this.screen
             .goToLine(0)
             .clearInline(InlineClearType.Right)
-            .hardWrite(`${this._config.summary}${Colors.cyan(item.name)}`, e => {
+            .hardWrite(`${this._config.summary} ${Colors.cyan(item.name)}`, e => {
               if (e) {
                 resolve(item.name);
               } else {
@@ -70,8 +77,8 @@ export class Select extends Query<string> {
       if (this._config.multi) {
         //
       } else {
-        this._rl.pause();
-        this._rl.close();
+        this.rl.pause();
+        this.rl.close();
       }
     } else {
       this._generateOutput();
@@ -107,16 +114,16 @@ export class Select extends Query<string> {
   }
 
   private _writeOutput() {
-    const { cols } = this._rl.getCursorPos();
+    const { cols } = this.rl.getCursorPos();
 
     if (this._init) {
-      this._screen.moveCursorInline(-cols);
+      this.screen.moveCursorInline(-cols);
     } else {
-      this._screen
+      this.screen
         .goToLine(-(this._config.alternatives.length - 1))
         .moveCursorInline(-cols);
     }
-    this._screen.clearScreenDown().write(this._output);
+    this.screen.clearScreenDown().write(this._output);
     this._init = false;
   }
 }

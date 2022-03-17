@@ -5,14 +5,16 @@
     "build": "npx tsc",
     "dev": "npx tsc --watch --declaration --declarationDir ./dist",
     "dts": "npx tsc --declaration --emitDeclarationOnly --declarationDir ./dist",
-    "test": "jest"
+    "test": "jest",
+    "ask": "node ./test/Ask.demo.js"
   },
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node"
   },
   "//devDependencies": {
-    "@ntfs/eslint-config": "workspace:*"
+    "@ntfs/eslint-config": "workspace:*",
+    "@ntfs/hook": "workspace:*"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",

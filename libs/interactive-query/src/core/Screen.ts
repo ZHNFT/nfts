@@ -6,6 +6,8 @@ export enum InlineClearType {
   Entire = 0
 }
 
+export interface IScreenSize extends readline.CursorPos {}
+
 export class Screen {
   private readonly _rl: readline.Interface;
   private readonly _stdin: NodeJS.Process['stdin'];
@@ -25,8 +27,15 @@ export class Screen {
     this._rl = rl;
   }
 
-  nextLine(): Screen {
-    this.goToLine(1);
+  public get screenSize(): IScreenSize {
+    return {
+      rows: this._stdout.rows,
+      cols: this._stdout.columns
+    };
+  }
+
+  nextLine(cb?: () => void): Screen {
+    this.goToLine(1, cb);
 
     return this;
   }
@@ -41,9 +50,10 @@ export class Screen {
    *  |---  1
    *  |---  2
    * @param lineOffset
+   * @param cb
    */
-  goToLine(lineOffset: number): Screen {
-    readline.moveCursor(this._stdin, 0, lineOffset);
+  goToLine(lineOffset: number, cb?: () => void): Screen {
+    readline.moveCursor(this._stdin, 0, lineOffset, cb);
 
     return this;
   }
@@ -52,8 +62,8 @@ export class Screen {
    * @remark
    *  光标向上移动；
    */
-  upLine(): Screen {
-    this.goToLine(-1);
+  upLine(cb?: () => void): Screen {
+    this.goToLine(-1, cb);
 
     return this;
   }

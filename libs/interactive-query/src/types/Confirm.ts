@@ -5,6 +5,7 @@ import { Colors } from '../core/Colors';
 import { InlineClearType } from '../core/Screen';
 
 export interface IConfirmConfig {
+  name: string;
   summary: string;
 }
 
@@ -24,15 +25,15 @@ export class Confirm extends Query<boolean> {
   }
 
   execute(): Promise<boolean> {
-    this._rl.prompt();
+    this.rl.prompt();
     return new Promise<boolean>((resolve, reject) => {
-      this._rl
+      this.rl
         .on('close', () => {
-          this._screen
+          this.screen
             .upLine()
             .clearInline(1)
             .hardWrite(
-              `${this._config.summary}${
+              `${this._config.summary} ${
                 this._isTruthyInput() ? Colors.cyan('Yes') : Colors.red('No')
               }`,
               e => {
@@ -54,11 +55,11 @@ export class Confirm extends Query<boolean> {
 
   onKeyPress(input: string, key: Key): void {
     if (Keys.isEnterKey(key.sequence)) {
-      this._rl.pause();
-      this._rl.close();
+      this.rl.pause();
+      this.rl.close();
     } else {
       this._input += input ?? '';
-      this._screen
+      this.screen
         .moveCursorInline(-this._offset)
         .clearInline(InlineClearType.Right)
         .write(this._input);

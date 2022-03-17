@@ -5,6 +5,7 @@ import { Colors } from '../core/Colors';
 import { InlineClearType } from '../core/Screen';
 
 export interface IInputConfig {
+  name: string;
   summary: string;
 }
 
@@ -18,14 +19,14 @@ export class Input extends Query<string> {
   }
 
   execute(): Promise<string> {
-    this._rl.prompt();
+    this.rl.prompt();
     return new Promise<string>((resolve, reject) => {
-      this._rl
+      this.rl
         .on('close', () => {
-          this._screen
+          this.screen
             .upLine()
             .clearInline(InlineClearType.Right)
-            .hardWrite(`${this._config.summary}${Colors.cyan(this._input)}`, e => {
+            .hardWrite(`${this._config.summary} ${Colors.cyan(this._input)}`, e => {
               if (e) {
                 reject(e);
               } else {
@@ -41,11 +42,11 @@ export class Input extends Query<string> {
 
   onKeyPress(input: string, key: Key): void {
     if (Keys.isEnterKey(key.sequence)) {
-      this._rl.pause();
-      this._rl.close();
+      this.rl.pause();
+      this.rl.close();
     } else {
       this._input += input ?? '';
-      this._screen
+      this.screen
         .moveCursorInline(-this._input.length)
         .clearInline(InlineClearType.Right)
         .write(this._input);
