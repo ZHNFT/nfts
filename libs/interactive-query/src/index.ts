@@ -33,11 +33,8 @@ export class InteractiveQuery extends QueriesManager {
       const { type, ...restOptions } = _query;
       const _instance = this.createQueryInstance(type, restOptions);
       const _answer = await _instance.execute();
-      _instance.screen
-        .nextLine(() => {
-          answers[restOptions.name] = _answer;
-        })
-        .clearInline(-1);
+      _instance.screen.nextLine().moveCursorInline(0);
+      answers[restOptions.name] = _answer;
     }
 
     return answers;
