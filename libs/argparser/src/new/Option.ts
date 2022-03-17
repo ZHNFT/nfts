@@ -98,7 +98,7 @@ export abstract class ParserOptionAbstract implements IParserOptionDefinition {
   }
 }
 
-class StringOption extends ParserOptionAbstract {
+export class StringOption extends ParserOptionAbstract {
   value?: string;
   readonly type = OptionTypes.String;
   public validate(): void {
@@ -106,14 +106,14 @@ class StringOption extends ParserOptionAbstract {
   }
 }
 
-class FlagOption extends ParserOptionAbstract {
+export class FlagOption extends ParserOptionAbstract {
   value?: boolean;
   validate(): void {
     this._requireValidation(this.value);
   }
 }
 
-class IntOption extends ParserOptionAbstract {
+export class IntOption extends ParserOptionAbstract {
   value?: number;
   validate(): void {
     this._requireValidation(this.value);
@@ -124,7 +124,7 @@ class IntOption extends ParserOptionAbstract {
   }
 }
 
-class FloatOption extends ParserOptionAbstract {
+export class FloatOption extends ParserOptionAbstract {
   value?: number;
   validate(): void {
     this._requireValidation(this.value);
@@ -135,7 +135,7 @@ class FloatOption extends ParserOptionAbstract {
   }
 }
 
-class ChoicesOption extends ParserOptionAbstract {
+export class ChoicesOption extends ParserOptionAbstract {
   value?: string;
   validate(): void {
     this._requireValidation(this.value);
@@ -154,7 +154,7 @@ class ChoicesOption extends ParserOptionAbstract {
   }
 }
 
-class ArrayOption extends ParserOptionAbstract {
+export class ArrayOption extends ParserOptionAbstract {
   value?: string[];
   validate(): void {
     this._requireValidation(this.value);

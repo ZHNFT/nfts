@@ -1,3 +1,8 @@
-import { CommandLineTool } from './cli/CommandLineTool';
+import { CLI } from './cli/CLI';
 
-new CommandLineTool().analysisConfig().execute();
+new CLI().run().then(
+  () => {
+    console.log('Finished');
+  },
+  e => console.log(e)
+);

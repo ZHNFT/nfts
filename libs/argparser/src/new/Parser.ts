@@ -50,8 +50,8 @@ export class Parser {
     this._parserOptions = [];
     this._parserOptionValueByName = new Map();
 
-    if (this._parser) {
-      return this._parser;
+    if (this.parser) {
+      return this.parser;
     }
   }
 
@@ -62,15 +62,21 @@ export class Parser {
    * @public
    */
   public addParser(parserDefinition: IParserDefinition | SubParser): Parser | SubParser {
-    let parser: SubParser =
-      parserDefinition instanceof SubParser
-        ? parserDefinition
-        : new SubParser(parserDefinition);
+    const isSubParserInstance = parserDefinition instanceof SubParser;
+
+    let parser: SubParser = isSubParserInstance
+      ? parserDefinition
+      : new SubParser(parserDefinition);
 
     // chain-up
     parser.parent = this._lastParser;
     this._parsers.push(parser);
-    this._lastParser = parser;
+
+    if (isSubParserInstance) {
+      this._lastParser = this;
+    } else {
+      this._lastParser = parser;
+    }
 
     return this._lastParser;
   }
@@ -101,7 +107,7 @@ export class Parser {
       }
     }
 
-    this._executeParser = this._parser;
+    this._executeParser = this.parser;
 
     for (const action of actions) {
       this._executeParser = this._executeParser._findParser(action);
@@ -110,7 +116,7 @@ export class Parser {
       }
     }
 
-    this._parser._parse(args, index);
+    this.parser._parse(args, index);
   }
 
   private _parse(args?: string[], startIndex: number = 0): void {
@@ -181,7 +187,10 @@ export class Parser {
     return this._parsers.find(_parser => _parser.name === name);
   }
 
-  private get _parser(): Parser {
+  /**
+   * 顶层的parser
+   * */
+  public get parser(): Parser {
     let _parser = this._lastParser;
 
     while (_parser instanceof SubParser) {
