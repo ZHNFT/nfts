@@ -94,13 +94,12 @@ export default class CommandTool extends Parser {
   }
 
   public async exec(): Promise<void> {
-    const _executedParser = this.executedParser;
+    const { _: actionName } = this.options<{ _: string }>();
 
-    if (_executedParser) {
-      const { name } = _executedParser;
-      const lifecycle = this._lifecycle[name];
+    if (actionName) {
+      const lifecycle = this._lifecycle[actionName];
       if (lifecycle) {
-        await lifecycle.loadPlugins(name, this._pluginManager);
+        await lifecycle.loadPlugins(actionName, this._pluginManager);
       }
       await this._pluginManager.initPlugins();
       await this._lifecycle.build.hook.emitHook('before', { mock: 'mock' });

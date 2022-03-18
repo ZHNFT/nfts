@@ -11,12 +11,6 @@ export interface PluginContext {
   };
 }
 
-/**
- * 如何实现插件管理；
- *  1. 插件管理与生命周期有联系，
- *     插件执行的前提是挂在声明周期的某个阶段。
- *  2.
- */
 export default class PluginManager<T> {
   private readonly _pluginContext: T;
   private readonly _plugins: Plugin<T>[];

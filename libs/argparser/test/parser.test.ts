@@ -1,16 +1,8 @@
 import { Parser, SubParser } from '../src/new/Parser';
 import { OptionTypes } from '../src/new/Option';
 
-describe('parser', function () {
-  test('test-new-parser', () => {
-    const parser = new Parser({
-      name: 'gmf',
-      description: 'gmf my my my my my my'
-    });
-
-    parser.addParser({ name: 'dev', description: 'development' }).addParser(
-      new SubParser({ name: 'prod', description: 'production' })
-        .addOption({
+/*
+.addOption({
           name: '--config',
           usage: 'Find config files',
           required: true,
@@ -22,11 +14,50 @@ describe('parser', function () {
           required: false,
           type: OptionTypes.Flag
         })
-    );
+ */
 
-    parser.parse(['dev', 'prod', '--config', '../../aaa', '--my-local=123']);
+describe('parser', function () {
+	test('test-new-parser', () => {
+		const parser = new Parser({
+			name: 'gmf',
+			description: 'gmf my my my my my my'
+		});
 
-    const option = parser.options();
-    console.log(option);
-  });
+		const dev = new SubParser({
+			name: 'dev',
+			description: 'Run development command'
+		});
+
+		const build = new SubParser({
+			name: 'build',
+			description: 'Run build command'
+		});
+
+		build.addOption({
+			type: 'Flag',
+			name: '--clean',
+			usage: 'clean up your uild dist'
+		});
+
+		build.addOption({
+			type: 'String',
+			name: '--config',
+			alias: '-c',
+			usage: 'Extra config files'
+		});
+
+		build.addOption({
+			type: 'Flag',
+			name: '--verbose',
+			usage: 'Print more message in terminal'
+		});
+
+		parser.addParser(dev);
+		parser.addParser(build);
+
+		parser.parse(['build', '--config', '../../aaa', '--my-local=123', '--clean', '--verbose']);
+
+		const option = parser.options();
+		console.log(option);
+	});
 });
