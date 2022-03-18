@@ -1,8 +1,6 @@
-import PluginManager from '../core/PluginManager';
 import CommandTool from '../core/CommandTool';
 
 export class CLI {
-  private _pluginManager: PluginManager;
   private _argParser: CommandTool;
 
   constructor() {
@@ -10,11 +8,9 @@ export class CLI {
       toolName: 'gmf',
       toolDescription: 'Development toolchain'
     });
-
-    this._pluginManager = new PluginManager();
   }
 
   run(): Promise<void> {
-    return Promise.resolve();
+    return this._argParser.exec();
   }
 }

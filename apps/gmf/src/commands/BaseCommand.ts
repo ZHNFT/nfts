@@ -1,16 +1,21 @@
 import { SubParser, IParserOptionDefinition } from '@ntfs/argparser';
 
-export default abstract class BaseCommand {
-  protected readonly _parser: SubParser;
+export interface CommandInitOptions {
+  name: string;
+  usage: string;
+}
 
-  protected constructor() {
-    this._parser = new SubParser({
-      name: 'build',
-      description: 'Build command'
+export default abstract class BaseCommand {
+  public readonly parser: SubParser;
+
+  protected constructor({ name, usage }: CommandInitOptions) {
+    this.parser = new SubParser({
+      name: name,
+      description: usage
     });
   }
 
-  addOption(option: IParserOptionDefinition) {
-    this._parser.addOption(option);
+  addOption(option: IParserOptionDefinition): void {
+    this.parser.addOption(option);
   }
 }

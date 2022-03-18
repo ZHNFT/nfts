@@ -64,7 +64,7 @@ export class Parser {
   public addParser(parserDefinition: IParserDefinition | SubParser): Parser | SubParser {
     const isSubParserInstance = parserDefinition instanceof SubParser;
 
-    let parser: SubParser = isSubParserInstance
+    const parser: SubParser = isSubParserInstance
       ? parserDefinition
       : new SubParser(parserDefinition);
 
@@ -119,7 +119,7 @@ export class Parser {
     this.parser._parse(args, index);
   }
 
-  private _parse(args?: string[], startIndex: number = 0): void {
+  private _parse(args?: string[], startIndex = 0): void {
     const _executeParser = this._executeParser;
     const _optionsWithValue: [string, string | number | boolean | undefined][] = [];
 
@@ -150,6 +150,7 @@ export class Parser {
       const _optionDef = _executeParser._findOption(_name);
       if (_optionDef) {
         _optionDef.strictSetValue(_value);
+        _optionDef?.callback?.(_value);
       } else {
         if (this._opts?.allowUnknownOptions) {
           this._unknownOptions.push(_name);
@@ -198,6 +199,10 @@ export class Parser {
     }
 
     return _parser;
+  }
+
+  get executedParser(): SubParser | Parser | undefined {
+    return this._executeParser;
   }
 
   get name(): string {

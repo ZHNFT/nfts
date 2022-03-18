@@ -23,7 +23,7 @@ export interface IParserOptionDefinition {
    * */
   alternatives?: string[];
   required?: boolean;
-  callback?: boolean;
+  callback?: (result?: any) => void;
 }
 
 export abstract class ParserOptionAbstract implements IParserOptionDefinition {
@@ -46,6 +46,8 @@ export abstract class ParserOptionAbstract implements IParserOptionDefinition {
 
   public value?: unknown;
 
+  readonly callback?: (result: any) => void;
+
   protected constructor(definition: IParserOptionDefinition) {
     this.name = definition.name;
     this.usage = definition.usage;
@@ -53,6 +55,7 @@ export abstract class ParserOptionAbstract implements IParserOptionDefinition {
     this.alternatives = definition.alternatives;
     this.type = definition.type;
     this.required = definition.required;
+    this.callback = definition.callback;
   }
 
   /**
@@ -63,16 +66,16 @@ export abstract class ParserOptionAbstract implements IParserOptionDefinition {
   /**
    *
    */
-  public strictSetValue(value?: unknown) {
+  public strictSetValue(value?: unknown): void {
     this.value = value;
     this.validate();
   }
 
   public get strippedName(): string {
-    return this.name.replace(/\-{1,2}/g, '');
+    return this.name.replace(/-{1,2}/g, '');
   }
 
-  protected _requireValidation(value?: unknown) {
+  protected _requireValidation(value?: unknown): void {
     if (this.required && value === void 0) {
       throw new Error(`Required option ${this.name} is missing`);
     }
@@ -164,7 +167,7 @@ export class ArrayOption extends ParserOptionAbstract {
    * @param value
    * @override
    */
-  public strictSetValue(value?: unknown) {
+  public strictSetValue(value?: unknown): void {
     if (!this.value) {
       this.value = [];
     }

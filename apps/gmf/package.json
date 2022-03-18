@@ -3,13 +3,17 @@
   "version": "0.0.0",
   "main": "./dist/index.js",
   "bin": {
-    "gmf": "bin/gmf.js"
+    "gmf": "bin/cli.js"
   },
   "scripts": {
     "build": "npx tsc",
     "dev": "npx tsc --watch --declaration",
     "dts": "npx tsc --declaration --emitDeclarationOnly --declarationDir ./dist",
     "test": "jest"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
   },
   "//devDependencies": {
     "@ntfs/node-utils-library": "workspace:*",
