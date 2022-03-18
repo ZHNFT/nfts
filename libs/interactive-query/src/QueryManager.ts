@@ -3,11 +3,11 @@ import { Query } from './core/Query';
 export class QueriesManager {
   private _ctors: Map<string, new (config: any) => Query<unknown>> = new Map();
 
-  public registerQuery(type: string, Ctor: new (config: any) => Query<unknown>) {
+  public registerQuery(type: string, Ctor: new (config: any) => Query<unknown>): void {
     this._ctors.set(type, Ctor);
   }
 
-  public createQueryInstance<T>(type: string, options: T) {
+  public createQueryInstance<T>(type: string, options: T): Query<unknown> {
     const Ctor = this._ctors.get(type);
 
     if (!Ctor) {

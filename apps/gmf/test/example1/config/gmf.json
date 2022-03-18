@@ -1,8 +1,9 @@
 {
   "plugins": [
     {
-      "name": "clean",
-      "description": "Clean up build folder"
+      "action": "build",
+      "phase": "before",
+      "name": "@ntfs/init-plugin"
     }
   ]
 }

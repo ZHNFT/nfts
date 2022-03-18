@@ -1,20 +1,14 @@
-import PluginManager from '../core/PluginManager';
 import CommandTool from '../core/CommandTool';
 
-export class CLI {
-  private _pluginManager: PluginManager;
-  private _argParser: CommandTool;
-
+export default class CLI extends CommandTool {
   constructor() {
-    this._argParser = new CommandTool({
+    super({
       toolName: 'gmf',
       toolDescription: 'Development toolchain'
     });
-
-    this._pluginManager = new PluginManager();
   }
 
   run(): Promise<void> {
-    return Promise.resolve();
+    return this.exec();
   }
 }

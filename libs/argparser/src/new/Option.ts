@@ -23,7 +23,8 @@ export interface IParserOptionDefinition {
    * */
   alternatives?: string[];
   required?: boolean;
-  callback?: boolean;
+  callback?: (result?: any) => void;
+  value: unknown;
 }
 
 export abstract class ParserOptionAbstract implements IParserOptionDefinition {
@@ -44,7 +45,9 @@ export abstract class ParserOptionAbstract implements IParserOptionDefinition {
    * */
   readonly required?: boolean;
 
-  public value?: unknown;
+  private _value?: unknown;
+
+  readonly callback?: (result: unknown) => void;
 
   protected constructor(definition: IParserOptionDefinition) {
     this.name = definition.name;
@@ -53,6 +56,7 @@ export abstract class ParserOptionAbstract implements IParserOptionDefinition {
     this.alternatives = definition.alternatives;
     this.type = definition.type;
     this.required = definition.required;
+    this.callback = definition.callback;
   }
 
   /**
@@ -63,16 +67,20 @@ export abstract class ParserOptionAbstract implements IParserOptionDefinition {
   /**
    *
    */
-  public strictSetValue(value?: unknown) {
-    this.value = value;
+  public strictSetValue(value?: unknown): void {
+    this._value = value;
     this.validate();
   }
 
   public get strippedName(): string {
-    return this.name.replace(/\-{1,2}/g, '');
+    return this.name.replace(/-{1,2}/g, '');
   }
 
-  protected _requireValidation(value?: unknown) {
+  public get value(): unknown {
+    return this._value;
+  }
+
+  protected _requireValidation(value?: unknown): void {
     if (this.required && value === void 0) {
       throw new Error(`Required option ${this.name} is missing`);
     }
@@ -99,7 +107,6 @@ export abstract class ParserOptionAbstract implements IParserOptionDefinition {
 }
 
 export class StringOption extends ParserOptionAbstract {
-  value?: string;
   readonly type = OptionTypes.String;
   public validate(): void {
     this._requireValidation(this.value);
@@ -107,36 +114,32 @@ export class StringOption extends ParserOptionAbstract {
 }
 
 export class FlagOption extends ParserOptionAbstract {
-  value?: boolean;
   validate(): void {
     this._requireValidation(this.value);
   }
 }
 
 export class IntOption extends ParserOptionAbstract {
-  value?: number;
   validate(): void {
     this._requireValidation(this.value);
 
     if (this.value !== undefined && isNaN(Number(this.value))) {
-      throw new Error(`Can't convert '${this.value}' to integer number`);
+      throw new Error(`Can't convert '${this.value as string}' to integer number`);
     }
   }
 }
 
 export class FloatOption extends ParserOptionAbstract {
-  value?: number;
   validate(): void {
     this._requireValidation(this.value);
 
     if (this.value !== undefined && isNaN(Number(this.value))) {
-      throw new Error(`Can't convert '${this.value}' to float number`);
+      throw new Error(`Can't convert '${this.value as number}' to float number`);
     }
   }
 }
 
 export class ChoicesOption extends ParserOptionAbstract {
-  value?: string;
   validate(): void {
     this._requireValidation(this.value);
 
@@ -148,27 +151,32 @@ export class ChoicesOption extends ParserOptionAbstract {
       throw new TypeError(`Alternatives should be a array with string element`);
     }
 
-    if (!this.alternatives.includes(this.value)) {
-      throw new Error(`Value ${this.value} is not included in alternatives`);
+    if (!this.alternatives.includes(this.value as string)) {
+      throw new Error(`Value ${this.value as string} is not included in alternatives`);
     }
   }
 }
 
 export class ArrayOption extends ParserOptionAbstract {
-  value?: string[];
   validate(): void {
     this._requireValidation(this.value);
   }
 
-  /**
-   * @param value
-   * @override
+  /*
+   *  @remark
+   *   数组参数的话，值肯定是一个数据，所有需要重写一下strictSetValue方法；
    */
-  public strictSetValue(value?: unknown) {
-    if (!this.value) {
-      this.value = [];
-    }
-    this.value.push(value as string);
-    super.strictSetValue(this.value);
+  public strictSetValue(value?: unknown): void {
+    this.value
+      ? (this.value as string[]).push(value as string)
+      : super.strictSetValue([]);
   }
 }
+
+export type TOption =
+  | StringOption
+  | FlagOption
+  | IntOption
+  | FloatOption
+  | ChoicesOption
+  | ArrayOption;

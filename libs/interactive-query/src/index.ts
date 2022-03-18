@@ -11,19 +11,18 @@ export type TQueryConfig = (
   | ISelectConfig
 ) & { type: 'confirm' | 'input' | 'password' | 'select' };
 
-// Query Manager
 export class InteractiveQuery extends QueriesManager {
   private readonly _queries: TQueryConfig[] = [];
 
   constructor(queries: TQueryConfig[]) {
     super();
 
+    this._queries = queries;
+
     this.registerQuery('input', Input);
     this.registerQuery('confirm', Confirm);
     this.registerQuery('password', Password);
     this.registerQuery('select', Select);
-
-    this._queries = queries;
   }
 
   public async prompt<T>(): Promise<T> {
@@ -33,8 +32,8 @@ export class InteractiveQuery extends QueriesManager {
       const { type, ...restOptions } = _query;
       const _instance = this.createQueryInstance(type, restOptions);
       const _answer = await _instance.execute();
-      _instance.screen.nextLine().moveCursorInline(0);
       answers[restOptions.name] = _answer;
+      _instance.screen.nextLine().clearInline(-1);
     }
 
     return answers;
