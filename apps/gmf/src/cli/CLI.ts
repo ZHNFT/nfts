@@ -1,16 +1,14 @@
 import CommandTool from '../core/CommandTool';
 
-export class CLI {
-  private _argParser: CommandTool;
-
+export default class CLI extends CommandTool {
   constructor() {
-    this._argParser = new CommandTool({
+    super({
       toolName: 'gmf',
       toolDescription: 'Development toolchain'
     });
   }
 
   run(): Promise<void> {
-    return this._argParser.exec();
+    return this.exec();
   }
 }

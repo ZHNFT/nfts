@@ -6,14 +6,21 @@ import BaseCommand from '../commands/BaseCommand';
 import Config from './Config';
 import { CycleInitOption } from '../lifecycle/BaseCycle';
 
+/*
+ * todo
+ *   提供给插件使用的参数
+ * */
 export interface PluginFuncArg {
   mock: string;
 }
 
-export default class CommandTool {
+export interface ICommandToolInitOptions {
+  toolName: string;
+  toolDescription: string;
+}
+
+export default class CommandTool extends Parser {
   private readonly _config: Config;
-  private readonly _parser: Parser;
-  private readonly _commandByName: Map<string, BaseCommand>;
   private readonly _pluginManager: PluginManager<PluginContext>;
 
   private readonly _lifecycle: {
@@ -23,19 +30,13 @@ export default class CommandTool {
     test: TestCycle<PluginFuncArg>;
   };
 
-  constructor({
-    toolName,
-    toolDescription
-  }: {
-    toolName: string;
-    toolDescription: string;
-  }) {
-    this._parser = new Parser({
+  constructor({ toolName, toolDescription }: ICommandToolInitOptions) {
+    super({
       name: toolName,
       description: toolDescription
     });
+
     this._config = new Config();
-    this._commandByName = new Map<string, BaseCommand>();
 
     const cycleOptions: CycleInitOption = {
       config: this._config
@@ -76,29 +77,27 @@ export default class CommandTool {
     this._addCommand(publishCommand);
     this._addCommand(testCommand);
 
-    this._parser.parse();
+    this.parse();
     this._loadConfigFrmCliOptions();
   }
 
   /**
    * @remark
-   *  从命令行中获取参数，完善文件
+   *  从命令行中获取参数，完善配置
    */
   private _loadConfigFrmCliOptions() {
-    const options = this._parser.options<{ clean: boolean }>();
+    const options = this.options<{ clean: boolean }>();
   }
 
   private _addCommand(command: BaseCommand) {
-    this._parser.addParser(command.parser);
-    this._commandByName.set(command.parser.name, command);
+    this.addParser(command.parser);
   }
 
   public async exec(): Promise<void> {
-    const _executedParser = this._parser.executedParser;
+    const _executedParser = this.executedParser;
 
     if (_executedParser) {
       const { name } = _executedParser;
-      const command = this._commandByName.get(name);
       const lifecycle = this._lifecycle[name];
       if (lifecycle) {
         await lifecycle.loadPlugins(name, this._pluginManager);
