@@ -1,3 +1,3 @@
-export { CommandLine } from './CommandLine';
-export { CommandOption, ICommandLineOptionDefinition } from './CommandOption';
-export { CommandArgument, ICommandArgumentDefinition } from './CommandArgument';
+export { default as Action } from './Action';
+export { default as CommandTool } from './CommandTool';
+export { TOption } from './Parameters';
