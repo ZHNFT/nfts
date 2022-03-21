@@ -45,7 +45,7 @@ class Demo1 extends CommandTool {
   }
 }
 
-new Demo1().exec().then(
+new Demo1()._exec().then(
   () => {
     console.log('finished');
   },

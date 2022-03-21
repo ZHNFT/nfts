@@ -1,5 +1,5 @@
-import { SubParser, IParserOptionDefinition } from '@ntfs/argparser';
-import Parameters, { TOption } from './Parameters';
+import { SubParser, IParserOptionDefinition, TOption } from '@ntfs/argparser';
+import Parameters from './Parameters';
 
 export interface IActionInitOptions {
   actionName: string;

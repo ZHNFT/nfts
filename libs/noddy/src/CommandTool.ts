@@ -21,7 +21,7 @@ export default class CommandTool extends Parser {
     this._actionByName.set(action.actionName, action);
   }
 
-  public async exec(): Promise<void> {
+  protected async _exec(): Promise<void> {
     this.parse();
     const { _ } = this.options<{ _: string }>();
     const action = this._actionByName.get(_);
