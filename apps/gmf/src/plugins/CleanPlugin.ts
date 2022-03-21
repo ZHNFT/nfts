@@ -1,6 +1,6 @@
-import { Plugin, PluginContext } from '../core/PluginManager';
+import { Plugin, PluginContext } from '../core/Plugin';
 
-export default class CleanPlugin extends Plugin<PluginContext> {
+export default class CleanPlugin extends Plugin {
   name: 'clean';
   summary: 'clean up dist folder';
 

@@ -1,9 +1,9 @@
-import { BaseCycle, CycleInitOption } from './BaseCycle';
+import { BaseCycle } from './BaseCycle';
 
 export type PreviewPhases = 'before' | 'compile' | 'bundle' | 'emit' | 'restart';
 
-export default class PreviewCycle<A> extends BaseCycle<PreviewPhases, A> {
-  constructor(opts: CycleInitOption) {
-    super(opts);
+export default class PreviewCycle extends BaseCycle<PreviewPhases> {
+  constructor() {
+    super();
   }
 }

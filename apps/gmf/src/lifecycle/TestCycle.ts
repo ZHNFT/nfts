@@ -1,9 +1,9 @@
-import { BaseCycle, CycleInitOption } from './BaseCycle';
+import { BaseCycle } from './BaseCycle';
 
 export type TestPhases = 'config' | 'running' | 'failed' | 'finished';
 
-export default class TestCycle<A> extends BaseCycle<TestPhases, A> {
-  constructor(opts: CycleInitOption) {
-    super(opts);
+export default class TestCycle extends BaseCycle<TestPhases> {
+  constructor() {
+    super();
   }
 }

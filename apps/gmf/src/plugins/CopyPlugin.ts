@@ -1,6 +1,6 @@
-import { Plugin, PluginContext } from '../core/PluginManager';
+import { Plugin, PluginContext } from '../core/Plugin';
 
-export default class CopyPlugin extends Plugin<PluginContext> {
+export default class CopyPlugin extends Plugin {
   name: 'copy';
   summary: 'Copy static files';
 
@@ -8,4 +8,3 @@ export default class CopyPlugin extends Plugin<PluginContext> {
     console.log('Copy folder & files!');
   };
 }
-

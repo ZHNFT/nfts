@@ -1,9 +1,9 @@
-import { BaseCycle, CycleInitOption } from './BaseCycle';
+import { BaseCycle } from './BaseCycle';
 
 export type BuildPhases = 'before' | 'compile' | 'bundle' | 'emit';
 
-export default class BuildCycle<A> extends BaseCycle<BuildPhases, A> {
-  constructor(opts: CycleInitOption) {
-    super(opts);
+export default class BuildCycle extends BaseCycle<BuildPhases> {
+  constructor() {
+    super();
   }
 }
