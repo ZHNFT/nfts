@@ -21,16 +21,17 @@ export default class CommandTool extends Parser {
     this._actionByName.set(action.actionName, action);
   }
 
-  public exec(): Promise<void> {
+  public async exec(): Promise<void> {
     this.parse();
     const { _ } = this.options<{ _: string }>();
     const action = this._actionByName.get(_);
 
     if (!action) {
-      throw new Error(`Action <${_}> is not valid`);
+      throw new Error(`Action <${_}> is not defined`);
     }
 
-    action.onExecute();
-    return Promise.resolve();
+    await action.onExecute();
+
+    return;
   }
 }

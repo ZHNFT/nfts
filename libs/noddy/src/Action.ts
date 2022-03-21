@@ -27,6 +27,11 @@ export default abstract class Action extends Parameters {
     return this._subParser;
   }
 
+  /**
+   * 添加参数
+   * @param definition
+   * @returns
+   */
   public addParameter(definition: IParserOptionDefinition): TOption {
     const param = this._subParser.addOption(definition);
     super.addParameter(param);
@@ -36,10 +41,12 @@ export default abstract class Action extends Parameters {
   /**
    * 抽象方法；
    * 用于注册命令行参数；
+   * @abstract
    */
   abstract onParameterDefinition(): void;
   /**
    * 执行逻辑；
+   * @abstract
    */
-  abstract onExecute(): void;
+  abstract onExecute(): Promise<void>;
 }

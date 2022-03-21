@@ -1,10 +1,6 @@
 const { Action, CommandTool } = require('../../../dist');
 
 class NameAction extends Action {
-  ageParameter;
-  nameParameter;
-  capitalParameter;
-
   constructor() {
     super({
       actionName: 'dev',
@@ -38,9 +34,7 @@ class NameAction extends Action {
    * @implements
    */
   onExecute() {
-    console.log(this.capitalParameter);
-    console.log(this.ageParameter);
-    console.log(this.nameParameter);
+    console.log('dev action onExecute!!!');
   }
 }
 
