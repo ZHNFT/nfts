@@ -1,27 +1,27 @@
-import { OptionTypes } from '@ntfs/argparser';
-import BaseCommand from './BaseCommand';
-import { CleanPlugin } from '../plugins';
-import Config from '../core/Config';
+import { Action } from '@ntfs/noddy';
 
-export interface BuildCommandOptions {
-  clean: boolean;
-}
-
-export default class BuildCommand extends BaseCommand {
-  constructor({ config }: { config: Config }) {
+export default class BuildCommand extends Action {
+  constructor() {
     super({
-      name: 'build',
-      usage: 'build...',
-      config
+      actionName: 'build',
+      actionDescription: '.....'
     });
+  }
 
-    this.addOption({
-      type: OptionTypes.Flag,
-      name: '--clean',
-      usage: '',
-      callback: () => {
-        this.addPlugin(new CleanPlugin());
-      }
+  onParameterDefinition(): void {
+    this.stringParameter({
+      name: '--demo',
+      usage: 'demo demo demo demo',
+      required: false
     });
+  }
+
+  onExecute(): Promise<void> {
+    for (let index = 0; index < this.parameters.length; index++) {
+      const element = this.parameters[index];
+      console.log(element.value);
+    }
+
+    return Promise.resolve();
   }
 }

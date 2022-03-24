@@ -32,7 +32,7 @@ export default abstract class BaseCommand {
 
   public addPlugin = (plugin: Plugin) => this._plugins.push(plugin);
 
-  public initPlugins = (ctx: PluginContext) => {
+  public initPlugins = (ctx: PluginContext): Promise<any> => {
     const tasks: ((args: PluginContext) => void | Promise<void>)[] = this._plugins.map(
       _plugin => _plugin.apply
     );
@@ -56,7 +56,7 @@ export default abstract class BaseCommand {
     for (const plugin of plugins) {
       const { name, action } = plugin;
       if (action === this.name) {
-        this.addPlugin(loadModule(name) as Plugin);
+        this.addPlugin(loadModule(name));
       }
     }
   }

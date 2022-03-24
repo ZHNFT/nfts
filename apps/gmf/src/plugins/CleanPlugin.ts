@@ -5,8 +5,8 @@ export default class CleanPlugin extends Plugin {
   summary: 'clean up dist folder';
 
   apply = (ctx: PluginContext): void => {
-    ctx.hook.build.addHook('before', this.cleanUp);
-    ctx.hook.preview.addHook('before', this.cleanUp);
+    ctx.hook.build.addHook('pre', this.cleanUp);
+    ctx.hook.preview.addHook('pre', this.cleanUp);
   };
 
   cleanUp = (): Promise<void> => {

@@ -2,13 +2,10 @@ import CommandTool from '../core/CommandTool';
 
 export default class CLI extends CommandTool {
   constructor() {
-    super({
-      toolName: 'gmf',
-      toolDescription: 'Development toolchain'
-    });
+    super();
   }
 
   run(): Promise<void> {
-    return this.exec();
+    return this._exec();
   }
 }

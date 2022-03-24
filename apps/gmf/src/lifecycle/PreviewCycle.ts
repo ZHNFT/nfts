@@ -1,6 +1,6 @@
-import { BaseCycle } from './BaseCycle';
+import { BaseCycle, CommonPhases } from './BaseCycle';
 
-export type PreviewPhases = 'before' | 'compile' | 'bundle' | 'emit' | 'restart';
+export type PreviewPhases = CommonPhases | 'restart';
 
 export default class PreviewCycle extends BaseCycle<PreviewPhases> {
   constructor() {

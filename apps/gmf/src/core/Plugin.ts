@@ -1,11 +1,11 @@
-import { BuildCycle, PreviewCycle, PublishCycle, TestCycle } from '../lifecycle';
+import { BuildCycle, PreviewCycle, TestCycle } from '../lifecycle';
 import Config from './Config';
 import { createRequire } from 'module';
 import { resolve } from 'path';
 
 export const loadModule = <T>(name: string): T => {
   const req = createRequire(resolve(process.cwd(), 'node_modules'));
-  return req(name);
+  return req(name) as T;
 };
 
 /*
@@ -24,7 +24,6 @@ export interface PluginContext {
   hook: {
     build: BuildCycle;
     preview: PreviewCycle;
-    publish: PublishCycle;
     test: TestCycle;
   };
 }
