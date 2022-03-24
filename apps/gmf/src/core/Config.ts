@@ -14,6 +14,6 @@ export default class Config {
 
   lookup(): IConfig {
     const content = readFileSync(resolve(process.cwd(), Config.configFile));
-    return JSON.parse(content.toString('utf-8'));
+    return JSON.parse(content.toString('utf-8')) as IConfig;
   }
 }

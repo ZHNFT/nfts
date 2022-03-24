@@ -1,8 +1,8 @@
-import { BaseCycle, CommonPhases } from './BaseCycle';
+import { Lifecycle, CommonPhases } from '../classes/Lifecycle';
 
 export type BuildPhases = CommonPhases;
 
-export default class BuildCycle extends BaseCycle<CommonPhases> {
+export default class BuildCycle extends Lifecycle<CommonPhases> {
   constructor() {
     super();
   }

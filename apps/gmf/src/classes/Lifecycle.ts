@@ -8,7 +8,7 @@ export type CommonPhases = 'pre' | 'compile' | 'emit' | 'finished' | 'error';
 /*
  * 插件的注册
  * */
-export abstract class BaseCycle<HookNames = string, HookContext = unknown> extends Hook<
+export abstract class Lifecycle<HookNames = string, HookContext = unknown> extends Hook<
   HookNames,
   HookContext
 > {

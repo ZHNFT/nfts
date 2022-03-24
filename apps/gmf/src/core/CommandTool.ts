@@ -10,7 +10,7 @@ export default class Tools extends CommandTool {
   constructor() {
     super({
       toolName: 'gmf',
-      toolDescription: `Build, Preview, Publish Your App`
+      toolDescription: `Build, Preview, Test Your App`
     });
 
     this.buildCycle = new BuildCycle();
@@ -28,5 +28,9 @@ export default class Tools extends CommandTool {
     const build = new BuildCommand();
 
     this.addAction(build);
+  }
+
+  public exec(): Promise<void> {
+    return this._exec();
   }
 }

@@ -1,8 +1,8 @@
-import { BaseCycle, CommonPhases } from './BaseCycle';
+import { Lifecycle, CommonPhases } from '../classes/Lifecycle';
 
 export type PreviewPhases = CommonPhases | 'restart';
 
-export default class PreviewCycle extends BaseCycle<PreviewPhases> {
+export default class PreviewCycle extends Lifecycle<PreviewPhases> {
   constructor() {
     super();
   }

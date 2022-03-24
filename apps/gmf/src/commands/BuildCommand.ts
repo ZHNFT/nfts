@@ -19,7 +19,7 @@ export default class BuildCommand extends Action {
   onExecute(): Promise<void> {
     for (let index = 0; index < this.parameters.length; index++) {
       const element = this.parameters[index];
-      console.log(element.value);
+      console.log(element.strippedName, element.value);
     }
 
     return Promise.resolve();

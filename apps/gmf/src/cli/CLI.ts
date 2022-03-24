@@ -6,6 +6,6 @@ export default class CLI extends CommandTool {
   }
 
   run(): Promise<void> {
-    return this._exec();
+    return this.exec();
   }
 }

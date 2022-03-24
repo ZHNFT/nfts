@@ -1,4 +1,4 @@
-import { CLI } from './cli';
+import CLI from './cli/CLI';
 
 new CLI().run().then(
   () => {

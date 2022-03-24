@@ -1,19 +1,22 @@
-import { OptionTypes } from '@ntfs/argparser';
-import BaseCommand from './BaseCommand';
-import Config from '../core/Config';
+import { Action } from '@ntfs/noddy';
 
 export interface TestCommandOptions {
   clean: boolean;
 }
 
-export default class TestCommand extends BaseCommand {
-  constructor({ config }: { config: Config }) {
+export default class TestCommand extends Action {
+  constructor() {
     super({
-      name: 'test',
-      usage: 'test...',
-      config
+      actionName: 'test',
+      actionDescription: 'test...'
     });
+  }
 
-    this.addOption({ type: OptionTypes.Flag, name: '--clean', usage: '' });
+  onParameterDefinition(): void {
+    throw new Error('Method not implemented.');
+  }
+
+  onExecute(): Promise<void> {
+    throw new Error('Method not implemented.');
   }
 }
