@@ -2,10 +2,10 @@
   "name": "@nfts/interactive-query",
   "version": "0.0.0",
   "scripts": {
+    "test": "jest",
     "build": "npx tsc",
     "dev": "npx tsc --watch --declaration --declarationDir ./dist",
     "dts": "npx tsc --declaration --emitDeclarationOnly --declarationDir ./dist",
-    "test": "jest",
     "ask": "node ./test/Ask.demo.js"
   },
   "jest": {

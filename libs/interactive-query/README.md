@@ -1,3 +1,3 @@
 # @nfts/interactive-query
 
-终端交互
+> Terminal Interactive

@@ -1,7 +1,3 @@
-import { TOption } from './new/Option';
-export { Command } from './Command';
-export { IArgumentDefinition, Argument } from './Argument';
-export { IOptionDefinition, Option } from './Option';
 //--------------------------------------------------------------------
 export {
   OptionTypes,
@@ -15,6 +11,6 @@ export {
   TOptionTypes,
   IParserOptionDefinition,
   TOption
-} from './new/Option';
-export { Parser, SubParser } from './new/Parser';
+} from './Option';
+export { Parser, SubParser } from './Parser';
 //--------------------------------------------------------------------

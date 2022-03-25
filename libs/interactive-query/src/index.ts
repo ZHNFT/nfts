@@ -31,8 +31,7 @@ export class InteractiveQuery extends QueriesManager {
     for await (const _query of this._queries) {
       const { type, ...restOptions } = _query;
       const _instance = this.createQueryInstance(type, restOptions);
-      const _answer = await _instance.execute();
-      answers[restOptions.name] = _answer;
+      answers[restOptions.name] = await _instance.execute();
       _instance.screen.nextLine().clearInline(-1);
     }
 
