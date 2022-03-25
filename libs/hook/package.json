@@ -1,5 +1,5 @@
 {
-  "name": "@ntfs/hook",
+  "name": "@nfts/hook",
   "version": "0.0.0",
   "main": "./dist/index.js",
   "scripts": {

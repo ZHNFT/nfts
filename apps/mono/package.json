@@ -1,5 +1,5 @@
 {
-  "name": "@ntfs/mono-package",
+  "name": "@nfts/mono-package",
   "version": "0.0.0",
   "bin": {
     "mono-package": "/bin/mono-package"
@@ -10,10 +10,10 @@
     "dts": "npx tsc --declaration --emitDeclarationOnly --declarationDir dist"
   },
   "$devDependencies": {
-    "@ntfs/command-line": "workspace:*",
-    "@ntfs/eslint-config": "workspace:*",
-    "@ntfs/node-arg-parser": "workspace:*",
-    "@ntfs/node-utils-library": "workspace:*"
+    "@nfts/command-line": "workspace:*",
+    "@nfts/eslint-config": "workspace:*",
+    "@nfts/node-arg-parser": "workspace:*",
+    "@nfts/node-utils-library": "workspace:*"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",

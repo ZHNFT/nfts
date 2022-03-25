@@ -1,3 +1,3 @@
-# @ntfs/interactive-query
+# @nfts/interactive-query
 
 终端交互

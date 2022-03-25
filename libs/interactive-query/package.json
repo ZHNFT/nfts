@@ -1,5 +1,5 @@
 {
-  "name": "@ntfs/interactive-query",
+  "name": "@nfts/interactive-query",
   "version": "0.0.0",
   "scripts": {
     "build": "npx tsc",
@@ -13,8 +13,8 @@
     "testEnvironment": "node"
   },
   "//devDependencies": {
-    "@ntfs/eslint-config": "workspace:*",
-    "@ntfs/hook": "workspace:*"
+    "@nfts/eslint-config": "workspace:*",
+    "@nfts/hook": "workspace:*"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",

@@ -1,5 +1,5 @@
 {
-  "name": "@ntfs/node-utils-library",
+  "name": "@nfts/node-utils-library",
   "version": "0.0.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

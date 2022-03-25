@@ -1,5 +1,5 @@
 {
-  "name": "@ntfs/gmf",
+  "name": "@nfts/gmf",
   "version": "0.0.0",
   "main": "./dist/index.js",
   "bin": {
@@ -16,10 +16,10 @@
     "testEnvironment": "node"
   },
   "//devDependencies": {
-    "@ntfs/node-utils-library": "workspace:*",
-    "@ntfs/noddy": "workspace:*",
-    "@ntfs/eslint-config": "workspace:*",
-    "@ntfs/hook": "workspace:*"
+    "@nfts/node-utils-library": "workspace:*",
+    "@nfts/noddy": "workspace:*",
+    "@nfts/eslint-config": "workspace:*",
+    "@nfts/hook": "workspace:*"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",

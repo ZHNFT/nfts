@@ -243,7 +243,7 @@ export class Command extends EventEmitter implements BaseCommand {
    *
    * @example
    *
-   * import { Command } from "@ntfs/argparser";
+   * import { Command } from "@nfts/argparser";
    *
    * const toolName = "xxx";
    * const toolDescription = "xxx is good"
@@ -286,7 +286,7 @@ export class Command extends EventEmitter implements BaseCommand {
    *
    * @example
    *
-   * import { Command } from "@ntfs/argparser";
+   * import { Command } from "@nfts/argparser";
    *
    * const toolName = "xxx";
    * const toolDescription = "xxx is good"
@@ -326,7 +326,7 @@ export class Command extends EventEmitter implements BaseCommand {
    * @desc 添加回调参数，链式调用的终点
    * @example
    *
-   * import { Command } from "@ntfs/argparser";
+   * import { Command } from "@nfts/argparser";
    *
    * const toolName = "xxx";
    * const toolDescription = "xxx is good"

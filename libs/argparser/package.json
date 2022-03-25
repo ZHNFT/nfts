@@ -1,5 +1,5 @@
 {
-  "name": "@ntfs/argparser",
+  "name": "@nfts/argparser",
   "version": "0.0.1",
   "main": "./dist/index.js",
   "scripts": {
@@ -17,7 +17,7 @@
     "url": "*"
   },
   "//devDependencies": {
-    "@ntfs/node-utils-library": "workspace:*"
+    "@nfts/node-utils-library": "workspace:*"
   },
   "jest": {
     "preset": "ts-jest",
@@ -28,7 +28,7 @@
     "/test"
   ],
   "eslintConfig": {
-    "extends": "@ntfs/eslint-config"
+    "extends": "@nfts/eslint-config"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",

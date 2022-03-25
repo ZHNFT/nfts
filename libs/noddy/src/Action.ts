@@ -1,76 +1,76 @@
-import { SubParser, IParserOptionDefinition, TOption } from '@ntfs/argparser';
+import { SubParser, IParserOptionDefinition, TOption } from '@nfts/argparser';
 import Parameters from './Parameters';
 
 export interface IActionInitOptions {
-	actionName: string;
-	actionDescription: string;
+  actionName: string;
+  actionDescription: string;
 }
 
 export default abstract class Action extends Parameters {
-	private readonly _subParser: SubParser;
+  private readonly _subParser: SubParser;
 
-	constructor(options: IActionInitOptions) {
-		super();
-		this._subParser = new SubParser({
-			name: options.actionName,
-			description: options.actionDescription
-		});
+  constructor(options: IActionInitOptions) {
+    super();
+    this._subParser = new SubParser({
+      name: options.actionName,
+      description: options.actionDescription
+    });
 
-		this.onParameterDefinition();
-	}
+    this.onParameterDefinition();
+  }
 
-	public get actionName(): string {
-		return this._subParser.name;
-	}
+  public get actionName(): string {
+    return this._subParser.name;
+  }
 
-	public get actionDescription(): string {
-		return this._subParser.description;
-	}
+  public get actionDescription(): string {
+    return this._subParser.description;
+  }
 
-	public get actionParser(): SubParser {
-		return this._subParser;
-	}
+  public get actionParser(): SubParser {
+    return this._subParser;
+  }
 
-	/**
-	 * 添加参数
-	 * @param definition
-	 * @returns
-	 */
-	private _addParameter(definition: IParserOptionDefinition): TOption {
-		const param = this._subParser.addOption(definition);
-		super.addParameter(param);
-		return param;
-	}
-	/**
-	 * 抽象方法；
-	 * 用于注册命令行参数；
-	 * @abstract
-	 */
-	abstract onParameterDefinition(): void;
-	/**
-	 * 执行逻辑；
-	 * @abstract
-	 */
-	abstract onExecute(): Promise<void>;
+  /**
+   * 添加参数
+   * @param definition
+   * @returns
+   */
+  private _addParameter(definition: IParserOptionDefinition): TOption {
+    const param = this._subParser.addOption(definition);
+    super.addParameter(param);
+    return param;
+  }
+  /**
+   * 抽象方法；
+   * 用于注册命令行参数；
+   * @abstract
+   */
+  abstract onParameterDefinition(): void;
+  /**
+   * 执行逻辑；
+   * @abstract
+   */
+  abstract onExecute(): Promise<void>;
 
-	public stringParameter(definition: Omit<IParserOptionDefinition, 'type'>): TOption {
-		return this._addParameter({
-			...definition,
-			type: 'String'
-		});
-	}
+  public stringParameter(definition: Omit<IParserOptionDefinition, 'type'>): TOption {
+    return this._addParameter({
+      ...definition,
+      type: 'String'
+    });
+  }
 
-	public flagParameter(definition: Omit<IParserOptionDefinition, 'type'>): TOption {
-		return this._addParameter({
-			...definition,
-			type: 'Flag'
-		});
-	}
+  public flagParameter(definition: Omit<IParserOptionDefinition, 'type'>): TOption {
+    return this._addParameter({
+      ...definition,
+      type: 'Flag'
+    });
+  }
 
-	public choisesParameter(definition: Omit<IParserOptionDefinition, 'type'>): TOption {
-		return this._addParameter({
-			...definition,
-			type: 'Choices'
-		});
-	}
+  public choisesParameter(definition: Omit<IParserOptionDefinition, 'type'>): TOption {
+    return this._addParameter({
+      ...definition,
+      type: 'Choices'
+    });
+  }
 }

@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['@ntfs/eslint-config'],
+  extends: ['@nfts/eslint-config'],
   parserOptions: {
     tsconfigRootDir: __dirname
   }

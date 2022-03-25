@@ -3,7 +3,7 @@
     {
       "action": "build",
       "phase": "before",
-      "name": "@ntfs/init-plugin"
+      "name": "@nfts/init-plugin"
     }
   ]
 }

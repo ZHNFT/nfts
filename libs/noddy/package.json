@@ -1,5 +1,5 @@
 {
-  "name": "@ntfs/noddy",
+  "name": "@nfts/noddy",
   "version": "0.0.0",
   "main": "./dist/index.js",
   "scripts": {
@@ -8,9 +8,9 @@
     "dts": "npx tsc --declaration --emitDeclarationOnly --declarationDir ./dist"
   },
   "//devDependencies": {
-    "@ntfs/hook": "workspace:*",
-    "@ntfs/argparser": "workspace:*",
-    "@ntfs/eslint-config": "workspace:*"
+    "@nfts/hook": "workspace:*",
+    "@nfts/argparser": "workspace:*",
+    "@nfts/eslint-config": "workspace:*"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",

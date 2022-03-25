@@ -1,7 +1,7 @@
-# @ntfs/noddy
+# @nfts/noddy
 
 ```typescript
-import { defines, CommandLineParser } from '@ntfs/noddy';
+import { defines, CommandLineParser } from '@nfts/noddy';
 
 class CommandLine extends CommandLineParser {
   constructor() {

@@ -1,4 +1,4 @@
-import { Action } from '@ntfs/noddy';
+import { Action } from '@nfts/noddy';
 
 export interface PreviewCommandOptions {
   clean: boolean;

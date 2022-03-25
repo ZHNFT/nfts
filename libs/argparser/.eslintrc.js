@@ -1,7 +1,7 @@
 const { dirname } = require('path');
 
 module.exports = {
-  extends: ['@ntfs'],
+  extends: ['@nfts'],
   parserOptions: {
     tsconfigRootDir: dirname(__filename)
   }

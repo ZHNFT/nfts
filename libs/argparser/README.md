@@ -1,7 +1,7 @@
-# @ntfs/argparser
+# @nfts/argparser
 
 ```typescript
-import { Command } from '@ntfs/argparser';
+import { Command } from '@nfts/argparser';
 
 Command.command('commandName', 'This is a command description')
   .argument({
