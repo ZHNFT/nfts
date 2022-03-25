@@ -1,5 +1,5 @@
 {
-  "name": "@ntfs/eslint-config",
+  "name": "@leiwenpeng/eslint-config",
   "version": "1.0.1",
   "main": "index.js",
   "module": "index.js",
