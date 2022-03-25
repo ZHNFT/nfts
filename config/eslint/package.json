@@ -1,8 +1,11 @@
 {
   "name": "@ntfs/eslint-config",
-  "version": "0.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "module": "index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "@types/eslint": "^8.4.1",
     "@typescript-eslint/parser": "^5.7.0",
