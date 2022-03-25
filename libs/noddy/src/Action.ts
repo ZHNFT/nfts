@@ -67,7 +67,7 @@ export default abstract class Action extends Parameters {
     });
   }
 
-  public choisesParameter(definition: Omit<IParserOptionDefinition, 'type'>): TOption {
+  public choicesParameter(definition: Omit<IParserOptionDefinition, 'type'>): TOption {
     return this._addParameter({
       ...definition,
       type: 'Choices'
