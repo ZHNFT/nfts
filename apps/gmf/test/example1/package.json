@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "dependencies": {},
   "scripts": {
-    "build": "../../bin/cli.js build --demo",
+    "build": "../../bin/cli.js build --clean",
     "dev": "gmf dev",
     "test": "gmf test"
   }

@@ -1,27 +1,33 @@
-import { Action } from '@ntfs/noddy';
+import CleanPlugin from '../plugins/CleanPlugin';
+import { ActionBase } from '../classes/ActionBase';
 
-export default class BuildCommand extends Action {
-  constructor() {
-    super({
-      actionName: 'build',
-      actionDescription: '.....'
-    });
-  }
+export default class BuildCommand extends ActionBase {
+	constructor() {
+		super({
+			actionName: 'build',
+			actionDescription: '.....'
+		});
+	}
 
-  onParameterDefinition(): void {
-    this.stringParameter({
-      name: '--demo',
-      usage: 'demo demo demo demo',
-      required: false
-    });
-  }
+	onParameterDefinition(): void {
+		this.flagParameter({
+			name: '--clean',
+			usage: 'clean clean clean clean',
+			required: false,
+			callback: () => new CleanPlugin().apply(this._ctx)
+		});
+	}
 
-  onExecute(): Promise<void> {
-    for (let index = 0; index < this.parameters.length; index++) {
-      const element = this.parameters[index];
-      console.log(element.strippedName, element.value);
-    }
+	async onExecute(): Promise<void> {
+		const parameters = {};
 
-    return Promise.resolve();
-  }
+		for (let index = 0; index < this.parameters.length; index++) {
+			const element = this.parameters[index];
+			parameters[element.strippedName] = element.value;
+		}
+
+		await this._lifecycle.emitHook('pre', {});
+
+		return Promise.resolve();
+	}
 }

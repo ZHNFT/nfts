@@ -1,10 +1,4 @@
-import {
-	SubParser,
-	IParserOptionDefinition,
-	TOption,
-	StringOption,
-	ParserOptionAbstract
-} from '@ntfs/argparser';
+import { SubParser, IParserOptionDefinition, TOption } from '@ntfs/argparser';
 import Parameters from './Parameters';
 
 export interface IActionInitOptions {
@@ -29,6 +23,10 @@ export default abstract class Action extends Parameters {
 		return this._subParser.name;
 	}
 
+	public get actionDescription(): string {
+		return this._subParser.description;
+	}
+
 	public get actionParser(): SubParser {
 		return this._subParser;
 	}
@@ -43,7 +41,6 @@ export default abstract class Action extends Parameters {
 		super.addParameter(param);
 		return param;
 	}
-
 	/**
 	 * 抽象方法；
 	 * 用于注册命令行参数；

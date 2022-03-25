@@ -1,36 +1,49 @@
 import { CommandTool } from '@ntfs/noddy';
 import { BuildCycle, PreviewCycle, TestCycle } from '../lifecycle';
 import { BuildCommand } from '../commands';
+import { PluginContext } from './Plugin';
+import Config from './Config';
 
 export default class Tools extends CommandTool {
-  buildCycle: BuildCycle;
-  previewCycle: PreviewCycle;
-  testCycle: TestCycle;
+	config: Config;
 
-  constructor() {
-    super({
-      toolName: 'gmf',
-      toolDescription: `Build, Preview, Test Your App`
-    });
+	buildCycle: BuildCycle;
+	previewCycle: PreviewCycle;
+	testCycle: TestCycle;
 
-    this.buildCycle = new BuildCycle();
-    this.previewCycle = new PreviewCycle();
-    this.testCycle = new TestCycle();
+	constructor() {
+		super({
+			toolName: 'gmf',
+			toolDescription: `Build, Preview, Test Your App`
+		});
 
-    const ctx = {
-      hooks: {
-        build: this.buildCycle.hook,
-        preview: this.previewCycle.hook,
-        test: this.testCycle.hook
-      }
-    };
+		this.config = new Config();
 
-    const build = new BuildCommand();
+		this.buildCycle = new BuildCycle();
+		this.previewCycle = new PreviewCycle();
+		this.testCycle = new TestCycle();
 
-    this.addAction(build);
-  }
+		const ctx: PluginContext = {
+			config: this.config,
+			hook: {
+				build: this.buildCycle,
+				preview: this.previewCycle,
+				test: this.testCycle
+			}
+		};
 
-  public exec(): Promise<void> {
-    return this._exec();
-  }
+		const build = new BuildCommand();
+
+		build.load({ ctx, lifecycle: this.buildCycle });
+
+		this.addAction(build);
+	}
+
+	public exec(): Promise<void> {
+		return this._exec();
+	}
+
+	private _readOptionsFromCommandLine() {
+		// ;
+	}
 }

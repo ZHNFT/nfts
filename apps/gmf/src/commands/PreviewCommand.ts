@@ -15,6 +15,7 @@ export default class PreviewCommand extends Action {
   onParameterDefinition(): void {
     throw new Error('Method not implemented.');
   }
+
   onExecute(): Promise<void> {
     throw new Error('Method not implemented.');
   }

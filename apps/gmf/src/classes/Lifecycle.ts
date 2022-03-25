@@ -1,6 +1,6 @@
 import { Hook } from '@ntfs/hook';
 export interface CycleInitOption {
-  name: string;
+	name: string;
 }
 
 export type CommonPhases = 'pre' | 'compile' | 'emit' | 'finished' | 'error';
@@ -9,8 +9,6 @@ export type CommonPhases = 'pre' | 'compile' | 'emit' | 'finished' | 'error';
  * 插件的注册
  * */
 export abstract class Lifecycle<HookNames = string, HookContext = unknown> extends Hook<
-  HookNames,
-  HookContext
-> {
-  public readonly hook: Hook<HookNames, HookContext> = new Hook<HookNames, HookContext>();
-}
+	HookNames,
+	HookContext
+> {}
