@@ -42,8 +42,4 @@ export default class Tools extends CommandTool {
   public exec(): Promise<void> {
     return this._exec();
   }
-
-  private _readOptionsFromCommandLine() {
-    // ;
-  }
 }

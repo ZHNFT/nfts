@@ -6,24 +6,29 @@ export interface ICommandToolInitOption {
   toolDescription: string;
 }
 
-export default class CommandTool extends Parser {
-  private _actionByName: Map<string, Action> = new Map();
+export default abstract class CommandTool {
+  protected _toolName: string;
+  protected _toolDescription: string;
+  protected _parser: Parser;
+  protected _actionByName: Map<string, Action> = new Map();
 
-  constructor({ toolName, toolDescription }: ICommandToolInitOption) {
-    super({
+  protected constructor({ toolName, toolDescription }: ICommandToolInitOption) {
+    this._toolName = toolName;
+    this._toolDescription = toolDescription;
+    this._parser = new Parser({
       name: toolName,
       description: toolDescription
     });
   }
 
   public addAction(action: Action): void {
-    this.addParser(action.actionParser);
+    this._parser.addParser(action.actionParser);
     this._actionByName.set(action.actionName, action);
   }
 
-  protected async _exec(): Promise<void> {
-    this.parse();
-    const { _ } = this.options<{ _: string }>();
+  protected async exec(): Promise<void> {
+    this._parser.parse();
+    const { _ } = this._parser.options<{ _: string }>();
     const action = this._actionByName.get(_);
 
     if (!action) {
