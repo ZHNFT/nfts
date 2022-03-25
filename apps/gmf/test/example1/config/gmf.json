@@ -1,0 +1,9 @@
+{
+  "plugins": [
+    {
+      "action": "build",
+      "phase": "before",
+      "name": "@ntfs/init-plugin"
+    }
+  ]
+}

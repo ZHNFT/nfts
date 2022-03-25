@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "outDir": "./dist",
+    "declaration": true,
+    "declarationDir": "./dist",
+    "lib": ["ESNext", "dom"]
+  },
+  "include": ["src"],
+  "exclude": ["dist", "test"]
+}

@@ -1,5 +1,0 @@
-# @initializer/cli
-
----
-
-## packages/cli
