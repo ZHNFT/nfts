@@ -5,7 +5,7 @@ export default class BuildCommand extends ActionBase {
   constructor() {
     super({
       actionName: 'build',
-      actionDescription: ''
+      actionDescription: 'buildbuildbuildbuild'
     });
   }
 

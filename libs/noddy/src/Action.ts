@@ -16,6 +16,8 @@ export default abstract class Action {
         await this.onExecute();
       }
     });
+
+    this.onParameterDefinition();
   }
 
   abstract onParameterDefinition(): void;
