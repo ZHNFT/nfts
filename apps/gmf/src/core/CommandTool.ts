@@ -40,6 +40,6 @@ export default class Tools extends CommandTool {
   }
 
   public exec(): Promise<void> {
-    return this._exec();
+    return super.exec();
   }
 }

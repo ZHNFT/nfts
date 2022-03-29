@@ -5,15 +5,14 @@ export default class BuildCommand extends ActionBase {
   constructor() {
     super({
       actionName: 'build',
-      actionDescription: '.....'
+      actionDescription: ''
     });
   }
 
   onParameterDefinition(): void {
-    this.flagParameter({
+    this.parser.flagOption({
       name: '--clean',
-      usage: 'clean clean clean clean',
-      required: false,
+      summary: 'cleancleancleanclean',
       callback: () => new CleanPlugin().apply(this._ctx)
     });
   }
@@ -21,9 +20,9 @@ export default class BuildCommand extends ActionBase {
   async onExecute(): Promise<void> {
     const parameters = {};
 
-    for (let index = 0; index < this.parameters.length; index++) {
-      const element = this.parameters[index];
-      parameters[element.strippedName] = element.value;
+    for (let index = 0; index < this.parser.options.length; index++) {
+      const option = this.parser.options[index];
+      parameters[option.strippedName()] = option.value;
     }
 
     await this._lifecycle.emitHook('pre', this._ctx);

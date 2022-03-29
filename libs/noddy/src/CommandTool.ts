@@ -10,7 +10,6 @@ export default abstract class CommandTool {
   protected _toolName: string;
   protected _toolDescription: string;
   protected _parser: Parser;
-  protected _actionByName: Map<string, Action> = new Map();
 
   protected constructor({ toolName, toolDescription }: ICommandToolInitOption) {
     this._toolName = toolName;
@@ -21,21 +20,11 @@ export default abstract class CommandTool {
     });
   }
 
-  public addAction(action: Action): void {
-    this._parser.addParser(action.actionParser);
-    this._actionByName.set(action.actionName, action);
+  protected addAction(action: Action) {
+    this._parser.addSubParser(action.parser);
   }
 
   protected async exec(): Promise<void> {
-    this._parser.parse();
-    const { _ } = this._parser.options<{ _: string }>();
-    const action = this._actionByName.get(_);
-
-    if (!action) {
-      throw new Error(`Action <${_}> is not defined`);
-    }
-
-    await action.onExecute();
-    return;
+    await this._parser.parse();
   }
 }
