@@ -14,7 +14,7 @@ export class Argparser extends ParserManager {
     this._optionValueByName = {};
   }
 
-  public parse(args?: string[]): void {
+  public async parse(args?: string[]): Promise<void> {
     if (!args) {
       args = process.argv.slice(2);
     }
@@ -72,7 +72,7 @@ export class Argparser extends ParserManager {
       i++;
     }
 
-    action.callback(this.opts());
+    await action.callback(this.opts());
   }
 
   public opts<T>(): T {

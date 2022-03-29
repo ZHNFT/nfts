@@ -1,6 +1,5 @@
 import CleanPlugin from '../plugins/CleanPlugin';
 import { ActionBase } from '../classes/ActionBase';
-
 export default class BuildCommand extends ActionBase {
   constructor() {
     super({
@@ -9,7 +8,7 @@ export default class BuildCommand extends ActionBase {
     });
   }
 
-  onParameterDefinition(): void {
+  public onParameterDefinition(): void {
     this.parser.flagOption({
       name: '--clean',
       summary: 'cleancleancleanclean',
