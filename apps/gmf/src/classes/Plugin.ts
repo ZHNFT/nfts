@@ -1,14 +1,10 @@
-import { BuildCycle, PreviewCycle, TestCycle } from '../lifecycle';
+import { BuildLifecycle } from '../lifecycle/BuildCycle';
 
 /*
  *  插件实例化需要的参数
  * */
 export interface PluginContext {
-  hook: {
-    build: BuildCycle;
-    preview: PreviewCycle;
-    test: TestCycle;
-  };
+  hook: {};
 }
 
 export abstract class Plugin {

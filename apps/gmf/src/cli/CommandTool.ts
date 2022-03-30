@@ -1,8 +1,8 @@
 import { CommandTool } from '@nfts/noddy';
-import { BuildCycle, PreviewCycle, TestCycle } from '../lifecycle';
 import { PluginManager } from '../classes/PluginManager';
 import { Configuration } from '../classes/Configuration';
 import { BuildCommand } from './commands/BuildCommand';
+import { BuildLifecycle } from '../lifecycle/BuildCycle';
 
 export default class GmfTool extends CommandTool {
   constructor() {
@@ -14,9 +14,7 @@ export default class GmfTool extends CommandTool {
     const _config = new Configuration();
     const _pluginManager = new PluginManager();
 
-    const buildCycle = new BuildCycle();
-    const previewCycle = new PreviewCycle();
-    const testCycle = new TestCycle();
+    const buildCycle = new BuildLifecycle();
 
     const build = new BuildCommand();
 
