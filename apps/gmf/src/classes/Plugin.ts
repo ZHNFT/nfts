@@ -16,12 +16,12 @@ export abstract class Plugin {
    * @remark
    *   插件名称
    * */
-  abstract name: string;
+  abstract readonly name: string;
   /*
    *  @remark
    *   插件说明
    * */
-  abstract summary: string;
+  abstract readonly summary: string;
   /*
    * @remark
    *   插件实现逻辑
