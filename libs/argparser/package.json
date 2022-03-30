@@ -16,21 +16,8 @@
     "type": "public",
     "url": "*"
   },
-  "//devDependencies": {
-    "@nfts/node-utils-library": "workspace:*"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node"
-  },
-  "eslintIgnore": [
-    "/dist",
-    "/test"
-  ],
-  "eslintConfig": {
-    "extends": "@nfts/eslint-config"
-  },
   "devDependencies": {
+    "@nfts/node-utils-library": "workspace:*",
     "@types/jest": "^27.0.3",
     "@types/node": "~17.0.5",
     "jest": "^27.4.5",
