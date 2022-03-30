@@ -1,6 +1,7 @@
-import CleanPlugin from '../plugins/CleanPlugin';
-import { ActionBase } from '../classes/ActionBase';
-export default class BuildCommand extends ActionBase {
+import { Action } from '@nfts/noddy';
+import CleanPlugin from '../internal-plugins/CleanPlugin';
+
+export default class BuildCommand extends Action {
   constructor() {
     super({
       actionName: 'build',
@@ -11,8 +12,8 @@ export default class BuildCommand extends ActionBase {
   public onParameterDefinition(): void {
     this.parser.flagOption({
       name: '--clean',
-      summary: 'cleancleancleanclean',
-      callback: () => new CleanPlugin().apply(this._ctx)
+      summary: 'clean clean clean clean',
+      callback: () => new CleanPlugin().apply(null)
     });
   }
 
@@ -24,8 +25,9 @@ export default class BuildCommand extends ActionBase {
       parameters[option.strippedName()] = option.value;
     }
 
-    await this._lifecycle.emitHook('pre', this._ctx);
-
-    return Promise.resolve();
+    await Promise.resolve();
+    // await this._lifecycle.emitHook('pre', this._ctx);
+    // await this._lifecycle.emitHook('run', this._ctx);
+    // await this._lifecycle.emitHook('finished', this._ctx);
   }
 }

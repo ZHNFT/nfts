@@ -2,5 +2,6 @@ packages:
   - 'apps/**'
   - 'libs/**'
   - 'config/**'
+  - 'internal-plugins/**'
   # exclude packages that are inside test directories
   - '!**/test/**'

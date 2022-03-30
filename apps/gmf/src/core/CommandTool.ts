@@ -1,12 +1,9 @@
 import { CommandTool } from '@nfts/noddy';
 import { BuildCycle, PreviewCycle, TestCycle } from '../lifecycle';
 import { BuildCommand } from '../commands';
-import { PluginContext } from './Plugin';
-import Config from './Config';
+import { PluginContext } from '../classes/Plugin';
 
 export default class GmfTool extends CommandTool {
-  config: Config;
-
   buildCycle: BuildCycle;
   previewCycle: PreviewCycle;
   testCycle: TestCycle;
@@ -17,14 +14,11 @@ export default class GmfTool extends CommandTool {
       toolDescription: `Build, Preview, Test Your App`
     });
 
-    this.config = new Config();
-
     this.buildCycle = new BuildCycle();
     this.previewCycle = new PreviewCycle();
     this.testCycle = new TestCycle();
 
     const ctx: PluginContext = {
-      config: this.config,
       hook: {
         build: this.buildCycle,
         preview: this.previewCycle,
@@ -33,8 +27,6 @@ export default class GmfTool extends CommandTool {
     };
 
     const build = new BuildCommand();
-
-    build.load({ ctx, lifecycle: this.buildCycle });
 
     this.addAction(build);
   }

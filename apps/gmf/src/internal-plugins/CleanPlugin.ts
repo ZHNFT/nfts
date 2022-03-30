@@ -1,6 +1,6 @@
-import { Plugin, PluginContext } from '../core/Plugin';
+import { Plugin, PluginContext } from '../classes/Plugin';
 
-export default class CleanPlugin extends Plugin {
+class CleanPlugin extends Plugin {
   name: 'clean';
   summary: 'clean up dist folder';
 
@@ -23,3 +23,5 @@ export default class CleanPlugin extends Plugin {
     });
   }
 }
+
+export default new CleanPlugin();

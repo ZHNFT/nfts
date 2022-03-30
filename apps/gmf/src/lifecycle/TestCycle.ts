@@ -1,6 +1,6 @@
-import { Lifecycle } from '../classes/Lifecycle';
+import { Lifecycle, CommonPhases } from '../classes/Lifecycle';
 
-export type TestPhases = 'config' | 'running' | 'failed' | 'finished';
+export type TestPhases = CommonPhases;
 
 export default class TestCycle extends Lifecycle<TestPhases> {
   constructor() {

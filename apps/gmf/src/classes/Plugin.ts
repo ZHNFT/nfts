@@ -1,11 +1,9 @@
 import { BuildCycle, PreviewCycle, TestCycle } from '../lifecycle';
-import Config from './Config';
 
 /*
  *  插件实例化需要的参数
  * */
 export interface PluginContext {
-  config: Config;
   hook: {
     build: BuildCycle;
     preview: PreviewCycle;

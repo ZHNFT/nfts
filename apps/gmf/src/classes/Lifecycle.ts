@@ -1,7 +1,7 @@
 import { Hook } from '@nfts/hook';
-import { PluginContext } from '../core/Plugin';
+import { PluginContext } from './Plugin';
 
-export type CommonPhases = 'pre' | 'compile' | 'emit' | 'finished' | 'error';
+export type CommonPhases = 'pre' | 'run' | 'finished';
 
 /*
  * 插件的注册
