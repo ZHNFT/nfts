@@ -4,7 +4,7 @@ import { BuildCommand } from '../commands';
 import { PluginContext } from './Plugin';
 import Config from './Config';
 
-export default class Tools extends CommandTool {
+export default class GmfTool extends CommandTool {
   config: Config;
 
   buildCycle: BuildCycle;

@@ -4,12 +4,16 @@ export default class CleanPlugin extends Plugin {
   name: 'clean';
   summary: 'clean up dist folder';
 
-  apply = (ctx: PluginContext): void => {
-    ctx.hook.build.addHook('pre', this.cleanUp);
-    ctx.hook.preview.addHook('pre', this.cleanUp);
-  };
+  apply(ctx: PluginContext): void {
+    ctx.hook.build.addHook('pre', async () => {
+      await this.cleanUp();
+    });
+    ctx.hook.preview.addHook('pre', async () => {
+      await this.cleanUp();
+    });
+  }
 
-  cleanUp = (): Promise<void> => {
+  cleanUp(): Promise<void> {
     return new Promise<void>(resolve => {
       console.log('Clean-up processing...');
       setTimeout(() => {
@@ -17,5 +21,5 @@ export default class CleanPlugin extends Plugin {
         resolve();
       }, 5000);
     });
-  };
+  }
 }

@@ -4,7 +4,7 @@ import { OptionsManager } from './OptionsManager';
 export class ParserManager extends OptionsManager {
   readonly name: string;
   readonly description: string;
-  readonly callback?: (args: unknown) => void;
+  readonly callback?: (args: unknown) => void | Promise<void>;
 
   parent: ParserManager;
   subParsers: ParserManager[] = [];

@@ -15,8 +15,6 @@ export class FileSystem {
     });
   }
 
-  //
-  //
   // eslint-disable-next-line @typescript-eslint/ban-types
   public static captureErrorSync<TResult>(fn: () => TResult): TResult {
     try {

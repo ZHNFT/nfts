@@ -1,8 +1,8 @@
 import { createRequire } from 'module';
-import * as process from 'process';
 
 export class ImportModule {
   public static use(moduleName: string): any {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return createRequire(process.cwd())(moduleName);
   }
 }

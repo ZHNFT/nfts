@@ -77,11 +77,11 @@ export interface IPackageJson {
 }
 
 export class PackageJson {
-  private readonly _name: PackageName;
-  private readonly _version: PackageVersion;
+  private readonly name: PackageName;
+  private readonly version: PackageVersion;
 
   constructor(packageJson: IPackageJson) {
-    this._name = new PackageName(packageJson.name);
-    this._version = new PackageVersion(packageJson.version);
+    this.name = new PackageName(packageJson.name);
+    this.version = new PackageVersion(packageJson.version);
   }
 }
