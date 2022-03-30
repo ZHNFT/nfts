@@ -4,14 +4,7 @@ class CleanPlugin extends Plugin {
   name: 'clean';
   summary: 'clean up dist folder';
 
-  apply(ctx: PluginContext): void {
-    ctx.hook.build.addHook('pre', async () => {
-      await this.cleanUp();
-    });
-    ctx.hook.preview.addHook('pre', async () => {
-      await this.cleanUp();
-    });
-  }
+  apply(ctx: PluginContext): void {}
 
   cleanUp(): Promise<void> {
     return new Promise<void>(resolve => {
