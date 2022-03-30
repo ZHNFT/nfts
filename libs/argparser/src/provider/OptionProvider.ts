@@ -9,7 +9,7 @@ export interface OptionDefinition {
   readonly type: string;
   readonly summary: string;
   readonly required?: boolean;
-  readonly callback?: (args: unknown) => void;
+  readonly callback?: (args: unknown) => void | Promise<void>;
 }
 
 export abstract class OptionProvider implements OptionDefinition {
@@ -17,7 +17,7 @@ export abstract class OptionProvider implements OptionDefinition {
   readonly type: string;
   readonly required: boolean;
   readonly summary: string;
-  readonly callback: (args: unknown) => void;
+  readonly callback: (args: unknown) => void | Promise<void>;
 
   protected constructor(definition: OptionDefinition) {
     this.name = definition.name;

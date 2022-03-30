@@ -1,14 +1,14 @@
 import { Action } from '@nfts/noddy';
 
-export interface PreviewCommandOptions {
+export interface TestCommandOptions {
   clean: boolean;
 }
 
-export default class PreviewCommand extends Action {
+export class TestCommand extends Action {
   constructor() {
     super({
-      actionName: 'preview',
-      actionDescription: 'preview...'
+      actionName: 'test',
+      actionDescription: 'test...'
     });
   }
 

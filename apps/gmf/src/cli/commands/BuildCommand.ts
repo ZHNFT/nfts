@@ -1,23 +1,25 @@
 import { Action } from '@nfts/noddy';
-import cleanPlugin from '../internal-plugins/CleanPlugin';
+import cleanPlugin from '../../internal-plugins/CleanPlugin';
 
-export default class BuildCommand extends Action {
+export class BuildCommand extends Action {
   constructor() {
     super({
       actionName: 'build',
-      actionDescription: 'buildbuildbuildbuild'
+      actionDescription: 'build build build build'
     });
   }
 
-  public onParameterDefinition(): void {
+  protected onParameterDefinition(): void {
     this.parser.flagOption({
       name: '--clean',
       summary: 'clean clean clean clean',
-      callback: () => cleanPlugin.apply(null)
+      callback: () => {
+        cleanPlugin.apply(null);
+      }
     });
   }
 
-  async onExecute(): Promise<void> {
+  protected async onExecute(): Promise<void> {
     const parameters = {};
 
     for (let index = 0; index < this.parser.options.length; index++) {

@@ -12,14 +12,12 @@ export default abstract class Action {
     this.parser = new SubParser({
       name: definition.actionName,
       description: definition.actionDescription,
-      callback: async () => {
-        await this.onExecute();
-      }
+      callback: async () => await this.onExecute()
     });
 
     this.onParameterDefinition();
   }
 
-  abstract onParameterDefinition(): void;
-  abstract onExecute(): Promise<void>;
+  protected abstract onParameterDefinition(): void;
+  protected abstract onExecute(): Promise<void>;
 }

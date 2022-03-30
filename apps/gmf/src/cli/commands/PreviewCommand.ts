@@ -1,18 +1,18 @@
 import { Action } from '@nfts/noddy';
 
-export interface TestCommandOptions {
+export interface PreviewCommandOptions {
   clean: boolean;
 }
 
-export default class TestCommand extends Action {
+export class PreviewCommand extends Action {
   constructor() {
     super({
-      actionName: 'test',
-      actionDescription: 'test...'
+      actionName: 'preview',
+      actionDescription: 'preview preview preview preview'
     });
   }
 
-  onParameterDefinition(): void {
+  protected onParameterDefinition(): void {
     throw new Error('Method not implemented.');
   }
 
