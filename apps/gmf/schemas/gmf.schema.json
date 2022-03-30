@@ -1,3 +1,19 @@
 {
-  "$schema" : ""
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://json-schema.org/draft/2020-12/output/schema",
+  "description": "A schema that validates the minimum requirements for validation output",
+  "type": "object",
+  "properties": {
+    "gmf-plugins": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "pluginName": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
 }
