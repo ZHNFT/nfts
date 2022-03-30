@@ -1,5 +1,5 @@
 import { Action } from '@nfts/noddy';
-import CleanPlugin from '../internal-plugins/CleanPlugin';
+import cleanPlugin from '../internal-plugins/CleanPlugin';
 
 export default class BuildCommand extends Action {
   constructor() {
@@ -13,7 +13,7 @@ export default class BuildCommand extends Action {
     this.parser.flagOption({
       name: '--clean',
       summary: 'clean clean clean clean',
-      callback: () => new CleanPlugin().apply(null)
+      callback: () => cleanPlugin.apply(null)
     });
   }
 
