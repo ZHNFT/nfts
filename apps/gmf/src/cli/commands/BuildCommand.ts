@@ -1,11 +1,14 @@
 import { Action } from '@nfts/noddy';
 import cleanPlugin from '../../internal-plugins/CleanPlugin';
 
+const BUILD_LIFECYCLE_NAME = 'build';
+const BUILD_LIFECYCLE_DESC = 'build build build build';
+
 export class BuildCommand extends Action {
   constructor() {
     super({
-      actionName: 'build',
-      actionDescription: 'build build build build'
+      actionName: BUILD_LIFECYCLE_NAME,
+      actionDescription: BUILD_LIFECYCLE_DESC
     });
   }
 

@@ -1,7 +1,7 @@
 const { dirname } = require('path');
 
 module.exports = {
-  extends: ['@nfts'],
+  extends: ['@nfts/eslint-config'],
   parserOptions: {
     tsconfigRootDir: dirname(__filename)
   }

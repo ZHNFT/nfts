@@ -4,7 +4,9 @@ class CleanPlugin extends Plugin {
   name: 'clean';
   summary: 'clean up dist folder';
 
-  apply(ctx: PluginContext): void {}
+  apply(ctx: PluginContext): void {
+    //
+  }
 
   cleanUp(): Promise<void> {
     return new Promise<void>(resolve => {

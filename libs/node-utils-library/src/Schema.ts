@@ -1,7 +1,5 @@
-import { IJson } from './Json';
-
 export class Schema {
-  private _schema: IJson;
+  private _schema: unknown;
 
   public validate(): boolean {
     //

@@ -18,7 +18,7 @@ export class PackageVersion {
 
   constructor(version: string) {
     if (!PackageVersion.isValidVersion(version)) {
-      throw new Error(`Not a valid version: ${version}`);
+      throw new Error(`Invalid valid version: ${version}`);
     }
     const [, major, minor, patch] = PackageVersion.versionRegex.exec(version);
     this.major = major;

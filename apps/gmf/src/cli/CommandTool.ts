@@ -13,9 +13,7 @@ export default class GmfTool extends CommandTool {
 
     const _config = new Configuration();
     const _pluginManager = new PluginManager();
-
     const buildCycle = new BuildLifecycle();
-
     const build = new BuildCommand();
 
     this.addAction(build);

@@ -1,22 +1,21 @@
 import * as fs from 'fs';
-import { IJson } from './Json';
 
 export class FileSystem {
-  public static readJsonSync(path: string): IJson {
-    return FileSystem.captureErrorSync<IJson>(() => {
+  public static readJsonSync<T = unknown>(path: string): T {
+    return FileSystem.captureErrorSync<T>(() => {
       const buf = fs.readFileSync(path);
-      return JSON.parse(buf.toString('utf-8')) as IJson;
+      return JSON.parse(buf.toString('utf-8')) as T;
     });
   }
 
-  public static writeJsonSync(path: string, data: IJson): void {
+  public static writeJsonSync(path: string, data: unknown): void {
     FileSystem.captureErrorSync<void>(() => {
       fs.writeFileSync(path, JSON.stringify(data, null, 2));
     });
   }
 
   // eslint-disable-next-line @typescript-eslint/ban-types
-  public static captureErrorSync<TResult>(fn: () => TResult): TResult {
+  protected static captureErrorSync<TResult>(fn: () => TResult): TResult {
     try {
       return fn();
     } catch (e) {
@@ -24,7 +23,7 @@ export class FileSystem {
     }
   }
 
-  public static async captureErrorAsync<TResult>(
+  protected static async captureErrorAsync<TResult>(
     fn: () => Promise<TResult>
   ): Promise<TResult> {
     try {

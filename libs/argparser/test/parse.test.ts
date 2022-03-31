@@ -16,26 +16,29 @@ describe('argparser parse test case', function () {
   parser.addSubParser(dev.addSubParser(list.addSubParser(command)));
 
   it('should equal', function () {
-    const aOption = command.stringOption({ name: '--aOption' });
+    const aOption = command.stringOption({ name: '--aOption', summary: 'aaa' });
 
     const bOption = command.arrayOption({
       name: '--bOption',
       callback: arg => {
         console.log('--bOption', arg);
       },
-      alternatives: ['1', '2', '3']
+      alternatives: ['1', '2', '3'],
+      summary: 'aaa'
     });
 
     const cOption = command.flagOption({
       name: '--cOption',
-      callback: (arg: boolean) => {
+      summary: 'aaa',
+      callback: arg => {
         console.log('--cOption', arg);
       }
     });
 
     const dOption = command.flagOption({
       name: '--dOption',
-      callback: (arg: boolean) => {
+      summary: 'aaa',
+      callback: arg => {
         console.log('--dOption', arg);
       }
     });
