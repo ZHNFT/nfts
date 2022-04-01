@@ -14,36 +14,40 @@ export class PluginManager {
     this._hooks = hooks;
     this._plugins = [];
     this._usedPluginNames = [];
-    this._applyPlugins();
   }
 
-  private isUsed(pluginName: string): boolean {
+  public isUsed(pluginName: string): boolean {
     return this._usedPluginNames.includes(pluginName);
+  }
+
+  public async initAsync(): Promise<void> {
+    await this._applyPluginsAsync();
   }
 
   /*
    * 加载多个插件的方式只提供内部解析配置文件的时候使用
    * */
-  private _applyPlugins() {
+  private async _applyPluginsAsync() {
     const { plugins } = this._config.loadConfig();
-    plugins.forEach(plugin => {
+
+    for await (let plugin of plugins) {
       const { pluginName } = plugin;
       const _pluginInstance = ImportModule.importModule(pluginName) as Plugin;
-
-      this.applyPlugin(_pluginInstance);
-    });
+      await this.applyPluginAsync(_pluginInstance);
+    }
   }
 
   /*
    * 单个插件的添加提供给内外部使用
    * */
-  public applyPlugin(plugin: Plugin) {
+  public async applyPluginAsync(plugin: Plugin): Promise<void> {
     this._plugins.push(plugin);
     console.log(`Initialling <${plugin.name}>`);
-    void plugin.apply({
+    await plugin.apply({
       hook: this._hooks,
       config: this._config
     });
     this._usedPluginNames.push(plugin.name);
+    console.log(`Plugin <${plugin.name}> loaded`);
   }
 }

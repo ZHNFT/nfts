@@ -156,6 +156,24 @@ importers:
   libs/terminal:
     specifiers: {}
 
+  plugins/gmf-plugin-esbuild:
+    specifiers:
+      '@nfts/eslint-config': workspace:*
+      '@nfts/gmf': workspace:*
+      '@types/jest': ^27.0.3
+      '@types/node': ~17.0.5
+      jest: ^27.4.5
+      ts-jest: ^27.1.2
+      typescript: ^4.5.4
+    devDependencies:
+      '@nfts/eslint-config': link:../../config/eslint
+      '@nfts/gmf': link:../../apps/gmf
+      '@types/jest': 27.4.1
+      '@types/node': 17.0.23
+      jest: 27.5.1
+      ts-jest: 27.1.4_9985e1834e803358b7be1e6ce5ca0eea
+      typescript: 4.6.3
+
 packages:
 
   /@babel/code-frame/7.12.13:

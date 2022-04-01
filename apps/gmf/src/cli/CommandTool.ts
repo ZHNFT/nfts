@@ -5,6 +5,8 @@ import { BuildCommand } from './commands/BuildCommand';
 import { BuildHook, THooks } from '../hook';
 
 export default class GmfTool extends CommandTool {
+  private _pluginManager: PluginManager;
+
   constructor() {
     super({
       toolName: 'gmf',
@@ -18,14 +20,15 @@ export default class GmfTool extends CommandTool {
     };
 
     const _config = new Configuration();
-    const _pluginManager = new PluginManager(_config, hooks);
+    this._pluginManager = new PluginManager(_config, hooks);
 
-    const build = new BuildCommand();
+    const build = new BuildCommand({ hook: buildHook });
 
     this.addAction(build);
   }
 
-  public exec(): Promise<void> {
+  public async exec(): Promise<void> {
+    await this._pluginManager.initAsync();
     return super.exec();
   }
 }

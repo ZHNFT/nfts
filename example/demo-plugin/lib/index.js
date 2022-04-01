@@ -4,9 +4,25 @@ class InitPlugin extends Plugin {
   name = 'init';
   summary = 'init plugin test';
 
-  apply(ctx) {
-    ctx.hook.build.addHook('before', () => {
-      console.log('init plugin invoke');
+  async apply(ctx) {
+    await new Promise(resolve => {
+      setTimeout(() => {
+        ctx.hook.build.addHook('pre', async args => {
+          const asyncFn = async () => {
+            await new Promise(resolve1 => {
+              setTimeout(() => {
+                console.log(args);
+                console.log('init plugin invoke');
+                resolve1();
+              }, 5000);
+            });
+          };
+
+          await asyncFn();
+        });
+
+        resolve();
+      }, 5000);
     });
   }
 }
