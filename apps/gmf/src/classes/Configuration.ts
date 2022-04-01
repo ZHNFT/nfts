@@ -2,8 +2,9 @@ import { FileSystem } from '@nfts/node-utils-library';
 import Constants from '../Constants';
 
 export interface IConfig {
-  'gmf-plugins': {
+  plugins: {
     pluginName: string;
+    [index: string]: string;
   }[];
 }
 

@@ -1,12 +1,12 @@
 import { Hook } from '@nfts/hook';
 import { PluginContext } from './Plugin';
 
-export type CommonPhases = 'pre' | 'run' | 'finished';
+export type THookNames = 'pre' | 'run' | 'finished';
 
 /*
  * 插件的注册
  * */
-export abstract class Lifecycle<
+export abstract class HookBase<
   HookNames = string,
   HookContext = PluginContext
 > extends Hook<HookNames, HookContext> {}
