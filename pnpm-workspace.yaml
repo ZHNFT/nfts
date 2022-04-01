@@ -3,5 +3,7 @@ packages:
   - 'libs/**'
   - 'config/**'
   - 'internal-plugins/**'
+  - 'plugins/**'
+  - 'example/**'
   # exclude packages that are inside test directories
   - '!**/test/**'

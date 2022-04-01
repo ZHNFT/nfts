@@ -1,9 +1,0 @@
-{
-  "plugins": [
-    {
-      "action": "build",
-      "phase": "before",
-      "name": "@nfts/init-plugin"
-    }
-  ]
-}

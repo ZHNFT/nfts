@@ -47,6 +47,20 @@ importers:
   config/prettier:
     specifiers: {}
 
+  example/demo-plugin:
+    specifiers:
+      '@nfts/gmf': workspace:*
+    devDependencies:
+      '@nfts/gmf': link:../../apps/gmf
+
+  example/example1:
+    specifiers:
+      '@nfts/gmf': workspace:*
+      '@nfts/init-plugin': workspace:*
+    devDependencies:
+      '@nfts/gmf': link:../../apps/gmf
+      '@nfts/init-plugin': link:../demo-plugin
+
   libs/argparser:
     specifiers:
       '@nfts/eslint-config': workspace:*

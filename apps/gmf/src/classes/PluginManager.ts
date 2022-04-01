@@ -4,14 +4,16 @@ import { Plugin } from './Plugin';
 import { THooks } from '../hook';
 
 export class PluginManager {
-  private _plugins: Plugin[];
-  private _usedPluginNames: string[];
+  private readonly _plugins: Plugin[];
   private readonly _config: Configuration;
   private readonly _hooks: THooks;
+  private readonly _usedPluginNames: string[];
 
   constructor(config: Configuration, hooks: THooks) {
     this._config = config;
     this._hooks = hooks;
+    this._plugins = [];
+    this._usedPluginNames = [];
     this._applyPlugins();
   }
 
@@ -26,7 +28,7 @@ export class PluginManager {
     const { plugins } = this._config.loadConfig();
     plugins.forEach(plugin => {
       const { pluginName } = plugin;
-      const _pluginInstance = ImportModule.import(pluginName) as Plugin;
+      const _pluginInstance = ImportModule.importModule(pluginName) as Plugin;
 
       this.applyPlugin(_pluginInstance);
     });
