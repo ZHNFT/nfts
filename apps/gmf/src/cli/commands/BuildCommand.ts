@@ -39,8 +39,10 @@ export class BuildCommand extends Action {
       parameters[option.strippedName()] = option.value;
     }
 
-    await this.hook.emitHook('pre', { parameters });
-    // await this._lifecycle.emitHook('run', this._ctx);
-    // await this._lifecycle.emitHook('finished', this._ctx);
+    await this.hook.emitHook('clean', { parameters });
+    await this.hook.emitHook('config', { parameters });
+    await this.hook.emitHook('build', { parameters });
+    await this.hook.emitHook('emit', { parameters });
+    await this.hook.emitHook('finished', { parameters });
   }
 }
