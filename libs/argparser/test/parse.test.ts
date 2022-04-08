@@ -68,4 +68,15 @@ describe('argparser parse test case', function () {
       _: ['dev', 'list', 'command']
     });
   });
+
+  test('should be parsed with no error', () => {
+    const parser = new Parser({
+      name: 'test',
+      description: 'testtesttesttesttesttesttesttesttest'
+    });
+    const dev = new SubParser({ name: 'dev', description: 'devdevdevdevdevdev' });
+    parser.addSubParser(dev);
+
+    expect(parser.parse(['dev'])).resolves.not.toThrow();
+  });
 });

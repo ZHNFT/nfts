@@ -6,7 +6,7 @@
     "@nfts/init-plugin": "workspace:*"
   },
   "scripts": {
-    "build": "gmf build --clean",
+    "build": "gmf build",
     "dev": "gmf dev",
     "test": "gmf test"
   }

@@ -5,7 +5,10 @@ class CopyPlugin extends Plugin {
   summary: 'Copy static files';
 
   apply(ctx: PluginContext): void {
-    console.log('Copy folder & files!');
+    console.log('apply copy hook');
+    ctx.hook.build.addHook('finished', () => {
+      console.log('process copy hook');
+    });
   }
 }
 

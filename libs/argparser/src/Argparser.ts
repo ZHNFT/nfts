@@ -22,7 +22,7 @@ export class Argparser extends ParserManager {
     const actions: string[] = [];
     let i = 0;
 
-    while (!Argparser.maybeOption(args[i])) {
+    while (args[i] && !Argparser.maybeOption(args[i])) {
       actions.push(args[i]);
       i++;
     }
@@ -72,7 +72,7 @@ export class Argparser extends ParserManager {
       i++;
     }
 
-    await action.callback(this.opts());
+    await action?.callback?.(this.opts());
   }
 
   public opts<T>(): T {

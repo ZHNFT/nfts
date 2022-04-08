@@ -1,6 +1,5 @@
 import { Action } from '@nfts/noddy';
 import { FlagOption } from '@nfts/argparser';
-import cleanPlugin from '../../internal-plugins/CleanPlugin';
 import { BuildHook } from '../../hook';
 
 const BUILD_LIFECYCLE_NAME = 'build';
@@ -12,7 +11,8 @@ interface BuildCommandInitOption {
 
 export class BuildCommand extends Action {
   private readonly hook: BuildHook;
-  private _cleanUpDist: FlagOption;
+  private _cleanDist: FlagOption;
+  private _runTest: FlagOption;
 
   constructor(initOptions: BuildCommandInitOption) {
     super({
@@ -24,19 +24,27 @@ export class BuildCommand extends Action {
   }
 
   protected onParameterDefinition(): void {
-    this._cleanUpDist = this.parser.flagOption({
+    this._cleanDist = this.parser.flagOption({
       name: '--clean',
-      summary: 'clean clean clean clean',
-      callback: () => {
-        cleanPlugin.apply(null);
-      }
+      summary: 'Clean up dist folder before build process'
+    });
+
+    this._runTest = this.parser.flagOption({
+      name: '--runTest',
+      summary: 'Run test case after build process'
     });
   }
 
   protected async onExecute(): Promise<void> {
-    const parameters = {};
+    const parameters = {
+      cleanDist: this._cleanDist.value,
+      runTest: this._runTest.value
+    };
 
-    await this.hook.emitHook('clean', { parameters });
+    if (parameters.cleanDist) {
+      await this.hook.emitHook('clean', { parameters });
+    }
+
     await this.hook.emitHook('config', { parameters });
     await this.hook.emitHook('build', { parameters });
     await this.hook.emitHook('emit', { parameters });

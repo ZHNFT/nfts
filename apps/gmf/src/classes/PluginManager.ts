@@ -2,6 +2,8 @@ import { ImportModule } from '@nfts/node-utils-library';
 import { Configuration } from './Configuration';
 import { Plugin } from './Plugin';
 import { THooks } from '../hook';
+import cleanPlugin from '../internal-plugins/CleanPlugin';
+import copyPlugin from '../internal-plugins/CopyPlugin';
 
 export class PluginManager {
   private readonly _plugins: Plugin[];
@@ -21,6 +23,9 @@ export class PluginManager {
   }
 
   public async initAsync(): Promise<void> {
+    this.applyPlugin(cleanPlugin);
+    this.applyPlugin(copyPlugin);
+
     await this._applyPluginsAsync();
   }
 
@@ -41,13 +46,10 @@ export class PluginManager {
    * 单个插件的添加提供给内外部使用
    * */
   public async applyPluginAsync(plugin: Plugin): Promise<void> {
-    this._plugins.push(plugin);
-    console.log(`Initialling <${plugin.name}>`);
-    await plugin.apply({
-      hook: this._hooks,
-      config: this._config
-    });
-    this._usedPluginNames.push(plugin.name);
-    console.log(`Plugin <${plugin.name}> loaded`);
+    await plugin.apply({ hook: this._hooks, config: this._config });
+  }
+
+  public applyPlugin(plugin: Plugin): void {
+    plugin.apply({ hook: this._hooks, config: this._config });
   }
 }
