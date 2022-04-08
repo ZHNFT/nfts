@@ -21,6 +21,7 @@
     "@nfts/noddy": "workspace:*",
     "@nfts/eslint-config": "workspace:*",
     "@nfts/hook": "workspace:*",
+    "@nfts/argparser": "workspace:*",
     "@types/jest": "^27.0.3",
     "@types/node": "~17.0.5",
     "jest": "^27.4.5",

@@ -1,4 +1,5 @@
 import { Action } from '@nfts/noddy';
+import { FlagOption } from '@nfts/argparser';
 import cleanPlugin from '../../internal-plugins/CleanPlugin';
 import { BuildHook } from '../../hook';
 
@@ -11,6 +12,7 @@ interface BuildCommandInitOption {
 
 export class BuildCommand extends Action {
   private readonly hook: BuildHook;
+  private _cleanUpDist: FlagOption;
 
   constructor(initOptions: BuildCommandInitOption) {
     super({
@@ -22,7 +24,7 @@ export class BuildCommand extends Action {
   }
 
   protected onParameterDefinition(): void {
-    this.parser.flagOption({
+    this._cleanUpDist = this.parser.flagOption({
       name: '--clean',
       summary: 'clean clean clean clean',
       callback: () => {
@@ -33,11 +35,6 @@ export class BuildCommand extends Action {
 
   protected async onExecute(): Promise<void> {
     const parameters = {};
-
-    for (let index = 0; index < this.parser.options.length; index++) {
-      const option = this.parser.options[index];
-      parameters[option.strippedName()] = option.value;
-    }
 
     await this.hook.emitHook('clean', { parameters });
     await this.hook.emitHook('config', { parameters });

@@ -30,7 +30,7 @@ export class PluginManager {
   private async _applyPluginsAsync() {
     const { plugins } = this._config.loadConfig();
 
-    for await (let plugin of plugins) {
+    for await (const plugin of plugins) {
       const { pluginName } = plugin;
       const _pluginInstance = ImportModule.importModule(pluginName) as Plugin;
       await this.applyPluginAsync(_pluginInstance);
