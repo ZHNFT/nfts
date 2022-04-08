@@ -1,0 +1,8 @@
+*
+
+# Ruleset Folder
+!/node/**
+!/web/**
+
+# Main Entry
+!/index.js
