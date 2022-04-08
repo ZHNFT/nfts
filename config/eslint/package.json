@@ -1,6 +1,6 @@
 {
 	"name": "@nfts/eslint-config",
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"main": "index.js",
 	"module": "index.js",
 	"publishConfig": {
@@ -8,7 +8,9 @@
 	},
 	"peerDependencies": {
 		"eslint": "~8",
-		"typescript": "~4"
+		"typescript": "~4",
+		"@typescript-eslint/eslint-plugin": "~5",
+		"@typescript-eslint/parser": "~5"
 	},
 	"devDependencies": {
 		"@types/eslint": "^8.4.1",
@@ -16,8 +18,5 @@
 		"@typescript-eslint/parser": "^5.7.0",
 		"eslint": "^8.12.0",
 		"typescript": "^4.6.3"
-	},
-	"files": [
-		"index.js"
-	]
+	}
 }
