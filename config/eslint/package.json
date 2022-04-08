@@ -1,22 +1,22 @@
 {
-	"name": "@nfts/eslint-config",
-	"version": "1.1.2",
-	"main": "index.js",
-	"module": "index.js",
-	"publishConfig": {
-		"access": "public"
-	},
-	"peerDependencies": {
-		"eslint": "~8",
-		"typescript": "~4",
-		"@typescript-eslint/eslint-plugin": "~5",
-		"@typescript-eslint/parser": "~5"
-	},
-	"devDependencies": {
-		"@types/eslint": "^8.4.1",
-		"@typescript-eslint/eslint-plugin": "^5.17.0",
-		"@typescript-eslint/parser": "^5.7.0",
-		"eslint": "^8.12.0",
-		"typescript": "^4.6.3"
-	}
+  "name": "@nfts/eslint-config",
+  "version": "1.1.2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "eslint": "~8",
+    "typescript": "~4"
+  },
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.17.0",
+    "@typescript-eslint/parser": "^5.7.0",
+    "eslint": "^8.12.0",
+    "eslint-plugin-hooks": "^0.4.3",
+    "eslint-plugin-react": "^7.29.4",
+    "typescript": "^4.6.3"
+  },
+  "devDependencies": {
+    "@types/eslint": "^8.4.1"
+  }
 }
