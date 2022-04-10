@@ -14,6 +14,10 @@ export class FileSystem {
     });
   }
 
+  public static fileStats(path: string): fs.Stats {
+    return fs.statSync(path);
+  }
+
   // eslint-disable-next-line @typescript-eslint/ban-types
   protected static captureErrorSync<TResult>(fn: () => TResult): TResult {
     try {

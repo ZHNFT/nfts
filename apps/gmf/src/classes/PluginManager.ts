@@ -2,8 +2,12 @@ import { ImportModule } from '@nfts/node-utils-library';
 import { Configuration } from './Configuration';
 import { Plugin } from './Plugin';
 import { THooks } from '../hook';
+
+// #region Internal Plugins
 import cleanPlugin from '../internal-plugins/CleanPlugin';
 import copyPlugin from '../internal-plugins/CopyPlugin';
+import typescriptPlugin from '../internal-plugins/TypescriptPlugin';
+// #endregion
 
 export class PluginManager {
   private readonly _plugins: Plugin[];
@@ -25,6 +29,7 @@ export class PluginManager {
   public async initAsync(): Promise<void> {
     this.applyPlugin(cleanPlugin);
     this.applyPlugin(copyPlugin);
+    this.applyPlugin(typescriptPlugin);
 
     await this._applyPluginsAsync();
   }
@@ -50,6 +55,7 @@ export class PluginManager {
   }
 
   public applyPlugin(plugin: Plugin): void {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     plugin.apply({ hook: this._hooks, config: this._config });
   }
 }

@@ -12,17 +12,22 @@ importers:
       '@nfts/hook': workspace:*
       '@nfts/noddy': workspace:*
       '@nfts/node-utils-library': workspace:*
+      '@types/glob': ^7.2.0
       '@types/jest': ^27.0.3
       '@types/node': ~17.0.5
+      glob: ^7.2.0
       jest: ^27.4.5
       ts-jest: ^27.1.2
       typescript: ^4.5.4
+    dependencies:
+      glob: 7.2.0
     devDependencies:
       '@nfts/argparser': link:../../libs/argparser
       '@nfts/eslint-config': link:../../config/eslint
       '@nfts/hook': link:../../libs/hook
       '@nfts/noddy': link:../../libs/noddy
       '@nfts/node-utils-library': link:../../libs/node-utils-library
+      '@types/glob': 7.2.0
       '@types/jest': 27.4.1
       '@types/node': 17.0.23
       jest: 27.5.1
@@ -662,7 +667,7 @@ packages:
       chalk: 4.1.1
       collect-v8-coverage: 1.0.1
       exit: 0.1.2
-      glob: 7.1.7
+      glob: 7.2.0
       graceful-fs: 4.2.9
       istanbul-lib-coverage: 3.0.0
       istanbul-lib-instrument: 5.1.0
@@ -825,6 +830,13 @@ packages:
     resolution: {integrity: sha512-LfZwXoGUDo0C3me81HXgkBg5CTQYb6xzEl+fNmbO4JdRiSKQ8A0GD1OBBvKAIsbCUgoyAty7m99GqqMQe784ew==}
     dev: true
 
+  /@types/glob/7.2.0:
+    resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
+    dependencies:
+      '@types/minimatch': 3.0.5
+      '@types/node': 17.0.23
+    dev: true
+
   /@types/graceful-fs/4.1.5:
     resolution: {integrity: sha512-anKkLmZZ+xm4p8JWBf4hElkM4XR+EZeA2M9BAkkTldmcyDY4mbdIJnRghDJH3Ov5ooY7/UAoENtmdMSkaAd7Cw==}
     dependencies:
@@ -860,6 +872,10 @@ packages:
 
   /@types/json-schema/7.0.7:
     resolution: {integrity: sha512-cxWFQVseBm6O9Gbw1IWb8r6OS4OhSt3hPZLkFApLjM8TEXROBuQGLAH2i2gZpcXdLBIrpXuTDhH7Vbm1iXmNGA==}
+    dev: true
+
+  /@types/minimatch/3.0.5:
+    resolution: {integrity: sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==}
     dev: true
 
   /@types/node/17.0.23:
@@ -1895,13 +1911,13 @@ packages:
       is-glob: 4.0.3
     dev: false
 
-  /glob/7.1.7:
-    resolution: {integrity: sha512-OvD9ENzPLbegENnYP5UUfJIirTg4+XwMWGaQfQTY0JenxNvvIKP3U3/tAQSPIu/lHxXYSZmpXlUHeqAIdKzBLQ==}
+  /glob/7.2.0:
+    resolution: {integrity: sha512-lmLf6gtyrPq8tTjSmrO94wBeQbFR3HbLHbuyD69wuyQkImp2hWqMGB47OX65FBkPffO641IP9jWa1z4ivqG26Q==}
     dependencies:
       fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 3.0.4
+      minimatch: 3.1.2
       once: 1.4.0
       path-is-absolute: 1.0.1
 
@@ -2315,7 +2331,7 @@ packages:
       chalk: 4.1.1
       ci-info: 3.3.0
       deepmerge: 4.2.2
-      glob: 7.1.7
+      glob: 7.2.0
       graceful-fs: 4.2.9
       jest-circus: 27.5.1
       jest-environment-jsdom: 27.5.1
@@ -2579,7 +2595,7 @@ packages:
       cjs-module-lexer: 1.2.2
       collect-v8-coverage: 1.0.1
       execa: 5.1.1
-      glob: 7.1.7
+      glob: 7.2.0
       graceful-fs: 4.2.9
       jest-haste-map: 27.5.1
       jest-message-util: 27.5.1
@@ -2914,7 +2930,6 @@ packages:
     resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}
     dependencies:
       brace-expansion: 1.1.11
-    dev: false
 
   /minimist/1.2.5:
     resolution: {integrity: sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==}
@@ -3250,7 +3265,7 @@ packages:
     resolution: {integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==}
     hasBin: true
     dependencies:
-      glob: 7.1.7
+      glob: 7.2.0
 
   /run-parallel/1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
@@ -3456,7 +3471,7 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       '@istanbuljs/schema': 0.1.3
-      glob: 7.1.7
+      glob: 7.2.0
       minimatch: 3.0.4
     dev: true
 

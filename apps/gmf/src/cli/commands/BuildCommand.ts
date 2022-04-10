@@ -1,6 +1,6 @@
 import { Action } from '@nfts/noddy';
 import { FlagOption } from '@nfts/argparser';
-import { BuildHook } from '../../hook';
+import { BuildHook, BuildHookOptions } from '../../hook';
 
 const BUILD_LIFECYCLE_NAME = 'build';
 const BUILD_LIFECYCLE_DESC = 'build build build build';
@@ -36,18 +36,18 @@ export class BuildCommand extends Action {
   }
 
   protected async onExecute(): Promise<void> {
-    const parameters = {
+    const parameters: BuildHookOptions = {
       cleanDist: this._cleanDist.value,
       runTest: this._runTest.value
     };
 
     if (parameters.cleanDist) {
-      await this.hook.emitHook('clean', { parameters });
+      await this.hook.emitHook('clean', parameters);
     }
 
-    await this.hook.emitHook('config', { parameters });
-    await this.hook.emitHook('build', { parameters });
-    await this.hook.emitHook('emit', { parameters });
-    await this.hook.emitHook('finished', { parameters });
+    await this.hook.emitHook('config', parameters);
+    await this.hook.emitHook('build', parameters);
+    await this.hook.emitHook('emit', parameters);
+    await this.hook.emitHook('finished', parameters);
   }
 }

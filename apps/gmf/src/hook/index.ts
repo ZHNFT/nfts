@@ -4,4 +4,4 @@ export type THooks = {
   build: BuildHook;
 };
 
-export { BuildHook } from './BuildHook';
+export { BuildHook, BuildHookOptions } from './BuildHook';
