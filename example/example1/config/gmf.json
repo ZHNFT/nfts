@@ -1,9 +1,3 @@
 {
-  "plugins": [
-    {
-      "pluginName": "@nfts/init-plugin",
-      "action": "build",
-      "phase": "before"
-    }
-  ]
+  "plugins": []
 }

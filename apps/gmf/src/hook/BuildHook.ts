@@ -1,4 +1,5 @@
 import { HookBase } from '../classes/HookBase';
+import { Logger } from '../classes/Logger';
 
 export const BUILD_START_SUB_HOOK_NAME = 'BUILD_START';
 
@@ -36,6 +37,7 @@ export interface BuildHookContext {
   compile: BuildCompileSubHook;
   finished: BuildFinishedSubHook;
   commandLineParameters: BuildHookOptions;
+  logger: Logger;
 }
 
 export class BuildHook extends HookBase<BuildHookContext> {
@@ -45,12 +47,17 @@ export class BuildHook extends HookBase<BuildHookContext> {
 
   public async _call(options?: BuildHookOptions): Promise<void> {
     const subHookContext: BuildHookContext = {
-      commandLineParameters: options,
       start: new BuildStartSubHook(),
       compile: new BuildCompileSubHook(),
-      finished: new BuildFinishedSubHook()
+      finished: new BuildFinishedSubHook(),
+      commandLineParameters: options,
+      logger: Logger.getLogger(BUILD_HOOK_NAME)
     };
 
     await super.call(subHookContext);
+
+    await subHookContext.start.call();
+    await subHookContext.compile.call();
+    await subHookContext.finished.call();
   }
 }

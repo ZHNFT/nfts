@@ -7,10 +7,6 @@ export abstract class HookBase<HookContext = unknown> {
   public readonly hookName: string;
   private readonly _hook: Hook<string, HookContext>;
 
-  get hook(): HookBase {
-    return this;
-  }
-
   protected constructor(hookName: string) {
     this.hookName = hookName;
     this._hook = new Hook<string, HookContext>();

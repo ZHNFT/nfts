@@ -2,7 +2,7 @@ export class Logger {
   private readonly _scope: string;
   private _devMode: boolean;
 
-  private static readonly _loggers: Logger[];
+  private static readonly _loggers: Logger[] = [];
   private static readonly _defaultLogger = Logger.getLogger('__default__');
 
   get scope(): string {
@@ -29,7 +29,7 @@ export class Logger {
       return logger;
     }
 
-    logger = Logger.getLogger(scope);
+    logger = new Logger(scope);
 
     this._loggers.push(logger);
 

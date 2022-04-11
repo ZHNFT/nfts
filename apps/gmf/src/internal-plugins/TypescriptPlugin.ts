@@ -1,15 +1,14 @@
 import * as ts from 'typescript';
-import { resolve, dirname } from 'path';
 import * as fs from 'fs';
 import glob from 'glob';
+import { resolve, dirname } from 'path';
 import { Plugin, PluginContext } from '../classes/Plugin';
 
 class TypescriptRunner {
   public runTypescriptBuild() {
     const rootDir = process.cwd();
-    const configPath = resolve(rootDir, 'config');
     const outputDir = resolve(rootDir, 'dist');
-    const tsconfigPath = resolve(configPath, 'tsconfig.json');
+    const tsconfigPath = resolve(rootDir, 'tsconfig.json');
 
     const tsCompilerOptions: ts.CompilerOptions = {
       rootDir,
@@ -102,6 +101,7 @@ interface TypescriptPluginOptions {
   watch?: boolean;
   // 输出所有构建信息；
   verbose?: boolean;
+  tsconfigPath?: string;
 }
 
 class TypescriptPlugin implements Plugin<TypescriptPluginOptions> {
@@ -115,8 +115,8 @@ class TypescriptPlugin implements Plugin<TypescriptPluginOptions> {
   }
 
   apply(ctx: PluginContext, options?: TypescriptPluginOptions): void {
-    ctx.hook.build.addHook(compile => {
-      compile.compile.addHook(() => {
+    ctx.hook.build.addHook(build => {
+      build.compile.addHook(() => {
         if (options?.watch) {
           this._tsRunner.runTypescriptWatch();
         } else {
