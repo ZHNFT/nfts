@@ -115,12 +115,14 @@ class TypescriptPlugin implements Plugin<TypescriptPluginOptions> {
   }
 
   apply(ctx: PluginContext, options?: TypescriptPluginOptions): void {
-    ctx.hook.build.addHook('build', () => {
-      if (options?.watch) {
-        this._tsRunner.runTypescriptWatch();
-      } else {
-        this._tsRunner.runTypescriptBuild();
-      }
+    ctx.hook.build.addHook(compile => {
+      compile.compile.addHook(() => {
+        if (options?.watch) {
+          this._tsRunner.runTypescriptWatch();
+        } else {
+          this._tsRunner.runTypescriptBuild();
+        }
+      });
     });
   }
 }

@@ -41,13 +41,6 @@ export class BuildCommand extends Action {
       runTest: this._runTest.value
     };
 
-    if (parameters.cleanDist) {
-      await this.hook.emitHook('clean', parameters);
-    }
-
-    await this.hook.emitHook('config', parameters);
-    await this.hook.emitHook('build', parameters);
-    await this.hook.emitHook('emit', parameters);
-    await this.hook.emitHook('finished', parameters);
+    await this.hook._call(parameters);
   }
 }

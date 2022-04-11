@@ -1,25 +1,56 @@
 import { HookBase } from '../classes/HookBase';
 
-// export type CleanSubHookNames = 'config' | 'clean';
-// export class CleanSubHook extends HookBase<CleanSubHookNames> {
-//   constructor() {
-//     super();
-//   }
-// }
+export const BUILD_START_SUB_HOOK_NAME = 'BUILD_START';
+
+export class BuildStartSubHook extends HookBase<BuildHookOptions> {
+  constructor() {
+    super(BUILD_START_SUB_HOOK_NAME);
+  }
+}
+
+export const BUILD_COMPILE_SUB_HOOK_NAME = 'BUILD_COMPILE';
+
+export class BuildCompileSubHook extends HookBase<BuildHookOptions> {
+  constructor() {
+    super(BUILD_COMPILE_SUB_HOOK_NAME);
+  }
+}
+
+export const BUILD_FINISHED_SUB_HOOK_NAME = 'BUILD_FINISHED';
+
+export class BuildFinishedSubHook extends HookBase<BuildHookOptions> {
+  constructor() {
+    super(BUILD_FINISHED_SUB_HOOK_NAME);
+  }
+}
 
 export interface BuildHookOptions {
   cleanDist?: boolean;
   runTest?: boolean;
 }
 
-export type BuildHookNames = 'clean' | 'config' | 'build' | 'emit' | 'finished';
+export const BUILD_HOOK_NAME = 'BUILD';
 
-/*
- * 在这个Hook里面增加一些不同执行阶段的Hooks，
- * 为每个独立的阶段设置一个Hook，增强拓展能力；
- * */
-export class BuildHook extends HookBase<BuildHookNames, BuildHookOptions> {
+export interface BuildHookContext {
+  start: BuildStartSubHook;
+  compile: BuildCompileSubHook;
+  finished: BuildFinishedSubHook;
+  commandLineParameters: BuildHookOptions;
+}
+
+export class BuildHook extends HookBase<BuildHookContext> {
   constructor() {
-    super();
+    super(BUILD_HOOK_NAME);
+  }
+
+  public async _call(options?: BuildHookOptions): Promise<void> {
+    const subHookContext: BuildHookContext = {
+      commandLineParameters: options,
+      start: new BuildStartSubHook(),
+      compile: new BuildCompileSubHook(),
+      finished: new BuildFinishedSubHook()
+    };
+
+    await super.call(subHookContext);
   }
 }
