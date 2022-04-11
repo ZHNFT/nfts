@@ -12,7 +12,7 @@ export interface IConfig {
  * gmf 需要的配置文件，
  */
 export class Configuration {
-  public loadConfig(): IConfig {
+  public loadConfig(): IConfig | undefined {
     return FileSystem.readJsonSync<IConfig>(Constants.ConfigFile);
   }
 }

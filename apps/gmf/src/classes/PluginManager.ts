@@ -7,23 +7,18 @@ import { THooks } from '../hook';
 import cleanPlugin from '../internal-plugins/CleanPlugin';
 import copyPlugin from '../internal-plugins/CopyPlugin';
 import typescriptPlugin from '../internal-plugins/TypescriptPlugin';
+import { Logger } from './Logger';
 // #endregion
 
 export class PluginManager {
-  private readonly _plugins: Plugin[];
   private readonly _config: Configuration;
   private readonly _hooks: THooks;
-  private readonly _usedPluginNames: string[];
+  private readonly _logger: Logger;
 
-  constructor(config: Configuration, hooks: THooks) {
+  constructor(config: Configuration, hooks: THooks, logger: Logger) {
     this._config = config;
     this._hooks = hooks;
-    this._plugins = [];
-    this._usedPluginNames = [];
-  }
-
-  public isUsed(pluginName: string): boolean {
-    return this._usedPluginNames.includes(pluginName);
+    this._logger = logger;
   }
 
   public async initAsync(): Promise<void> {
@@ -38,12 +33,14 @@ export class PluginManager {
    * 加载多个插件的方式只提供内部解析配置文件的时候使用
    * */
   private async _applyPluginsAsync() {
-    const { plugins } = this._config.loadConfig();
+    const _config = this._config.loadConfig();
 
-    for await (const plugin of plugins) {
-      const { pluginName } = plugin;
-      const _pluginInstance = ImportModule.importModule(pluginName) as Plugin;
-      await this.applyPluginAsync(_pluginInstance);
+    if (_config?.plugins) {
+      for await (const plugin of _config.plugins) {
+        const { pluginName } = plugin;
+        const _pluginInstance = ImportModule.import(pluginName) as Plugin;
+        await this.applyPluginAsync(_pluginInstance);
+      }
     }
   }
 
@@ -51,11 +48,19 @@ export class PluginManager {
    * 单个插件的添加提供给内外部使用
    * */
   public async applyPluginAsync(plugin: Plugin): Promise<void> {
-    await plugin.apply({ hook: this._hooks, config: this._config });
+    await plugin.apply({
+      hook: this._hooks,
+      config: this._config,
+      logger: this._logger
+    });
   }
 
   public applyPlugin(plugin: Plugin): void {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    plugin.apply({ hook: this._hooks, config: this._config });
+    plugin.apply({
+      hook: this._hooks,
+      config: this._config,
+      logger: this._logger
+    });
   }
 }

@@ -98,18 +98,19 @@ class TypescriptRunner {
 }
 
 interface TypescriptPluginOptions {
+  // 开启 WatchMode；
   watch?: boolean;
+  // 输出所有构建信息；
   verbose?: boolean;
 }
 
-class TypescriptPlugin extends Plugin<TypescriptPluginOptions> {
-  readonly name: string = '使用 tsc 作为内部使用的编译器来将 tsx 转换成 js';
-  readonly summary: string;
+class TypescriptPlugin implements Plugin<TypescriptPluginOptions> {
+  readonly name = 'TypescriptPlugin';
+  readonly summary = '使用 tsc 作为内部使用的编译器来将 tsx 转换成 js';
 
   readonly _tsRunner: TypescriptRunner;
 
   constructor() {
-    super();
     this._tsRunner = new TypescriptRunner();
   }
 

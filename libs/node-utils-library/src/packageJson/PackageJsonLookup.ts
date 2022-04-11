@@ -5,6 +5,7 @@ import { PackageJson, IPackageJson } from './PackageJson';
 
 export class Constants {
   public static PackageJson = './package.json';
+  public static DefaultMainEntryFle = './index.js';
 }
 
 interface LookupOptions {
@@ -38,7 +39,7 @@ export class PackageJsonLookup {
 
     const _pkgPath = this._resolvePackageJsonPath(_relPath);
 
-    const _pkg = FileSystem.readJsonSync(_pkgPath) as unknown as IPackageJson;
+    const _pkg: IPackageJson = FileSystem.readJsonSync(_pkgPath);
 
     if (options.force || !this._cache.has(_pkg.name)) {
       if (!this._cache.has(_pkg.name)) {

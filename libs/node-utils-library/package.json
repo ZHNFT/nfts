@@ -4,12 +4,14 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "npx tsc",
+    "build:gmf": "gmf build",
+    "build:tsc": "tsc",
     "dev": "npx tsc --watch --declaration --declarationDir ./dist",
     "dts": "npx tsc --declaration --emitDeclarationOnly --declarationDir ./dist",
     "test": "jest"
   },
   "devDependencies": {
+    "@nfts/gmf": "workspace:*",
     "@nfts/eslint-config": "workspace:*",
     "@types/jest": "^27.0.3",
     "@types/node": "^17.0.4",

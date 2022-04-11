@@ -10,7 +10,6 @@ class CleanPlugin extends Plugin<CleanPluginOptions> {
   summary: 'clean up dist folder';
 
   apply(ctx: PluginContext, options: CleanPluginOptions): void {
-    console.log('apply clean hook');
     ctx.hook.build.addHook('clean', () => {
       console.log('process clean hook');
     });

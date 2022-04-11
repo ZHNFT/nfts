@@ -3,9 +3,12 @@ import { PluginManager } from '../classes/PluginManager';
 import { Configuration } from '../classes/Configuration';
 import { BuildCommand } from './commands/BuildCommand';
 import { BuildHook, THooks } from '../hook';
+import { Logger } from '../classes/Logger';
 
 export default class GmfTool extends CommandTool {
-  private _pluginManager: PluginManager;
+  private readonly _pluginManager: PluginManager;
+  private readonly _logger: Logger;
+  private readonly _config: Configuration;
 
   constructor() {
     super({
@@ -19,8 +22,9 @@ export default class GmfTool extends CommandTool {
       build: buildHook
     };
 
-    const _config = new Configuration();
-    this._pluginManager = new PluginManager(_config, hooks);
+    this._config = new Configuration();
+    this._logger = Logger.getLogger();
+    this._pluginManager = new PluginManager(this._config, hooks, this._logger);
 
     const build = new BuildCommand({ hook: buildHook });
 

@@ -27,7 +27,7 @@ export class ImportModule {
 
     const { main } = _pkg;
 
-    return resolve(_modulePath, main);
+    return resolve(_modulePath, main ?? Constants.DefaultMainEntryFle);
   }
 
   private static _create(options: ImportModuleOptions = {}): NodeRequire {
@@ -40,6 +40,14 @@ export class ImportModule {
     return req;
   }
 
+  /**
+   *
+   * @param userOptions
+   * @returns
+   *
+   * @usage ImportModule.lazyModule("lodash")().cloneDeep(obj);
+   *
+   */
   public static lazyModule(
     userOptions?: ImportModuleOptions
   ): (moduleName: string) => any {
@@ -52,7 +60,16 @@ export class ImportModule {
     };
   }
 
-  public static importModule(moduleName: string, userOptions?: ImportModuleOptions): any {
+  /**
+   *
+   * @param moduleName
+   * @param userOptions
+   * @returns
+   *
+   * @usage ImportModule.import("lodash");
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public static import(moduleName: string, userOptions?: ImportModuleOptions): any {
     return this.lazyModule(userOptions)(moduleName);
   }
 }

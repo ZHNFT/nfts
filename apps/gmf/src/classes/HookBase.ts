@@ -1,4 +1,5 @@
 import { Hook } from '@nfts/hook';
+import { Plugin } from '../classes/Plugin';
 
 export type THookNames = 'pre' | 'run' | 'finished';
 
@@ -8,4 +9,7 @@ export type THookNames = 'pre' | 'run' | 'finished';
 export abstract class HookBase<HookNames = string, HookContext = unknown> extends Hook<
   HookNames,
   HookContext
-> {}
+> {
+  hookFuncs: Plugin[] = [];
+  hooksByName: Map<HookNames, HookBase>;
+}
