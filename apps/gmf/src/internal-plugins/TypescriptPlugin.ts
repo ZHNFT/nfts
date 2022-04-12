@@ -4,7 +4,7 @@ import glob from 'glob';
 import { resolve, dirname } from 'path';
 import { Plugin, PluginContext } from '../classes/Plugin';
 
-class TypescriptRunner {
+export class TypescriptRunner {
   public runTypescriptBuild() {
     const rootDir = process.cwd();
     const outputDir = resolve(rootDir, 'dist');
@@ -21,7 +21,7 @@ class TypescriptRunner {
       incremental: true
     };
 
-    const host = ts.createCompilerHost(tsCompilerOptions);
+    const host = ts.createIncrementalCompilerHost(tsCompilerOptions);
 
     const parsedConfigFile = ts.readConfigFile(tsconfigPath, fileName => {
       return fs.readFileSync(fileName).toString('utf-8');
