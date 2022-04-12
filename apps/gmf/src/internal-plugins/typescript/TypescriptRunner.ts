@@ -38,7 +38,7 @@ export class TypescriptRunner {
     options: {
       watchMode: boolean;
     };
-  }) {
+  }): ts.CompilerHost {
     // if (options.watchMode) {
     // return ts.createWatchCompilerHost(config.options);
     // }

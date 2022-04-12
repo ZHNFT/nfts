@@ -1,5 +1,5 @@
-import * as ts from 'typescript';
-import * as fs from 'fs';
+import ts from 'typescript';
+import fs from 'fs';
 import glob from 'glob';
 import { resolve, dirname } from 'path';
 import { Plugin, PluginContext } from '../classes/Plugin';

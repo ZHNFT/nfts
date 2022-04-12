@@ -1,4 +1,5 @@
 import ts from 'typescript';
+import glob from 'glob';
 
 export class TypescriptConfigHost implements ts.ParseConfigHost {
   useCaseSensitiveFileNames: boolean;
@@ -14,7 +15,9 @@ export class TypescriptConfigHost implements ts.ParseConfigHost {
     includes: readonly string[],
     depth?: number
   ): readonly string[] {
-    return [];
+    const files: string[] = [];
+
+    return files;
   }
 
   readFile(path: string): string | undefined {
