@@ -13,6 +13,6 @@ export interface IConfig {
  */
 export class Configuration {
   public loadConfig(): IConfig | undefined {
-    return FileSystem.readJsonSync<IConfig>(Constants.ConfigFile);
+    return FileSystem.readJsonSync<IConfig>(Constants.GMF_CONFIG_FILE);
   }
 }

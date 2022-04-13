@@ -22,6 +22,7 @@
     "@nfts/hook": "workspace:*",
     "@nfts/noddy": "workspace:*",
     "@nfts/node-utils-library": "workspace:*",
+    "@nfts/interactive-query": "workspace:*",
     "@types/glob": "^7.2.0",
     "@types/jest": "^27.0.3",
     "@types/node": "~17.0.5",

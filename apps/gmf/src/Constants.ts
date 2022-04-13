@@ -1,4 +1,4 @@
 export default class Constants {
-  static ConfigFile = './config/gmf.json';
-  static TsconfigPath = './tsconfig.json';
+  static GMF_CONFIG_FILE = './config/gmf.json';
+  static DEFAULT_TSCONFIG_PATH = './tsconfig.json';
 }

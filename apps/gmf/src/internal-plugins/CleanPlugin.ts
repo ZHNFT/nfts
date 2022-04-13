@@ -1,4 +1,4 @@
-import { Plugin, PluginContext } from '../classes/Plugin';
+import { Plugin } from '../classes/Plugin';
 
 interface CleanPluginOptions {
   dist: string;
@@ -10,7 +10,7 @@ class CleanPlugin extends Plugin<CleanPluginOptions> {
   summary: 'clean up dist folder';
 
   apply(): void {
-    console.log('cleanup');
+    // console.log('cleanup');
   }
 }
 

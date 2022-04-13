@@ -1,6 +1,8 @@
 {
   "name": "@nfts/interactive-query",
   "version": "0.1.1",
+  "main": "./dist/index.ts",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "test": "jest",
     "build": "npx tsc",

@@ -10,6 +10,7 @@ importers:
       '@nfts/argparser': workspace:*
       '@nfts/eslint-config': workspace:*
       '@nfts/hook': workspace:*
+      '@nfts/interactive-query': workspace:*
       '@nfts/noddy': workspace:*
       '@nfts/node-utils-library': workspace:*
       '@types/glob': ^7.2.0
@@ -25,6 +26,7 @@ importers:
       '@nfts/argparser': link:../../libs/argparser
       '@nfts/eslint-config': link:../../config/eslint
       '@nfts/hook': link:../../libs/hook
+      '@nfts/interactive-query': link:../../plugins/gmf-plugin-esbuild
       '@nfts/noddy': link:../../libs/noddy
       '@nfts/node-utils-library': link:../../libs/node-utils-library
       '@types/glob': 7.2.0

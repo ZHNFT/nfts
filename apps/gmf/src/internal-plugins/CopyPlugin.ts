@@ -1,11 +1,11 @@
-import { Plugin, PluginContext } from '../classes/Plugin';
+import { Plugin } from '../classes/Plugin';
 
 class CopyPlugin extends Plugin {
   name: 'copy';
   summary: 'Copy static files';
 
   apply(): void {
-    console.log('Copy');
+    // console.log('Copy');
   }
 }
 
