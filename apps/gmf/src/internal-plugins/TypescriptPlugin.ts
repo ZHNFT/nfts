@@ -3,6 +3,8 @@ import { Plugin, PluginContext } from '../classes/Plugin';
 import Constants from '../Constants';
 import { TypescriptRunner } from './typescript/TypescriptRunner';
 
+export type EmitCallback = () => void;
+
 export interface TypescriptPluginOptions {
   // 开启 WatchMode；
   watch?: boolean;
@@ -41,10 +43,14 @@ class TypescriptPlugin implements Plugin<TypescriptPluginOptions> {
             {
               tsconfigPath: commandLineParameters.tsconfig
             },
-            recompile
+            () => {
+              void recompile.call();
+            }
           );
         } else {
-          this.tsRunner._runIncrementalBuild(commandLineParameters);
+          await this.tsRunner._runIncrementalBuild(commandLineParameters, () => {
+            console.log('after emitted');
+          });
         }
       });
     });

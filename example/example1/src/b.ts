@@ -2,6 +2,6 @@ const a: number = 12;
 const _a: string = '12';
 const b: any = 19;
 
-a = -a;
+// a = -a;
 
 export default b;

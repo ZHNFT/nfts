@@ -13,7 +13,7 @@ export default class GmfTool extends CommandTool {
   constructor() {
     super({
       toolName: 'gmf',
-      toolDescription: `Build, Preview, Test Your App`
+      toolDescription: `Develop toolchain`
     });
 
     const buildHook = new BuildHook();

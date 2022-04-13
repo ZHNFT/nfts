@@ -51,12 +51,12 @@ export class BuildCommand extends Action implements BuildCommandLineParameters {
 
     this.runTest = this.parser.flagOption({
       name: '--runTest',
-      summary: 'Run test case after build process'
+      summary: 'Run build process'
     });
 
     this.watchMode = this.parser.flagOption({
       name: '--watch',
-      summary: 'Watch build process'
+      summary: 'Start up a watch compilation'
     });
 
     this.tsconfig = this.parser.stringOption({

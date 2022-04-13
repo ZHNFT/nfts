@@ -2,18 +2,14 @@ import ts from 'typescript';
 import fs from 'fs';
 import { TypescriptConfigHost } from './TypescriptConfigHost';
 import { dirname } from 'path';
-import { TypescriptPluginOptions } from '../TypescriptPlugin';
+import { TypescriptPluginOptions, EmitCallback } from '../TypescriptPlugin';
 import { BuildCommandLineParametersValue } from '../../cli/commands/BuildCommand';
-import { BuildReCompileSubHook } from '../../hook/BuildHook';
-import { TypescriptFileWriter } from './TyepscriptFileWriter';
 
 export class TypescriptRunner {
-  private readonly fileWriter: TypescriptFileWriter;
   private readonly parseConfigHost: TypescriptConfigHost;
 
   constructor() {
     this.parseConfigHost = new TypescriptConfigHost();
-    this.fileWriter = new TypescriptFileWriter();
   }
 
   private _loadTsconfig(tsconfigPath: string): {
@@ -36,11 +32,35 @@ export class TypescriptRunner {
     };
   }
 
-  private _emit(program: ts.Program, emitCallback: () => void) {
-    //
+  private _emit(
+    program: ts.Program | ts.EmitAndSemanticDiagnosticsBuilderProgram
+  ): Promise<void[]> {
+    const files: Promise<void>[] = [];
+    program.emit(undefined, (filename, content) => {
+      files.push(
+        new Promise((resolve, reject) => {
+          const fileDirname = dirname(filename);
+          if (!fs.existsSync(fileDirname)) {
+            fs.mkdirSync(fileDirname);
+          }
+          fs.writeFile(filename, content, e => {
+            if (e) {
+              reject(e);
+            } else {
+              resolve();
+            }
+          });
+        })
+      );
+    });
+
+    return Promise.all(files);
   }
 
-  public _runBuild(options: BuildCommandLineParametersValue) {
+  public _runBuild(
+    options: BuildCommandLineParametersValue,
+    onEmitCallback: EmitCallback
+  ) {
     const config = this._loadTsconfig(options.tsconfig);
     const host = ts.createCompilerHost(config.tsconfig.options, undefined);
     const program = ts.createProgram({
@@ -48,18 +68,13 @@ export class TypescriptRunner {
       host,
       options: undefined
     });
-
-    program.emit(undefined, (fileName, data) => {
-      const fileDirname = dirname(fileName);
-      if (!fs.existsSync(dirname(fileName))) {
-        fs.mkdirSync(fileDirname);
-      }
-
-      fs.writeFileSync(fileName, data);
-    });
+    void this._emit(program).then(() => onEmitCallback());
   }
 
-  public _runIncrementalBuild(options: BuildCommandLineParametersValue) {
+  public async _runIncrementalBuild(
+    options: BuildCommandLineParametersValue,
+    onEmitCallback: EmitCallback
+  ): Promise<void> {
     const config = this._loadTsconfig(options.tsconfig);
     const host = ts.createIncrementalCompilerHost(config.tsconfig.options, undefined);
     const program = ts.createIncrementalProgram({
@@ -67,22 +82,14 @@ export class TypescriptRunner {
       host,
       options: config.tsconfig.options
     });
-
-    program.emit(undefined, (fileName, data) => {
-      const fileDirname = dirname(fileName);
-      if (!fs.existsSync(dirname(fileName))) {
-        fs.mkdirSync(fileDirname);
-      }
-
-      fs.writeFileSync(fileName, data);
-    });
+    await this._emit(program).then(() => onEmitCallback());
   }
 
   public async _runWatchBuild(
     options: TypescriptPluginOptions,
-    recompile
+    onEmitCallback: EmitCallback
   ): Promise<void> {
-    await new Promise((_, reject) => {
+    await new Promise(() => {
       const host = ts.createWatchCompilerHost(
         options.tsconfigPath,
         undefined,
