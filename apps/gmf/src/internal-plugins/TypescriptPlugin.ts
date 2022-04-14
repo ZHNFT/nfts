@@ -2,8 +2,7 @@ import path from 'path';
 import { Plugin, PluginContext } from '../classes/Plugin';
 import Constants from '../Constants';
 import { TypescriptRunner } from './typescript/TypescriptRunner';
-
-export type EmitCallback = () => void;
+import { performance } from 'perf_hooks';
 
 export interface TypescriptPluginOptions {
   // 开启 WatchMode；
@@ -26,32 +25,40 @@ class TypescriptPlugin implements Plugin<TypescriptPluginOptions> {
 
   apply(ctx: PluginContext): void {
     ctx.hook.build.addHook(build => {
-      build.compile.addHook(async ({ commandLineParameters, recompile, logger }) => {
-        if (!commandLineParameters.tsconfig) {
-          commandLineParameters.tsconfig = Constants.DEFAULT_TSCONFIG_PATH;
-        } else {
-          if (!path.isAbsolute(commandLineParameters.tsconfig)) {
-            commandLineParameters.tsconfig = path.resolve(
-              process.cwd(),
-              commandLineParameters.tsconfig
-            );
-          }
-        }
-
-        if (commandLineParameters.watchMode) {
-          await this.tsRunner._runWatchBuild(
-            {
-              tsconfigPath: commandLineParameters.tsconfig
-            },
-            () => {
-              void recompile.call();
+      build.hook.compile.addHook(compile => {
+        compile.hook.run.addHook(async ({ commandLineParameters, logger }) => {
+          console.log(' ---- TS build start ----');
+          const startTime = performance.now();
+          if (!commandLineParameters.tsconfig) {
+            commandLineParameters.tsconfig = Constants.DEFAULT_TSCONFIG_PATH;
+          } else {
+            if (!path.isAbsolute(commandLineParameters.tsconfig)) {
+              commandLineParameters.tsconfig = path.resolve(
+                process.cwd(),
+                commandLineParameters.tsconfig
+              );
             }
-          );
-        } else {
-          await this.tsRunner._runIncrementalBuild(commandLineParameters, () => {
-            console.log('after emitted');
-          });
-        }
+          }
+
+          if (commandLineParameters.watchMode) {
+            await this.tsRunner._runWatchBuild(
+              {
+                tsconfigPath: commandLineParameters.tsconfig
+              },
+              () => {
+                //
+              }
+            );
+          } else {
+            await this.tsRunner._runIncrementalBuild(commandLineParameters, () => {
+              console.log('after emitted');
+            });
+          }
+
+          const endTime = performance.now() - startTime;
+
+          console.log(` ---- TS build end, spent ${(endTime / 1000).toFixed(4)}s ----`);
+        });
       });
     });
   }

@@ -1,5 +1,5 @@
-import { FileSystem } from '@nfts/node-utils-library';
-import Constants from '../Constants';
+// import { FileSystem } from '@nfts/node-utils-library';
+// import Constants from '../Constants';
 
 export interface IConfig {
   plugins: {
@@ -13,6 +13,9 @@ export interface IConfig {
  */
 export class Configuration {
   public loadConfig(): IConfig | undefined {
-    return FileSystem.readJsonSync<IConfig>(Constants.GMF_CONFIG_FILE);
+    // return FileSystem.readJsonSync<IConfig>(Constants.DEFAULT_GMFCONFIG_PATH);
+    return {
+      plugins: []
+    };
   }
 }

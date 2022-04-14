@@ -110,7 +110,12 @@ export class Argparser extends ParserManager {
     }
 
     if (!child) {
-      throw new Error(`Action <${actions[i]}> is not defined`);
+
+      if (actions[i]) {
+        throw new Error(`No action find`);
+      } else {
+        throw new Error(`Action <${actions[i]}> is not defined`);
+      }
     }
 
     this._actions = actions;

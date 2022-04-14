@@ -9,7 +9,7 @@ describe('Hook 测试', function () {
     const fn = jest.fn();
 
     return expect(
-      Hook.serialCall(
+      Hook.serialCall<void>(
         [
           () =>
             new Promise<void>(resolve => {
@@ -39,10 +39,7 @@ describe('Hook 测试', function () {
               }, 1000);
             })
         ],
-        {
-          a: 'a',
-          b: 'b'
-        }
+        async task => task()
       )
     )
       .resolves.toBe(undefined)

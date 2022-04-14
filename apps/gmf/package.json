@@ -7,7 +7,8 @@
     "gmf": "bin/cli.js"
   },
   "scripts": {
-    "build": "npx tsc",
+    "localBuild": "./bin/cli.js build",
+    "tsc": "npx tsc",
     "dev": "npx tsc --watch --declaration",
     "dts": "npx tsc --declaration --emitDeclarationOnly --declarationDir ./dist",
     "test": "jest"

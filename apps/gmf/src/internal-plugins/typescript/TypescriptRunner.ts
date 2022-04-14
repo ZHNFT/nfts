@@ -1,9 +1,10 @@
 import ts from 'typescript';
 import fs from 'fs';
-import { TypescriptConfigHost } from './TypescriptConfigHost';
+import { Fs, Sync } from '@nfts/node-utils-library';
 import { dirname } from 'path';
-import { TypescriptPluginOptions, EmitCallback } from '../TypescriptPlugin';
 import { BuildCommandLineParametersValue } from '../../cli/commands/BuildCommand';
+import { TypescriptPluginOptions } from '../TypescriptPlugin';
+import { TypescriptConfigHost } from './TypescriptConfigHost';
 
 export class TypescriptRunner {
   private readonly parseConfigHost: TypescriptConfigHost;
@@ -32,34 +33,34 @@ export class TypescriptRunner {
     };
   }
 
-  private _emit(
-    program: ts.Program | ts.EmitAndSemanticDiagnosticsBuilderProgram
-  ): Promise<void[]> {
-    const files: Promise<void>[] = [];
+  private async _emit(
+    program: ts.Program | ts.EmitAndSemanticDiagnosticsBuilderProgram | ts.BuilderProgram
+  ): Promise<void> {
+    let files: { filename: string; content: string; depth: number }[] = [];
+
+    async function _makeWrite(filename: string, content: string): Promise<void> {
+      return await Fs.writeFile(filename, content);
+    }
+
     program.emit(undefined, (filename, content) => {
-      files.push(
-        new Promise((resolve, reject) => {
-          const fileDirname = dirname(filename);
-          if (!fs.existsSync(fileDirname)) {
-            fs.mkdirSync(fileDirname);
-          }
-          fs.writeFile(filename, content, e => {
-            if (e) {
-              reject(e);
-            } else {
-              resolve();
-            }
-          });
-        })
-      );
+      files.push({
+        filename,
+        content,
+        depth: filename.split('/').length
+      });
     });
 
-    return Promise.all(files);
+    files = files.sort((a, b) => (a.depth > b.depth ? 1 : -1));
+
+    await Sync.serialize(
+      files.map(file => () => _makeWrite(file.filename, file.content)),
+      void 0
+    );
   }
 
   public _runBuild(
     options: BuildCommandLineParametersValue,
-    onEmitCallback: EmitCallback
+    onEmitCallback: VoidFunction
   ) {
     const config = this._loadTsconfig(options.tsconfig);
     const host = ts.createCompilerHost(config.tsconfig.options, undefined);
@@ -73,7 +74,7 @@ export class TypescriptRunner {
 
   public async _runIncrementalBuild(
     options: BuildCommandLineParametersValue,
-    onEmitCallback: EmitCallback
+    onEmitCallback: VoidFunction
   ): Promise<void> {
     const config = this._loadTsconfig(options.tsconfig);
     const host = ts.createIncrementalCompilerHost(config.tsconfig.options, undefined);
@@ -87,7 +88,7 @@ export class TypescriptRunner {
 
   public async _runWatchBuild(
     options: TypescriptPluginOptions,
-    onEmitCallback: EmitCallback
+    onEmitCallback: VoidFunction
   ): Promise<void> {
     await new Promise(() => {
       const host = ts.createWatchCompilerHost(
@@ -109,7 +110,7 @@ export class TypescriptRunner {
       );
       const programWatch = ts.createWatchProgram(host);
       const program = programWatch.getProgram();
-      program.emit();
+      void this._emit(program).then(() => onEmitCallback());
     });
   }
 }

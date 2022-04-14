@@ -22,14 +22,60 @@ export class BuildStartSubHook extends HookBase<BuildStartSubHookContext> {
 
 export const BUILD_COMPILE_SUB_HOOK_NAME = 'BUILD_COMPILE';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface BuildCompileSubHookContext extends BaseHookContext {
-  recompile: BuildReCompileSubHook;
+  hook: {
+    run: HookBase<BuildCompileRunSubHookContext>;
+    emit: HookBase<BuildCompileEmitSubHookContext>;
+    recompile: BuildReCompileSubHook;
+  };
 }
 
 export class BuildCompileSubHook extends HookBase<BuildCompileSubHookContext> {
   constructor() {
     super(BUILD_COMPILE_SUB_HOOK_NAME);
+  }
+
+  // @override
+  async call(args: BuildCompileSubHookContext): Promise<void> {
+    await super.call(args);
+
+    const runHookContext: BuildCompileRunSubHookContext = {
+      commandLineParameters: args.commandLineParameters,
+      logger: args.logger,
+      hook: {
+        emit: args.hook.emit,
+        recompile: args.hook.recompile
+      }
+    };
+
+    await args.hook.run.call(runHookContext);
+  }
+}
+
+export const BUILD_COMPILE_RUN_HOOK_NAME = 'BUILD_COMPILE_RUN';
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface BuildCompileRunSubHookContext extends BaseHookContext {
+  hook: {
+    emit: BuildCompileEmitSubHook;
+    recompile: BuildReCompileSubHook;
+  };
+}
+
+export class BuildCompileRunSubHook extends HookBase<BuildCompileRunSubHookContext> {
+  constructor() {
+    super(BUILD_COMPILE_RUN_HOOK_NAME);
+  }
+}
+
+export const BUILD_COMPILE_EMIT_HOOK_NAME = 'BUILD_COMPILE_EMIT';
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface BuildCompileEmitSubHookContext extends BaseHookContext {}
+
+export class BuildCompileEmitSubHook extends HookBase<BuildCompileEmitSubHookContext> {
+  constructor() {
+    super(BUILD_COMPILE_EMIT_HOOK_NAME);
   }
 }
 
@@ -58,10 +104,12 @@ export class BuildReCompileSubHook extends HookBase<BuildReCompileSubHookContext
 export const BUILD_HOOK_NAME = 'BUILD';
 
 export interface BuildHookContext extends BaseHookContext {
-  start: BuildStartSubHook;
-  compile: BuildCompileSubHook;
-  finished: BuildFinishedSubHook;
-  recompile: BuildReCompileSubHook;
+  hook: {
+    start: BuildStartSubHook;
+    compile: BuildCompileSubHook;
+    finished: BuildFinishedSubHook;
+    recompile: BuildReCompileSubHook;
+  };
 }
 
 export class BuildHook extends HookBase<BuildHookContext> {
@@ -70,38 +118,49 @@ export class BuildHook extends HookBase<BuildHookContext> {
   }
 
   public async _call(cliParameterValue?: BuildCommandLineParametersValue): Promise<void> {
-    const subHookContext: BuildHookContext = {
-      start: new BuildStartSubHook(),
-      compile: new BuildCompileSubHook(),
-      finished: new BuildFinishedSubHook(),
-      recompile: new BuildReCompileSubHook(),
+    const startHook = new BuildStartSubHook();
+    const compileHook = new BuildCompileSubHook();
+    const finishedHook = new BuildFinishedSubHook();
+    const recompileHook = new BuildReCompileSubHook();
+
+    const buildHookContext: BuildHookContext = {
+      hook: {
+        start: startHook,
+        compile: compileHook,
+        finished: finishedHook,
+        recompile: recompileHook
+      },
       commandLineParameters: cliParameterValue,
       logger: Logger.getLogger(BUILD_HOOK_NAME)
     };
 
-    await super.call(subHookContext);
+    await super.call(buildHookContext);
 
     const startHookContext: BuildStartSubHookContext = {
       commandLineParameters: cliParameterValue,
       logger: Logger.getLogger(BUILD_START_SUB_HOOK_NAME),
-      finished: subHookContext.finished
+      finished: buildHookContext.hook.finished
     };
 
-    await subHookContext.start.call(startHookContext);
+    await startHook.call(startHookContext);
 
     const compileHookContext: BuildCompileSubHookContext = {
       commandLineParameters: cliParameterValue,
       logger: Logger.getLogger(BUILD_COMPILE_SUB_HOOK_NAME),
-      recompile: subHookContext.recompile
+      hook: {
+        run: new BuildCompileRunSubHook(),
+        emit: new BuildCompileEmitSubHook(),
+        recompile: new BuildReCompileSubHook()
+      }
     };
 
-    await subHookContext.compile.call(compileHookContext);
+    await compileHook.call(compileHookContext);
 
     const finishedHookContext: BuildFinishedSubHookContext = {
       commandLineParameters: cliParameterValue,
       logger: Logger.getLogger(BUILD_FINISHED_SUB_HOOK_NAME)
     };
 
-    await subHookContext.finished.call(finishedHookContext);
+    await finishedHook.call(finishedHookContext);
   }
 }

@@ -3,23 +3,23 @@ import { FlagOption, StringOption } from '@nfts/argparser';
 import { BuildHook } from '../../hook';
 
 const BUILD_LIFECYCLE_NAME = 'build';
-const BUILD_LIFECYCLE_DESC = 'build build build build';
+const BUILD_LIFECYCLE_DESC = 'Run build process';
 
-interface BuildCommandInitOption {
+export interface BuildCommandInitOption {
   hook: BuildHook;
 }
 
 export interface BuildCommandLineParameters {
-  cleanDist: FlagOption;
-  runTest: FlagOption;
+  clean: FlagOption;
+  test: FlagOption;
   watchMode: FlagOption;
   tsconfig: StringOption;
   production: FlagOption;
 }
 
 export interface BuildCommandLineParametersValue {
-  cleanDist?: boolean;
-  runTest?: boolean;
+  clean?: boolean;
+  test?: boolean;
   watchMode?: boolean;
   tsconfig?: string;
   production?: boolean;
@@ -28,8 +28,8 @@ export interface BuildCommandLineParametersValue {
 export class BuildCommand extends Action implements BuildCommandLineParameters {
   readonly hook: BuildHook;
 
-  cleanDist: FlagOption;
-  runTest: FlagOption;
+  clean: FlagOption;
+  test: FlagOption;
   watchMode: FlagOption;
   tsconfig: StringOption;
   production: FlagOption;
@@ -44,13 +44,13 @@ export class BuildCommand extends Action implements BuildCommandLineParameters {
   }
 
   protected onParameterDefinition(): void {
-    this.cleanDist = this.parser.flagOption({
+    this.clean = this.parser.flagOption({
       name: '--clean',
       summary: 'Clean up dist folder before build process'
     });
 
-    this.runTest = this.parser.flagOption({
-      name: '--runTest',
+    this.test = this.parser.flagOption({
+      name: '--test',
       summary: 'Run build process'
     });
 
@@ -72,8 +72,8 @@ export class BuildCommand extends Action implements BuildCommandLineParameters {
 
   protected async onExecute(): Promise<void> {
     const parameters: BuildCommandLineParametersValue = {
-      cleanDist: this.cleanDist.value,
-      runTest: this.runTest.value,
+      clean: this.clean.value,
+      test: this.test.value,
       watchMode: this.watchMode.value,
       tsconfig: this.tsconfig.value
     };

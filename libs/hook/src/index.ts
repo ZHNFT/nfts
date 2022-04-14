@@ -1,3 +1,5 @@
+import { Sync } from '@nfts/node-utils-library';
+
 export type THookCallback<HookCallbackArgs> = (
   args: HookCallbackArgs
 ) => void | Promise<void>;
@@ -19,22 +21,10 @@ export class Hook<HookNames = string, HookCallbackArgs = void> {
     const _hookCallbacks = this._hooks.get(hookName);
 
     if (_hookCallbacks && _hookCallbacks.length > 0) {
-      return Hook.serialize(_hookCallbacks, args);
+      return Sync.serialize(_hookCallbacks, args);
     }
 
     return Promise.resolve();
-  }
-
-  public static serialize<HookCallbackArgs>(
-    tasks: THookCallback<HookCallbackArgs>[],
-    args: HookCallbackArgs
-  ): Promise<void> {
-    return tasks.reduce((promise, task) => {
-      return promise.then(
-        () => task(args),
-        e => Promise.reject(e)
-      );
-    }, Promise.resolve());
   }
 
   public static serialCall<HookCallbackArgs>(
