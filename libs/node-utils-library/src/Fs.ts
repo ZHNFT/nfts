@@ -1,3 +1,7 @@
+/**
+ * 对于常用文件操作的补充方法
+ * @status WIP@status WIP
+ * */
 import * as fs from 'fs';
 import * as path from 'path';
 import { serialize } from './Sync';

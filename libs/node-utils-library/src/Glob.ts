@@ -1,5 +1,6 @@
 /**
  * Minimal Glob Implementation
+ * @status WIP
  */
 
 // src/**/*    => ^src\/(.+)$

@@ -1,3 +1,6 @@
+/**
+ * @deprecated
+ * */
 import { PackageVersion } from './PackageVersion';
 import { PackageName } from './PackageName';
 

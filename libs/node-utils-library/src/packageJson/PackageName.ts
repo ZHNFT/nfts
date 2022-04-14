@@ -1,3 +1,6 @@
+/**
+ * @deprecated
+ * */
 export class PackageName {
   readonly scope: string | undefined;
   readonly value: string;

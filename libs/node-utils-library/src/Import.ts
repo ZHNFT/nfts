@@ -1,3 +1,7 @@
+/**
+ * 模块的同步导入实现
+ * @status WIP
+ */
 import * as fs from 'fs';
 import * as path from 'path';
 import * as NodeModule from 'module';

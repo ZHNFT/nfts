@@ -1,3 +1,6 @@
+/**
+ * @deprecated
+ * */
 export enum VersionFieldsEnum {
   major = 'major',
   minor = 'minor',

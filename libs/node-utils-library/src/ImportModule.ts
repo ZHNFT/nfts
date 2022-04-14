@@ -1,3 +1,7 @@
+/**
+ * @deprecated
+ * 请使用 Import 模块
+ * */
 import { createRequire } from 'module';
 import { resolve } from 'path';
 import { FileSystem } from './FileSystem';

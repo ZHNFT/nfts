@@ -1,9 +1,13 @@
 /**
- * 读取 JSON 文件数据
- * @param filename
+ * 封装关于 JSON 操作的一些方法
+ * @status WIP
  */
 import * as fs from 'fs';
 
+/**
+ * 异步读取 JSON 文件数据
+ * @param filename
+ */
 export async function readJson<T = unknown>(filename: string): Promise<T> {
   let chunk = '';
 
@@ -23,6 +27,10 @@ export async function readJson<T = unknown>(filename: string): Promise<T> {
   });
 }
 
+/**
+ * 同步读取 JSON 文件
+ * @param filename
+ */
 export function readJsonSync<T = unknown>(filename: string): T {
   if (!fs.existsSync(filename)) {
     throw Error(`File not find: ${filename}`);

@@ -1,7 +1,10 @@
+/**
+ * @deprecated
+ * */
 import * as nodePath from 'path';
 import * as nodeFs from 'fs';
 import { FileSystem } from '../FileSystem';
-import { PackageJson, IPackageJson } from './PackageJson';
+import { IPackageJson } from './PackageJson';
 
 export class Constants {
   public static PackageJson = './package.json';
@@ -12,6 +15,7 @@ interface LookupOptions {
   force?: boolean;
   cwd?: string;
 }
+
 export class PackageJsonLookup {
   // 缓存所有找到的packageJson文件
   // 提供 force 来强制更新缓存的数据

@@ -1,3 +1,7 @@
+/**
+ * 封装一些关于 PackageJson 操作的方法，以及数据类型定义
+ * @status WIP
+ */
 export interface IPackageAuthor {
   name: string;
   email?: string;
