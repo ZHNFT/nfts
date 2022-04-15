@@ -7,7 +7,7 @@ import * as path from 'path';
 import * as NodeModule from 'module';
 import * as Constants from './Constants';
 import * as Json from './Json';
-import * as Package from './IPackage';
+import * as Package from './IPackageJson';
 
 export interface ImportModuleSyncOptions {
   cwd?: string;

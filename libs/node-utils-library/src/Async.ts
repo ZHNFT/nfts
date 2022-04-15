@@ -3,7 +3,3 @@
  * @status WIP
  */
 export const MAX_PARALLEL_COUNT = 100;
-
-export function parallel() {
-
-}

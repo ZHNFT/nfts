@@ -2,7 +2,7 @@ import * as Fs from './Fs';
 import * as Sync from './Sync';
 import * as Async from './Async';
 import { sync as importSync } from './Import';
-import { IPackageJson } from './IPackage';
+import { IPackageJson } from './IPackageJson';
 import { readJson, readJsonSync } from './Json';
 
 export { PackageJson } from './packageJson/PackageJson';
