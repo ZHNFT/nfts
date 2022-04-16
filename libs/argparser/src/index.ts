@@ -1,3 +1,3 @@
-export { Argparser as Parser } from './Argparser';
-export { ParserManager as SubParser } from './ParserManager';
-export * from './option';
+export { Parser } from './parsers/Parser';
+export { SubParser } from './parsers/SubParser';
+export * from './parameters';

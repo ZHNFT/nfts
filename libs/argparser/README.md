@@ -11,7 +11,7 @@ Command.command('commandName', 'This is a command description')
   .option({
     name: '--option',
     alias: '-o',
-    description: 'This is an option description'
+    description: 'This is an parameters description'
   })
   .callback(() => {
     // do something

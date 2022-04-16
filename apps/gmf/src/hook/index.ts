@@ -5,13 +5,15 @@ export type THooks = {
 };
 
 export {
-  BuildHook,
-  BuildHookContext,
+  BUILD_HOOK_NAME,
   BUILD_COMPILE_SUB_HOOK_NAME,
   BUILD_FINISHED_SUB_HOOK_NAME,
-  BUILD_HOOK_NAME,
   BUILD_START_SUB_HOOK_NAME,
   BUILD_WATCH_RE_COMPILE_SUB_HOOK_NAME,
+  BUILD_COMPILE_EMIT_HOOK_NAME,
+  BUILD_COMPILE_RUN_HOOK_NAME,
+  BuildHook,
+  BuildHookContext,
   BuildCompileSubHook,
   BuildCompileSubHookContext,
   BuildFinishedSubHook,
@@ -19,5 +21,9 @@ export {
   BuildStartSubHook,
   BuildStartSubHookContext,
   BuildReCompileSubHook,
-  BuildReCompileSubHookContext
+  BuildReCompileSubHookContext,
+  BuildCompileEmitSubHook,
+  BuildCompileEmitSubHookContext,
+  BuildCompileRunSubHook,
+  BuildCompileRunSubHookContext
 } from './BuildHook';

@@ -1,6 +1,6 @@
 import ts from 'typescript';
 import fs from 'fs';
-import { Fs, Sync } from '@nfts/node-utils-library';
+import { Fs, Async } from '@nfts/node-utils-library';
 import { dirname } from 'path';
 import { BuildCommandLineParametersValue } from '../../cli/commands/BuildCommand';
 import { TypescriptPluginOptions } from '../TypescriptPlugin';
@@ -52,7 +52,7 @@ export class TypescriptRunner {
 
     files = files.sort((a, b) => (a.depth > b.depth ? 1 : -1));
 
-    await Sync.serialize(
+    await Async.serialize(
       files.map(file => () => _makeWrite(file.filename, file.content)),
       void 0
     );

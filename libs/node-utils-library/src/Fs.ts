@@ -4,7 +4,7 @@
  * */
 import * as fs from 'fs';
 import * as path from 'path';
-import { serialize } from './Sync';
+import { serialize } from './Async';
 
 export interface WriteFileOptions {
   ensureRoot?: boolean;

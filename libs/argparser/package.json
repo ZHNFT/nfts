@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "main": "./dist/index.js",
   "scripts": {
+    "build:gmf": "gmf build",
     "build": "npx tsc",
     "dev": "npx tsc --watch --declaration --declarationDir ./dist",
     "dts": "npx tsc --declaration --emitDeclarationOnly --declarationDir ./dist",
@@ -17,6 +18,7 @@
     "url": "*"
   },
   "devDependencies": {
+    "@nfts/gmf": "workspace:*",
     "@nfts/eslint-config": "workspace:*",
     "@nfts/node-utils-library": "workspace:*",
     "@types/jest": "^27.0.3",

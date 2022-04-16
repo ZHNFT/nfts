@@ -1,4 +1,4 @@
-export interface ParserConfig {
+export interface IParserConfig {
   allowUnknownOption?: boolean;
 }
 

@@ -1,82 +1,50 @@
-import { Parser, SubParser } from '../src';
+import { Parser, SubParser, FlagParameter, StringParameter } from '../src';
 
-describe('argparser parse test case', function () {
-  const parser = new Parser({
-    name: 'test',
-    description: 'testtesttesttesttesttesttesttesttest'
-  });
+const rootParser = new Parser();
 
-  const dev = new SubParser({ name: 'dev', description: 'devdevdevdevdevdev' });
-  const list = new SubParser({ name: 'list', description: 'listlistlistlistlist' });
-  const command = new SubParser({
-    name: 'command',
-    description: 'commandcommandcommandcommand'
-  });
+const buildParser = new SubParser('build', 'My test build parser')
+  .addParam(
+    new FlagParameter({
+      name: '--flag1',
+      summary: 'flag1 description'
+    })
+  )
+  .addParam(
+    new StringParameter({
+      name: '--flag2',
+      summary: 'flag2 description'
+    })
+  );
 
-  parser.addSubParser(dev.addSubParser(list.addSubParser(command)));
+rootParser.addSubParser(buildParser);
 
-  it('should equal', function () {
-    const aOption = command.stringOption({ name: '--aOption', summary: 'aaa' });
-
-    const bOption = command.arrayOption({
-      name: '--bOption',
-      callback: arg => {
-        console.log('--bOption', arg);
-      },
-      alternatives: ['1', '2', '3'],
-      summary: 'aaa'
+describe('测试用例', function () {
+  it('should execute without error', function () {
+    rootParser.addVersion(() => {
+      console.log('12.12.12');
     });
 
-    const cOption = command.flagOption({
-      name: '--cOption',
-      summary: 'aaa',
-      callback: arg => {
-        console.log('--cOption', arg);
-      }
+    rootParser.addHelp(() => {
+      console.log('Help Help Help Help Help');
     });
 
-    const dOption = command.flagOption({
-      name: '--dOption',
-      summary: 'aaa',
-      callback: arg => {
-        console.log('--dOption', arg);
-      }
-    });
-
-    parser.parse([
-      'dev',
-      'list',
-      'command',
-      '--aOption',
+    const result = rootParser.parse([
+      'gmf',
       'build',
-      '--bOption=/dev/build/test',
-      '--cOption',
-      '--dOption'
+      '--flag1',
+      '--flag2',
+      'flag2',
+      '-h',
+      '-v'
     ]);
 
-    const data = parser.opts();
-
-    expect(aOption.value).toEqual('build');
-    expect(bOption.value).toEqual('/dev/build/test');
-    expect(cOption.value).toEqual(true);
-    expect(dOption.value).toEqual(true);
-    expect(data).toEqual({
-      aOption: 'build',
-      bOption: '/dev/build/test',
-      cOption: true,
-      dOption: true,
-      _: ['dev', 'list', 'command']
+    expect(result).toStrictEqual({
+      flag1: true,
+      flag2: 'flag2',
+      help: true,
+      version: true,
+      h: true,
+      v: true
     });
-  });
-
-  test('should be parsed with no error', () => {
-    const parser = new Parser({
-      name: 'test',
-      description: 'testtesttesttesttesttesttesttesttest'
-    });
-    const dev = new SubParser({ name: 'dev', description: 'devdevdevdevdevdev' });
-    parser.addSubParser(dev);
-
-    expect(parser.parse(['dev'])).resolves.not.toThrow();
   });
 });

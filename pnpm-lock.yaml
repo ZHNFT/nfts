@@ -81,6 +81,7 @@ importers:
   libs/argparser:
     specifiers:
       '@nfts/eslint-config': workspace:*
+      '@nfts/gmf': workspace:*
       '@nfts/node-utils-library': workspace:*
       '@types/jest': ^27.0.3
       '@types/node': ~17.0.5
@@ -89,6 +90,7 @@ importers:
       typescript: ^4.5.4
     devDependencies:
       '@nfts/eslint-config': link:../../config/eslint
+      '@nfts/gmf': link:../../apps/gmf
       '@nfts/node-utils-library': link:../node-utils-library
       '@types/jest': 27.4.1
       '@types/node': 17.0.23
