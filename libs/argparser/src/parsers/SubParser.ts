@@ -47,7 +47,7 @@ export class SubParser {
     let i = 0;
 
     // extract actions
-    while (!Utils.hasParamFlagPrefix(args[i])) {
+    while (args[i] && !Utils.hasParamFlagPrefix(args[i])) {
       _actions.push(args[i]);
       i++;
     }
@@ -96,6 +96,17 @@ export class SubParser {
       return prevResult;
     }, {}) as R;
     this._executeFlagCallback<R>(_result);
+
+    /**
+     * append sub command
+     * */
+    Object.defineProperty(_result, '_', {
+      configurable: false,
+      enumerable: true,
+      writable: false,
+      value: _actions.slice(0)
+    });
+
     return _result;
   }
 

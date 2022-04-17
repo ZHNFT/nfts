@@ -139,6 +139,7 @@ importers:
       '@nfts/argparser': workspace:*
       '@nfts/eslint-config': workspace:*
       '@nfts/hook': workspace:*
+      '@nfts/node-utils-library': workspace:*
       '@types/jest': ^27.0.3
       '@types/node': ~17.0.5
       jest: ^27.4.5
@@ -148,6 +149,7 @@ importers:
       '@nfts/argparser': link:../argparser
       '@nfts/eslint-config': link:../../config/eslint
       '@nfts/hook': link:../hook
+      '@nfts/node-utils-library': link:../node-utils-library
       '@types/jest': 27.4.1
       '@types/node': 17.0.23
       jest: 27.5.1

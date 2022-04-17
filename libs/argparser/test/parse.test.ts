@@ -30,21 +30,22 @@ describe('测试用例', function () {
 
     const result = rootParser.parse([
       'gmf',
-      'build',
-      '--flag1',
-      '--flag2',
-      'flag2',
-      '-h',
-      '-v'
+      'build'
+      // '--flag1',
+      // '--flag2',
+      // 'flag2',
+      // '-h',
+      // '-v'
     ]);
 
     expect(result).toStrictEqual({
-      flag1: true,
-      flag2: 'flag2',
-      help: true,
-      version: true,
-      h: true,
-      v: true
+      // flag1: true,
+      // flag2: 'flag2',
+      // help: true,
+      // version: true,
+      // h: true,
+      // v: true,
+      _: ['build']
     });
   });
 });

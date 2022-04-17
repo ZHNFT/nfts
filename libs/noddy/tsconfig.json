@@ -5,7 +5,7 @@
     "outDir": "./dist",
     "declaration": true,
     "declarationDir": "./dist",
-    "lib": ["ESNext", "dom"]
+    "lib": ["ESNext"]
   },
   "include": ["src"],
   "exclude": ["dist", "test"]

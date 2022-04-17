@@ -3,6 +3,7 @@ import * as Async from './Async';
 import { sync as importSync } from './Import';
 import { IPackageJson } from './IPackageJson';
 import * as Json from './Json';
+import * as Measure from './Measure';
 
 export { PackageJson } from './packageJson/PackageJson';
 export { PackageJsonLookup } from './packageJson/PackageJsonLookup';
@@ -18,6 +19,9 @@ export { Async };
 
 // Json
 export { Json };
+
+// Measure
+export { Measure };
 
 // Import
 export { importSync };

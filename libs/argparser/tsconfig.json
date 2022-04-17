@@ -6,7 +6,7 @@
     "declaration": true,
     "declarationDir": "./dist",
     "moduleResolution": "Node",
-    "lib": ["ESNext", "dom"]
+    "lib": ["ESNext"]
   },
   "include": ["src/"]
 }

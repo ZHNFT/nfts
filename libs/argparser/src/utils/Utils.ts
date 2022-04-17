@@ -8,7 +8,7 @@ export class Utils {
   };
 
   public static stripParamFlagPrefix = (paramFlag: string): string =>
-    /^-{1,2}([\w_]+)$/g.exec(paramFlag)[1];
+    paramFlag.replace(/^-{1,2}/, '');
 
   /**
    *

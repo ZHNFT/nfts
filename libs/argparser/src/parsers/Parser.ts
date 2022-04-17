@@ -9,7 +9,7 @@ export class Parser extends SubParser {
     super(ROOT_PARSER, ROOT_PARSER_DESC);
   }
 
-  public addHelp(callback: VoidFunction) {
+  public addHelp(callback: () => void) {
     this.addParam(
       new FlagParameter({
         name: '--help',
@@ -20,7 +20,7 @@ export class Parser extends SubParser {
     );
   }
 
-  public addVersion(callback: VoidFunction) {
+  public addVersion(callback: () => void) {
     this.addParam(
       new FlagParameter({
         name: '--version',
