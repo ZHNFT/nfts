@@ -1,8 +1,5 @@
-import { Sync } from '@nfts/node-utils-library';
-
-export type THookCallback<HookCallbackArgs> = (
-  args: HookCallbackArgs
-) => void | Promise<void>;
+import { Async } from '@nfts/node-utils-library';
+import { THookCallback } from './classes/Hook';
 
 export class Hook<HookNames = string, HookCallbackArgs = void> {
   private readonly _hooks: Map<HookNames, THookCallback<HookCallbackArgs>[]>;
@@ -16,12 +13,11 @@ export class Hook<HookNames = string, HookCallbackArgs = void> {
     callbacks.push(callback);
     this._hooks.set(hookName, callbacks);
   }
-
   public emitHook(hookName: HookNames, args: HookCallbackArgs): Promise<void> {
     const _hookCallbacks = this._hooks.get(hookName);
 
     if (_hookCallbacks && _hookCallbacks.length > 0) {
-      return Sync.serialize(_hookCallbacks, args);
+      return Async.serialize(_hookCallbacks, args);
     }
 
     return Promise.resolve();
