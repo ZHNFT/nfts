@@ -16,7 +16,7 @@ export interface ImportModuleSyncOptions {
 
 const DEFAULT_IMPORT_SYNC_OPTIONS = {
   cwd: __dirname,
-  node_modules: path.resolve(__dirname, 'node_modules')
+  node_modules: path.resolve(__dirname, Constants.nodeModulePath)
 };
 
 /**
@@ -26,10 +26,7 @@ const DEFAULT_IMPORT_SYNC_OPTIONS = {
  */
 export function sync(
   moduleName: string,
-  options: ImportModuleSyncOptions = {
-    cwd: __dirname,
-    node_modules: path.resolve(__dirname, 'node_modules')
-  }
+  options: ImportModuleSyncOptions = DEFAULT_IMPORT_SYNC_OPTIONS
 ): unknown {
   options = Object.assign({}, DEFAULT_IMPORT_SYNC_OPTIONS, options);
   const req = NodeModule.createRequire(options.cwd);
