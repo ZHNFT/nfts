@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "gmf build --snowpack",
+    "start": "gmf build --snowpack --watch",
     "build": "gmf build --clean --test",
     "test": "gmf build --test"
   },

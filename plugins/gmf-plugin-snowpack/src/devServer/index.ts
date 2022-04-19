@@ -2,7 +2,8 @@ import {
   loadConfiguration,
   SnowpackConfig,
   SnowpackUserConfig,
-  startServer
+  startServer,
+  createConfiguration
 } from 'snowpack';
 
 const DEFAULT_CONFIG_FILE_PATH = './snowpack.config.js';
@@ -22,9 +23,11 @@ const REACT_DEV_SNOWPACK_CONFIG = {
 
 export class DevServer {
   public async runDevServer(config: SnowpackUserConfig): Promise<void> {
-    const _config = await this._tryLoadConfig(DEFAULT_CONFIG_FILE_PATH, config);
+    const _config = createConfiguration(config);
     const _devServer = await startServer(
-      { config: _config },
+      {
+        config: _config
+      },
       {
         isDev: true,
         isWatch: true,

@@ -14,7 +14,11 @@ class SnowpackDevPlugin implements Plugin {
         }
         if (commandLineParameters.watch) {
           await new DevServer().runDevServer({
-            root: '.'
+            mount: {
+              public: '/',
+              src: '/dist'
+            },
+            plugins: ['@snowpack/plugin-react-refresh', '@snowpack/plugin-typescript']
           });
         } else {
           await new BuildServer().runBuildServer({});

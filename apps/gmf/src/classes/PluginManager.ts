@@ -37,7 +37,8 @@ export class PluginManager {
     if (_config?.plugins) {
       for await (const plugin of _config.plugins) {
         const { pluginName } = plugin;
-        const _pluginInstance = ImportModule.import(pluginName) as Plugin;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        const _pluginInstance = ImportModule.import(pluginName).default as Plugin;
         await this.applyPluginAsync(_pluginInstance);
       }
     }
