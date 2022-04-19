@@ -1,4 +1,7 @@
-export interface IConfig {
+import { existsSync } from 'fs';
+import { FileSystem } from '@nfts/node-utils-library';
+
+export interface IGmfConfig {
   plugins: {
     pluginName: string;
     [index: string]: string;
@@ -9,10 +12,11 @@ export interface IConfig {
  * gmf 需要的配置文件，
  */
 export class Configuration {
-  public loadConfig(): IConfig | undefined {
-    // return FileSystem.readJsonSync<IConfig>(Constants.DEFAULT_GMFCONFIG_PATH);
-    return {
-      plugins: []
-    };
+  public loadConfig(configPath: string): IGmfConfig | undefined {
+    if (!existsSync(configPath)) {
+      return undefined;
+    }
+
+    return FileSystem.readJsonSync(configPath);
   }
 }

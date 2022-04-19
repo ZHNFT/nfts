@@ -419,7 +419,7 @@ packages:
       - bufferutil
       - canvas
       - supports-color
-      - ts-node
+      - scripts-node
       - utf-8-validate
     dev: true
 
@@ -1494,7 +1494,7 @@ packages:
       - bufferutil
       - canvas
       - supports-color
-      - ts-node
+      - scripts-node
       - utf-8-validate
     dev: true
 
@@ -1894,7 +1894,7 @@ packages:
       - bufferutil
       - canvas
       - supports-color
-      - ts-node
+      - scripts-node
       - utf-8-validate
     dev: true
 
@@ -2580,7 +2580,7 @@ packages:
     dev: true
 
   /walker/1.0.8:
-    resolution: {integrity: sha512-ts/8E8l5b7kY0vlWLewOkDXMmPdLcVV4GmOQLyxuSswIJsweeFZtAsMF7k1Nszz+TYBQrlYRmzOnr398y1JemQ==}
+    resolution: {integrity: sha512-scripts/8E8l5b7kY0vlWLewOkDXMmPdLcVV4GmOQLyxuSswIJsweeFZtAsMF7k1Nszz+TYBQrlYRmzOnr398y1JemQ==}
     dependencies:
       makeerror: 1.0.12
     dev: true

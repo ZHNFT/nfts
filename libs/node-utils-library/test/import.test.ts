@@ -1,7 +1,7 @@
 import { dirname } from 'path';
 import { sync } from '../src/Import';
 
-describe('导入 .ts、.eslintrc.js 文件模块', function () {
+describe('导入 .scripts、.eslintrc.js 文件模块', function () {
   it('should import .eslintrc.js correct', function () {
     const add = sync('./temp/moduleB.js', { cwd: dirname(__filename) }) as (
       a: number,
@@ -11,8 +11,8 @@ describe('导入 .ts、.eslintrc.js 文件模块', function () {
     expect(add(1, 2)).toEqual(3);
   });
 
-  it('should import .ts correct', function () {
-    const add = sync('./temp/moduleA.ts', { cwd: dirname(__filename) }) as {
+  it('should import .scripts correct', function () {
+    const add = sync('./temp/moduleA.scripts', { cwd: dirname(__filename) }) as {
       default: (a: number, b: number) => number;
     };
 

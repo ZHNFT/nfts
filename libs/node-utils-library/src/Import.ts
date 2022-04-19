@@ -47,7 +47,7 @@ export function sync(
     );
   }
 
-  const pkgJson = Json.readJsonSync(packageJsonPath) as Package.IPackageJson;
+  const pkgJson: Package.IPackageJson = Json.readJsonSync(packageJsonPath);
 
   let mainEntry: string;
 

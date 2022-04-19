@@ -1,5 +1,5 @@
 import { ImportModule } from '@nfts/node-utils-library';
-import { DebugTool, MeasureTool } from '@nfts/noddy';
+import { DebugTool } from '@nfts/noddy';
 import { Configuration } from './Configuration';
 import { Plugin } from './Plugin';
 import { THooks } from '../hook';
@@ -8,6 +8,7 @@ import { THooks } from '../hook';
 import cleanPlugin from '../internal-plugins/CleanPlugin';
 import copyPlugin from '../internal-plugins/CopyPlugin';
 import typescriptPlugin from '../internal-plugins/TypescriptPlugin';
+import Constants from '../Constants';
 // #endregion
 
 export class PluginManager {
@@ -31,7 +32,7 @@ export class PluginManager {
    * 加载多个插件的方式只提供内部解析配置文件的时候使用
    * */
   private async _applyPluginsAsync() {
-    const _config = this._config.loadConfig();
+    const _config = this._config.loadConfig(Constants.DEFAULT_GMFCONFIG_PATH);
 
     if (_config?.plugins) {
       for await (const plugin of _config.plugins) {

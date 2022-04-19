@@ -12,17 +12,19 @@ export interface BuildCommandInitOption {
 export interface BuildCommandLineParameters {
   clean: FlagParameter;
   test: FlagParameter;
-  watchMode: FlagParameter;
+  watch: FlagParameter;
   tsconfig: StringParameter;
   production: FlagParameter;
+  snowpack: FlagParameter;
 }
 
 export interface BuildCommandLineParametersValue {
   clean?: boolean;
   test?: boolean;
-  watchMode?: boolean;
+  watch?: boolean;
   tsconfig?: string;
   production?: boolean;
+  snowpack?: boolean;
 }
 
 export class BuildCommand extends Command implements BuildCommandLineParameters {
@@ -30,9 +32,10 @@ export class BuildCommand extends Command implements BuildCommandLineParameters 
 
   clean: FlagParameter;
   test: FlagParameter;
-  watchMode: FlagParameter;
+  watch: FlagParameter;
   tsconfig: StringParameter;
   production: FlagParameter;
+  snowpack: FlagParameter;
 
   constructor({ hook }: BuildCommandInitOption) {
     super({
@@ -54,7 +57,7 @@ export class BuildCommand extends Command implements BuildCommandLineParameters 
       summary: 'Run build process'
     });
 
-    this.watchMode = this.flagParameter({
+    this.watch = this.flagParameter({
       name: '--watch',
       summary: 'Start up a watch compilation'
     });
@@ -68,16 +71,21 @@ export class BuildCommand extends Command implements BuildCommandLineParameters 
       name: '--production',
       summary: 'Run in production mode'
     });
+
+    this.snowpack = this.flagParameter({
+      name: '--snowpack',
+      summary: 'Run development using snowpack'
+    });
   }
 
   public async onExecute(): Promise<void> {
     const parameters: BuildCommandLineParametersValue = {
       clean: this.clean.value,
       test: this.test.value,
-      watchMode: this.watchMode.value,
-      tsconfig: this.tsconfig.value
+      watch: this.watch.value,
+      tsconfig: this.tsconfig.value,
+      snowpack: this.snowpack.value
     };
-
     await this.hook._call(parameters);
   }
 }

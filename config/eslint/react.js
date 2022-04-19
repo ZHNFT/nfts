@@ -8,7 +8,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.ts', '*.tsx'],
+      files: ['*.scripts', '*.tsx'],
       rules: {}
     }
   ]

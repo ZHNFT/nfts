@@ -7,6 +7,10 @@
     "buildPath": {
       "type": "string"
     },
+    "buildTarget": {
+      "type": "string",
+      "oneOf": []
+    },
     "plugins": {
       "type": "array",
       "items": {

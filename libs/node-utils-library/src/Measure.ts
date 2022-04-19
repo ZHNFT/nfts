@@ -5,7 +5,7 @@ export function now() {
   return performance.now();
 }
 
-enum Unit {
+export enum Unit {
   S,
   M,
   H

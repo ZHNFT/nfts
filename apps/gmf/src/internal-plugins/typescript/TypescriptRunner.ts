@@ -88,7 +88,7 @@ export class TypescriptRunner {
 
   public async _runWatchBuild(
     options: TypescriptPluginOptions,
-    onEmitCallback: VoidFunction
+    onEmitCallback?: VoidFunction
   ): Promise<void> {
     await new Promise(() => {
       const host = ts.createWatchCompilerHost(

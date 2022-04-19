@@ -1,6 +1,8 @@
 import { Async } from '@nfts/node-utils-library';
 import { THookCallback } from './classes/Hook';
 
+export { THookCallback };
+
 export class Hook<HookNames = string, HookCallbackArgs = void> {
   private readonly _hooks: Map<HookNames, THookCallback<HookCallbackArgs>[]>;
 

@@ -65,7 +65,7 @@ export class CommandLine extends CommandLineParameterManager {
   public async execute(_args?: string[]) {
     const { _, ...args } = this._parser.parse<ParsedCommandLineOption>(_args);
     const command = this._findCommand(_);
-    await this._measure.asyncTask('CommandLine.execute', async function onExecute() {
+    await this._measure.asyncTask('[EXECUTION]', async function onExecute() {
       return command.onExecute(args);
     });
   }

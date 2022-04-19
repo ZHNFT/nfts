@@ -1,6 +1,6 @@
 import ts from 'typescript';
 import fs from 'fs';
-import { glob } from 'glob';
+import { Fs } from '@nfts/node-utils-library';
 
 export class TypescriptConfigHost implements ts.ParseConfigHost {
   useCaseSensitiveFileNames: boolean;
@@ -14,19 +14,17 @@ export class TypescriptConfigHost implements ts.ParseConfigHost {
     extensions: readonly string[],
     excludes: readonly string[] | undefined,
     includes: readonly string[]
-    // depth?: number
   ): readonly string[] {
     let files: string[] = [];
 
     if (includes.length === 0) {
-      files = this._globMatchFilesInRoot('**', { root: rootDir, ignore: excludes });
+      files = Fs.readDirRecursionSync('/src', { stat: false }) as string[];
     } else {
       for (let i = 0; i < includes.length; i++) {
         const includeGlobPattern = includes[i];
-        const _files = this._globMatchFilesInRoot(includeGlobPattern, {
-          root: rootDir,
-          ignore: excludes
-        });
+        const _files = Fs.readDirRecursionSync(includeGlobPattern, {
+          stat: false
+        }) as string[];
         files = files.concat(_files);
       }
     }
@@ -40,27 +38,5 @@ export class TypescriptConfigHost implements ts.ParseConfigHost {
     } catch (error) {
       return undefined;
     }
-  }
-
-  private _globMatchFilesInRoot(
-    globPattern: string,
-    matchOption: {
-      root: string;
-      ignore?: readonly string[];
-      extensions?: readonly string[];
-    }
-  ): string[] {
-    return glob
-      .sync(globPattern, {
-        nodir: true,
-        realpath: true,
-        cwd: matchOption.root,
-        ignore: ['node_modules/**/*', ...(matchOption?.ignore ?? [])]
-      })
-      .filter(fileName =>
-        matchOption.extensions
-          ? matchOption.extensions.includes(fileName.split('.')[1])
-          : true
-      );
   }
 }

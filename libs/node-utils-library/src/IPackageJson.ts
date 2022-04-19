@@ -67,7 +67,7 @@ export interface IPackageJson {
    */
   devDependencies?: Record<string, string>;
   /**
-   * 设置此软件包/应用程序要运行的 Node.ts.js 或其他命令的版本。
+   * 设置此软件包/应用程序要运行的 Node.scripts.js 或其他命令的版本。
    */
   engines?: Record<string, string>;
   /**

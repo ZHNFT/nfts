@@ -5,8 +5,9 @@
     "outDir": "dist",
     "declaration": true,
     "declarationDir": "dist",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "noEmit": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["dist/**/*", "config/**/*"]
+  "include": ["src"],
+  "exclude": ["dist", "config"]
 }

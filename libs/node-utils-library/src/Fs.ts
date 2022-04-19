@@ -71,3 +71,64 @@ export async function mkdir(dirname: string): Promise<void> {
     }
   }
 }
+
+const RecursionDirCache: Set<number> = new Set();
+
+function createStat(stat: fs.Stats, extraProps: { [key: string]: unknown }): fs.Stats {
+  for (const extraPropsKey in extraProps) {
+    if (Object.prototype.hasOwnProperty.call(extraProps, extraPropsKey)) {
+      Object.defineProperty(stat, extraPropsKey, {
+        value: extraProps[extraPropsKey]
+      });
+      // Object.assign(stat, extraPropsKey, extraProps[extraPropsKey]);
+    }
+  }
+
+  return stat;
+}
+
+/**
+ * 递归读取文件夹中的文件
+ */
+// export function readDirRecursion(
+//   dirname: string,
+//   files?: fs.Stats[]
+// ): Promise<fs.Stats[]> {
+//   const stat = fs.statSync(dirname);
+// }
+
+/**
+ * 递归读取文件夹中的文件
+ */
+export function readDirRecursionSync(
+  dirname: string,
+  options: {
+    stat: boolean;
+  },
+  files: (fs.Stats | string)[] = []
+): (fs.Stats | string)[] {
+  const stat = fs.statSync(dirname);
+  if (!stat.isDirectory()) {
+    return files;
+  }
+
+  const subFileAndDirs = fs.readdirSync(dirname);
+
+  for (let i = 0; i < subFileAndDirs.length; i++) {
+    const _path = path.resolve(dirname, subFileAndDirs[i]);
+    const _stat = fs.statSync(_path);
+
+    if (_stat.isFile()) {
+      files.push(options.stat ? createStat(_stat, { filepath: _path }) : _path);
+    }
+
+    if (_stat.isDirectory()) {
+      if (!RecursionDirCache.has(_stat.ino)) {
+        RecursionDirCache.add(_stat.ino);
+        readDirRecursionSync(_path, options, files);
+      }
+    }
+  }
+
+  return files;
+}

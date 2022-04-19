@@ -4,9 +4,9 @@
  */
 
 // src/**/*    => ^src\/(.+)$
-// src/**/*.ts => ^src\/(.+)(.ts)$
+// src/**/*.scripts => ^src\/(.+)(.scripts)$
 // src/*       => ^src\/(\w+)\/*.*
-// src/*.ts    => ^src\/(\w+)\/*(.ts)
+// src/*.scripts    => ^src\/(\w+)\/*(.scripts)
 
 export class Glob {
   public static globToRegExp(globPattern: string, flags = ''): RegExp {

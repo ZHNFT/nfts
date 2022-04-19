@@ -1,4 +1,5 @@
 import path from 'path';
+import { Measure } from '@nfts/node-utils-library';
 import { Plugin, PluginContext } from '../classes/Plugin';
 import Constants from '../Constants';
 import { TypescriptRunner } from './typescript/TypescriptRunner';
@@ -13,7 +14,7 @@ export interface TypescriptPluginOptions {
   tsconfigPath: string;
 }
 
-class TypescriptPlugin implements Plugin<TypescriptPluginOptions> {
+class TypescriptPlugin implements Plugin {
   readonly name = 'TypescriptPlugin';
   readonly summary = '使用 tsc 作为内部使用的编译器来将 tsx 转换成 js';
 
@@ -26,8 +27,12 @@ class TypescriptPlugin implements Plugin<TypescriptPluginOptions> {
   apply(ctx: PluginContext): void {
     ctx.hook.build.addHook(build => {
       build.hook.compile.addHook(compile => {
-        compile.hook.run.addHook(async ({ commandLineParameters, logger }) => {
-          console.log(' ---- TS build start ----');
+        compile.hook.run.addHook(async ({ commandLineParameters, hook, logger }) => {
+          // 开启snowpack的开发模式
+          if (commandLineParameters.snowpack) {
+            return;
+          }
+          logger.log(` ---- TS build Start`);
           const startTime = performance.now();
           if (!commandLineParameters.tsconfig) {
             commandLineParameters.tsconfig = Constants.DEFAULT_TSCONFIG_PATH;
@@ -40,24 +45,22 @@ class TypescriptPlugin implements Plugin<TypescriptPluginOptions> {
             }
           }
 
-          if (commandLineParameters.watchMode) {
-            await this.tsRunner._runWatchBuild(
-              {
-                tsconfigPath: commandLineParameters.tsconfig
-              },
-              () => {
-                //
-              }
-            );
+          if (commandLineParameters.watch) {
+            await this.tsRunner._runWatchBuild({
+              tsconfigPath: commandLineParameters.tsconfig
+            });
           } else {
             await this.tsRunner._runIncrementalBuild(commandLineParameters, () => {
-              console.log('after emitted');
+              logger.log('Start Emit Hook');
+              void hook.emit.call();
             });
           }
 
-          const endTime = performance.now() - startTime;
+          const interval = performance.now() - startTime;
 
-          console.log(` ---- TS build end, spent ${(endTime / 1000).toFixed(4)}s ----`);
+          logger.log(
+            ` ---- TS build end, spent ${Measure.millisecondsFormat(interval)}s ----`
+          );
         });
       });
     });

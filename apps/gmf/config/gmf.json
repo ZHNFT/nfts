@@ -1,5 +1,5 @@
 {
-  "gmf-plugins": [
+  "plugins": [
     {
       "name": "@ntfs/gmf-plugin-esbuild"
     }
