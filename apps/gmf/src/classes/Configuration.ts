@@ -1,6 +1,3 @@
-// import { FileSystem } from '@nfts/node-utils-library';
-// import Constants from '../Constants';
-
 export interface IConfig {
   plugins: {
     pluginName: string;

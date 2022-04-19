@@ -1,8 +1,8 @@
 import { dirname } from 'path';
 import { sync } from '../src/Import';
 
-describe('导入 .ts、.js 文件模块', function () {
-  it('should import .js correct', function () {
+describe('导入 .ts、.eslintrc.js 文件模块', function () {
+  it('should import .eslintrc.js correct', function () {
     const add = sync('./temp/moduleB.js', { cwd: dirname(__filename) }) as (
       a: number,
       b: number

@@ -1,5 +1,5 @@
-import { Action } from '@nfts/noddy';
-import { FlagOption, StringOption } from '@nfts/argparser';
+import { Command } from '@nfts/noddy';
+import { FlagParameter, StringParameter } from '@nfts/argparser';
 import { BuildHook } from '../../hook';
 
 const BUILD_LIFECYCLE_NAME = 'build';
@@ -10,11 +10,11 @@ export interface BuildCommandInitOption {
 }
 
 export interface BuildCommandLineParameters {
-  clean: FlagOption;
-  test: FlagOption;
-  watchMode: FlagOption;
-  tsconfig: StringOption;
-  production: FlagOption;
+  clean: FlagParameter;
+  test: FlagParameter;
+  watchMode: FlagParameter;
+  tsconfig: StringParameter;
+  production: FlagParameter;
 }
 
 export interface BuildCommandLineParametersValue {
@@ -25,52 +25,52 @@ export interface BuildCommandLineParametersValue {
   production?: boolean;
 }
 
-export class BuildCommand extends Action implements BuildCommandLineParameters {
+export class BuildCommand extends Command implements BuildCommandLineParameters {
   readonly hook: BuildHook;
 
-  clean: FlagOption;
-  test: FlagOption;
-  watchMode: FlagOption;
-  tsconfig: StringOption;
-  production: FlagOption;
+  clean: FlagParameter;
+  test: FlagParameter;
+  watchMode: FlagParameter;
+  tsconfig: StringParameter;
+  production: FlagParameter;
 
-  constructor(initOptions: BuildCommandInitOption) {
+  constructor({ hook }: BuildCommandInitOption) {
     super({
-      actionName: BUILD_LIFECYCLE_NAME,
-      actionDescription: BUILD_LIFECYCLE_DESC
+      commandName: BUILD_LIFECYCLE_NAME,
+      commandDescription: BUILD_LIFECYCLE_DESC
     });
 
-    this.hook = initOptions.hook;
+    this.hook = hook;
   }
 
-  protected onParameterDefinition(): void {
-    this.clean = this.parser.flagOption({
+  onDefineParameters(): void {
+    this.clean = this.flagParameter({
       name: '--clean',
       summary: 'Clean up dist folder before build process'
     });
 
-    this.test = this.parser.flagOption({
+    this.test = this.flagParameter({
       name: '--test',
       summary: 'Run build process'
     });
 
-    this.watchMode = this.parser.flagOption({
+    this.watchMode = this.flagParameter({
       name: '--watch',
       summary: 'Start up a watch compilation'
     });
 
-    this.tsconfig = this.parser.stringOption({
+    this.tsconfig = this.stringParameter({
       name: '--tsconfig',
       summary: 'Path to tsconfig.json'
     });
 
-    this.production = this.parser.flagOption({
+    this.production = this.flagParameter({
       name: '--production',
       summary: 'Run in production mode'
     });
   }
 
-  protected async onExecute(): Promise<void> {
+  public async onExecute(): Promise<void> {
     const parameters: BuildCommandLineParametersValue = {
       clean: this.clean.value,
       test: this.test.value,

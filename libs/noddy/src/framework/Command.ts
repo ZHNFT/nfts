@@ -1,6 +1,7 @@
 import { SubParser } from '@nfts/argparser';
+import { CommandLineParameterManager } from './CommandLineParameter';
 
-export abstract class Command {
+export abstract class Command extends CommandLineParameterManager {
   public readonly subParser: SubParser;
 
   protected constructor({
@@ -10,7 +11,11 @@ export abstract class Command {
     commandName: string;
     commandDescription: string;
   }) {
-    this.subParser = new SubParser(commandName, commandDescription);
+    const subParser = new SubParser(commandName, commandDescription);
+
+    super({ parser: subParser });
+
+    this.subParser = subParser;
     this.onDefineParameters();
   }
 

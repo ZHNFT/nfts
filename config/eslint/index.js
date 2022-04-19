@@ -17,7 +17,7 @@ module.exports = {
         'plugin:@typescript-eslint/recommended-requiring-type-checking'
       ],
       plugins: ['@typescript-eslint'],
-      parser: '@typescript-eslint/parsers',
+      parser: '@typescript-eslint/parser',
       parserOptions: {
         project: './tsconfig.json',
         ecmaVersion: 2018,

@@ -1,13 +1,11 @@
-import { CommandTool } from '@nfts/noddy';
+import { CommandLine, MeasureTool, DebugTool } from '@nfts/noddy';
 import { PluginManager } from '../classes/PluginManager';
 import { Configuration } from '../classes/Configuration';
 import { BuildCommand } from './commands/BuildCommand';
 import { BuildHook, THooks } from '../hook';
-import { Logger } from '../classes/Logger';
 
-export default class GmfTool extends CommandTool {
+export default class GmfTool extends CommandLine {
   private readonly _pluginManager: PluginManager;
-  private readonly _logger: Logger;
   private readonly _config: Configuration;
 
   constructor() {
@@ -23,16 +21,15 @@ export default class GmfTool extends CommandTool {
     };
 
     this._config = new Configuration();
-    this._logger = Logger.getLogger();
-    this._pluginManager = new PluginManager(this._config, hooks, this._logger);
+    this._pluginManager = new PluginManager(this._config, hooks);
 
     const build = new BuildCommand({ hook: buildHook });
 
-    this.addAction(build);
+    this.addCommand(build);
   }
 
   public async exec(): Promise<void> {
     await this._pluginManager.initAsync();
-    return super.exec();
+    return super.execute();
   }
 }

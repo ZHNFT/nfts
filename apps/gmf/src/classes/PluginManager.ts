@@ -1,4 +1,5 @@
 import { ImportModule } from '@nfts/node-utils-library';
+import { DebugTool, MeasureTool } from '@nfts/noddy';
 import { Configuration } from './Configuration';
 import { Plugin } from './Plugin';
 import { THooks } from '../hook';
@@ -7,18 +8,15 @@ import { THooks } from '../hook';
 import cleanPlugin from '../internal-plugins/CleanPlugin';
 import copyPlugin from '../internal-plugins/CopyPlugin';
 import typescriptPlugin from '../internal-plugins/TypescriptPlugin';
-import { Logger } from './Logger';
 // #endregion
 
 export class PluginManager {
   private readonly _config: Configuration;
   private readonly _hooks: THooks;
-  private readonly _logger: Logger;
 
-  constructor(config: Configuration, hooks: THooks, logger: Logger) {
+  constructor(config: Configuration, hooks: THooks) {
     this._config = config;
     this._hooks = hooks;
-    this._logger = logger;
   }
 
   public async initAsync(): Promise<void> {
@@ -51,7 +49,9 @@ export class PluginManager {
     await plugin.apply({
       hook: this._hooks,
       config: this._config,
-      logger: this._logger
+      getLogger: (scope: string) => {
+        return DebugTool.Debug.getScopedLogger(scope);
+      }
     });
   }
 
@@ -60,7 +60,9 @@ export class PluginManager {
     plugin.apply({
       hook: this._hooks,
       config: this._config,
-      logger: this._logger
+      getLogger: (scope: string) => {
+        return DebugTool.Debug.getScopedLogger(scope);
+      }
     });
   }
 }

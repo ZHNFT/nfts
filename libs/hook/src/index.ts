@@ -1,4 +1,4 @@
-import { Sync } from '@nfts/node-utils-library';
+import { Async } from '@nfts/node-utils-library';
 
 export type THookCallback<HookCallbackArgs> = (
   args: HookCallbackArgs
@@ -21,7 +21,7 @@ export class Hook<HookNames = string, HookCallbackArgs = void> {
     const _hookCallbacks = this._hooks.get(hookName);
 
     if (_hookCallbacks && _hookCallbacks.length > 0) {
-      return Sync.serialize(_hookCallbacks, args);
+      return Async.serialize(_hookCallbacks, args);
     }
 
     return Promise.resolve();

@@ -2,13 +2,14 @@ import { Parser } from '@nfts/argparser';
 import { Command } from './Command';
 import { Debug } from '../debug/Debug';
 import { Measure } from '../measure/Measure';
+import { CommandLineParameterManager } from './CommandLineParameter';
 
 interface ParsedCommandLineOption {
   _: string[];
   [key: string]: string | string[];
 }
 
-export class CommandLine {
+export class CommandLine extends CommandLineParameterManager {
   private readonly _name: string;
   private readonly _description: string;
 
@@ -25,11 +26,15 @@ export class CommandLine {
     toolName: string;
     toolDescription: string;
   }) {
+    const parser = new Parser();
+
+    super({ parser });
+
+    this._parser = parser;
     this._name = toolName;
     this._description = toolDescription;
 
     this._debug = Debug.getScopedLogger(toolName);
-    this._parser = new Parser();
     this._measure = new Measure({ debug: this._debug });
   }
 
@@ -57,12 +62,8 @@ export class CommandLine {
     }
   }
 
-  public async execute() {
-    const { _, ...args } = this._parser.parse<ParsedCommandLineOption>([
-      'xxx',
-      'reader',
-      '--aa'
-    ]);
+  public async execute(_args?: string[]) {
+    const { _, ...args } = this._parser.parse<ParsedCommandLineOption>(_args);
     const command = this._findCommand(_);
     await this._measure.asyncTask('CommandLine.execute', async function onExecute() {
       return command.onExecute(args);

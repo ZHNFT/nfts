@@ -1,11 +1,11 @@
+import { DebugTool } from '@nfts/noddy';
 import { THooks } from '../hook';
 import { Configuration } from './Configuration';
-import { Logger } from './Logger';
 
 export interface PluginContext {
   hook: THooks;
   config: Configuration;
-  logger: Logger;
+  getLogger: (scopeName: string) => DebugTool.Debug;
 }
 
 export abstract class Plugin<PluginOptions = unknown> {

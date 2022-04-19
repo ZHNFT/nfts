@@ -27,6 +27,7 @@ export function taskSync(mark: string, task: () => void, writer = console.info) 
   try {
     task();
     writer(`${mark} -> ${millisecondsFormat(now() - _start)}`);
+    console.log('');
   } catch (e) {
     throw e;
   }
@@ -40,5 +41,6 @@ export function taskAsync(
   const _start = now();
   return task().finally(() => {
     writer(`${mark} -> ${millisecondsFormat(now() - _start)}`);
+    console.log('');
   });
 }

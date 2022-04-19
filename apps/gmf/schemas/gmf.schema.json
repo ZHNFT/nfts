@@ -4,7 +4,10 @@
   "description": "Schema for gmf project",
   "type": "object",
   "properties": {
-    "gmf-plugins": {
+    "buildPath": {
+      "type": "string"
+    },
+    "plugins": {
       "type": "array",
       "items": {
         "type": "object",

@@ -48,7 +48,7 @@ class Tool extends CommandLine {
 
 describe('Command Tool Test Case', function () {
   test('should exec without error', async () => {
-    return new Tool().execute().then(() => {
+    return new Tool().execute(['xxx', 'reader', '--aa']).then(() => {
       expect(fn).toBeCalled();
     });
   });
