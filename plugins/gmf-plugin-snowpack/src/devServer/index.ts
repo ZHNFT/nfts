@@ -34,6 +34,10 @@ export class DevServer {
         preparePackages: true
       }
     );
+
+    await new Promise(() => {
+      /* 开发服务永不 resolve */
+    });
   }
 
   private async _tryLoadConfig(
