@@ -1,17 +1,15 @@
+import { Async, Sync } from '@nfts/node-utils-library';
 import { TParameter } from '../parameters';
 import { Utils } from '../utils/Utils';
-import { Async } from '@nfts/node-utils-library';
-
-type TFlagCallback<T = unknown> = (arg: T) => void;
 
 export class SubParser {
   public readonly name: string;
   public readonly description: string;
 
   private _parent: SubParser;
-  private _childs: Set<SubParser> = new Set<SubParser>();
+  private _child: Set<SubParser> = new Set<SubParser>();
   private _parameters: Set<TParameter> = new Set<TParameter>();
-  private _flagCallbacks: Set<TFlagCallback> = new Set<TFlagCallback>();
+  private _flagCallbacks: Set<Sync.Task | Async.Task> = new Set<Sync.Task | Async.Task>();
 
   private _executeFile: string;
 
@@ -22,7 +20,7 @@ export class SubParser {
 
   public addSubParser(parser: SubParser): SubParser {
     parser._parent = this;
-    this._childs.add(parser);
+    this._child.add(parser);
     return this;
   }
 
@@ -43,7 +41,7 @@ export class SubParser {
   private _parse<R = unknown>(args: string[]): R {
     this._flagCallbacks.clear();
 
-    let _actions: string[] = [];
+    const _actions: string[] = [];
     let i = 0;
 
     // extract actions
@@ -61,10 +59,10 @@ export class SubParser {
     this._appendRootParamsToActiveParser(_rootParser, _activeParser);
 
     const _result = args.reduce((prevResult, currentArg, currentIndex, _args) => {
-      let _key, _value;
+      let _key: string, _value: string | boolean;
 
       if (Utils.hasParamFlagPrefix(currentArg)) {
-        let stripParamFlagName = Utils.stripParamFlagPrefix(currentArg);
+        const stripParamFlagName = Utils.stripParamFlagPrefix(currentArg);
         prevResult[stripParamFlagName] = true;
         _key = currentArg;
         _value = true;
@@ -92,9 +90,9 @@ export class SubParser {
       if (param.callback) {
         this._flagCallbacks.add(param.callback);
       }
-
       return prevResult;
     }, {}) as R;
+
     this._executeFlagCallback<R>(_result);
 
     /**
@@ -111,7 +109,7 @@ export class SubParser {
   }
 
   public findSubParser(name: string): SubParser {
-    for (const subParser of this._childs.values()) {
+    for (const subParser of this._child.values()) {
       if (subParser.name === name) {
         return subParser;
       }
@@ -139,6 +137,8 @@ export class SubParser {
 
   private _executeFlagCallback<R>(result: R) {
     const callbacks = Array.from(this._flagCallbacks.values());
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     void Async.serialize<R>(callbacks, result);
   }
 
