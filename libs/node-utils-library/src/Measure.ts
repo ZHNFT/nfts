@@ -22,20 +22,18 @@ export function millisecondsFormat(milliseconds, unit = Unit.S): string {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/unbound-method
 export function taskSync(mark: string, task: () => void, writer = console.info) {
   const _start = now();
-  try {
-    task();
-    writer(`${mark} -> ${millisecondsFormat(now() - _start)}`);
-    console.log('');
-  } catch (e) {
-    throw e;
-  }
+  task();
+  writer(`${mark} -> ${millisecondsFormat(now() - _start)}`);
+  console.log('');
 }
 
 export function taskAsync(
   mark: string,
   task: () => Promise<void>,
+  // eslint-disable-next-line @typescript-eslint/unbound-method
   writer = console.info
 ): Promise<void> {
   const _start = now();

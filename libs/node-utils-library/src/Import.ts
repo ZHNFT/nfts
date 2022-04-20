@@ -49,12 +49,19 @@ export function sync(
 
   const pkgJson: Package.IPackageJson = Json.readJsonSync(packageJsonPath);
 
-  let mainEntry: string;
+  // const mainEntry: string;
 
   if (!pkgJson.main) {
     throw new Error(`main字段不存在`);
   }
 
-  mainEntry = path.resolve(packagePath, pkgJson.main);
+  const mainEntry = path.resolve(packagePath, pkgJson.main);
   return req(mainEntry);
+}
+
+export function resolveModule(
+  moduleName,
+  options: { cwd: string } = { cwd: process.cwd() }
+) {
+  // TODO 添加模块路径解析的逻辑
 }

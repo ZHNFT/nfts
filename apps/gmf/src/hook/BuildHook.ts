@@ -1,9 +1,7 @@
-import { HookBase } from '../classes/HookBase';
+import { AsyncHook } from '@nfts/hook';
 import { Logger } from '../classes/Logger';
 import { BuildCommandLineParametersValue } from '../cli/commands/BuildCommand';
 import { Configuration } from '../classes/Configuration';
-
-export const BUILD_START_SUB_HOOK_NAME = 'BUILD_START';
 
 export interface BaseHookContext {
   readonly logger: Logger;
@@ -14,39 +12,31 @@ export interface BaseBuildHookContext extends BaseHookContext {
   readonly commandLineParameters: BuildCommandLineParametersValue;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface BuildStartSubHookContext extends BaseBuildHookContext {
   readonly finished: BuildFinishedSubHook;
 }
 
-export class BuildStartSubHook extends HookBase<BuildStartSubHookContext> {
-  constructor() {
-    super(BUILD_START_SUB_HOOK_NAME);
-  }
-}
-
-export const BUILD_COMPILE_SUB_HOOK_NAME = 'BUILD_COMPILE';
+export class BuildStartSubHook extends AsyncHook<BuildStartSubHookContext> {}
 
 export interface BuildCompileSubHookContext extends BaseBuildHookContext {
   readonly hook: {
-    run: HookBase<BuildCompileRunSubHookContext>;
-    emit: HookBase<BuildCompileEmitSubHookContext>;
+    run: AsyncHook<BuildCompileRunSubHookContext>;
+    emit: AsyncHook<BuildCompileEmitSubHookContext>;
     recompile: BuildReCompileSubHook;
   };
 }
 
-export class BuildCompileSubHook extends HookBase<BuildCompileSubHookContext> {
+export class BuildCompileSubHook extends AsyncHook<BuildCompileSubHookContext> {
   config: Configuration;
 
   constructor({ config }: { config: Configuration }) {
-    super(BUILD_COMPILE_SUB_HOOK_NAME);
-
+    super();
     this.config = config;
   }
 
   // @override
   async call(args: BuildCompileSubHookContext): Promise<void> {
-    await super.call(args);
+    await super.emit(args);
 
     const runHookContext: BuildCompileRunSubHookContext = {
       config: this.config,
@@ -58,11 +48,9 @@ export class BuildCompileSubHook extends HookBase<BuildCompileSubHookContext> {
       }
     };
 
-    await args.hook.run.call(runHookContext);
+    await args.hook.run.emit(runHookContext);
   }
 }
-
-export const BUILD_COMPILE_RUN_HOOK_NAME = 'BUILD_COMPILE_RUN';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface BuildCompileRunSubHookContext extends BaseBuildHookContext {
@@ -72,46 +60,22 @@ export interface BuildCompileRunSubHookContext extends BaseBuildHookContext {
   };
 }
 
-export class BuildCompileRunSubHook extends HookBase<BuildCompileRunSubHookContext> {
-  constructor() {
-    super(BUILD_COMPILE_RUN_HOOK_NAME);
-  }
-}
-
-export const BUILD_COMPILE_EMIT_HOOK_NAME = 'BUILD_COMPILE_EMIT';
+export class BuildCompileRunSubHook extends AsyncHook<BuildCompileRunSubHookContext> {}
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface BuildCompileEmitSubHookContext extends BaseBuildHookContext {}
 
-export class BuildCompileEmitSubHook extends HookBase<BuildCompileEmitSubHookContext> {
-  constructor() {
-    super(BUILD_COMPILE_EMIT_HOOK_NAME);
-  }
-}
-
-export const BUILD_FINISHED_SUB_HOOK_NAME = 'BUILD_FINISHED';
+export class BuildCompileEmitSubHook extends AsyncHook<BuildCompileEmitSubHookContext> {}
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface BuildFinishedSubHookContext extends BaseBuildHookContext {}
 
-export class BuildFinishedSubHook extends HookBase<BuildFinishedSubHookContext> {
-  constructor() {
-    super(BUILD_FINISHED_SUB_HOOK_NAME);
-  }
-}
-
-export const BUILD_WATCH_RE_COMPILE_SUB_HOOK_NAME = 'BUILD_COMPILE';
+export class BuildFinishedSubHook extends AsyncHook<BuildFinishedSubHookContext> {}
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface BuildReCompileSubHookContext extends BaseBuildHookContext {}
 
-export class BuildReCompileSubHook extends HookBase<BuildReCompileSubHookContext> {
-  constructor() {
-    super(BUILD_WATCH_RE_COMPILE_SUB_HOOK_NAME);
-  }
-}
-
-export const BUILD_HOOK_NAME = 'BUILD';
+export class BuildReCompileSubHook extends AsyncHook<BuildReCompileSubHookContext> {}
 
 export interface BuildHookContext extends BaseBuildHookContext {
   readonly hook: {
@@ -122,11 +86,11 @@ export interface BuildHookContext extends BaseBuildHookContext {
   };
 }
 
-export class BuildHook extends HookBase<BuildHookContext> {
+export class BuildHook extends AsyncHook<BuildHookContext> {
   config: Configuration;
 
   constructor({ config }: { config: Configuration }) {
-    super(BUILD_HOOK_NAME);
+    super();
     this.config = config;
   }
 
@@ -144,24 +108,24 @@ export class BuildHook extends HookBase<BuildHookContext> {
         recompile: recompileHook
       },
       commandLineParameters: cliParameterValue,
-      logger: Logger.getLogger(BUILD_HOOK_NAME),
+      logger: Logger.getLogger('BuildHook'),
       config: this.config
     };
 
-    await super.call(buildHookContext);
+    await super.emit(buildHookContext);
 
     const startHookContext: BuildStartSubHookContext = {
       commandLineParameters: cliParameterValue,
-      logger: Logger.getLogger(BUILD_START_SUB_HOOK_NAME),
+      logger: Logger.getLogger('BuildHookStart'),
       finished: buildHookContext.hook.finished,
       config: this.config
     };
 
-    await startHook.call(startHookContext);
+    await startHook.emit(startHookContext);
 
     const compileHookContext: BuildCompileSubHookContext = {
       commandLineParameters: cliParameterValue,
-      logger: Logger.getLogger(BUILD_COMPILE_SUB_HOOK_NAME),
+      logger: Logger.getLogger('Compile'),
       hook: {
         run: new BuildCompileRunSubHook(),
         emit: new BuildCompileEmitSubHook(),
@@ -174,10 +138,10 @@ export class BuildHook extends HookBase<BuildHookContext> {
 
     const finishedHookContext: BuildFinishedSubHookContext = {
       commandLineParameters: cliParameterValue,
-      logger: Logger.getLogger(BUILD_FINISHED_SUB_HOOK_NAME),
+      logger: Logger.getLogger('BuildHookFinished'),
       config: this.config
     };
 
-    await finishedHook.call(finishedHookContext);
+    await finishedHook.emit(finishedHookContext);
   }
 }
