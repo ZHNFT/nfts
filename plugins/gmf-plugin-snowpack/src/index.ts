@@ -3,23 +3,18 @@ import { DevServer } from './devServer';
 import { BuildServer } from './buildServer';
 
 class SnowpackDevPlugin implements Plugin {
-  name: 'SwcDevPlugin';
-  summary: 'SWC development plugin';
+  readonly name: 'SnowpackDevPlugin';
+  readonly summary: 'Snowpack Development Plugin';
 
   apply(ctx: PluginContext): void {
     ctx.hook.build.addHook(build => {
-      build.hook.compile.addHook(async ({ commandLineParameters }) => {
+      build.hook.compile.addHook(async ({ commandLineParameters, config: gmfConfig }) => {
         if (!commandLineParameters.snowpack) {
           return;
         }
+
         if (commandLineParameters.watch) {
-          await new DevServer().runDevServer({
-            mount: {
-              public: '/',
-              src: '/dist'
-            },
-            plugins: ['@snowpack/plugin-react-refresh', '@snowpack/plugin-typescript']
-          });
+          await new DevServer().runDevServer({ config: gmfConfig.config });
         } else {
           await new BuildServer().runBuildServer({});
         }

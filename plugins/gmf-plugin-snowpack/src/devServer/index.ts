@@ -1,3 +1,4 @@
+import { Configuration } from '@nfts/gmf';
 import {
   loadConfiguration,
   SnowpackConfig,
@@ -22,8 +23,19 @@ const REACT_DEV_SNOWPACK_CONFIG = {
 };
 
 export class DevServer {
-  public async runDevServer(config: SnowpackUserConfig): Promise<void> {
-    const _config = createConfiguration(config);
+  public async runDevServer({
+    config
+  }: {
+    config: Configuration['config'];
+  }): Promise<void> {
+    // 创建配置，启动 snowpack 开发服务
+    const _config = createConfiguration({
+      mount: {
+        public: '/',
+        src: '/dist'
+      },
+      plugins: ['@snowpack/plugin-react-refresh', '@snowpack/plugin-typescript']
+    });
     const _devServer = await startServer(
       {
         config: _config
@@ -38,16 +50,5 @@ export class DevServer {
     await new Promise(() => {
       /* 开发服务永不 resolve */
     });
-  }
-
-  private async _tryLoadConfig(
-    configPath: string,
-    overrides: SnowpackUserConfig
-  ): Promise<SnowpackConfig | undefined> {
-    try {
-      return loadConfiguration(overrides, configPath);
-    } catch (e) {
-      return null;
-    }
   }
 }

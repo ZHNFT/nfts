@@ -14,13 +14,14 @@ export default class GmfTool extends CommandLine {
       toolDescription: `Develop toolchain`
     });
 
-    const buildHook = new BuildHook();
+    this._config = new Configuration();
+
+    const buildHook = new BuildHook({ config: this._config });
 
     const hooks: THooks = {
       build: buildHook
     };
 
-    this._config = new Configuration();
     this._pluginManager = new PluginManager(this._config, hooks);
 
     const build = new BuildCommand({ hook: buildHook });
