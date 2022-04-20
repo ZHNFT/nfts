@@ -7,18 +7,21 @@ class SnowpackDevPlugin implements Plugin {
   readonly summary: 'Snowpack Development Plugin';
 
   apply(ctx: PluginContext): void {
-    ctx.hook.build.addHook(build => {
-      build.hook.compile.addHook(async ({ commandLineParameters, config: gmfConfig }) => {
-        if (!commandLineParameters.snowpack) {
-          return;
-        }
+    ctx.hook.build.add(this.name, build => {
+      build.hook.compile.add(
+        this.name,
+        async ({ commandLineParameters, config: gmfConfig }) => {
+          if (!commandLineParameters.snowpack) {
+            return;
+          }
 
-        if (commandLineParameters.watch) {
-          await new DevServer().runDevServer({ config: gmfConfig.config });
-        } else {
-          await new BuildServer().runBuildServer({});
+          if (commandLineParameters.watch) {
+            await new DevServer().runDevServer({ config: gmfConfig.config });
+          } else {
+            await new BuildServer().runBuildServer({});
+          }
         }
-      });
+      );
     });
   }
 }
