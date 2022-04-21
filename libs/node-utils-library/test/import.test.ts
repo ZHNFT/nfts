@@ -11,8 +11,8 @@ describe('导入 .scripts、.eslintrc.js 文件模块', function () {
     expect(add(1, 2)).toEqual(3);
   });
 
-  it('should import .scripts correct', function () {
-    const add = sync('./temp/moduleA.scripts', { cwd: dirname(__filename) }) as {
+  it('should import moduleA correct', function () {
+    const add = sync('./temp/moduleA.ts', { cwd: dirname(__filename) }) as {
       default: (a: number, b: number) => number;
     };
 

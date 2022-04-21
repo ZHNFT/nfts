@@ -1,5 +1,5 @@
 import { performance } from 'perf_hooks';
-import * as console from 'console';
+import * as os from 'os';
 
 export function now() {
   return performance.now();
@@ -26,7 +26,7 @@ export function millisecondsFormat(milliseconds, unit = Unit.S): string {
 export function taskSync(mark: string, task: () => void, writer = console.info) {
   const _start = now();
   task();
-  writer(`${mark} -> ${millisecondsFormat(now() - _start)}`);
+  writer(`${mark} -> ${millisecondsFormat(now() - _start)}${os.EOL}`);
   console.log('');
 }
 
@@ -38,7 +38,7 @@ export function taskAsync(
 ): Promise<void> {
   const _start = now();
   return task().finally(() => {
-    writer(`${mark} -> ${millisecondsFormat(now() - _start)}`);
+    writer(`${mark} -> ${millisecondsFormat(now() - _start)}${os.EOL}`);
     console.log('');
   });
 }

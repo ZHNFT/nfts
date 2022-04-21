@@ -105,9 +105,7 @@ function createStat(stat: fs.Stats, extraProps: { [key: string]: unknown }): fs.
  */
 export function readDirRecursionSync(
   dirname: string,
-  options: {
-    stat: boolean;
-  },
+  options: { stat?: boolean } = {},
   files: (fs.Stats | string)[] = []
 ): (fs.Stats | string)[] {
   const stat = fs.statSync(dirname);
