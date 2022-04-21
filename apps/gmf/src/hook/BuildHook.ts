@@ -35,7 +35,9 @@ export class BuildCompileSubHook extends AsyncHook<BuildCompileSubHookContext> {
     this.config = config;
   }
 
-  // @override
+  /**
+   * @override
+   **/
   async call(args: BuildCompileSubHookContext): Promise<void> {
     await super.emit(args);
 

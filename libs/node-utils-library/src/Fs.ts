@@ -6,12 +6,15 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { serialize } from './Async';
 
-export interface WriteFileOptions {
-  ensureRoot?: boolean;
+export interface IFileOperationOpts {
   cwd?: string;
 }
 
-const writeFileDefaultOptions = {
+export interface WriteFileOpts extends IFileOperationOpts {
+  ensureRoot?: boolean;
+}
+
+const writeFileDefaultOpts = {
   ensureRoot: true,
   cwd: './'
 };
@@ -25,12 +28,12 @@ const writeFileDefaultOptions = {
 export async function writeFile(
   filename: string,
   content: string,
-  options?: WriteFileOptions
+  options?: WriteFileOpts
 ): Promise<void> {
   if (!options) {
-    options = writeFileDefaultOptions;
+    options = writeFileDefaultOpts;
   } else {
-    options = Object.assign({}, writeFileDefaultOptions, options);
+    options = Object.assign({}, writeFileDefaultOpts, options);
   }
 
   const dirsReadyToCreate: string[] = [];

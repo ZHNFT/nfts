@@ -85,7 +85,7 @@ export function accessFile(path: string, mode?: number): void | never {
     fs.accessSync(path, mode);
   } catch (e) {
     throw new Error(
-      `Can't access ${path}, make sure you have permission or path id exist`
+      `Can't access ${path}, make sure you have permission or file is not exist`
     );
   }
 }
