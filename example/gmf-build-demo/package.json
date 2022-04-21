@@ -6,7 +6,7 @@
     "@nfts/init-plugin": "workspace:*"
   },
   "scripts": {
-    "build": "gmf build --snowpack",
+    "build": "gmf build --watch",
     "tsc": "pnpx tsc"
   }
 }

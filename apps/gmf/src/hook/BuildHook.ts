@@ -1,10 +1,11 @@
 import { AsyncHook } from '@nfts/hook';
-import { Logger } from '../classes/Logger';
+import { DebugTool } from '@nfts/noddy';
 import { BuildCommandLineParametersValue } from '../cli/commands/BuildCommand';
 import { Configuration } from '../classes/Configuration';
+import { getScopedLogger } from '../utils/getScopeLogger';
 
 export interface BaseHookContext {
-  readonly logger: Logger;
+  readonly getScopedLogger: (scope: string) => DebugTool.Debug;
   readonly config: Configuration;
 }
 
@@ -41,7 +42,7 @@ export class BuildCompileSubHook extends AsyncHook<BuildCompileSubHookContext> {
     const runHookContext: BuildCompileRunSubHookContext = {
       config: this.config,
       commandLineParameters: args.commandLineParameters,
-      logger: args.logger,
+      getScopedLogger,
       hook: {
         emit: args.hook.emit,
         recompile: args.hook.recompile
@@ -108,7 +109,7 @@ export class BuildHook extends AsyncHook<BuildHookContext> {
         recompile: recompileHook
       },
       commandLineParameters: cliParameterValue,
-      logger: Logger.getLogger('BuildHook'),
+      getScopedLogger,
       config: this.config
     };
 
@@ -116,7 +117,7 @@ export class BuildHook extends AsyncHook<BuildHookContext> {
 
     const startHookContext: BuildStartSubHookContext = {
       commandLineParameters: cliParameterValue,
-      logger: Logger.getLogger('BuildHookStart'),
+      getScopedLogger,
       finished: buildHookContext.hook.finished,
       config: this.config
     };
@@ -125,7 +126,7 @@ export class BuildHook extends AsyncHook<BuildHookContext> {
 
     const compileHookContext: BuildCompileSubHookContext = {
       commandLineParameters: cliParameterValue,
-      logger: Logger.getLogger('Compile'),
+      getScopedLogger,
       hook: {
         run: new BuildCompileRunSubHook(),
         emit: new BuildCompileEmitSubHook(),
@@ -138,7 +139,7 @@ export class BuildHook extends AsyncHook<BuildHookContext> {
 
     const finishedHookContext: BuildFinishedSubHookContext = {
       commandLineParameters: cliParameterValue,
-      logger: Logger.getLogger('BuildHookFinished'),
+      getScopedLogger,
       config: this.config
     };
 

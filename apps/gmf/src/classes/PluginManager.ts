@@ -1,23 +1,22 @@
 import { ImportModule } from '@nfts/node-utils-library';
-import { DebugTool } from '@nfts/noddy';
+import { DebugTool, Command } from '@nfts/noddy';
 import { Configuration } from './Configuration';
 import { Plugin } from './Plugin';
 import { THooks } from '../hook';
-
-// #region Internal Plugins
 import cleanPlugin from '../internal-plugins/CleanPlugin';
 import copyPlugin from '../internal-plugins/CopyPlugin';
-import typescriptPlugin from '../internal-plugins/TypescriptPlugin';
+import typescriptPlugin from '../internal-plugins/typescript/TypescriptPlugin';
 import Constants from '../Constants';
-// #endregion
 
 export class PluginManager {
   private readonly _config: Configuration;
   private readonly _hooks: THooks;
+  private readonly _command: Command;
 
-  constructor(config: Configuration, hooks: THooks) {
+  constructor(config: Configuration, hooks: THooks, command: Command) {
     this._config = config;
     this._hooks = hooks;
+    this._command = command;
   }
 
   public async initAsync(): Promise<void> {
@@ -25,14 +24,14 @@ export class PluginManager {
     this.applyPlugin(copyPlugin);
     this.applyPlugin(typescriptPlugin);
 
-    await this._applyPluginsAsync();
+    await this._applyConfigPlugins();
   }
 
   /*
    * 加载多个插件的方式只提供内部解析配置文件的时候使用
    * */
-  private async _applyPluginsAsync() {
-    const _config = this._config.loadConfig(Constants.DEFAULT_GMFCONFIG_PATH);
+  private async _applyConfigPlugins() {
+    const _config = this._config.loadConfig(Constants.GMF_CONFIG_PATH);
 
     if (_config?.plugins) {
       for await (const plugin of _config.plugins) {
@@ -51,18 +50,19 @@ export class PluginManager {
     await plugin.apply({
       hook: this._hooks,
       config: this._config,
-      getLogger: (scope: string) => {
+      command: this._command,
+      getScopeLogger: (scope: string) => {
         return DebugTool.Debug.getScopedLogger(scope);
       }
     });
   }
 
   public applyPlugin(plugin: Plugin): void {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    plugin.apply({
+    void plugin.apply({
       hook: this._hooks,
       config: this._config,
-      getLogger: (scope: string) => {
+      command: this._command,
+      getScopeLogger: (scope: string) => {
         return DebugTool.Debug.getScopedLogger(scope);
       }
     });

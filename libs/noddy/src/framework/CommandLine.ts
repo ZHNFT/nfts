@@ -68,5 +68,6 @@ export class CommandLine extends CommandLineParameterManager {
     await this._measure.asyncTask('[EXECUTION]', async function onExecute() {
       return command.onExecute(args);
     });
+    ``;
   }
 }

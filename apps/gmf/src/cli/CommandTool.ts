@@ -22,9 +22,9 @@ export default class GmfTool extends CommandLine {
       build: buildHook
     };
 
-    this._pluginManager = new PluginManager(this._config, hooks);
-
     const build = new BuildCommand({ hook: buildHook });
+
+    this._pluginManager = new PluginManager(this._config, hooks, build);
 
     this.addCommand(build);
   }

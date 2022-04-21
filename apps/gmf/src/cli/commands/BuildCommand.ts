@@ -14,8 +14,6 @@ export interface BuildCommandLineParameters {
   test: FlagParameter;
   watch: FlagParameter;
   tsconfig: StringParameter;
-  production: FlagParameter;
-  snowpack: FlagParameter;
 }
 
 export interface BuildCommandLineParametersValue {
@@ -23,8 +21,6 @@ export interface BuildCommandLineParametersValue {
   test?: boolean;
   watch?: boolean;
   tsconfig?: string;
-  production?: boolean;
-  snowpack?: boolean;
 }
 
 export class BuildCommand extends Command implements BuildCommandLineParameters {
@@ -34,8 +30,6 @@ export class BuildCommand extends Command implements BuildCommandLineParameters 
   test: FlagParameter;
   watch: FlagParameter;
   tsconfig: StringParameter;
-  production: FlagParameter;
-  snowpack: FlagParameter;
 
   constructor({ hook }: BuildCommandInitOption) {
     super({
@@ -47,34 +41,31 @@ export class BuildCommand extends Command implements BuildCommandLineParameters 
   }
 
   onDefineParameters(): void {
+    /*
+      TODO
+        CleanUp插件，或者是使用 tsc 自带的 --clean 来实现清理逻辑？
+    */
     this.clean = this.flagParameter({
       name: '--clean',
-      summary: 'Clean up dist folder before build process'
+      summary: 'Delete the outputs of all projects.'
     });
-
+    /*
+      TODO
+        需要一个插件来接入构建结束后的动作，以运行 JEST 测试；
+    */
     this.test = this.flagParameter({
       name: '--test',
-      summary: 'Run build process'
+      summary: 'Run all test case, after build.'
     });
-
+    /* 启动开发服务器 */
     this.watch = this.flagParameter({
       name: '--watch',
-      summary: 'Start up a watch compilation'
+      summary: 'Watch input files.'
     });
-
+    /* tsconfig配置 */
     this.tsconfig = this.stringParameter({
       name: '--tsconfig',
-      summary: 'Path to tsconfig.json'
-    });
-
-    this.production = this.flagParameter({
-      name: '--production',
-      summary: 'Run in production mode'
-    });
-
-    this.snowpack = this.flagParameter({
-      name: '--snowpack',
-      summary: 'Run development using snowpack'
+      summary: `Compile the project given the path to its configuration file, or to a folder with a 'tsconfig.json'.`
     });
   }
 
@@ -83,9 +74,9 @@ export class BuildCommand extends Command implements BuildCommandLineParameters 
       clean: this.clean.value,
       test: this.test.value,
       watch: this.watch.value,
-      tsconfig: this.tsconfig.value,
-      snowpack: this.snowpack.value
+      tsconfig: this.tsconfig.value
     };
+
     await this.hook._call(parameters);
   }
 }

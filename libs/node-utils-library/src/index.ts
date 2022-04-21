@@ -6,6 +6,7 @@ import * as Json from './Json';
 import * as Measure from './Measure';
 import * as Sync from './Sync';
 import * as Execution from './Execution';
+import * as DateEx from './Date';
 
 export { PackageJson } from './packageJson/PackageJson';
 export { PackageJsonLookup } from './packageJson/PackageJsonLookup';
@@ -36,6 +37,9 @@ export { IPackageJson };
 
 // Execution
 export { Execution };
+
+// Date
+export { DateEx };
 
 // Task
 export type TTAsk<TArgs = unknown, TReturn = unknown> =

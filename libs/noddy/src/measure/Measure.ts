@@ -14,7 +14,13 @@ export class Measure {
    * @param task
    */
   public syncTask(mark: string, task: () => void) {
-    Measure_.taskSync(mark, () => task(), this._debug.log);
+    Measure_.taskSync(
+      mark,
+      () => task(),
+      (msg: string) => {
+        this._debug.log(msg);
+      }
+    );
   }
 
   /**
@@ -23,6 +29,12 @@ export class Measure {
    * @param task
    */
   public async asyncTask(mark: string, task: () => Promise<void>): Promise<void> {
-    return Measure_.taskAsync(mark, () => task(), this._debug.log);
+    return Measure_.taskAsync(
+      mark,
+      () => task(),
+      (msg: string) => {
+        this._debug.log(msg);
+      }
+    );
   }
 }
