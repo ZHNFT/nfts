@@ -2,6 +2,7 @@ import * as ts from 'typescript';
 import * as fs from 'fs';
 import * as path from 'path';
 import { Fs, Async } from '@nfts/node-utils-library';
+import { Colors } from '@nfts/interactive-query';
 import { dirname } from 'path';
 import { BuildCommandLineParametersValue } from '../../cli/commands/BuildCommand';
 import { TypescriptConfigHost } from './TypescriptConfigHost';
@@ -97,6 +98,8 @@ export class TypescriptRunner {
     { tsconfigPath }: { tsconfigPath: string },
     onEmitCallback?: VoidFunction
   ): Promise<void> {
+    let firstRun = true;
+
     const host = ts.createWatchCompilerHost(
       tsconfigPath,
       undefined,
@@ -104,18 +107,23 @@ export class TypescriptRunner {
       undefined,
       // report diagnostic
       diagnostic => {
+        console.log(Colors.red(diagnostic.file.fileName));
         console.log(diagnostic.messageText);
       },
       // report watch diagnostic
       (diagnostic, newLine, _options, errorCount) => {
-        if (!errorCount) {
-          console.log(diagnostic.messageText);
+        if (firstRun) {
+          //
         }
+        console.log(newLine);
       }
     );
     const programWatch = ts.createWatchProgram(host);
     const program = programWatch.getProgram();
-    await this._emit(program).then(() => onEmitCallback());
+    await this._emit(program).then(() => {
+      firstRun = false;
+      onEmitCallback();
+    });
     await new Promise(() => {
       // Never resolved by self
     });
