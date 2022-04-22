@@ -70,7 +70,7 @@ importers:
     devDependencies:
       '@nfts/gmf': link:../../apps/gmf
 
-  example/example1:
+  example/gmf-build-demo:
     specifiers:
       '@nfts/gmf': workspace:*
       '@nfts/init-plugin': workspace:*

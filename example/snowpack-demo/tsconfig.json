@@ -6,9 +6,14 @@
     "declaration": true,
     "declarationDir": "dist",
     "moduleResolution": "node",
-    "noEmit": true,
+    //    "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src"],
-  "exclude": ["dist", "config"]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "dist",
+    "config"
+  ]
 }

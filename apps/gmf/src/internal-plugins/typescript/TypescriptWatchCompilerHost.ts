@@ -1,7 +1,9 @@
+import * as os from 'os';
 import * as ts from 'typescript';
 import { Screen } from '@nfts/node-utils-library';
 import { DebugTool } from '@nfts/noddy';
 import { Colors } from '@nfts/interactive-query';
+import { BgColorNumbers } from '@nfts/interactive-query/dist/core/Colors';
 
 interface IWatchCompilerHost {
   configFileName: string;
@@ -72,8 +74,8 @@ export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
       const source = _d.file.text;
       const filename = _d.file.fileName;
       const pos = {
-        start: _d.start - 1,
-        end: _d.start - 1 + _d.length
+        start: _d.start,
+        end: _d.start + _d.length
       };
 
       const lines = source.split('\n');
@@ -82,10 +84,10 @@ export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
       let prevCount = 0;
       let count = 0;
 
-      while (count < pos.start) {
+      while (count <= pos.start) {
         prevCount = count;
-        count += lines[lineNo].length;
-        lineNo++;
+        count += lines[lineNo].length + 1; // 每一行都要多算一个 \n 字符
+        lineNo += 1;
       }
 
       if (pos.end > count) {
@@ -97,17 +99,34 @@ export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
 
       const errorOffset = pos.start - prevCount;
 
-      const tip = `    ${new Array(errorOffset + String(lastLineNo).length + 1)
-        .fill(null)
-        .join(' ')}${TypescriptWatchCompilerHost.arrayOf(Colors.red('~'), _d.length)}`;
+      const tip = `${TypescriptWatchCompilerHost.arrayOf(
+        ' ',
+        errorOffset + String(errorLineNo).length + 2 // 一个冒号一个空格
+      )}${TypescriptWatchCompilerHost.arrayOf(Colors.red('~'), _d.length)}`;
 
-      const frame =
-        `    ${lastLineNo}: ${lines[lastLineNo - 1]}\n` +
-        `    ${errorLineNo}: ${lines[lineNo - 1]}\n` +
-        tip;
+      const outPut = [
+        `      ${Colors.print(
+          String(lastLineNo).padStart(String(errorLineNo).length, ' ') + ':',
+          [BgColorNumbers.black]
+        )} ${
+          lines[lastLineNo - 1] // 行数下标是 1 开始，在数组中用需要减一
+        }`,
+        `      ${Colors.print(String(errorLineNo) + ':', [BgColorNumbers.black])} ${
+          lines[lineNo - 1]
+        }`,
+        `      ${tip}${os.EOL}` + `      ${Colors.red(_d.messageText as string)}\n\r`
+      ];
 
-      console.log(frame);
+      groupByFilename[filename] = [
+        ...(groupByFilename[filename] ?? []),
+        outPut.join(os.EOL)
+      ];
     }
+
+    Object.keys(groupByFilename).forEach(filename => {
+      console.log(`--> ${Colors.yellow(filename)}`);
+      console.log(groupByFilename[filename].join(os.EOL));
+    });
   }
 
   private static arrayOf(char: string, count: number) {
