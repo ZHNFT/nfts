@@ -3,5 +3,10 @@
   "version": "0.0.0",
   "author": {
     "name": "Ray"
+  },
+  "scripts": {
+    "build:all": "pnpm --filter \"@nfts/*\" build",
+    "test:all": "pnpm --filter \"@nfts/*\" test",
+    "dev:all": "pnpm --filter \"@nfts/*\" dev"
   }
 }
