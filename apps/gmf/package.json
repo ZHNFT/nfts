@@ -8,10 +8,9 @@
   },
   "scripts": {
     "localBuild": "./bin/cli.js build",
-    "tsc": "npx tsc",
-    "dev": "npx tsc --watch --declaration",
-    "dts": "npx tsc --declaration --emitDeclarationOnly --declarationDir ./dist",
-    "test": "jest"
+    "test": "gmf build --test",
+    "dev": "gmf build --watch",
+    "build": "gmf build"
   },
   "jest": {
     "preset": "ts-jest",

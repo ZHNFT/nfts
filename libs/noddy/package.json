@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "npx tsc",
-    "dev": "npx tsc --watch --declaration --declarationDir ./dist",
-    "dts": "npx tsc --declaration --emitDeclarationOnly --declarationDir ./dist"
+    "test": "gmf build --test",
+    "dev": "gmf build --watch",
+    "build": "gmf build"
   },
   "devDependencies": {
     "@nfts/hook": "workspace:*",

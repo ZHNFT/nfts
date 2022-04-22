@@ -1,8 +1,7 @@
 import * as ts from 'typescript';
 import * as fs from 'fs';
 import * as path from 'path';
-import { Fs, Async, Screen } from '@nfts/node-utils-library';
-import { Colors } from '@nfts/interactive-query';
+import { Fs, Async } from '@nfts/node-utils-library';
 import { DebugTool } from '@nfts/noddy';
 import { dirname } from 'path';
 import { BuildCommandLineParametersValue } from '../../cli/commands/BuildCommand';
@@ -13,7 +12,6 @@ import { TypescriptWatchCompilerHost } from './TypescriptWatchCompilerHost';
 export class TypescriptRunner {
   private readonly debug: DebugTool.Debug;
   private readonly parseConfigHost: TypescriptConfigHost;
-  private watchCompilerHost: TypescriptWatchCompilerHost;
 
   constructor({ debug }: { debug: DebugTool.Debug }) {
     this.debug = debug;
@@ -103,8 +101,6 @@ export class TypescriptRunner {
     { tsconfigPath }: { tsconfigPath: string },
     onEmitCallback?: VoidFunction
   ): Promise<void> {
-    let firstRun = true;
-
     const host = new TypescriptWatchCompilerHost({
       debug: this.debug,
       configFileName: tsconfigPath,
@@ -115,7 +111,6 @@ export class TypescriptRunner {
     const watchProgram = ts.createWatchProgram(host.resolve());
     const program = watchProgram.getProgram();
     await this._emit(program).then(() => {
-      firstRun = false;
       onEmitCallback();
     });
     await new Promise(() => {

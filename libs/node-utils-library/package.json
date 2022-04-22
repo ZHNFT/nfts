@@ -4,11 +4,9 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build:gmf": "gmf build",
-    "build:tsc": "tsc",
-    "dev": "npx tsc --watch --declaration --declarationDir ./dist",
-    "dts": "npx tsc --declaration --emitDeclarationOnly --declarationDir ./dist",
-    "test": "jest"
+    "test": "gmf build --test",
+    "dev": "gmf build --watch",
+    "build": "gmf build"
   },
   "devDependencies": {
     "@nfts/gmf": "workspace:*",

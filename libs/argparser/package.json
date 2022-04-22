@@ -3,11 +3,9 @@
   "version": "0.0.1",
   "main": "./dist/index.js",
   "scripts": {
-    "build:gmf": "gmf build",
-    "build": "npx tsc",
-    "dev": "npx tsc --watch --declaration --declarationDir ./dist",
-    "dts": "npx tsc --declaration --emitDeclarationOnly --declarationDir ./dist",
-    "test": "jest"
+    "test": "gmf build --test",
+    "dev": "gmf build --watch",
+    "build": "gmf build"
   },
   "publishConfig": {
     "access": "public"

@@ -1,5 +1,12 @@
 {
   "name": "@nfts/terminal",
   "version": "1.0.0",
-  "dependencies": {}
+  "scripts": {
+    "test": "gmf build --test",
+    "dev": "gmf build --watch",
+    "build": "gmf build"
+  },
+  "devDependencies": {
+    "@nfts/gmf": "workspace:*"
+  }
 }

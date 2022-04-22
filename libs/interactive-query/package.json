@@ -4,10 +4,9 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "test": "jest",
-    "build": "npx tsc",
-    "dev": "npx tsc --watch --declaration --declarationDir ./dist",
-    "dts": "npx tsc --declaration --emitDeclarationOnly --declarationDir ./dist",
+    "test": "gmf build --test",
+    "dev": "gmf build --watch",
+    "build": "gmf build",
     "ask": "node ./test/Ask.demo.js"
   },
   "jest": {
