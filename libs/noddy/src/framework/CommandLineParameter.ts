@@ -31,6 +31,14 @@ export class CommandLineParameterManager extends CommandLineParameterImpl {
     this.parser = parser;
   }
 
+  get name(): string {
+    return this.parser.name;
+  }
+
+  get description(): string {
+    return this.parser.description;
+  }
+
   arrayParameter(definition: ArrayParameterDefinition): ArrayParameter {
     const _param = super.arrayParameter(definition);
     this.parser.addParam(_param);

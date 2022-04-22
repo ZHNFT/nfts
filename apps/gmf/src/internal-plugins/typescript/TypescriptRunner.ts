@@ -1,17 +1,22 @@
 import * as ts from 'typescript';
 import * as fs from 'fs';
 import * as path from 'path';
-import { Fs, Async } from '@nfts/node-utils-library';
+import { Fs, Async, Screen } from '@nfts/node-utils-library';
 import { Colors } from '@nfts/interactive-query';
+import { DebugTool } from '@nfts/noddy';
 import { dirname } from 'path';
 import { BuildCommandLineParametersValue } from '../../cli/commands/BuildCommand';
 import { TypescriptConfigHost } from './TypescriptConfigHost';
 import Constants from '../../Constants';
+import { TypescriptWatchCompilerHost } from './TypescriptWatchCompilerHost';
 
 export class TypescriptRunner {
+  private readonly debug: DebugTool.Debug;
   private readonly parseConfigHost: TypescriptConfigHost;
+  private watchCompilerHost: TypescriptWatchCompilerHost;
 
-  constructor() {
+  constructor({ debug }: { debug: DebugTool.Debug }) {
+    this.debug = debug;
     this.parseConfigHost = new TypescriptConfigHost();
   }
 
@@ -100,26 +105,15 @@ export class TypescriptRunner {
   ): Promise<void> {
     let firstRun = true;
 
-    const host = ts.createWatchCompilerHost(
-      tsconfigPath,
-      undefined,
-      undefined,
-      undefined,
-      // report diagnostic
-      diagnostic => {
-        console.log(Colors.red(diagnostic.file.fileName));
-        console.log(diagnostic.messageText);
-      },
-      // report watch diagnostic
-      (diagnostic, newLine, _options, errorCount) => {
-        if (firstRun) {
-          //
-        }
-        console.log(newLine);
-      }
-    );
-    const programWatch = ts.createWatchProgram(host);
-    const program = programWatch.getProgram();
+    const host = new TypescriptWatchCompilerHost({
+      debug: this.debug,
+      configFileName: tsconfigPath,
+      optionsToExtend: undefined,
+      watchOptionsToExtend: undefined
+    });
+
+    const watchProgram = ts.createWatchProgram(host.resolve());
+    const program = watchProgram.getProgram();
     await this._emit(program).then(() => {
       firstRun = false;
       onEmitCallback();

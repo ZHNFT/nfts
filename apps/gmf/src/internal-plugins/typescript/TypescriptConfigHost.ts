@@ -18,7 +18,7 @@ export class TypescriptConfigHost implements ts.ParseConfigHost {
     let files: string[] = [];
 
     if (includes.length === 0) {
-      files = Fs.readDirRecursionSync('/src', { stat: false }) as string[];
+      files = Fs.readDirRecursionSync('./src', { stat: false }) as string[];
     } else {
       for (let i = 0; i < includes.length; i++) {
         const includeGlobPattern = includes[i];
