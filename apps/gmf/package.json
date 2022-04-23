@@ -6,14 +6,13 @@
   "bin": {
     "gmf": "bin/cli.js"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "./bin/cli.js build --test",
     "dev": "./bin/cli.js build --watch",
     "build": "./bin/cli.js build"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node"
   },
   "devDependencies": {
     "@jest/core": "^27.5.1",
