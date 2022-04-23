@@ -1,4 +1,4 @@
-import { AsyncHook } from '../AsyncHook';
+import { AsyncHook } from '../src/hooks/AsyncHook';
 
 jest.setTimeout(10000);
 

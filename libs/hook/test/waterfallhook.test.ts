@@ -1,4 +1,4 @@
-import { WaterfallHook } from '../WaterfallHook';
+import { WaterfallHook } from '../src/hooks/WaterfallHook';
 
 describe('WaterfallHook测试', () => {
   const waterfallHook = new WaterfallHook<{

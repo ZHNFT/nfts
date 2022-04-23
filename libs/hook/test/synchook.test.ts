@@ -1,4 +1,4 @@
-import { SyncHook } from '../SyncHook';
+import { SyncHook } from '../src/hooks/SyncHook';
 
 describe('SyncHook测试用例', () => {
   const fn = jest.fn();
