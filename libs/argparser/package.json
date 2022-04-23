@@ -1,6 +1,6 @@
 {
   "name": "@nfts/argparser",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
@@ -16,10 +16,12 @@
     "type": "public",
     "url": "*"
   },
+  "dependencies": {
+    "@nfts/node-utils-library": "workspace:*"
+  },
   "devDependencies": {
     "@nfts/gmf": "workspace:*",
     "@nfts/eslint-config": "workspace:*",
-    "@nfts/node-utils-library": "workspace:*",
     "@types/jest": "^27.0.3",
     "@types/node": "~17.0.5",
     "jest": "^27.4.5",

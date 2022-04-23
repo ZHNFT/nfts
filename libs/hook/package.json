@@ -1,6 +1,6 @@
 {
   "name": "@nfts/hook",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "publishConfig": {
@@ -11,8 +11,15 @@
     "dev": "gmf build --watch",
     "build": "gmf build"
   },
+  "repository": {
+    "directory": "libs/hook",
+    "type": "public",
+    "url": "*"
+  },
+  "dependencies": {
+    "@nfts/node-utils-library": "workspace:*"
+  },
   "devDependencies": {
-    "@nfts/node-utils-library": "workspace:*",
     "@nfts/eslint-config": "workspace:*",
     "@nfts/gmf": "workspace:*",
     "@types/jest": "^27.0.3",
