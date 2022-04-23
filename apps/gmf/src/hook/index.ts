@@ -7,16 +7,13 @@ export type THooks = {
 export {
   BuildHook,
   BuildHookContext,
+  // Compile Phase Start
   BuildCompileSubHook,
   BuildCompileSubHookContext,
-  BuildFinishedSubHook,
-  BuildFinishedSubHookContext,
-  BuildStartSubHook,
-  BuildStartSubHookContext,
-  BuildReCompileSubHook,
-  BuildReCompileSubHookContext,
   BuildCompileEmitSubHook,
   BuildCompileEmitSubHookContext,
   BuildCompileRunSubHook,
-  BuildCompileRunSubHookContext
+  BuildCompileRunSubHookContext,
+  BuildCompileReStartSubHook,
+  BuildCompileReStartSubHookContext
 } from './BuildHook';

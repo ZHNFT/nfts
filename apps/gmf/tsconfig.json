@@ -6,7 +6,8 @@
     "declaration": true,
     "declarationDir": "dist",
     "moduleResolution": "node",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "types": ["node", "jest"]
   },
   "include": ["src"]
 }

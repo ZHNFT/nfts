@@ -1,11 +1,10 @@
 import { ImportModule } from '@nfts/node-utils-library';
-import { DebugTool, Command } from '@nfts/noddy';
+import { Command, DebugTool } from '@nfts/noddy';
 import { Configuration } from './Configuration';
 import { Plugin } from './Plugin';
 import { THooks } from '../hook';
-import cleanPlugin from '../internal-plugins/CleanPlugin';
-import copyPlugin from '../internal-plugins/CopyPlugin';
 import typescriptPlugin from '../internal-plugins/typescript/TypescriptPlugin';
+import jestPlugin from '../internal-plugins/jest/JestPlugin';
 import Constants from '../Constants';
 
 export class PluginManager {
@@ -20,9 +19,8 @@ export class PluginManager {
   }
 
   public async initAsync(): Promise<void> {
-    this.applyPlugin(cleanPlugin);
-    this.applyPlugin(copyPlugin);
     this.applyPlugin(typescriptPlugin);
+    this.applyPlugin(jestPlugin);
 
     await this._applyConfigPlugins();
   }

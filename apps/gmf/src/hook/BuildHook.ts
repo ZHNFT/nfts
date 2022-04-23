@@ -4,26 +4,22 @@ import { BuildCommandLineParametersValue } from '../cli/commands/BuildCommand';
 import { Configuration } from '../classes/Configuration';
 import { getScopedLogger } from '../utils/getScopeLogger';
 
-export interface BaseHookContext {
+export interface HookContextBase {
   readonly getScopedLogger: (scope: string) => DebugTool.Debug;
   readonly config: Configuration;
 }
 
-export interface BaseBuildHookContext extends BaseHookContext {
+export interface BuildHookContextBase extends HookContextBase {
   readonly commandLineParameters: BuildCommandLineParametersValue;
 }
 
-export interface BuildStartSubHookContext extends BaseBuildHookContext {
-  readonly finished: BuildFinishedSubHook;
-}
-
-export class BuildStartSubHook extends AsyncHook<BuildStartSubHookContext> {}
-
-export interface BuildCompileSubHookContext extends BaseBuildHookContext {
+export interface BuildCompileSubHookContext extends BuildHookContextBase {
+  // Compile 阶段所有的子 hook
   readonly hook: {
-    run: AsyncHook<BuildCompileRunSubHookContext>;
-    emit: AsyncHook<BuildCompileEmitSubHookContext>;
-    recompile: BuildReCompileSubHook;
+    run: BuildCompileRunSubHook;
+    emit: BuildCompileEmitSubHook;
+    test: BuildCompileTestSubHook;
+    recompile: BuildCompileReStartSubHook;
   };
 }
 
@@ -46,6 +42,7 @@ export class BuildCompileSubHook extends AsyncHook<BuildCompileSubHookContext> {
       commandLineParameters: args.commandLineParameters,
       getScopedLogger,
       hook: {
+        test: args.hook.test,
         emit: args.hook.emit,
         recompile: args.hook.recompile
       }
@@ -55,37 +52,48 @@ export class BuildCompileSubHook extends AsyncHook<BuildCompileSubHookContext> {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface BuildCompileRunSubHookContext extends BaseBuildHookContext {
+export interface BuildCompileRunSubHookContext extends BuildHookContextBase {
   readonly hook: {
+    readonly test: BuildCompileTestSubHook;
     readonly emit: BuildCompileEmitSubHook;
-    readonly recompile: BuildReCompileSubHook;
+    readonly recompile: BuildCompileReStartSubHook;
   };
 }
 
-export class BuildCompileRunSubHook extends AsyncHook<BuildCompileRunSubHookContext> {}
+export class BuildCompileRunSubHook extends AsyncHook<BuildCompileRunSubHookContext> {
+  // Compile RUN sub-hook
+}
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface BuildCompileEmitSubHookContext extends BaseBuildHookContext {}
+export interface BuildCompileEmitSubHookContext extends BuildHookContextBase {}
 
-export class BuildCompileEmitSubHook extends AsyncHook<BuildCompileEmitSubHookContext> {}
-
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface BuildFinishedSubHookContext extends BaseBuildHookContext {}
-
-export class BuildFinishedSubHook extends AsyncHook<BuildFinishedSubHookContext> {}
+export class BuildCompileEmitSubHook extends AsyncHook<BuildCompileEmitSubHookContext> {
+  // Compile EMIT sub-hook
+}
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface BuildReCompileSubHookContext extends BaseBuildHookContext {}
+export interface BuildCompileReStartSubHookContext extends BuildHookContextBase {}
 
-export class BuildReCompileSubHook extends AsyncHook<BuildReCompileSubHookContext> {}
+export class BuildCompileReStartSubHook extends AsyncHook<BuildCompileReStartSubHookContext> {
+  // Compile RECOMPILE sub-hook
+}
 
-export interface BuildHookContext extends BaseBuildHookContext {
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface BuildCompileTestSubHookContext extends BuildHookContextBase {}
+
+export class BuildCompileTestSubHook extends AsyncHook<BuildCompileTestSubHookContext> {
+  readonly config: Configuration;
+
+  constructor(opts: { config: Configuration }) {
+    super();
+
+    this.config = opts.config;
+  }
+}
+
+export interface BuildHookContext extends BuildHookContextBase {
   readonly hook: {
-    readonly start: BuildStartSubHook;
     readonly compile: BuildCompileSubHook;
-    readonly finished: BuildFinishedSubHook;
-    readonly recompile: BuildReCompileSubHook;
   };
 }
 
@@ -98,17 +106,11 @@ export class BuildHook extends AsyncHook<BuildHookContext> {
   }
 
   public async _call(cliParameterValue?: BuildCommandLineParametersValue): Promise<void> {
-    const startHook = new BuildStartSubHook();
     const compileHook = new BuildCompileSubHook({ config: this.config });
-    const finishedHook = new BuildFinishedSubHook();
-    const recompileHook = new BuildReCompileSubHook();
 
     const buildHookContext: BuildHookContext = {
       hook: {
-        start: startHook,
-        compile: compileHook,
-        finished: finishedHook,
-        recompile: recompileHook
+        compile: compileHook
       },
       commandLineParameters: cliParameterValue,
       getScopedLogger,
@@ -117,34 +119,18 @@ export class BuildHook extends AsyncHook<BuildHookContext> {
 
     await super.emit(buildHookContext);
 
-    const startHookContext: BuildStartSubHookContext = {
-      commandLineParameters: cliParameterValue,
-      getScopedLogger,
-      finished: buildHookContext.hook.finished,
-      config: this.config
-    };
-
-    await startHook.emit(startHookContext);
-
     const compileHookContext: BuildCompileSubHookContext = {
       commandLineParameters: cliParameterValue,
       getScopedLogger,
       hook: {
         run: new BuildCompileRunSubHook(),
         emit: new BuildCompileEmitSubHook(),
-        recompile: new BuildReCompileSubHook()
+        recompile: new BuildCompileReStartSubHook(),
+        test: new BuildCompileTestSubHook({ config: this.config })
       },
       config: this.config
     };
 
     await compileHook.call(compileHookContext);
-
-    const finishedHookContext: BuildFinishedSubHookContext = {
-      commandLineParameters: cliParameterValue,
-      getScopedLogger,
-      config: this.config
-    };
-
-    await finishedHook.emit(finishedHookContext);
   }
 }

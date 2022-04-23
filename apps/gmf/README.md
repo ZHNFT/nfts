@@ -1,3 +1,3 @@
 # @nfts/gmf
 
-- [ ] Use `tsc` for basic project build process
+- [x] Use `tsc` for basic project build process

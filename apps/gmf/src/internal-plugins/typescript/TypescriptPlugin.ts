@@ -21,25 +21,35 @@ class TypescriptPlugin implements Plugin {
     ctx.hook.build.add(this.name, build => {
       const logger = build.getScopedLogger(this.name);
       build.hook.compile.add(this.name, compile => {
-        compile.hook.run.add(this.name, async ({ commandLineParameters }) => {
-          const tsRunner: TypescriptRunner = new TypescriptRunner({
-            debug: logger
-          });
-          logger.log(
-            `Build Start in ${
-              commandLineParameters.watch
-                ? Colors.green('DEVELOPMENT')
-                : Colors.cyan('PRODUCTION')
-            } mode`
-          );
-          const startTime = performance.now();
-          await tsRunner._runBuild({ commandLineParameters }, () => {
-            if (!commandLineParameters.watch) {
-              const interval = performance.now() - startTime;
-              logger.log(`Build end with time ${Measure.millisecondsFormat(interval)}`);
+        compile.hook.run.add(
+          this.name,
+          async ({ commandLineParameters, hook, getScopedLogger, config }) => {
+            const tsRunner: TypescriptRunner = new TypescriptRunner({
+              debug: logger
+            });
+            logger.log(
+              `Build Start in ${
+                commandLineParameters.watch
+                  ? Colors.green('DEVELOPMENT')
+                  : Colors.cyan('PRODUCTION')
+              } mode`
+            );
+            const startTime = performance.now();
+            await tsRunner._runBuild({ commandLineParameters }, () => {
+              if (!commandLineParameters.watch) {
+                const interval = performance.now() - startTime;
+                logger.log(`Build end with time ${Measure.millisecondsFormat(interval)}`);
+              }
+            });
+            if (commandLineParameters.test) {
+              await hook.test.emit({
+                config,
+                getScopedLogger,
+                commandLineParameters
+              });
             }
-          });
-        });
+          }
+        );
       });
     });
   }
