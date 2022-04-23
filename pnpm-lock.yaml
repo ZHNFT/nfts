@@ -72,10 +72,8 @@ importers:
   example/gmf-build-demo:
     specifiers:
       '@nfts/gmf': workspace:*
-      '@nfts/init-plugin': workspace:*
     devDependencies:
       '@nfts/gmf': link:../../apps/gmf
-      '@nfts/init-plugin': link:../demo-plugin
 
   example/snowpack-demo:
     specifiers:
