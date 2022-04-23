@@ -3,15 +3,14 @@
   "version": "0.1.1",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "gmf build --test",
     "dev": "gmf build --watch",
     "build": "gmf build",
     "ask": "node ./test/Ask.demo.js"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node"
   },
   "devDependencies": {
     "@nfts/eslint-config": "workspace:*",
