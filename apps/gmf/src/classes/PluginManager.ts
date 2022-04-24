@@ -2,17 +2,17 @@ import { ImportModule } from '@nfts/node-utils-library';
 import { Command, DebugTool } from '@nfts/noddy';
 import { Configuration } from './Configuration';
 import { Plugin } from './Plugin';
-import { THooks } from '../hook';
 import typescriptPlugin from '../internal-plugins/typescript/TypescriptPlugin';
 import jestPlugin from '../internal-plugins/jest/JestPlugin';
 import Constants from '../Constants';
+import { IStageHooks } from '../cli/CommandTool';
 
 export class PluginManager {
   private readonly _config: Configuration;
-  private readonly _hooks: THooks;
+  private readonly _hooks: IStageHooks;
   private readonly _command: Command;
 
-  constructor(config: Configuration, hooks: THooks, command: Command) {
+  constructor(config: Configuration, hooks: IStageHooks, command: Command) {
     this._config = config;
     this._hooks = hooks;
     this._command = command;
@@ -46,8 +46,8 @@ export class PluginManager {
    * */
   public async applyPluginAsync(plugin: Plugin): Promise<void> {
     await plugin.apply({
-      hook: this._hooks,
-      config: this._config,
+      hooks: this._hooks,
+      gmfConfig: this._config,
       command: this._command,
       getScopeLogger: (scope: string) => {
         return DebugTool.Debug.getScopedLogger(scope);
@@ -57,8 +57,8 @@ export class PluginManager {
 
   public applyPlugin(plugin: Plugin): void {
     void plugin.apply({
-      hook: this._hooks,
-      config: this._config,
+      hooks: this._hooks,
+      gmfConfig: this._config,
       command: this._command,
       getScopeLogger: (scope: string) => {
         return DebugTool.Debug.getScopedLogger(scope);

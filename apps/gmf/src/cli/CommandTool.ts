@@ -2,7 +2,15 @@ import { CommandLine } from '@nfts/noddy';
 import { PluginManager } from '../classes/PluginManager';
 import { Configuration } from '../classes/Configuration';
 import { BuildCommand } from './commands/BuildCommand';
-import { BuildHook, THooks } from '../hook';
+import { BuildStage, BuildStageHooks } from '../stages/BuildStage';
+
+export interface IStages {
+  build: BuildStage;
+}
+
+export interface IStageHooks {
+  build: BuildStageHooks;
+}
 
 export default class GmfTool extends CommandLine {
   private readonly _pluginManager: PluginManager;
@@ -14,18 +22,27 @@ export default class GmfTool extends CommandLine {
       toolDescription: `Develop toolchain`
     });
 
+    // 配置文件
     this._config = new Configuration();
 
-    const buildHook = new BuildHook({ config: this._config });
+    // 构建阶段
+    const buildStage = new BuildStage(this._config);
 
-    const hooks: THooks = {
-      build: buildHook
+    const stages: IStages = {
+      build: buildStage
     };
 
-    const build = new BuildCommand({ hook: buildHook });
+    const stageHooks = {
+      build: stages.build.hooks
+    };
 
-    this._pluginManager = new PluginManager(this._config, hooks, build);
+    // 实例化命令
+    const build = new BuildCommand({ stage: buildStage });
 
+    // 加载插件
+    this._pluginManager = new PluginManager(this._config, stageHooks, build);
+
+    // 添加指令
     this.addCommand(build);
   }
 

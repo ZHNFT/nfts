@@ -1,1 +1,10 @@
-/dist
+# IDEs
+.idea/
+.vscode/
+
+# Build/Release
+dist/
+build/
+
+# Modules
+node_modules/

@@ -1,12 +1,12 @@
 import { Command } from '@nfts/noddy';
 import { FlagParameter, StringParameter } from '@nfts/argparser';
-import { BuildHook } from '../../hook';
+import { BuildStage } from '../../stages/BuildStage';
 
 const BUILD_LIFECYCLE_NAME = 'build';
 const BUILD_LIFECYCLE_DESC = 'Run build process';
 
 export interface BuildCommandInitOption {
-  hook: BuildHook;
+  stage: BuildStage;
 }
 
 export interface BuildCommandLineParameters {
@@ -24,20 +24,20 @@ export interface BuildCommandLineParametersValue {
 }
 
 export class BuildCommand extends Command implements BuildCommandLineParameters {
-  readonly hook: BuildHook;
+  readonly stage: BuildStage;
 
   clean: FlagParameter;
   test: FlagParameter;
   watch: FlagParameter;
   tsconfig: StringParameter;
 
-  constructor({ hook }: BuildCommandInitOption) {
+  constructor({ stage }: BuildCommandInitOption) {
     super({
       commandName: BUILD_LIFECYCLE_NAME,
       commandDescription: BUILD_LIFECYCLE_DESC
     });
 
-    this.hook = hook;
+    this.stage = stage;
   }
 
   onDefineParameters(): void {
@@ -77,6 +77,6 @@ export class BuildCommand extends Command implements BuildCommandLineParameters 
       tsconfig: this.tsconfig.value
     };
 
-    await this.hook._call(parameters);
+    await this.stage.executeAsync();
   }
 }

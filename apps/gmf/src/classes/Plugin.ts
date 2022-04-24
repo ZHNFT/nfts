@@ -1,10 +1,10 @@
 import { DebugTool, Command } from '@nfts/noddy';
-import { THooks } from '../hook';
 import { Configuration } from './Configuration';
+import { IStageHooks } from '../cli/CommandTool';
 
 export interface PluginContext {
-  hook: THooks;
-  config: Configuration;
+  hooks: IStageHooks;
+  gmfConfig: Configuration;
   command: Command;
   getScopeLogger: (scopeName: string) => DebugTool.Debug;
 }
