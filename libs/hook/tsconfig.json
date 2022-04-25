@@ -1,13 +1,13 @@
 {
-  "compilerOptions": {
-    "module": "CommonJS",
-    "target": "ES6",
-    "outDir": "./dist",
-    "declaration": true,
-    "declarationDir": "./dist",
-    "moduleResolution": "Node",
-    "lib": ["ESNext", "dom"]
-  },
-  "include": ["src/"],
-  "exclude": ["dist/"]
+	"compilerOptions": {
+		"module": "CommonJS",
+		"target": "ES2017",
+		"outDir": "./dist",
+		"declaration": true,
+		"declarationDir": "./dist",
+		"moduleResolution": "Node",
+		"lib": ["ESNext"]
+	},
+	"include": ["src/"],
+	"exclude": ["dist/"]
 }
