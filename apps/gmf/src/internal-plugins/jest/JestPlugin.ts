@@ -13,20 +13,18 @@ class JestPlugin implements Plugin {
   readonly summary = PluginDescription;
 
   apply(ctx: PluginContext): void | Promise<void> {
-    ctx.hook.build.add(PluginName, build => {
-      build.hook.compile.add(PluginName, compile => {
-        compile.hook.test.add(PluginName, async ({ commandLineParameters, config }) => {
-          await runCLI(
-            {
-              preset: 'ts-jest',
-              testEnvironment: 'node',
-              testMatch: ['**/test/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)'],
-              _: process.argv,
-              $0: ''
-            },
-            ['.']
-          );
-        });
+    ctx.hooks.build.compile.add(PluginName, compile => {
+      compile.hooks.afterCompile.add(PluginName, async () => {
+        await runCLI(
+          {
+            preset: 'ts-jest',
+            testEnvironment: 'node',
+            testMatch: ['**/test/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)'],
+            _: process.argv,
+            $0: ''
+          },
+          ['.']
+        );
       });
     });
   }

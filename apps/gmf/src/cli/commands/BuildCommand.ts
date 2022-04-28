@@ -77,6 +77,6 @@ export class BuildCommand extends Command implements BuildCommandLineParameters 
       tsconfig: this.tsconfig.value
     };
 
-    await this.stage.executeAsync();
+    await this.stage.executeAsync(parameters);
   }
 }

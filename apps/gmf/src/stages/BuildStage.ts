@@ -1,10 +1,18 @@
 import { AsyncHook, WaterfallHook } from '@nfts/hook';
-import { Stage, StageHookBase } from '../classes/Stage';
 import { Configuration } from '../classes/Configuration';
+import { Stage, StageHookBase } from '../classes/Stage';
+import { BuildCommandLineParametersValue } from '../cli/commands/BuildCommand';
+import { getScopedLogger } from '../utils/getScopeLogger';
 
 export interface IStageContext<THooks = CompileSubStageHooks, THookOptions = unknown> {
   hooks: THooks;
   options: THookOptions;
+}
+
+interface IBuildStageParameters {
+  commandLineParameter: BuildCommandLineParametersValue;
+  config: Configuration;
+  getScopedLogger: typeof getScopedLogger;
 }
 
 export class BuildSubStageHooks {
@@ -18,20 +26,25 @@ export class CompileSubStageHooks extends BuildSubStageHooks {
 
 export class PreCompileSubstageHooks extends BuildSubStageHooks {}
 
+export class afterCompileSubStageHooks extends BuildSubStageHooks {}
+
 export class BundleSubStageHooks extends BuildSubStageHooks {
   readonly configure: WaterfallHook = new WaterfallHook();
   readonly afterConfigure: AsyncHook = new AsyncHook();
 }
 
 export class BuildStageHooks extends StageHookBase {
-  readonly compile: AsyncHook<IStageContext<CompileSubStageHooks, {}>> = new AsyncHook<
-    IStageContext<CompileSubStageHooks, {}>
-  >();
-  readonly bundle: AsyncHook<IStageContext<BundleSubStageHooks, {}>> = new AsyncHook<
-    IStageContext<BundleSubStageHooks, {}>
-  >();
-  readonly preCompile: AsyncHook<IStageContext<PreCompileSubstageHooks, {}>> =
-    new AsyncHook<IStageContext<PreCompileSubstageHooks, {}>>();
+  readonly compile: AsyncHook<
+    IStageContext<CompileSubStageHooks, IBuildStageParameters>
+  > = new AsyncHook<IStageContext<CompileSubStageHooks, IBuildStageParameters>>();
+  readonly bundle: AsyncHook<IStageContext<BundleSubStageHooks, IBuildStageParameters>> =
+    new AsyncHook<IStageContext<BundleSubStageHooks, IBuildStageParameters>>();
+  readonly preCompile: AsyncHook<
+    IStageContext<PreCompileSubstageHooks, IBuildStageParameters>
+  > = new AsyncHook<IStageContext<PreCompileSubstageHooks, IBuildStageParameters>>();
+  readonly afterCompile: AsyncHook<
+    IStageContext<afterCompileSubStageHooks, IBuildStageParameters>
+  > = new AsyncHook<IStageContext<afterCompileSubStageHooks, IBuildStageParameters>>();
 }
 
 export class BuildStage extends Stage<BuildStageHooks> {
@@ -40,27 +53,36 @@ export class BuildStage extends Stage<BuildStageHooks> {
     super({ gmfConfig, hooks: stageHooks });
   }
 
-  async executeAsync(): Promise<void> {
-    const preCompileArgs: IStageContext<PreCompileSubstageHooks, {}> = {
-      hooks: new PreCompileSubstageHooks(),
-      options: {}
+  async executeAsync(parameters?: BuildCommandLineParametersValue): Promise<void> {
+    const options: IBuildStageParameters = {
+      commandLineParameter: parameters,
+      config: this.gmfConfig,
+      getScopedLogger
     };
+
+    const preCompileArgs: IStageContext<PreCompileSubstageHooks, IBuildStageParameters> =
+      {
+        hooks: new PreCompileSubstageHooks(),
+        options
+      };
     await this.hooks.preCompile.call(preCompileArgs);
     await this._runSubStageHooks('preCompile', preCompileArgs.hooks);
 
-    const compileArgs: IStageContext<CompileSubStageHooks, {}> = {
+    const compileArgs: IStageContext<CompileSubStageHooks, IBuildStageParameters> = {
       hooks: new CompileSubStageHooks(),
-      options: {}
+      options
     };
     await this.hooks.compile.call(compileArgs);
     await this._runSubStageHooks('Compile', compileArgs.hooks);
 
-    const bundleArgs: IStageContext<BundleSubStageHooks, {}> = {
+    const bundleArgs: IStageContext<BundleSubStageHooks, IBuildStageParameters> = {
       hooks: new BundleSubStageHooks(),
-      options: {}
+      options
     };
     await this.hooks.bundle.call(bundleArgs);
     await this._runSubStageHooks('Bundle', bundleArgs.hooks);
+
+    await this.hooks.afterCompile.call();
   }
 
   private async _runSubStageHooks(_: string, hooks: BuildSubStageHooks) {

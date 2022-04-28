@@ -16,5 +16,5 @@ export abstract class Stage<
     this.hooks = hooks;
   }
 
-  abstract executeAsync(): Promise<void>;
+  abstract executeAsync(parameter?: unknown): Promise<void>;
 }

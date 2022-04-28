@@ -13,13 +13,36 @@ export interface TypescriptPluginOptions {
   tsconfigPath: string;
 }
 
+const PluginName = 'TypescriptPlugin';
+
 class TypescriptPlugin implements Plugin {
   readonly name = 'TypescriptPlugin';
   readonly summary = 'Compile source code with typescript compiler';
 
   apply(ctx: PluginContext): void {
     ctx.hooks.build.compile.add(this.name, compile => {
-      compile.hooks.run.add(this.name, async () => {});
+      const commandLineParameters = compile.options.commandLineParameter;
+      const config = compile.options.config;
+      const logger = compile.options.getScopedLogger(PluginName);
+      compile.hooks.run.add(this.name, async () => {
+        const tsRunner: TypescriptRunner = new TypescriptRunner({
+          debug: logger
+        });
+        logger.log(
+          `Build Start in ${
+            commandLineParameters.watch
+              ? Colors.green('DEVELOPMENT')
+              : Colors.cyan('PRODUCTION')
+          } mode`
+        );
+        const startTime = performance.now();
+        await tsRunner._runBuild({ commandLineParameters }, () => {
+          if (!commandLineParameters.watch) {
+            const interval = performance.now() - startTime;
+            logger.log(`Build end with time ${Measure.millisecondsFormat(interval)}`);
+          }
+        });
+      });
     });
 
     // ctx.hooks.build.add(this.name, build => {
