@@ -1,11 +1,5 @@
 import { Configuration } from '@nfts/gmf';
-import {
-  loadConfiguration,
-  SnowpackConfig,
-  SnowpackUserConfig,
-  startServer,
-  createConfiguration
-} from 'snowpack';
+import { loadConfiguration, SnowpackConfig, SnowpackUserConfig, startServer, createConfiguration } from 'snowpack';
 
 const DEFAULT_CONFIG_FILE_PATH = './snowpack.config.js';
 
@@ -23,11 +17,7 @@ const REACT_DEV_SNOWPACK_CONFIG = {
 };
 
 export class DevServer {
-  public async runDevServer({
-    config
-  }: {
-    config: Configuration['config'];
-  }): Promise<void> {
+  public async runDevServer({ config }: { config: Configuration['config'] }): Promise<void> {
     // 创建配置，启动 snowpack 开发服务
     const _config = createConfiguration({
       mount: {

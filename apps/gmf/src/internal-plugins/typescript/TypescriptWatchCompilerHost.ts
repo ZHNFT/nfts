@@ -65,9 +65,7 @@ export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
 
   private _formatRawDiagnostic() {
     const groupByFilename: Record<string, string[]> = {};
-
     const _ds = this.diagnosticsInOneTick.slice(0);
-
     for (let i = 0; i < _ds.length; i++) {
       const _d = _ds[i];
 

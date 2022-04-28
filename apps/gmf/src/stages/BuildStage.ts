@@ -10,7 +10,7 @@ export interface IStageContext<THooks = CompileSubStageHooks, THookOptions = unk
 }
 
 interface IBuildStageParameters {
-  commandLineParameter: BuildCommandLineParametersValue;
+  commandLineParameters: BuildCommandLineParametersValue;
   config: Configuration;
   getScopedLogger: typeof getScopedLogger;
 }
@@ -55,7 +55,7 @@ export class BuildStage extends Stage<BuildStageHooks> {
 
   async executeAsync(parameters?: BuildCommandLineParametersValue): Promise<void> {
     const options: IBuildStageParameters = {
-      commandLineParameter: parameters,
+      commandLineParameters: parameters,
       config: this.gmfConfig,
       getScopedLogger
     };
