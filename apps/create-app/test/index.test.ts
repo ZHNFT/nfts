@@ -1,5 +1,5 @@
-import plus from "../src";
+import plus from '../src';
 
-test("a + b", () => {
+test('a + b', () => {
   expect(plus(1, 2)).toBe(3);
 });

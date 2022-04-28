@@ -4,7 +4,7 @@ import { Stage, StageHookBase } from '../classes/Stage';
 import { BuildCommandLineParametersValue } from '../cli/commands/BuildCommand';
 import { getScopedLogger } from '../utils/getScopeLogger';
 
-export interface IStageContext<THooks = CompileSubStageHooks, THookOptions = unknown> {
+export interface IBuildStageContext<THooks = CompileSubStageHooks, THookOptions = unknown> {
   hooks: THooks;
   options: THookOptions;
 }
@@ -34,17 +34,14 @@ export class BundleSubStageHooks extends BuildSubStageHooks {
 }
 
 export class BuildStageHooks extends StageHookBase {
-  readonly compile: AsyncHook<
-    IStageContext<CompileSubStageHooks, IBuildStageParameters>
-  > = new AsyncHook<IStageContext<CompileSubStageHooks, IBuildStageParameters>>();
-  readonly bundle: AsyncHook<IStageContext<BundleSubStageHooks, IBuildStageParameters>> =
-    new AsyncHook<IStageContext<BundleSubStageHooks, IBuildStageParameters>>();
-  readonly preCompile: AsyncHook<
-    IStageContext<PreCompileSubstageHooks, IBuildStageParameters>
-  > = new AsyncHook<IStageContext<PreCompileSubstageHooks, IBuildStageParameters>>();
-  readonly afterCompile: AsyncHook<
-    IStageContext<afterCompileSubStageHooks, IBuildStageParameters>
-  > = new AsyncHook<IStageContext<afterCompileSubStageHooks, IBuildStageParameters>>();
+  readonly compile: AsyncHook<IBuildStageContext<CompileSubStageHooks, IBuildStageParameters>> = new AsyncHook<
+    IBuildStageContext<CompileSubStageHooks, IBuildStageParameters>
+  >();
+  readonly preCompile: AsyncHook<IBuildStageContext<PreCompileSubstageHooks, IBuildStageParameters>> = new AsyncHook<
+    IBuildStageContext<PreCompileSubstageHooks, IBuildStageParameters>
+  >();
+  readonly afterCompile: AsyncHook<IBuildStageContext<afterCompileSubStageHooks, IBuildStageParameters>> =
+    new AsyncHook<IBuildStageContext<afterCompileSubStageHooks, IBuildStageParameters>>();
 }
 
 export class BuildStage extends Stage<BuildStageHooks> {
@@ -60,27 +57,19 @@ export class BuildStage extends Stage<BuildStageHooks> {
       getScopedLogger
     };
 
-    const preCompileArgs: IStageContext<PreCompileSubstageHooks, IBuildStageParameters> =
-      {
-        hooks: new PreCompileSubstageHooks(),
-        options
-      };
+    const preCompileArgs: IBuildStageContext<PreCompileSubstageHooks, IBuildStageParameters> = {
+      hooks: new PreCompileSubstageHooks(),
+      options
+    };
     await this.hooks.preCompile.call(preCompileArgs);
     await this._runSubStageHooks('preCompile', preCompileArgs.hooks);
 
-    const compileArgs: IStageContext<CompileSubStageHooks, IBuildStageParameters> = {
+    const compileArgs: IBuildStageContext<CompileSubStageHooks, IBuildStageParameters> = {
       hooks: new CompileSubStageHooks(),
       options
     };
     await this.hooks.compile.call(compileArgs);
     await this._runSubStageHooks('Compile', compileArgs.hooks);
-
-    const bundleArgs: IStageContext<BundleSubStageHooks, IBuildStageParameters> = {
-      hooks: new BundleSubStageHooks(),
-      options
-    };
-    await this.hooks.bundle.call(bundleArgs);
-    await this._runSubStageHooks('Bundle', bundleArgs.hooks);
 
     await this.hooks.afterCompile.call();
   }

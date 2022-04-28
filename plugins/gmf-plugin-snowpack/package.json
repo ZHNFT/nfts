@@ -7,8 +7,7 @@
     "test": "jest",
     "build": "gmf build --clean",
     "dev": "npx tsc --watch --declaration --declarationDir ./dist",
-    "dts": "npx tsc --declaration --emitDeclarationOnly --declarationDir ./dist",
-    "ask": "node ./test/Ask.demo.js"
+    "dts": "npx tsc --declaration --emitDeclarationOnly --declarationDir ./dist"
   },
   "devDependencies": {
     "@nfts/gmf": "workspace:*",

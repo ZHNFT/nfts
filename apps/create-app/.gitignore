@@ -8,3 +8,8 @@ build/
 
 # Modules
 node_modules/
+
+# Lock files
+yarn.lock
+pnpm-lock.yaml
+package-lock.json

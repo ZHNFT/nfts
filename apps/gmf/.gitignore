@@ -8,3 +8,6 @@ build/
 
 # Modules
 node_modules/
+
+# Lock files
+pnpm-lock.yaml

@@ -8,9 +8,9 @@ class SnowpackDevPlugin implements Plugin {
 
   apply(ctx: PluginContext): void {
     ctx.hooks.build.compile.add(this.name, compile => {
-      const { commandLineParameter, config: gmfConfig } = compile.options;
+      const { commandLineParameters, config: gmfConfig } = compile.options;
       compile.hooks.run.add(this.name, async () => {
-        if (commandLineParameter.watch) {
+        if (commandLineParameters.watch) {
           await new DevServer().runDevServer({ config: gmfConfig.config });
         } else {
           await new BuildServer().runBuildServer({});
