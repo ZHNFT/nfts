@@ -46,10 +46,7 @@ export class Input extends Query<string> {
       this.rl.close();
     } else {
       this._input += input ?? '';
-      this.screen
-        .moveCursorInline(-this._input.length)
-        .clearInline(InlineClearType.Right)
-        .write(this._input);
+      this.screen.moveCursorInline(-this._input.length).clearInline(InlineClearType.Right).write(this._input);
     }
   }
 }

@@ -6,25 +6,19 @@
 /**
  * 异步的任务，总是返回一个promise对象，resolve为空
  */
-export type Task<TArgs = unknown> = (
-  arg?: TArgs,
-  callback?: (args?: TArgs) => void
-) => Promise<void>;
+export type Task<TArgs = unknown> = (arg?: TArgs, callback?: (args?: TArgs) => void) => Promise<void>;
 
 /**
  * 异步任务，总是返回一个promise，resolve指定的数据
  */
-export type TaskWithReturnType<TArgs = unknown, TReturn = unknown> = (
-  arg?: TArgs
-) => Promise<TReturn>;
+export type TaskWithReturnType<TArgs = unknown, TReturn = unknown> = (arg?: TArgs) => Promise<TReturn>;
 
 export function isAsyncTask(maybeTask: unknown): boolean {
   return !!(
     maybeTask &&
     maybeTask.constructor &&
     // async-function | generator-function
-    (maybeTask.constructor.name === 'AsyncFunction' ||
-      maybeTask.constructor.name === 'GeneratorFunction')
+    (maybeTask.constructor.name === 'AsyncFunction' || maybeTask.constructor.name === 'GeneratorFunction')
   );
 }
 
@@ -33,10 +27,7 @@ export function isAsyncTask(maybeTask: unknown): boolean {
  * @param tasks
  * @param args
  */
-export async function serialize<TaskArgs = unknown>(
-  tasks: Task<TaskArgs>[],
-  args?: TaskArgs
-): Promise<void> {
+export async function serialize<TaskArgs = unknown>(tasks: Task<TaskArgs>[], args?: TaskArgs): Promise<void> {
   return tasks.reduce((promise, task): Promise<void> => {
     return promise.then(
       () => task(args),
@@ -51,9 +42,6 @@ export async function serialize<TaskArgs = unknown>(
  * @param tasks
  * @param args
  */
-export async function parallel<TaskArgs>(
-  tasks: Task<TaskArgs>[],
-  args?: TaskArgs
-): Promise<void[]> {
+export async function parallel<TaskArgs>(tasks: Task<TaskArgs>[], args?: TaskArgs): Promise<void[]> {
   return Promise.all(tasks.map(task => task(args)));
 }

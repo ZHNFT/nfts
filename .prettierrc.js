@@ -2,9 +2,9 @@
  * @type {import("prettier").Config}
  */
 module.exports = {
-  printWidth: 90,
-  endOfLine: "auto",
+  printWidth: 120,
+  endOfLine: 'auto',
   singleQuote: true,
-  trailingComma: "none",
-  arrowParens: "avoid",
+  trailingComma: 'none',
+  arrowParens: 'avoid'
 };

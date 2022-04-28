@@ -8,35 +8,30 @@ import { Task } from './Task';
  * 2. 一个Hook中只存在一种类型的task；
  */
 export abstract class Hook<TTask> {
-	protected lastAddedTask: Task;
-	protected readonly taskByName: Map<string, Task> = new Map();
+  protected lastAddedTask: Task;
+  protected readonly taskByName: Map<string, Task> = new Map();
 
-	public add(taskName: string, task: TTask): void {
-		if (!Sync.isSyncTask(task) && !Async.isAsyncTask(task)) {
-			throw new Error(
-				`Expecting a hook task type 'function', instead of '${typeof task}'`
-			);
-		}
+  public add(taskName: string, task: TTask): void {
+    if (!Sync.isSyncTask(task) && !Async.isAsyncTask(task)) {
+      throw new Error(`Expecting a hook task type 'function', instead of '${typeof task}'`);
+    }
 
-		if (this.taskByName.has(taskName)) {
-			console.warn(
-				`Task with name '${taskName}' already be registered` +
-					`Consider to use a different task name`
-			);
-		} else {
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			// @ts-ignore
-			const taskWrapper = new Task(task);
+    if (this.taskByName.has(taskName)) {
+      console.warn(`Task with name '${taskName}' already be registered` + `Consider to use a different task name`);
+    } else {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const taskWrapper = new Task(task);
 
-			if (this.lastAddedTask) {
-				this.lastAddedTask.next = taskWrapper;
-			}
+      if (this.lastAddedTask) {
+        this.lastAddedTask.next = taskWrapper;
+      }
 
-			this.lastAddedTask = taskWrapper;
-			this.taskByName.set(taskName, taskWrapper);
-		}
-	}
+      this.lastAddedTask = taskWrapper;
+      this.taskByName.set(taskName, taskWrapper);
+    }
+  }
 
-	// 不同类型Hook需要实现自己的emit方法，以实现预期的执行顺序；
-	abstract call(args?: unknown): unknown;
+  // 不同类型Hook需要实现自己的emit方法，以实现预期的执行顺序；
+  abstract call(args?: unknown): unknown;
 }

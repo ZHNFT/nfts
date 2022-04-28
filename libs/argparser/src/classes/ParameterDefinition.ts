@@ -58,9 +58,7 @@ export abstract class ParameterDefinition implements IParameterDefinition {
     this.callback = definition.callback;
 
     if (!Utils.hasParamFlagPrefix(this.name)) {
-      throw new Error(
-        `Illegal option name "${this.name}"` + `expect option name start with "-" or "--"`
-      );
+      throw new Error(`Illegal option name "${this.name}"` + `expect option name start with "-" or "--"`);
     }
   }
 }

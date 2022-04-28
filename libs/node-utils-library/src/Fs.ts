@@ -25,11 +25,7 @@ const writeFileDefaultOpts = {
  * @param content
  * @param options  { ensureRoot }
  */
-export async function writeFile(
-  filename: string,
-  content: string,
-  options?: WriteFileOpts
-): Promise<void> {
+export async function writeFile(filename: string, content: string, options?: WriteFileOpts): Promise<void> {
   if (!options) {
     options = writeFileDefaultOpts;
   } else {

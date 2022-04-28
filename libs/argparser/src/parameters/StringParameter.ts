@@ -1,8 +1,4 @@
-import {
-  ParameterDefinition,
-  ParameterTypes,
-  IParameterDefinition
-} from '../classes/ParameterDefinition';
+import { ParameterDefinition, ParameterTypes, IParameterDefinition } from '../classes/ParameterDefinition';
 
 export type StringOptionDefinition = Omit<IParameterDefinition, 'type'>;
 

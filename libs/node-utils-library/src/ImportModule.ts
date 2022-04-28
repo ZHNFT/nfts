@@ -35,10 +35,7 @@ export class ImportModule {
   }
 
   private static _create(options: ImportModuleOptions = {}): NodeRequire {
-    const _nodeModulePath = ImportModule._resolveNodeModules(
-      options.cwd,
-      options.nodeModules
-    );
+    const _nodeModulePath = ImportModule._resolveNodeModules(options.cwd, options.nodeModules);
     const req = createRequire(_nodeModulePath);
     req.main.paths.unshift(_nodeModulePath);
     return req;
@@ -52,9 +49,7 @@ export class ImportModule {
    * @usage ImportModule.lazyModule("lodash")().cloneDeep(obj);
    *
    */
-  public static lazyModule(
-    userOptions?: ImportModuleOptions
-  ): (moduleName: string) => any {
+  public static lazyModule(userOptions?: ImportModuleOptions): (moduleName: string) => any {
     const _opts = Object.assign({}, defaultOptions, userOptions);
     const _req = ImportModule._create(_opts);
 

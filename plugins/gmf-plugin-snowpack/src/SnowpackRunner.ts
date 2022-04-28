@@ -1,16 +1,10 @@
 import { Configuration } from '@nfts/gmf';
-import {
-	loadConfiguration,
-	SnowpackConfig,
-	SnowpackUserConfig,
-	startServer,
-	createConfiguration
-} from 'snowpack';
+import { loadConfiguration, SnowpackConfig, SnowpackUserConfig, startServer, createConfiguration } from 'snowpack';
 
 export class SnowpackRunner {
-	public runAsync(): Promise<void> {
-		// void
-	}
+  public runAsync(): Promise<void> {
+    // void
+  }
 
-	private _devServer() {}
+  private _devServer() {}
 }

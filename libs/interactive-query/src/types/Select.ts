@@ -22,10 +22,7 @@ export class Select extends Query<string> {
 
   constructor(config: ISelectConfig) {
     super({ prompt: config.summary });
-    if (
-      typeof config.alternatives === 'undefined' ||
-      !Array.isArray(config.alternatives)
-    ) {
+    if (typeof config.alternatives === 'undefined' || !Array.isArray(config.alternatives)) {
       throw Error('Expected `alternatives` to be an array');
     }
     this._config = config;
@@ -119,9 +116,7 @@ export class Select extends Query<string> {
     if (this._init) {
       this.screen.moveCursorInline(-cols);
     } else {
-      this.screen
-        .goToLine(-(this._config.alternatives.length - 1))
-        .moveCursorInline(-cols);
+      this.screen.goToLine(-(this._config.alternatives.length - 1)).moveCursorInline(-cols);
     }
     this.screen.clearScreenDown().write(this._output);
     this._init = false;

@@ -48,10 +48,7 @@ export class Glob {
    * 同步地读取匹配规则的文件
    * @param globPattern
    */
-  public static sync(
-    globPattern: string,
-    { rootDir = process.cwd() }: { rootDir: string }
-  ): string[] {
+  public static sync(globPattern: string, { rootDir = process.cwd() }: { rootDir: string }): string[] {
     const names: string[] = [];
     const regExpPattern = Glob.globToRegExp(globPattern);
 

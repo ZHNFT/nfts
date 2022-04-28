@@ -24,10 +24,7 @@ const DEFAULT_IMPORT_SYNC_OPTIONS = {
  * @param moduleName
  * @param options
  */
-export function sync(
-  moduleName: string,
-  options: ImportModuleSyncOptions = DEFAULT_IMPORT_SYNC_OPTIONS
-): unknown {
+export function sync(moduleName: string, options: ImportModuleSyncOptions = DEFAULT_IMPORT_SYNC_OPTIONS): unknown {
   options = Object.assign({}, DEFAULT_IMPORT_SYNC_OPTIONS, options);
   const req = NodeModule.createRequire(options.cwd);
   const fileModuleFullPath = path.resolve(options.cwd, moduleName);
@@ -42,9 +39,7 @@ export function sync(
   const packageJsonPath = path.resolve(packagePath, Constants.packageJsonPath);
 
   if (!fs.existsSync(packageJsonPath)) {
-    throw Error(
-      `No package.json file found in package "${path.relative(options.cwd, packagePath)}"`
-    );
+    throw Error(`No package.json file found in package "${path.relative(options.cwd, packagePath)}"`);
   }
 
   const pkgJson: Package.IPackageJson = Json.readJsonSync(packageJsonPath);
@@ -59,9 +54,6 @@ export function sync(
   return req(mainEntry);
 }
 
-export function resolveModule(
-  moduleName,
-  options: { cwd: string } = { cwd: process.cwd() }
-) {
+export function resolveModule(moduleName, options: { cwd: string } = { cwd: process.cwd() }) {
   // TODO 添加模块路径解析的逻辑
 }

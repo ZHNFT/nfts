@@ -30,9 +30,7 @@ export class FileSystem {
     }
   }
 
-  protected static async captureErrorAsync<TResult>(
-    fn: () => Promise<TResult>
-  ): Promise<TResult> {
+  protected static async captureErrorAsync<TResult>(fn: () => Promise<TResult>): Promise<TResult> {
     try {
       return await fn();
     } catch (e) {

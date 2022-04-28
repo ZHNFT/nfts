@@ -7,18 +7,14 @@ export class Utils {
     return /^-{1,2}([\w_]+)$/g.test(paramFlag);
   };
 
-  public static stripParamFlagPrefix = (paramFlag: string): string =>
-    paramFlag.replace(/^-{1,2}/, '');
+  public static stripParamFlagPrefix = (paramFlag: string): string => paramFlag.replace(/^-{1,2}/, '');
 
   /**
    *
    * @param rootParser
    * @param actionNames
    */
-  public static findActiveParser = (
-    rootParser: SubParser,
-    actionNames: string[]
-  ): SubParser => {
+  public static findActiveParser = (rootParser: SubParser, actionNames: string[]): SubParser => {
     const _actionNames = actionNames.slice(0);
     let _actionName: string;
     let _next: Parser | SubParser = rootParser;
@@ -38,11 +34,7 @@ export class Utils {
    * @param paramName  target parameter
    * @param value      value
    */
-  public static applyParameterValue(
-    parser: SubParser | Parser,
-    paramName: string,
-    value: unknown
-  ): TParameter {
+  public static applyParameterValue(parser: SubParser | Parser, paramName: string, value: unknown): TParameter {
     const _param = parser.findParameter(paramName);
 
     if (!_param) {

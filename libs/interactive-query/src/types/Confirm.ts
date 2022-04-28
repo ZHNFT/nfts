@@ -33,9 +33,7 @@ export class Confirm extends Query<boolean> {
             .upLine()
             .clearInline(1)
             .hardWrite(
-              `${this._config.summary} ${
-                this._isTruthyInput() ? Colors.cyan('Yes') : Colors.red('No')
-              }`,
+              `${this._config.summary} ${this._isTruthyInput() ? Colors.cyan('Yes') : Colors.red('No')}`,
               e => {
                 if (e) {
                   reject(e);
@@ -59,10 +57,7 @@ export class Confirm extends Query<boolean> {
       this.rl.close();
     } else {
       this._input += input ?? '';
-      this.screen
-        .moveCursorInline(-this._offset)
-        .clearInline(InlineClearType.Right)
-        .write(this._input);
+      this.screen.moveCursorInline(-this._offset).clearInline(InlineClearType.Right).write(this._input);
     }
   }
 }

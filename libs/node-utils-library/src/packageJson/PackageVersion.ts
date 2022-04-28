@@ -16,8 +16,7 @@ export class PackageVersion {
 
   public static versionRegex = /(?<major>[0-9]+).(?<minor>[0-9]+).(?<patch>[0-9]+)/;
 
-  public static isValidVersion = (version: string): boolean =>
-    PackageVersion.versionRegex.test(version);
+  public static isValidVersion = (version: string): boolean => PackageVersion.versionRegex.test(version);
 
   constructor(version: string) {
     if (!PackageVersion.isValidVersion(version)) {

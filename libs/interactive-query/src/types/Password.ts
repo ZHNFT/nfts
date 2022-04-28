@@ -53,10 +53,7 @@ export class Password extends Query<string> {
       this.rl.close();
     } else {
       this._input += input ?? '';
-      this.screen
-        .moveCursorInline(-this._input.length)
-        .clearInline(InlineClearType.Right)
-        .write(this._maskPassword());
+      this.screen.moveCursorInline(-this._input.length).clearInline(InlineClearType.Right).write(this._maskPassword());
     }
   }
 

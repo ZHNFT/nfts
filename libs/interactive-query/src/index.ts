@@ -4,12 +4,9 @@ import { IPasswordConfig, Password } from './types/Password';
 import { ISelectConfig, Select } from './types/Select';
 import { QueriesManager } from './QueryManager';
 
-export type TQueryConfig = (
-  | IConfirmConfig
-  | IInputConfig
-  | IPasswordConfig
-  | ISelectConfig
-) & { type: 'confirm' | 'input' | 'password' | 'select' };
+export type TQueryConfig = (IConfirmConfig | IInputConfig | IPasswordConfig | ISelectConfig) & {
+  type: 'confirm' | 'input' | 'password' | 'select';
+};
 
 export class InteractiveQuery extends QueriesManager {
   private readonly _queries: TQueryConfig[] = [];

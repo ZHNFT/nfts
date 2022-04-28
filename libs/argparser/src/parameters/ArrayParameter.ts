@@ -1,8 +1,4 @@
-import {
-  ParameterDefinition,
-  ParameterTypes,
-  IParameterDefinition
-} from '../classes/ParameterDefinition';
+import { ParameterDefinition, ParameterTypes, IParameterDefinition } from '../classes/ParameterDefinition';
 
 export interface ArrayParameterDefinition extends Omit<IParameterDefinition, 'type'> {
   alternatives: string[];
