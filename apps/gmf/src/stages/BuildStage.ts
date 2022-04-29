@@ -1,4 +1,4 @@
-import { AsyncHook, WaterfallHook } from '@nfts/hook';
+import { AsyncHook } from '@nfts/hook';
 import { Configuration } from '../classes/Configuration';
 import { Stage, StageHookBase } from '../classes/Stage';
 import { BuildCommandLineParametersValue } from '../cli/commands/BuildCommand';
@@ -28,10 +28,10 @@ export class PreCompileSubstageHooks extends BuildSubStageHooks {}
 
 export class afterCompileSubStageHooks extends BuildSubStageHooks {}
 
-export class BundleSubStageHooks extends BuildSubStageHooks {
-  readonly configure: WaterfallHook = new WaterfallHook();
-  readonly afterConfigure: AsyncHook = new AsyncHook();
-}
+// export class BundleSubStageHooks extends BuildSubStageHooks {
+//   readonly configure: WaterfallHook = new WaterfallHook();
+//   readonly afterConfigure: AsyncHook = new AsyncHook();
+// }
 
 export class BuildStageHooks extends StageHookBase {
   readonly compile: AsyncHook<IBuildStageContext<CompileSubStageHooks, IBuildStageParameters>> = new AsyncHook<

@@ -11,7 +11,8 @@ export abstract class Stage<
   readonly stageProperties: TStageProperties;
   readonly stageOptions: TStageOptions;
   readonly gmfConfig: Configuration;
-  constructor({ gmfConfig, hooks }: { gmfConfig: Configuration; hooks: THooks }) {
+
+  protected constructor({ gmfConfig, hooks }: { gmfConfig: Configuration; hooks: THooks }) {
     this.gmfConfig = gmfConfig;
     this.hooks = hooks;
   }

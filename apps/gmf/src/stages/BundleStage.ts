@@ -19,13 +19,14 @@ export class BundleSubStageHooksBase {
   readonly run: AsyncHook = new AsyncHook();
 }
 
-export class BundleSubStageHooks extends BundleSubStageHooksBase {
-  readonly configure: WaterfallHook = new WaterfallHook();
-  readonly afterConfigure: AsyncHook = new AsyncHook();
-}
+export class BundleSubStageHooks extends BundleSubStageHooksBase {}
 
 export class BundleStageHooks extends StageHookBase {
-  readonly bundle: AsyncHook<IBundleStageContext<BundleSubStageHooks, IBundleStageContextProps>> = new AsyncHook<
+  readonly configure: WaterfallHook<unknown> = new WaterfallHook<unknown>();
+
+  readonly afterConfigure: AsyncHook<unknown> = new AsyncHook<unknown>();
+
+  readonly startBundle: AsyncHook<IBundleStageContext<BundleSubStageHooks, IBundleStageContextProps>> = new AsyncHook<
     IBundleStageContext<BundleSubStageHooks, IBundleStageContextProps>
   >();
 }
@@ -37,6 +38,9 @@ export class BundleStage extends Stage<BundleStageHooks> {
   }
 
   async executeAsync(parameters?: BundleCommandLineParametersValue): Promise<void> {
+    await this.hooks.configure.call(undefined);
+    await this.hooks.afterConfigure.call(undefined);
+
     const options: IBundleStageContextProps = {
       commandLineParameters: parameters,
       config: this.gmfConfig,
@@ -47,8 +51,9 @@ export class BundleStage extends Stage<BundleStageHooks> {
       hooks: new BundleSubStageHooks(),
       options
     };
-    await this.hooks.bundle.call(bundleArgs);
-    await this._runSubStageHooks('Bundle', bundleArgs.hooks);
+
+    await this.hooks.startBundle.call(bundleArgs);
+    await this._runSubStageHooks('StartBundle', bundleArgs.hooks);
   }
 
   private async _runSubStageHooks(_: string, hooks: BundleSubStageHooks) {

@@ -29,11 +29,7 @@ class TypescriptPlugin implements Plugin {
           debug: logger
         });
         logger.log(
-          `Build Start in ${
-            commandLineParameters.watch
-              ? Colors.green('DEVELOPMENT')
-              : Colors.cyan('PRODUCTION')
-          } mode`
+          `Build Start in ${commandLineParameters.watch ? Colors.green('DEVELOPMENT') : Colors.cyan('PRODUCTION')} mode`
         );
         const startTime = performance.now();
         await tsRunner._runBuild({ commandLineParameters }, () => {

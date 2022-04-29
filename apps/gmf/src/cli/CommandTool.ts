@@ -3,15 +3,17 @@ import { PluginManager } from '../classes/PluginManager';
 import { Configuration } from '../classes/Configuration';
 import { BuildCommand } from './commands/BuildCommand';
 import { BuildStage, BuildStageHooks } from '../stages/BuildStage';
-import { BundleStage } from '../stages/BundleStage';
+import { BundleStage, BundleStageHooks } from '../stages/BundleStage';
 import { BundleCommand } from './commands/BundleCommand';
 
 export interface IStages {
   build: BuildStage;
+  bundle: BundleStage;
 }
 
 export interface IStageHooks {
   build: BuildStageHooks;
+  bundle: BundleStageHooks;
 }
 
 export default class GmfTool extends CommandLine {
@@ -32,11 +34,13 @@ export default class GmfTool extends CommandLine {
     const bundleStage = new BundleStage(this._config);
 
     const stages: IStages = {
-      build: buildStage
+      build: buildStage,
+      bundle: bundleStage
     };
 
     const stageHooks = {
-      build: stages.build.hooks
+      build: stages.build.hooks,
+      bundle: stages.bundle.hooks
     };
 
     // 实例化命令
