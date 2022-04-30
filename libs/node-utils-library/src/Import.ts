@@ -15,8 +15,8 @@ export interface ImportModuleSyncOptions {
 }
 
 const DEFAULT_IMPORT_SYNC_OPTIONS = {
-  cwd: __dirname,
-  node_modules: path.resolve(__dirname, Constants.nodeModulePath)
+  cwd: process.cwd(),
+  node_modules: path.resolve(process.cwd(), Constants.nodeModulePath)
 };
 
 /**
