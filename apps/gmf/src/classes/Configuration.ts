@@ -1,11 +1,12 @@
 import { existsSync } from 'fs';
 import { FileSystem } from '@nfts/node-utils-library';
+import Constants from '../Constants';
 
 export interface IGmfConfig {
   buildPath: string;
   plugins: {
     pluginName: string;
-    [index: string]: string;
+    options: Record<string, unknown>;
   }[];
 }
 
@@ -15,13 +16,24 @@ export interface IGmfConfig {
 export class Configuration {
   config: IGmfConfig;
 
-  public loadConfig(configPath: string): IGmfConfig | undefined {
+  public loadConfig(): IGmfConfig | undefined {
     if (this.config) return this.config;
 
-    if (!existsSync(configPath)) {
+    if (!existsSync(Constants.GMF_CONFIG_PATH)) {
       return undefined;
     }
 
-    return (this.config = FileSystem.readJsonSync(configPath));
+    return (this.config = FileSystem.readJsonSync(Constants.GMF_CONFIG_PATH));
+  }
+
+  public loadConfigFromFile(filePath: string): IGmfConfig | undefined {
+    //
+    if (this.config) return this.config;
+
+    if (!existsSync(filePath)) {
+      return undefined;
+    }
+
+    return (this.config = FileSystem.readJsonSync(filePath));
   }
 }

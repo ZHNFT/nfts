@@ -1,80 +1,44 @@
 import { AsyncHook } from '@nfts/hook';
-import { Configuration } from '../classes/Configuration';
-import { Stage, StageHookBase } from '../classes/Stage';
+import { Stage, StageSubHook, StageCommonContext } from '../classes/Stage';
 import { BuildCommandLineParametersValue } from '../cli/commands/BuildCommand';
-import { getScopedLogger } from '../utils/getScopeLogger';
 
-export interface IBuildStageContext<THooks = CompileSubStageHooks, THookOptions = unknown> {
-  hooks: THooks;
-  options: THookOptions;
-}
+/*
+buildStage
+  - compile
+    - run
+  - recompile
+    - run
+  - afterCompile
+    - run
+*/
 
-interface IBuildStageParameters {
-  commandLineParameters: BuildCommandLineParametersValue;
-  config: Configuration;
-  getScopedLogger: typeof getScopedLogger;
-}
-
-export class BuildSubStageHooks {
-  readonly run: AsyncHook = new AsyncHook();
-}
-
-export class CompileSubStageHooks extends BuildSubStageHooks {
+export class CompileSubStageHooks extends StageSubHook {
   readonly afterCompile: AsyncHook = new AsyncHook();
-  readonly afterRecompile: AsyncHook = new AsyncHook();
 }
 
-export class PreCompileSubstageHooks extends BuildSubStageHooks {}
-
-export class afterCompileSubStageHooks extends BuildSubStageHooks {}
-
-// export class BundleSubStageHooks extends BuildSubStageHooks {
-//   readonly configure: WaterfallHook = new WaterfallHook();
-//   readonly afterConfigure: AsyncHook = new AsyncHook();
-// }
-
-export class BuildStageHooks extends StageHookBase {
-  readonly compile: AsyncHook<IBuildStageContext<CompileSubStageHooks, IBuildStageParameters>> = new AsyncHook<
-    IBuildStageContext<CompileSubStageHooks, IBuildStageParameters>
-  >();
-  readonly preCompile: AsyncHook<IBuildStageContext<PreCompileSubstageHooks, IBuildStageParameters>> = new AsyncHook<
-    IBuildStageContext<PreCompileSubstageHooks, IBuildStageParameters>
-  >();
-  readonly afterCompile: AsyncHook<IBuildStageContext<afterCompileSubStageHooks, IBuildStageParameters>> =
-    new AsyncHook<IBuildStageContext<afterCompileSubStageHooks, IBuildStageParameters>>();
+export class BuildStageHooks {
+  readonly compile: AsyncHook<StageCommonContext<BuildCommandLineParametersValue, CompileSubStageHooks>> =
+    new AsyncHook<StageCommonContext<BuildCommandLineParametersValue, CompileSubStageHooks>>();
 }
 
-export class BuildStage extends Stage<BuildStageHooks> {
-  constructor(gmfConfig: Configuration) {
-    const stageHooks = new BuildStageHooks();
-    super({ gmfConfig, hooks: stageHooks });
+export class BuildStage extends Stage<BuildStageHooks, unknown, unknown, BuildCommandLineParametersValue> {
+  constructor() {
+    super({ hooks: new BuildStageHooks() });
   }
 
   async executeAsync(parameters?: BuildCommandLineParametersValue): Promise<void> {
-    const options: IBuildStageParameters = {
-      commandLineParameters: parameters,
-      config: this.gmfConfig,
-      getScopedLogger
-    };
+    await this.executeInnerHook(parameters);
 
-    const preCompileArgs: IBuildStageContext<PreCompileSubstageHooks, IBuildStageParameters> = {
-      hooks: new PreCompileSubstageHooks(),
-      options
-    };
-    await this.hooks.preCompile.call(preCompileArgs);
-    await this._runSubStageHooks('preCompile', preCompileArgs.hooks);
-
-    const compileArgs: IBuildStageContext<CompileSubStageHooks, IBuildStageParameters> = {
+    const compileSubContext = {
       hooks: new CompileSubStageHooks(),
-      options
+      cmdParams: parameters
     };
-    await this.hooks.compile.call(compileArgs);
-    await this._runSubStageHooks('Compile', compileArgs.hooks);
 
-    await this.hooks.afterCompile.call();
+    await this.hooks.compile.call(compileSubContext);
+    await this._runSubStageHooks('Compile', compileSubContext.hooks);
   }
 
-  private async _runSubStageHooks(_: string, hooks: BuildSubStageHooks) {
+  private async _runSubStageHooks(_: string, hooks: StageSubHook) {
     await hooks.run.call();
   }
 }

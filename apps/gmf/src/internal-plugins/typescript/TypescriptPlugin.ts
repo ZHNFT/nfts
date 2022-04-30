@@ -13,30 +13,36 @@ export interface TypescriptPluginOptions {
   tsconfigPath: string;
 }
 
-const PluginName = 'TypescriptPlugin';
+const NAME = 'TypescriptPlugin';
+const DESCRIPTION = '';
+
+export interface TypescriptPluginOptions {
+  NO_OPTIONS_RIGHT_NOW: unknown;
+}
 
 class TypescriptPlugin implements Plugin {
-  readonly name = 'TypescriptPlugin';
-  readonly summary = 'Compile source code with typescript compiler';
+  readonly name = NAME;
+  readonly summary = DESCRIPTION;
 
-  apply({ hooks, getScopeLogger }: PluginContext): void {
-    const logger = getScopeLogger(PluginName);
+  apply({ hooks, getScopedLogger }: PluginContext, _: TypescriptPluginOptions): void {
+    const logger = getScopedLogger(NAME);
 
-    hooks.build.compile.add(this.name, compile => {
-      const commandLineParameters = compile.options.commandLineParameters;
-      compile.hooks.run.add(this.name, async () => {
-        const tsRunner: TypescriptRunner = new TypescriptRunner({
-          debug: logger
-        });
-        logger.log(
-          `Build Start in ${commandLineParameters.watch ? Colors.green('DEVELOPMENT') : Colors.cyan('PRODUCTION')} mode`
-        );
-        const startTime = performance.now();
-        await tsRunner._runBuild({ commandLineParameters }, () => {
-          if (!commandLineParameters.watch) {
-            const interval = performance.now() - startTime;
-            logger.log(`Build end with time ${Measure.millisecondsFormat(interval)}`);
-          }
+    hooks.build.add(NAME, build => {
+      build.hooks.compile.add(NAME, compile => {
+        compile.hooks.run.add(NAME, async () => {
+          const tsRunner: TypescriptRunner = new TypescriptRunner({
+            debug: logger
+          });
+          logger.log(
+            `Build Start in ${compile.cmdParams.watch ? Colors.green('DEVELOPMENT') : Colors.cyan('PRODUCTION')} mode`
+          );
+          const startTime = performance.now();
+          await tsRunner._runBuild({ commandLineParameters: compile.cmdParams }, () => {
+            if (!compile.cmdParams.watch) {
+              const interval = performance.now() - startTime;
+              logger.log(`Build end with time ${Measure.millisecondsFormat(interval)}`);
+            }
+          });
         });
       });
     });

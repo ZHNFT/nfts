@@ -52,4 +52,10 @@ export class CommandLine extends CommandLineParameterManager {
     const command = this._findCommand(_);
     await command.onExecute(args);
   }
+
+  public parseCommandLine(): ParsedCommandLineOption {
+    // 直接读 process.argv
+    const result = this._parser.parse<ParsedCommandLineOption>();
+    return Object.freeze(result);
+  }
 }

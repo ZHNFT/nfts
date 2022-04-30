@@ -1,3 +1,3 @@
 export { Parser } from './parsers/Parser';
 export { SubParser } from './parsers/SubParser';
-export * from './parameters';
+export { FlagParameter, StringParameter, ArrayParameter } from './parameters';

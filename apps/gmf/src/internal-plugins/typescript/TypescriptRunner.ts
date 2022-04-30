@@ -45,10 +45,7 @@ export class TypescriptRunner {
     if (commandLineParameters.tsconfig) {
       const configStat = fs.statSync(commandLineParameters.tsconfig);
       if (configStat.isDirectory()) {
-        commandLineParameters.tsconfig = path.resolve(
-          commandLineParameters.tsconfig,
-          Constants.TSCONFIG_PATH
-        );
+        commandLineParameters.tsconfig = path.resolve(commandLineParameters.tsconfig, Constants.TSCONFIG_PATH);
       } else {
         if (!configStat.isFile()) {
           throw new Error(
@@ -65,10 +62,7 @@ export class TypescriptRunner {
 
     if (commandLineParameters.watch) {
       // Startup dev server
-      await this._runWatchBuild(
-        { tsconfigPath: commandLineParameters.tsconfig },
-        onEmitCallback
-      );
+      await this._runWatchBuild({ tsconfigPath: commandLineParameters.tsconfig }, onEmitCallback);
     } else {
       // Startup incremental-build process
       await this._runIncrementalBuild(config, onEmitCallback);

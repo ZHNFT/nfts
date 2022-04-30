@@ -26,11 +26,8 @@ export class ImportModule {
   private static _resolveMainFile(req: NodeRequire, moduleName: string) {
     const _modulePath = resolve(req.main.paths[0], moduleName);
     const _pkgPath = resolve(_modulePath, Constants.PackageJson);
-
     const _pkg = FileSystem.readJsonSync<IPackageJson>(_pkgPath);
-
     const { main } = _pkg;
-
     return resolve(_modulePath, main ?? Constants.DefaultMainEntryFle);
   }
 
@@ -46,16 +43,22 @@ export class ImportModule {
    * @param userOptions
    * @returns
    *
-   * @usage ImportModule.lazyModule("lodash")().cloneDeep(obj);
-   *
+   * @usage
+   * ```ts
+   *   const lodash = ImportModule.lazyModule("lodash");
+   *   lodash.cloneDeep(obj);
+   * ```
    */
   public static lazyModule(userOptions?: ImportModuleOptions): (moduleName: string) => any {
     const _opts = Object.assign({}, defaultOptions, userOptions);
-    const _req = ImportModule._create(_opts);
+    const _import = ImportModule._create(_opts);
 
     return (moduleName: string) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      return _req(ImportModule._resolveMainFile(_req, moduleName));
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const _importResult = _import(ImportModule._resolveMainFile(_import, moduleName)) as {
+        default: unknown;
+      };
+      return _importResult.default ? _importResult.default : _importResult;
     };
   }
 

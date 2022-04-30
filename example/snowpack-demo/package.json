@@ -2,7 +2,8 @@
   "scripts": {
     "start": "gmf build --watch",
     "build": "gmf build --clean --test",
-    "test": "gmf build --test"
+    "test": "gmf build --test",
+    "bundle": "gmf bundle"
   },
   "dependencies": {
     "react": "^18.0.0",
