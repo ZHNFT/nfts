@@ -1,9 +1,10 @@
 import { CommandLine } from '@nfts/noddy';
 import { PluginManager } from '../classes/PluginManager';
 import { Configuration } from '../classes/Configuration';
+import { Stage } from '../classes/Stage';
+import { BundleCommand } from './commands/BundleCommand';
 import { BuildCommand } from './commands/BuildCommand';
 import { BuildStage, BundleStage } from '../stages';
-import { BundleCommand } from './commands/BundleCommand';
 
 export default class GmfTool extends CommandLine {
   private readonly _pluginManager: PluginManager;
@@ -11,18 +12,22 @@ export default class GmfTool extends CommandLine {
 
   constructor() {
     super({ toolName: 'gmf', toolDescription: `Develop toolchain` });
-    // 1. 读取配置文件
+
     this._config = new Configuration();
-    // 构建阶段
+
     const buildStage = new BuildStage();
     const bundleStage = new BundleStage();
 
-    // 2. 实例化命令
-    const build = new BuildCommand({ stage: buildStage });
-    const bundle = new BundleCommand({ stage: bundleStage });
-    // 3. 加载插件
-    this._pluginManager = new PluginManager(this._config, { build: buildStage, bundle: bundleStage }, build);
-    // 4. 添加指令到 parser
+    const stages = {
+      build: buildStage,
+      bundle: bundleStage
+    };
+
+    const build = new BuildCommand({ stage: stages.build });
+    const bundle = new BundleCommand({ stage: stages.bundle });
+
+    this._pluginManager = new PluginManager(this._config, stages, build);
+
     this.addCommand(build);
     this.addCommand(bundle);
   }

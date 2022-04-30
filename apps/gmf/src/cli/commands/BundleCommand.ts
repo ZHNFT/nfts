@@ -26,7 +26,10 @@ export class BundleCommand extends Command implements BundleCommandLineParameter
   watch: FlagParameter;
 
   constructor({ stage }: BundleCommandInitOption) {
-    super({ commandName: NAME, commandDescription: DESCRIPTION });
+    super({
+      commandName: NAME,
+      commandDescription: DESCRIPTION
+    });
     this.stage = stage;
   }
 

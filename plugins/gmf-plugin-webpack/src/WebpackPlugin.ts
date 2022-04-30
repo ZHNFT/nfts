@@ -8,17 +8,27 @@ class WebpackPlugin implements Plugin {
   name: string = NAME;
   summary: string = DESCRIPTION;
 
-  apply({ getScopeLogger, hooks }: PluginContext): void | Promise<void> {
-    const logger = getScopeLogger(NAME);
-    hooks.bundle.configure.add(NAME, (config?: Configuration): Configuration => {
-      return {};
-    });
+  apply({ getScopedLogger, hooks }: PluginContext): void | Promise<void> {
+    const logger = getScopedLogger(NAME);
 
-    hooks.bundle.compile.add(NAME, async compile => {
-      const config = (await hooks.bundle.configure.call(null)) as Configuration;
-      compile.hooks.run.add(NAME, () => {
-        //
-        logger.log('WebpackPlugin');
+    hooks.bundle.add(NAME, bundle => {
+      bundle.hooks.configure.add(NAME, (config?: Configuration): Configuration => {
+        // load config from local
+        if (!config) {
+          return {
+            entry: './index.ts'
+          };
+        }
+
+        return config;
+      });
+
+      bundle.hooks.compile.add(NAME, async compile => {
+        const webpackConfig = (await bundle.hooks.configure.call(undefined)) as Configuration;
+
+        compile.hooks.run.add(NAME, () => {
+          //
+        });
       });
     });
   }

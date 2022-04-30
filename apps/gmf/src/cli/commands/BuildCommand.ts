@@ -41,28 +41,21 @@ export class BuildCommand extends Command implements BuildCommandLineParameters 
   }
 
   onDefineParameters(): void {
-    /*
-      TODO
-        CleanUp插件，或者是使用 tsc 自带的 --clean 来实现清理逻辑？
-    */
     this.clean = this.flagParameter({
       name: '--clean',
       summary: 'Delete the outputs of all projects.'
     });
-    /*
-      TODO
-        需要一个插件来接入构建结束后的动作，以运行 JEST 测试；
-    */
+
     this.test = this.flagParameter({
       name: '--test',
       summary: 'Run all test case, after build.'
     });
-    /* 启动开发服务器 */
+
     this.watch = this.flagParameter({
       name: '--watch',
       summary: 'Watch input files.'
     });
-    /* tsconfig配置 */
+
     this.tsconfig = this.stringParameter({
       name: '--tsconfig',
       summary: `Compile the project given the path to its configuration file, or to a folder with a 'tsconfig.json'.`

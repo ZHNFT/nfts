@@ -18,9 +18,9 @@ export class PluginManager {
   private readonly _config: Configuration;
   private readonly _stages: IStages;
 
-  constructor(config: Configuration, hooks: IStages, command: Command) {
+  constructor(config: Configuration, stages: IStages, command: Command) {
     this._config = config;
-    this._stages = hooks;
+    this._stages = stages;
     this._command = command;
 
     this.applyPlugin(typescriptPlugin);
