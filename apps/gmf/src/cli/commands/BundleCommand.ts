@@ -1,5 +1,5 @@
 import { Command } from '@nfts/noddy';
-import { FlagParameter } from '@nfts/argparser';
+import { FlagParameter, StringParameter } from '@nfts/argparser';
 import { BundleStage } from '../../stages/BundleStage';
 
 const NAME = 'bundle';
@@ -12,11 +12,13 @@ export interface BundleCommandInitOption {
 export interface BundleCommandLineParameters {
   clean: FlagParameter;
   watch: FlagParameter;
+  config: StringParameter;
 }
 
 export interface BundleCommandLineParametersValue {
   clean?: boolean;
   watch?: boolean;
+  config?: string;
 }
 
 export class BundleCommand extends Command implements BundleCommandLineParameters {
@@ -24,6 +26,7 @@ export class BundleCommand extends Command implements BundleCommandLineParameter
 
   clean: FlagParameter;
   watch: FlagParameter;
+  config: StringParameter;
 
   constructor({ stage }: BundleCommandInitOption) {
     super({
@@ -43,12 +46,18 @@ export class BundleCommand extends Command implements BundleCommandLineParameter
       name: '--watch',
       summary: 'Watch input files.'
     });
+
+    this.config = this.stringParameter({
+      name: '--config',
+      summary: 'Specified webpack configuration file path'
+    });
   }
 
   public async onExecute(): Promise<void> {
     const parameters: BundleCommandLineParametersValue = {
       clean: this.clean.value,
-      watch: this.watch.value
+      watch: this.watch.value,
+      config: this.config.value
     };
 
     await this.stage.executeAsync(parameters);

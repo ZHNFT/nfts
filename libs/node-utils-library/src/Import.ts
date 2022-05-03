@@ -45,7 +45,6 @@ export function sync(moduleName: string, options: ImportModuleSyncOptions = DEFA
   const pkgJson: Package.IPackageJson = Json.readJsonSync(packageJsonPath);
 
   // const mainEntry: string;
-
   if (!pkgJson.main) {
     throw new Error(`main字段不存在`);
   }

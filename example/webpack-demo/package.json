@@ -63,7 +63,8 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
-    "bundle": "gmf bundle"
+    "bundle": "gmf bundle --config config/webpack.config.js",
+    "bundle:watch": "gmf bundle --config config/webpack.config.js --watch"
   },
   "eslintConfig": {
     "extends": [
