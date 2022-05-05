@@ -6,7 +6,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "scripts": {
+  "scripts": {w
     "test": "gmf build --test",
     "dev": "gmf build --watch",
     "build": "gmf build"

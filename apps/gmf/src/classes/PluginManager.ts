@@ -1,7 +1,6 @@
 import { Command } from '@nfts/noddy';
-import { ImportModule } from '@nfts/node-utils-library';
+import { importSync } from '@nfts/node-utils-library';
 
-import Constants from '../Constants';
 import jestPlugin from '../internal-plugins/jest/JestPlugin';
 import typescriptPlugin from '../internal-plugins/typescript/TypescriptPlugin';
 import copyPlugin from '../internal-plugins/copy/CopyPlugin';
@@ -35,7 +34,7 @@ export class PluginManager {
     if (config?.plugins && Array.isArray(config.plugins)) {
       config.plugins.forEach(plugin => {
         const { pluginName, options } = plugin;
-        this.applyPlugin(ImportModule.import(pluginName) as Plugin, options);
+        this.applyPlugin(importSync(pluginName) as Plugin, options);
       });
     }
   }

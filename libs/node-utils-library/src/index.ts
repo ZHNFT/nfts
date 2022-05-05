@@ -8,6 +8,8 @@ import * as Sync from './Sync';
 import * as Execution from './Execution';
 // import * as DateEx from './Date';
 import * as Screen from './Screen';
+import * as Host from './Host';
+import * as ArrayEx from './ArrayEx';
 
 export { PackageJson } from './packageJson/PackageJson';
 export { PackageJsonLookup } from './packageJson/PackageJsonLookup';
@@ -39,8 +41,8 @@ export { IPackageJson };
 // Execution
 export { Execution };
 
-// Date
-// export { DateEx };
-
 // Screen
 export { Screen };
+
+// Array extend
+export { ArrayEx };
