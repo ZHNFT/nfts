@@ -4,9 +4,7 @@ import { sync as importSync } from './Import';
 import { IPackageJson } from './IPackageJson';
 import * as Json from './Json';
 import * as Measure from './Measure';
-import * as Sync from './Sync';
 import * as Execution from './Execution';
-// import * as DateEx from './Date';
 import * as Screen from './Screen';
 import * as Host from './Host';
 import * as ArrayEx from './ArrayEx';
@@ -19,30 +17,21 @@ export { ImportModule } from './ImportModule';
 
 // Fs
 export { Fs };
-
 // Async
 export { Async };
-
-// Sync
-export { Sync };
-
 // Json
 export { Json };
-
 // Measure
 export { Measure };
-
 // Import
 export { importSync };
-
 // Package
 export { IPackageJson };
-
 // Execution
 export { Execution };
-
 // Screen
 export { Screen };
-
 // Array extend
 export { ArrayEx };
+// Host
+export { Host };
