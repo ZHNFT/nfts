@@ -44,10 +44,3 @@ export { Execution };
 
 // Screen
 export { Screen };
-
-// Task
-export type TTAsk<TArgs = unknown, TReturn = unknown> =
-  | Sync.Task<TArgs>
-  | Sync.TaskWithReturnType<TArgs, TReturn>
-  | Async.Task<TArgs>
-  | Async.TaskWithReturnType<TArgs, TReturn>;

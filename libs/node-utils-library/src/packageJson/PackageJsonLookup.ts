@@ -3,6 +3,7 @@
  * */
 import * as nodePath from 'path';
 import * as nodeFs from 'fs';
+import {} from '../Fs';
 import { FileSystem } from '../FileSystem';
 import { IPackageJson } from './PackageJson';
 
