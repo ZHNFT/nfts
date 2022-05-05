@@ -8,11 +8,9 @@ interface TObj {
 
 describe('测试 Json 读取', function () {
   it('should return correct', async function () {
-    const obj = await readJson<TObj>('./test/temp/mock.json');
+    const obj = await readJson<TObj>('./test/json/data.json');
     expect(obj).toStrictEqual({
-      name: 'string',
-      version: 'string',
-      main: 'string'
+      name: 'test-import'
     });
   });
 });
