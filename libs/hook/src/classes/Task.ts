@@ -1,17 +1,16 @@
-import { TTAsk } from '@nfts/node-utils-library';
+import { Execution } from '@nfts/node-utils-library';
 
 /**
  * 用来包装Task
  */
 export class Task<TArgs = unknown, TReturn = unknown> {
-  readonly raw: TTAsk<TArgs, TReturn>;
+  readonly raw: Execution.TTask<TArgs, TReturn>;
 
   next: Task<TArgs, TReturn>;
   isUsed: boolean;
   manual: boolean;
 
-  constructor(task: TTAsk<TArgs, TReturn>) {
-    // TODO tasks
+  constructor(task: Execution.TTask<TArgs, TReturn>) {
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     this.raw = task;
   }

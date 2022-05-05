@@ -48,3 +48,25 @@ export async function serialize<TaskArgs = unknown>(tasks: TTask<TaskArgs>[], ar
     );
   }, Promise.resolve());
 }
+
+/**
+ *
+ * @param maybeTask 校验函数是否是 async function 或者 generator function
+ * @returns {boolean}
+ */
+export function isAsyncTask(maybeTask: unknown): boolean {
+  return !!(
+    maybeTask &&
+    maybeTask.constructor &&
+    (maybeTask.constructor.name === 'AsyncFunction' || maybeTask.constructor.name === 'GeneratorFunction')
+  );
+}
+
+/**
+ *
+ * @param maybeTask 校验函数是否是 function
+ * @returns {boolean}
+ */
+export function isSyncTask(maybeTask: unknown): boolean {
+  return !!(maybeTask && maybeTask.constructor && maybeTask.constructor.name === 'Function');
+}

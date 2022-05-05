@@ -20,7 +20,7 @@ class JestPlugin implements Plugin {
             {
               preset: 'ts-jest',
               testEnvironment: 'node',
-              testMatch: ['**/test/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)'],
+              testMatch: ['**/test/**/*.[jt]sx?', '**/?(*.)+(spec|test).[tj]sx?'],
               _: process.argv,
               $0: ''
             },

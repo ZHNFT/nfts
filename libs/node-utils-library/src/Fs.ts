@@ -117,7 +117,7 @@ function createStat(stat: nodeFs.Stats, extraProps: { [key: string]: unknown }):
 export function readDirRecursionSync(
   dirname: string,
   options: { stat?: boolean } = {},
-  files: (nodeFs.Stats | string)[]
+  files?: (nodeFs.Stats | string)[]
 ): (nodeFs.Stats | string)[] {
   if (!files || !Array.isArray(files)) {
     RecursionDirCache.clear();

@@ -2,5 +2,6 @@
 module.exports = {
   rootDir: '.',
   preset: 'ts-jest',
+  passWithNoTests: true,
   testEnvironment: 'node'
 };

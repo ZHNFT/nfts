@@ -1,12 +1,12 @@
-import { Async, Sync } from '@nfts/node-utils-library';
+import { Async, Execution } from '@nfts/node-utils-library';
 import { Hook } from '../classes/Hook';
 
 /**
  * 同步任务的支持
  */
-export class SyncHook<TArgs = unknown> extends Hook<Sync.Task<TArgs>> {
-  public add(taskName: string, task: Sync.Task<TArgs>): void {
-    if (!Sync.isSyncTask(task)) {
+export class SyncHook<TArgs = unknown> extends Hook<Execution.TTask<TArgs>> {
+  public add(taskName: string, task: Execution.TTask<TArgs>): void {
+    if (!Execution.isSyncTask(task)) {
       if (Async.isAsyncTask(task)) {
         console.warn(
           `Unexpected async task added to SyncHook ${taskName};\n` + `Async task in SyncHook may not work properly`

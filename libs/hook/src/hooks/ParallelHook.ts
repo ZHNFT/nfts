@@ -1,4 +1,4 @@
-import { Async } from '@nfts/node-utils-library';
+import { Execution } from '@nfts/node-utils-library';
 import { Hook } from '../classes/Hook';
 
 export class ParallelHook<TArgs = unknown> extends Hook<TArgs> {
@@ -8,9 +8,9 @@ export class ParallelHook<TArgs = unknown> extends Hook<TArgs> {
 
   call(args?: TArgs): Promise<void[]> {
     const tasks = Array.from(this.taskByName.values());
-    return Async.parallel(
+    return Execution.parallel(
       tasks.map(task => {
-        return task.apply.bind(task) as Async.Task<TArgs>;
+        return task.apply.bind(task) as Execution.TSyncTask<TArgs>;
       }),
       args
     );

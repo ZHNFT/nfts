@@ -1,4 +1,4 @@
-import { Async, Sync } from '@nfts/node-utils-library';
+import { Execution } from '@nfts/node-utils-library';
 import { Task } from './Task';
 
 /**
@@ -12,7 +12,7 @@ export abstract class Hook<TTask> {
   protected readonly taskByName: Map<string, Task> = new Map();
 
   public add(taskName: string, task: TTask): void {
-    if (!Sync.isSyncTask(task) && !Async.isAsyncTask(task)) {
+    if (!Execution.isSyncTask(task) && !Execution.isAsyncTask(task)) {
       throw new Error(`Expecting a hook task type 'function', instead of '${typeof task}'`);
     }
 
