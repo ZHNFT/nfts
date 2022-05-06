@@ -1,4 +1,4 @@
 *
 
-# Entries
-!/*.eslintrc.js
+!/index.js
+!/react.js

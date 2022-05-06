@@ -1,14 +1,19 @@
 /**  @type {import('@types/eslint').Linter.Config} */
 module.exports = {
-  plugins: ['react', 'hooks'],
+  extends: ['eslint:recommended'],
+  ignorePatterns: ['*.d.ts'],
+  env: {
+    node: true,
+    jest: true,
+    es6: true
+  },
   settings: {
-    react: {
-      version: 'detect'
-    }
+    react: { version: 'detect' }
   },
   overrides: [
     {
-      files: ['*.scripts', '*.tsx'],
+      files: ['*.[jt]sx?'],
+      plugins: ['react', 'hooks'],
       rules: {}
     }
   ]
