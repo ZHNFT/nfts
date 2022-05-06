@@ -39,7 +39,7 @@ class TypescriptPlugin implements Plugin {
           await tsRunner._runBuild({ commandLineParameters: compile.cmdParams }, () => {
             if (!compile.cmdParams.watch) {
               const interval = performance.now() - startTime;
-              logger.log(`Build end with time ${(interval % 1000).toFixed(2)}`);
+              logger.log(`Build end with time ${(interval / 1000).toFixed(2)}s`);
             }
           });
         });

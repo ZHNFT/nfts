@@ -7,29 +7,16 @@ importers:
 
   apps/create-app:
     specifiers:
-      '@jest/core': ^27.5.1
       '@jest/types': ^27.5.1
-      '@nfts/argparser': workspace:*
-      '@nfts/eslint-config': workspace:*
-      '@nfts/hook': workspace:*
-      '@nfts/interactive-query': workspace:*
-      '@nfts/noddy': workspace:*
-      '@nfts/node-utils-library': workspace:*
+      '@nfts/gmf': workspace:*
       '@types/jest': ^27.0.3
       '@types/node': ~17.0.5
       jest: ^27.4.5
       ts-jest: ^27.1.2
       typescript: ^4.5.4
-    dependencies:
-      '@jest/core': 27.5.1
-      '@nfts/argparser': link:../../libs/argparser
-      '@nfts/eslint-config': link:../../config/eslint
-      '@nfts/hook': link:../../libs/hook
-      '@nfts/interactive-query': link:../../libs/interactive-query
-      '@nfts/noddy': link:../../libs/noddy
-      '@nfts/node-utils-library': link:../../libs/node-utils-library
     devDependencies:
       '@jest/types': 27.5.1
+      '@nfts/gmf': link:../gmf
       '@types/jest': 27.4.1
       '@types/node': 17.0.23
       jest: 27.5.1
