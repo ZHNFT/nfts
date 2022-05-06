@@ -1,5 +1,4 @@
 import { performance } from 'perf_hooks';
-import * as os from 'os';
 
 export function now() {
   return performance.now();
@@ -22,23 +21,32 @@ export function millisecondsFormat(milliseconds, unit = Unit.S): string {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/unbound-method
-export function taskSync(mark: string, task: () => void, writer = console.info) {
+/**
+ * 返回同步 task 的执行时间
+ * @param mark
+ * @param task
+ * @param callback
+ */
+export function taskSync(mark: string, task: () => void, callback?: (spendMs: number) => void) {
   const _start = now();
   task();
-  writer(`${mark} -> ${millisecondsFormat(now() - _start)}${os.EOL}`);
-  console.log('');
+  callback?.(now() - _start);
 }
 
+/**
+ * 返回异步 task 的执行时间
+ * @param mark
+ * @param task
+ * @param callback
+ */
 export function taskAsync(
   mark: string,
   task: () => Promise<void>,
-  // eslint-disable-next-line @typescript-eslint/unbound-method
-  writer = console.info
+  callback?: (spendMs: number) => void
 ): Promise<void> {
   const _start = now();
   return task().finally(() => {
-    writer(`${mark} -> ${millisecondsFormat(now() - _start)}${os.EOL}`);
-    console.log('');
+    const _end = now();
+    callback?.(_end - _start);
   });
 }

@@ -21,7 +21,7 @@ export { Fs };
 export { Async };
 // Json
 export { Json };
-// Measure
+// Measure Tasks
 export { Measure };
 // Import
 export { importSync };

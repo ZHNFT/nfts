@@ -2,12 +2,15 @@ import { runCLI } from '@jest/core';
 import { Plugin, PluginContext } from '../../classes/Plugin';
 
 const NAME = 'JestPlugin';
-const DESCRIPTION = 'Jest Runner Plugin For Gmf';
+const DESCRIPTION = 'Jest Runner Plugin For gmf';
 
 export interface IJestPluginOpts {
   fake?: boolean;
 }
 
+/*
+ * 提供执行 jest 测试用例的插件
+ * */
 class JestPlugin implements Plugin {
   readonly name = NAME;
   readonly summary = DESCRIPTION;
@@ -18,13 +21,11 @@ class JestPlugin implements Plugin {
         compile.hooks.run.add(NAME, async () => {
           await runCLI(
             {
-              preset: 'ts-jest',
-              testEnvironment: 'node',
-              testMatch: ['**/test/**/*.[jt]sx?', '**/?(*.)+(spec|test).[tj]sx?'],
-              _: process.argv,
+              testRegex: ['.*/(__tests?__|tests?)/.+.(test|spec).[jt]sx?'],
+              _: [],
               $0: ''
             },
-            ['.']
+            [process.cwd()]
           );
         });
       });

@@ -1,15 +1,15 @@
-import { Async, Sync } from '@nfts/node-utils-library';
+import { Execution } from '@nfts/node-utils-library';
 import { TParameter } from '../parameters';
 import { Utils } from '../utils/Utils';
 
-export class SubParser {
+export class SubParser<R = unknown> {
   public readonly name: string;
   public readonly description: string;
 
   private _parent: SubParser;
   private _child: Set<SubParser> = new Set<SubParser>();
   private _parameters: Set<TParameter> = new Set<TParameter>();
-  private _flagCallbacks: Set<Sync.Task | Async.Task> = new Set<Sync.Task | Async.Task>();
+  private _flagCallbacks: Set<Execution.TTask<R>> = new Set<Execution.TTask<R>>();
 
   private _executeFile: string;
 
@@ -29,7 +29,7 @@ export class SubParser {
     return this;
   }
 
-  public parse<R = unknown>(args?: string[]): R {
+  public parse(args?: string[]): R {
     if (!Array.isArray(args)) {
       args = process.argv.slice(1);
     }
@@ -38,7 +38,7 @@ export class SubParser {
     return this._parse(args);
   }
 
-  private _parse<R = unknown>(args: string[]): R {
+  private _parse(args: string[]): R {
     this._flagCallbacks.clear();
 
     const _actions: string[] = [];
@@ -93,7 +93,7 @@ export class SubParser {
       return prevResult;
     }, {}) as R;
 
-    this._executeFlagCallback<R>(_result);
+    this._executeFlagCallback(_result);
 
     /**
      * append sub command
@@ -135,11 +135,10 @@ export class SubParser {
     return _parent;
   }
 
-  private _executeFlagCallback<R>(result: R) {
+  // TODO Make it async
+  private _executeFlagCallback(result: R) {
     const callbacks = Array.from(this._flagCallbacks.values());
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    void Async.serialize<R>(callbacks, result);
+    void Execution.serialize<R>(callbacks, result);
   }
 
   private _appendRootParamsToActiveParser(root: SubParser, active: SubParser) {

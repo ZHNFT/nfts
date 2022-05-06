@@ -6,7 +6,9 @@ export enum InlineClearType {
   Entire = 0
 }
 
-export interface IScreenSize extends readline.CursorPos {}
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+// export interface IScreenSize extends readline.CursorPos {}
 
 export class Screen {
   private readonly _rl: readline.Interface;
@@ -27,7 +29,7 @@ export class Screen {
     this._rl = rl;
   }
 
-  public get screenSize(): IScreenSize {
+  public get screenSize(): readline.CursorPos {
     return {
       rows: this._stdout.rows,
       cols: this._stdout.columns

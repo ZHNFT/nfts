@@ -3,7 +3,7 @@ import { Command } from './Command';
 import { Debug } from '../debug/Debug';
 import { CommandLineParameterManager } from './CommandLineParameter';
 
-interface ParsedCommandLineOption {
+export interface ParsedCommandLineOption {
   _: string[];
   [key: string]: string | string[];
 }
@@ -48,14 +48,13 @@ export class CommandLine extends CommandLineParameterManager {
   }
 
   public async execute(_args?: string[]) {
-    const { _, ...args } = this._parser.parse<ParsedCommandLineOption>(_args);
+    const { _, ...args } = this._parser.parse(_args) as ParsedCommandLineOption;
     const command = this._findCommand(_);
     await command.onExecute(args);
   }
 
   public parseCommandLine(): ParsedCommandLineOption {
-    // 直接读 process.argv
-    const result = this._parser.parse<ParsedCommandLineOption>();
+    const result = this._parser.parse() as ParsedCommandLineOption;
     return Object.freeze(result);
   }
 }

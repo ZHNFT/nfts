@@ -1,7 +1,6 @@
 import { CommandLine } from '@nfts/noddy';
 import { PluginManager } from '../classes/PluginManager';
 import { Configuration } from '../classes/Configuration';
-import { Stage } from '../classes/Stage';
 import { BundleCommand } from './commands/BundleCommand';
 import { BuildCommand } from './commands/BuildCommand';
 import { BuildStage, BundleStage } from '../stages';

@@ -6,7 +6,7 @@ import * as readline from 'readline';
 import * as process from 'process';
 import { Screen } from './Screen';
 
-export abstract class Query<TAnswer extends unknown> {
+export abstract class Query<TAnswer = unknown> {
   public readonly rl: readline.Interface;
   public readonly screen: Screen;
 

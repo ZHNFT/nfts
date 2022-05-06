@@ -15,7 +15,7 @@ export class ManualHook<TArgs = unknown> extends Hook<Execution.TTask<TArgs>> {
     const firstTask = tasks[0];
 
     if (!firstTask) {
-      throw new Error(`No task in ManualHook,\n` + `Using .add to hookup tasks`);
+      throw new Error(`No task in ManualHook,\n` + `Using .add(Task) to hookup tasks`);
     }
 
     // Invoke first task

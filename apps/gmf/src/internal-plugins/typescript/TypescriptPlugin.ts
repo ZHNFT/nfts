@@ -1,4 +1,3 @@
-import { Measure } from '@nfts/node-utils-library';
 import { Colors } from '@nfts/interactive-query';
 import { Plugin, PluginContext } from '../../classes/Plugin';
 import { TypescriptRunner } from './TypescriptRunner';
@@ -40,7 +39,7 @@ class TypescriptPlugin implements Plugin {
           await tsRunner._runBuild({ commandLineParameters: compile.cmdParams }, () => {
             if (!compile.cmdParams.watch) {
               const interval = performance.now() - startTime;
-              logger.log(`Build end with time ${Measure.millisecondsFormat(interval)}`);
+              logger.log(`Build end with time ${(interval % 1000).toFixed(2)}`);
             }
           });
         });
