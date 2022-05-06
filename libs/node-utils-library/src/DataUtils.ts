@@ -24,7 +24,7 @@ export enum ObjectTypes {
  * A set of object functions
  * */
 export class ObjectUtils {
-  public typeof(data: unknown): keyof typeof ObjectTypes {
+  public static typeof(data: unknown): keyof typeof ObjectTypes {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     return Object.prototype.toString.call(data).slice(8, -1).toLowerCase() as keyof typeof ObjectTypes;
   }
@@ -65,7 +65,7 @@ export class ObjectUtils {
    * @param right
    * @private
    */
-  private static mgergeSet(left: Set<unknown>, right: Set<unknown>) {
+  private static mergeSet(left: Set<unknown>, right: Set<unknown>) {
     const arrLeft = Array.from(left);
     const arrRight = Array.from(right);
     const mergedArr = ObjectUtils.merge(arrLeft, arrRight, { deep: true }) as Array<unknown>;
@@ -81,6 +81,11 @@ export class ObjectUtils {
 
   private static mergeMap(left: Map<string, unknown>, right: Map<string, unknown>) {
     //
+    for (const key in right.keys()) {
+      left.set(key, ObjectUtils.merge(left.get(key), right.get(key)));
+    }
+
+    return left;
   }
 
   /**
@@ -117,7 +122,25 @@ export class ObjectUtils {
       // 1. object 2. array 3. set 4. map 5. null 6. RegExp 7. Date 8. Buffer
       // TODO 有待补充 typeof 为 'object' 的数据类型
       if (typeof left === 'object' && typeof right === 'object') {
+        switch (ObjectUtils.typeof(left)) {
+          case 'array':
+            left = ObjectUtils.mergeArray(left as Array<unknown>, right as Array<unknown>);
+            break;
+          case 'object':
+            left = ObjectUtils.mergeObject(left as Record<string, unknown>, right as Record<string, unknown>);
+            break;
+          case 'map':
+            left = ObjectUtils.mergeMap(left as Map<string, unknown>, right as Map<string, unknown>);
+            break;
+          case 'set':
+            left = ObjectUtils.mergeSet(left as Set<unknown>, right as Set<unknown>);
+            break;
+          default:
+            left = right;
+            break;
+        }
       }
+      return right;
     } else {
       return Object.assign(left, right);
     }
