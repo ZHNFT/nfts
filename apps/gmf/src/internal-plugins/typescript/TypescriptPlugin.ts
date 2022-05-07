@@ -1,7 +1,7 @@
 import { Colors } from '@nfts/interactive-query';
+import { Measure, importSync } from '@nfts/node-utils-library';
 import { Plugin, PluginContext } from '../../classes/Plugin';
 import { TypescriptRunner } from './TypescriptRunner';
-import { performance } from 'perf_hooks';
 
 export interface TypescriptPluginOptions {
 	// 开启 WatchMode；
@@ -23,6 +23,8 @@ class TypescriptPlugin implements Plugin {
 	readonly name = NAME;
 	readonly summary = DESCRIPTION;
 
+	readonly typescriptVersion: string;
+
 	apply({ hooks, getScopedLogger, configuration }: PluginContext, _: TypescriptPluginOptions): void {
 		const logger = getScopedLogger(NAME);
 
@@ -35,13 +37,17 @@ class TypescriptPlugin implements Plugin {
 					logger.log(
 						`Build Start in ${compile.cmdParams.watch ? Colors.green('DEVELOPMENT') : Colors.cyan('PRODUCTION')} mode`
 					);
-					const startTime = performance.now();
-					await tsRunner._runBuild({ commandLineParameters: compile.cmdParams }, () => {
-						if (!compile.cmdParams.watch) {
-							const interval = performance.now() - startTime;
-							logger.log(`Build end with time ${(interval / 1000).toFixed(2)}s`);
+
+					await Measure.taskAsync(
+						`[${NAME}]`,
+						async () =>
+							await tsRunner._runBuild({ commandLineParameters: compile.cmdParams }, () => {
+								// After emit
+							}),
+						function taskExecutedCallback(spendTimeMS) {
+							logger.log(`Build end with time ${(spendTimeMS / 1000).toFixed(2)}s`);
 						}
-					});
+					);
 				});
 			});
 		});
