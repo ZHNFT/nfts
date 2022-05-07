@@ -1,6 +1,3 @@
-/*
- * A set of array functions
- * */
 export class ArrayUtils {
   public static arrayOf<T = unknown>(count: number, initialValue: T): Array<T> {
     return new Array(count).fill(initialValue) as Array<T>;
@@ -15,7 +12,6 @@ export enum ObjectTypes {
   regexp = 'regexp',
   null = 'null',
   date = 'date',
-
   // nodejs
   buffer = 'buffer'
 }
@@ -36,11 +32,16 @@ export class ObjectUtils {
    * @private
    */
   private static mergeArray(left: Array<unknown>, right: Array<unknown>) {
+    // 创建一个数组元素
+    const arr = new Array(left.length).fill(null).map((_, i) => {
+      return left[i];
+    });
+
     for (let i = 0; i < right.length; i++) {
-      left[i] = ObjectUtils.merge(left[i], right[i], { deep: true });
+      arr[i] = ObjectUtils.merge(arr[i], right[i], { deep: true });
     }
 
-    return left;
+    return arr;
   }
 
   /**
@@ -49,14 +50,17 @@ export class ObjectUtils {
    * @param right
    * @private
    */
-  private static mergeObject(left: Record<string, unknown>, right: Record<string, unknown>) {
+  private static mergeObject(left: Record<string | number, unknown>, right: Record<string | number, unknown>) {
+    // 创建一个新的副本
+    const obj = Object.assign(Object.create(null) as Record<string | number, unknown>, left);
+
     for (const rightKey in right) {
       if (Object.prototype.hasOwnProperty.call(right, rightKey)) {
-        left[rightKey] = ObjectUtils.merge(left[rightKey], right[rightKey], { deep: true });
+        obj[rightKey] = ObjectUtils.merge(obj[rightKey], right[rightKey], { deep: true });
       }
     }
 
-    return left;
+    return obj;
   }
 
   /**
@@ -70,22 +74,30 @@ export class ObjectUtils {
     const arrRight = Array.from(right);
     const mergedArr = ObjectUtils.merge(arrLeft, arrRight, { deep: true }) as Array<unknown>;
 
-    left.clear();
+    const _new = new Set<unknown>();
+    _new.clear();
 
     for (const mergedArrElement of mergedArr) {
-      left.add(mergedArrElement);
+      _new.add(mergedArrElement);
     }
 
-    return left;
+    return _new;
   }
 
   private static mergeMap(left: Map<string, unknown>, right: Map<string, unknown>) {
-    //
+    const _new = new Map<string, unknown>();
+
     for (const key in right.keys()) {
-      left.set(key, ObjectUtils.merge(left.get(key), right.get(key)));
+      _new.set(key, ObjectUtils.merge(left.get(key), right.get(key)));
     }
 
-    return left;
+    return _new;
+  }
+
+  private static mergeBuffer(left: Buffer, right: Buffer): Buffer {
+    const sizeLeft = left.length;
+    const sizeRight = right.length;
+    return Buffer.alloc(sizeLeft > sizeRight ? sizeLeft : sizeRight).fill(right);
   }
 
   /**
@@ -95,52 +107,41 @@ export class ObjectUtils {
    * @param mergeOptions
    * @return left
    */
-  public static merge(
-    left: unknown,
-    right: unknown,
-    mergeOptions: {
-      deep: boolean;
-    } = { deep: false }
-  ): unknown {
+  public static merge(left: unknown, right: unknown, mergeOptions: { deep: boolean } = { deep: false }): unknown {
     // 如果是全相等的两个数据，返回left
     if (left === right) {
-      return left;
+      return right;
     }
 
+    let newLeft: unknown;
+
     if (mergeOptions.deep) {
-      // Start deep-merge
-      // 深拷贝需要注意的点：
-      // 1. 对于循环应用的处理；
-      // 2. 数组按下标进行合并；
-      // 3. 对象按键值进行合并；
-      /*
-       * 一些特殊情况不用处理，直接返回 right；
-       * */
-      if (typeof left !== typeof right) {
-        return (left = right);
-      }
-      // 1. object 2. array 3. set 4. map 5. null 6. RegExp 7. Date 8. Buffer
-      // TODO 有待补充 typeof 为 'object' 的数据类型
-      if (typeof left === 'object' && typeof right === 'object') {
+      if (ObjectUtils.typeof(left) !== ObjectUtils.typeof(right)) {
+        return right;
+      } else {
+        // 1. object 2. array 3. set 4. map 5. null 6. RegExp 7. Date 8. Buffer
         switch (ObjectUtils.typeof(left)) {
           case 'array':
-            left = ObjectUtils.mergeArray(left as Array<unknown>, right as Array<unknown>);
+            newLeft = ObjectUtils.mergeArray(left as Array<unknown>, right as Array<unknown>);
             break;
           case 'object':
-            left = ObjectUtils.mergeObject(left as Record<string, unknown>, right as Record<string, unknown>);
+            newLeft = ObjectUtils.mergeObject(left as Record<string, unknown>, right as Record<string, unknown>);
             break;
           case 'map':
-            left = ObjectUtils.mergeMap(left as Map<string, unknown>, right as Map<string, unknown>);
+            newLeft = ObjectUtils.mergeMap(left as Map<string, unknown>, right as Map<string, unknown>);
             break;
           case 'set':
-            left = ObjectUtils.mergeSet(left as Set<unknown>, right as Set<unknown>);
+            newLeft = ObjectUtils.mergeSet(left as Set<unknown>, right as Set<unknown>);
+            break;
+          case 'buffer':
+            newLeft = ObjectUtils.mergeBuffer(left as Buffer, right as Buffer);
             break;
           default:
-            left = right;
+            newLeft = right;
             break;
         }
       }
-      return right;
+      return newLeft;
     } else {
       return Object.assign(left, right);
     }

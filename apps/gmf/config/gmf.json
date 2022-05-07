@@ -1,3 +1,7 @@
 {
-  "plugins": []
+	"$schema": "../schemas/gmf.schema.json",
+	"bundle": {
+		"entry": "../src/exec.ts",
+		"target": "CommonJS"
+	}
 }
