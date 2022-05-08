@@ -19,14 +19,16 @@ class JestPlugin implements Plugin {
     ctx.hooks.build.add(NAME, build => {
       build.hooks.compile.add(NAME, compile => {
         compile.hooks.run.add(NAME, async () => {
-          await runCLI(
-            {
-              testRegex: ['.*/(__tests?__|tests?)/.+.(test|spec).[jt]sx?'],
-              _: [],
-              $0: ''
-            },
-            [process.cwd()]
-          );
+          if (build.cmdParams.test) {
+            await runCLI(
+              {
+                testRegex: ['.*/(__tests?__|tests?)/.+.(test|spec).[jt]sx?'],
+                _: [],
+                $0: ''
+              },
+              [process.cwd()]
+            );
+          }
         });
       });
     });

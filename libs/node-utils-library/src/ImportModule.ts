@@ -5,8 +5,8 @@
 import { createRequire } from 'module';
 import { resolve } from 'path';
 import { FileSystem } from './FileSystem';
-import { Constants } from './packageJson/PackageJsonLookup';
-import { IPackageJson } from './packageJson';
+import { Constants } from './package-json/PackageJsonLookup';
+import { IPackageJson } from './package-json';
 
 interface ImportModuleOptions {
   cwd?: string;

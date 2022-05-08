@@ -1,37 +1,55 @@
 import * as Fs from './Fs';
-import * as Async from './Async';
-import { sync as importSync } from './Import';
-import { IPackageJson } from './IPackageJson';
 import * as Json from './Json';
 import * as Measure from './Measure';
 import * as Execution from './Execution';
 import * as Screen from './Screen';
 import * as Host from './Host';
-import * as ArrayEx from './ArrayEx';
+import * as PackageJson from './package-json';
 
-export { PackageJson } from './packageJson/PackageJson';
-export { PackageJsonLookup } from './packageJson/PackageJsonLookup';
-export { Schema } from './Schema';
-export { FileSystem } from './FileSystem';
-export { ImportModule } from './ImportModule';
+import { ArrayUtils, ObjectUtils } from './DataUtils';
+import { sync as importSync } from './Import';
 
-// Fs
+/**
+ * Module Importer
+ */
+export const req: { sync: typeof importSync } = {
+  sync: importSync
+};
+
+/**
+ * Utilities
+ */
+export const utils: { array: typeof ArrayUtils; object: typeof ObjectUtils } = {
+  array: ArrayUtils,
+  object: ObjectUtils
+};
+
+/**
+ * File/folder operations
+ */
 export { Fs };
-// Async
-export { Async };
-// Json
+
+/**
+ * JSON operations
+ */
 export { Json };
-// Measure Tasks
+/**
+ * Task measure
+ */
 export { Measure };
-// Import
-export { importSync };
-// Package
-export { IPackageJson };
-// Execution
+/**
+ * Tasks execution flow control
+ */
 export { Execution };
-// Screen
+/**
+ * Terminal screen control
+ */
 export { Screen };
-// Array extend
-export { ArrayEx };
-// Host
+/**
+ * Url parser
+ */
 export { Host };
+/**\
+ * package.json file operation and type definitions
+ */
+export { PackageJson };
