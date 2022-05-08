@@ -8,6 +8,7 @@ import * as NodeModule from 'module';
 import * as Constants from './Constants';
 import * as Json from './Json';
 import * as Package from './IPackageJson';
+import { ObjectUtils } from './DataUtils';
 
 export interface ImportModuleSyncOptions {
   cwd?: string;
@@ -25,7 +26,7 @@ const DEFAULT_IMPORT_SYNC_OPTIONS = {
  * @param options
  */
 export function sync(moduleName: string, options: ImportModuleSyncOptions = DEFAULT_IMPORT_SYNC_OPTIONS): unknown {
-  options = Object.assign({}, DEFAULT_IMPORT_SYNC_OPTIONS, options);
+  options = ObjectUtils.merge(DEFAULT_IMPORT_SYNC_OPTIONS, options);
   const req = NodeModule.createRequire(options.cwd);
   const fileModuleFullPath = path.resolve(options.cwd, moduleName);
 
@@ -34,7 +35,7 @@ export function sync(moduleName: string, options: ImportModuleSyncOptions = DEFA
     return req(fileModuleFullPath);
   }
 
-  // npm package
+  // package module
   const packagePath = path.resolve(options.cwd, options.node_modules, moduleName);
   const packageJsonPath = path.resolve(packagePath, Constants.packageJsonPath);
 
@@ -43,14 +44,13 @@ export function sync(moduleName: string, options: ImportModuleSyncOptions = DEFA
   }
 
   const pkgJson: Package.IPackageJson = Json.readJsonSync(packageJsonPath);
-
   // const mainEntry: string;
   if (pkgJson.main === undefined) {
     throw new Error(`"main" field is not exist in package.json of module ${moduleName}`);
   }
-
   const mainEntry = path.resolve(packagePath, pkgJson.main);
-  return req(mainEntry);
+  const mod = req(mainEntry) as { default?: unknown };
+  return mod && mod.default ? mod.default : mod;
 }
 
 export function resolveModule(moduleName, options: { cwd: string } = { cwd: process.cwd() }) {

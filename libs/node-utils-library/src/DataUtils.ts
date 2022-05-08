@@ -116,8 +116,9 @@ export class ObjectUtils {
     let newLeft: unknown;
 
     if (mergeOptions.deep) {
+      // 类型不一样的，统一返回left、
       if (ObjectUtils.typeof(left) !== ObjectUtils.typeof(right)) {
-        return right;
+        return left;
       } else {
         // 1. object 2. array 3. set 4. map 5. null 6. RegExp 7. Date 8. Buffer
         switch (ObjectUtils.typeof(left)) {
