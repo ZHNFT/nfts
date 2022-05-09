@@ -6,7 +6,8 @@
     "declaration": true,
     "declarationDir": "dist",
     "moduleResolution": "node",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "noImplicitAny": true
   },
   "include": ["src"],
   "exclude": ["node_modules", "*.d.ts"]

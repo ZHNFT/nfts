@@ -7,7 +7,7 @@ class SnowpackDevPlugin implements Plugin {
   readonly summary: 'Snowpack Development Plugin';
 
   apply(ctx: PluginContext): void {
-    ctx.hooks.build.compile.add(this.name, compile => {
+    ctx.hooks.build.add(this.name, compile => {
       const { commandLineParameters, config: gmfConfig } = compile.options;
       compile.hooks.run.add(this.name, async () => {
         if (commandLineParameters.watch) {
