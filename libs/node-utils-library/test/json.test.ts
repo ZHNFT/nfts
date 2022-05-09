@@ -1,4 +1,4 @@
-import { readJson } from '../src/Json';
+import { readJson } from '../src/json';
 
 interface TObj {
   name: string;

@@ -1,4 +1,4 @@
-import { Async, Execution } from '@nfts/node-utils-library';
+import { Execution } from '@nfts/node-utils-library';
 import { Hook } from '../classes/Hook';
 
 /**
@@ -7,7 +7,7 @@ import { Hook } from '../classes/Hook';
 export class SyncHook<TArgs = unknown> extends Hook<Execution.TTask<TArgs>> {
   public add(taskName: string, task: Execution.TTask<TArgs>): void {
     if (!Execution.isSyncTask(task)) {
-      if (Async.isAsyncTask(task)) {
+      if (Execution.isAsyncTask(task)) {
         console.warn(
           `Unexpected async task added to SyncHook ${taskName};\n` + `Async task in SyncHook may not work properly`
         );

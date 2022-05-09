@@ -1,4 +1,4 @@
-import { ArrayUtils, ObjectUtils } from '../src/DataUtils';
+import { array as ArrayUtils, object as ObjectUtils } from '../src/utilities';
 
 describe('ArrayUtils 测试用例', function () {
   test('生成指定长度的数组', () => {

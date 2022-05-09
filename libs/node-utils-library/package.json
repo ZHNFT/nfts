@@ -9,7 +9,8 @@
   "scripts": {
     "test": "gmf build --test",
     "dev": "gmf build --watch",
-    "build": "gmf build"
+    "build": "gmf build",
+    "jest": "npx jest"
   },
   "devDependencies": {
     "@nfts/gmf": "workspace:*",

@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import { importSync } from '@nfts/node-utils-library';
+import { req } from '@nfts/node-utils-library';
 import type { Configuration } from 'webpack';
 import type { Configuration as DevServerConfiguration } from 'webpack-dev-server';
 
@@ -8,7 +8,7 @@ export class WebpackConfigLoader {
     if (!fs.existsSync(path)) {
       throw new Error(`Can't read webpack configuration from <${path}>`);
     }
-    return importSync(path) as Configuration;
+    return req.sync(path) as Configuration;
   }
 
   public static loadDevServerConfigurationFromFile(
@@ -18,6 +18,6 @@ export class WebpackConfigLoader {
       throw new Error(`Can't read webpack-dev-server configuration from <${path}>`);
     }
 
-    return importSync(path) as DevServerConfiguration;
+    return req.sync(path) as DevServerConfiguration;
   }
 }

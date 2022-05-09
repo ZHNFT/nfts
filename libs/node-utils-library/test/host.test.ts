@@ -1,4 +1,4 @@
-import { chosePort } from '../src/Host';
+import { chosePort } from '../src/url';
 
 describe('HOST 方法测试', () => {
   test('端口占用测试', () => {

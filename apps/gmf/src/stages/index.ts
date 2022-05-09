@@ -5,14 +5,14 @@ import { BundleStage, BundleStageHooks } from './BundleStage';
 import { BundleCommandLineParametersValue } from '../cli/commands/BundleCommand';
 import { BuildCommandLineParametersValue } from '../cli/commands/BuildCommand';
 
-interface IStages {
+export interface IStages {
   build: BuildStage;
   bundle: BundleStage;
 }
 
-interface IStageHooks {
+export interface IStageHooks {
   build: AsyncHook<StageCommonContext<BuildCommandLineParametersValue, BuildStageHooks>>;
   bundle: AsyncHook<StageCommonContext<BundleCommandLineParametersValue, BundleStageHooks>>;
 }
 
-export { BuildStageHooks, BundleStageHooks, BuildStage, BundleStage, IStages, IStageHooks };
+export { BuildStageHooks, BundleStageHooks, BuildStage, BundleStage };

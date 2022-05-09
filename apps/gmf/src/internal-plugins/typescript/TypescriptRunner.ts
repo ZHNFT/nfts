@@ -6,8 +6,8 @@ import { DebugTool } from '@nfts/noddy';
 import { dirname } from 'path';
 import { BuildCommandLineParametersValue } from '../../cli/commands/BuildCommand';
 import { TypescriptConfigHost } from './TypescriptConfigHost';
-import Constants from '../../Constants';
 import { TypescriptWatchCompilerHost } from './TypescriptWatchCompilerHost';
+import Constants from '../../Constants';
 
 export class TypescriptRunner {
   private readonly debug: DebugTool.Debug;

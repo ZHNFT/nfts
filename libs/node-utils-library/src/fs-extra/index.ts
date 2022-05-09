@@ -4,32 +4,31 @@
  * */
 import * as nodeFs from 'fs';
 import * as nodePath from 'path';
-import { serialize } from './Execution';
+import { serialize } from '../execution';
 
 export interface IFileOperationOpts {
   cwd?: string;
 }
 
-export interface WriteFileOpts extends IFileOperationOpts {
+export interface IWriteFileOpts extends IFileOperationOpts {
   ensureRoot?: boolean;
 }
 
-const writeFileDefaultOpts = {
-  ensureRoot: true,
-  cwd: './'
+export const defaultWriteFileOpts = {
+  ensureRoot: true
 };
 
 /**
  * 写文件内容，同时生成文件所处的文件夹
  * @param {string} filename
  * @param {string} content
- * @param {{ ensureRoot?: boolean }} options
+ * @param usrOptions
  */
-export async function writeFile(filename: string, content: string, usrOptions?: WriteFileOpts): Promise<void> {
+export async function writeFile(filename: string, content: string, usrOptions?: IWriteFileOpts): Promise<void> {
   if (!usrOptions) {
-    usrOptions = writeFileDefaultOpts;
+    usrOptions = defaultWriteFileOpts;
   } else {
-    usrOptions = Object.assign({}, writeFileDefaultOpts, usrOptions);
+    usrOptions = Object.assign({}, defaultWriteFileOpts, usrOptions);
   }
 
   const dirsReadyToCreate: string[] = [];
@@ -57,6 +56,7 @@ export async function writeFile(filename: string, content: string, usrOptions?: 
 /**
  * 创建文件夹的方法，不会抛出重复创建的异常
  * @param dirname
+ * @param options
  */
 export async function mkdir(
   dirname: string,
@@ -148,4 +148,15 @@ export function readDirRecursionSync(
   }
 
   return files;
+}
+
+/**
+ * 测试文件是否存在，是否可访问
+ */
+export function accessFile(path: string, mode?: number): void | never {
+  try {
+    nodeFs.accessSync(path, mode);
+  } catch (e) {
+    throw new Error(`Can't access ${path}, make sure you have permission or file is not exist`);
+  }
 }

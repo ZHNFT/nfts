@@ -1,7 +1,7 @@
 import { Colors } from '@nfts/interactive-query';
-import { Measure, importSync } from '@nfts/node-utils-library';
-import { Plugin, PluginContext } from '../../classes/Plugin';
+import { Measure } from '@nfts/node-utils-library';
 import { TypescriptRunner } from './TypescriptRunner';
+import { Plugin, PluginContext } from '../../classes/Plugin';
 
 export interface TypescriptPluginOptions {
   // 开启 WatchMode；
@@ -39,7 +39,6 @@ class TypescriptPlugin implements Plugin {
           );
 
           await Measure.taskAsync(
-            `[${NAME}]`,
             async () =>
               await tsRunner._runBuild({ commandLineParameters: compile.cmdParams }, () => {
                 // After emit

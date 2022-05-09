@@ -1,5 +1,5 @@
 import { dirname, resolve } from 'path';
-import { sync } from '../src/Import';
+import { sync } from '../src/require';
 
 describe('导入 .scripts、.eslintrc.js 文件模块', function () {
   it('should import .eslintrc.js correct', function () {

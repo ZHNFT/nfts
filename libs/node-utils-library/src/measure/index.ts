@@ -10,7 +10,7 @@ export enum Unit {
   H
 }
 
-export function millisecondsFormat(milliseconds, unit = Unit.S): string {
+export function millisecondsPrettier(milliseconds, unit = Unit.S): string {
   switch (unit) {
     case Unit.S:
       return (milliseconds / 1000).toFixed(2) + 's';
@@ -35,18 +35,12 @@ export function taskSync(mark: string, task: () => void, callback?: (spendMs: nu
 
 /**
  * 返回异步 task 的执行时间
- * @param mark
  * @param task
  * @param callback
  */
-export function taskAsync(
-  mark: string,
-  task: () => Promise<void>,
-  callback?: (spendMs: number) => void
-): Promise<void> {
+export function taskAsync(task: () => Promise<void>, callback?: (spendMs: number) => void): Promise<void> {
   const _start = now();
   return task().finally(() => {
-    const _end = now();
-    callback?.(_end - _start);
+    callback?.(now() - _start);
   });
 }

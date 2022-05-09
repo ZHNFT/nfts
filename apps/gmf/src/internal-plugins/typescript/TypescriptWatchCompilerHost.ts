@@ -1,6 +1,6 @@
 import * as os from 'os';
 import * as ts from 'typescript';
-import { Screen } from '@nfts/node-utils-library';
+import { Terminal } from '@nfts/node-utils-library';
 import { DebugTool } from '@nfts/noddy';
 import { Colors } from '@nfts/interactive-query';
 import { BgColorNumbers } from '@nfts/interactive-query/dist/core/Colors';
@@ -47,14 +47,9 @@ export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
     this.diagnosticsInOneTick.push(diagnostic);
   }
 
-  reportWatchStatus(
-    diagnostic: ts.Diagnostic,
-    newLine: string,
-    options: ts.CompilerOptions,
-    errorCount: number
-  ) {
+  reportWatchStatus(diagnostic: ts.Diagnostic, newLine: string, options: ts.CompilerOptions, errorCount: number) {
     if (!errorCount || errorCount === 0) {
-      Screen.cleanScreen();
+      Terminal.clearScreen();
       this.diagnosticsInOneTick = [];
       console.log(diagnostic.messageText);
       return;
@@ -103,22 +98,16 @@ export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
       )}${TypescriptWatchCompilerHost.arrayOf(Colors.red('~'), _d.length)}`;
 
       const outPut = [
-        `      ${Colors.print(
-          String(lastLineNo).padStart(String(errorLineNo).length, ' ') + ':',
-          [BgColorNumbers.black]
-        )} ${
+        `      ${Colors.print(String(lastLineNo).padStart(String(errorLineNo).length, ' ') + ':', [
+          BgColorNumbers.black
+        ])} ${
           lines[lastLineNo - 1] // 行数下标是 1 开始，在数组中用需要减一
         }`,
-        `      ${Colors.print(String(errorLineNo) + ':', [BgColorNumbers.black])} ${
-          lines[lineNo - 1]
-        }`,
+        `      ${Colors.print(String(errorLineNo) + ':', [BgColorNumbers.black])} ${lines[lineNo - 1]}`,
         `      ${tip}${os.EOL}` + `      ${Colors.red(_d.messageText as string)}\n\r`
       ];
 
-      groupByFilename[filename] = [
-        ...(groupByFilename[filename] ?? []),
-        outPut.join(os.EOL)
-      ];
+      groupByFilename[filename] = [...(groupByFilename[filename] ?? []), outPut.join(os.EOL)];
     }
 
     Object.keys(groupByFilename).forEach(filename => {

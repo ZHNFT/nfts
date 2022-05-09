@@ -5,10 +5,10 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as NodeModule from 'module';
-import * as Constants from './Constants';
-import * as Json from './Json';
-import * as Package from './IPackageJson';
-import { ObjectUtils } from './DataUtils';
+import * as Constants from '../Constants';
+import * as Json from '../json';
+import * as Package from '../package-json';
+import { object as objectUtils } from '../utilities';
 
 export interface ImportModuleSyncOptions {
   cwd?: string;
@@ -26,7 +26,7 @@ const DEFAULT_IMPORT_SYNC_OPTIONS = {
  * @param options
  */
 export function sync(moduleName: string, options: ImportModuleSyncOptions = DEFAULT_IMPORT_SYNC_OPTIONS): unknown {
-  options = ObjectUtils.merge(DEFAULT_IMPORT_SYNC_OPTIONS, options);
+  options = objectUtils.merge(DEFAULT_IMPORT_SYNC_OPTIONS, options);
   const req = NodeModule.createRequire(options.cwd);
   const fileModuleFullPath = path.resolve(options.cwd, moduleName);
 

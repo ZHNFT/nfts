@@ -1,6 +1,6 @@
 import { Command } from '@nfts/noddy';
 import { FlagParameter, StringParameter } from '@nfts/argparser';
-import { BundleStage } from '../../stages/BundleStage';
+import { BundleStage } from '../../stages';
 
 const NAME = 'bundle';
 const DESCRIPTION = 'Run bundle process using extra plugin';
