@@ -1,7 +1,7 @@
-import { DebugTool } from '@nfts/noddy';
+import { Debug } from '@nfts/noddy';
 
-export function getScopedLogger(scope: string): DebugTool.Debug {
-  return DebugTool.Debug.getScopedLogger(scope, {
+export function getScopedLogger(scope: string): Debug {
+  return Debug.getScopedLogger(scope, {
     scopePrefix: true
   });
 }

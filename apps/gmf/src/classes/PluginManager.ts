@@ -22,10 +22,10 @@ export class PluginManager {
     this._stages = stages;
     this._command = command;
 
-    this.applyPlugin(typescriptPlugin);
-    this.applyPlugin(jestPlugin);
     this.applyPlugin(copyPlugin);
     this.applyPlugin(cleanPlugin);
+    this.applyPlugin(typescriptPlugin);
+    this.applyPlugin(jestPlugin);
   }
 
   public initPluginsFromConfiguration() {

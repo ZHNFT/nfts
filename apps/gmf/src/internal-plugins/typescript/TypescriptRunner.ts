@@ -2,7 +2,7 @@ import ts from 'typescript';
 import fs from 'fs';
 import path from 'path';
 import { Fs, Execution } from '@nfts/node-utils-library';
-import { DebugTool } from '@nfts/noddy';
+import { Debug } from '@nfts/noddy';
 import { dirname } from 'path';
 import { BuildCommandLineParametersValue } from '../../cli/commands/BuildCommand';
 import { TypescriptConfigHost } from './TypescriptConfigHost';
@@ -10,10 +10,10 @@ import { TypescriptWatchCompilerHost } from './TypescriptWatchCompilerHost';
 import Constants from '../../Constants';
 
 export class TypescriptRunner {
-  private readonly debug: DebugTool.Debug;
+  private readonly debug: Debug;
   private readonly parseConfigHost: TypescriptConfigHost;
 
-  constructor({ debug }: { debug: DebugTool.Debug }) {
+  constructor({ debug }: { debug: Debug }) {
     this.debug = debug;
     this.parseConfigHost = new TypescriptConfigHost();
   }

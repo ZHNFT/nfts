@@ -1,7 +1,7 @@
 import * as os from 'os';
 import * as ts from 'typescript';
 import { Terminal } from '@nfts/node-utils-library';
-import { DebugTool } from '@nfts/noddy';
+import { Debug } from '@nfts/noddy';
 import { Colors } from '@nfts/interactive-query';
 import { BgColorNumbers } from '@nfts/interactive-query/dist/core/Colors';
 
@@ -27,7 +27,7 @@ export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
 
   diagnosticsInOneTick: ts.Diagnostic[] = [];
 
-  private readonly debug: DebugTool.Debug;
+  private readonly debug: Debug;
 
   constructor({
     debug,
@@ -35,7 +35,7 @@ export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
     configFileName,
     optionsToExtend,
     watchOptionsToExtend
-  }: { debug: DebugTool.Debug } & TCustomWatchCompilerHostOpts) {
+  }: { debug: Debug } & TCustomWatchCompilerHostOpts) {
     this.debug = debug;
     this.optionsToExtend = optionsToExtend;
     this.watchOptionsToExtend = watchOptionsToExtend;

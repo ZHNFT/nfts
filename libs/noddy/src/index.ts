@@ -2,6 +2,7 @@ export * from './framework/CommandLine';
 export * from './framework/Command';
 export * from './framework/CommandLineParameter';
 
-import * as DebugTool from './debug/Debug';
+import { Debug } from './debug/Debug';
+import { Measure } from './measure/Measure';
 
-export { DebugTool };
+export { Debug, Measure };

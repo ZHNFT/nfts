@@ -2,7 +2,7 @@ import { existsSync } from 'fs';
 import { Json } from '@nfts/node-utils-library';
 import Constants from '../Constants';
 
-export enum TargetKinds {
+export enum TargetModuleKinds {
   'CommonJS',
   'AMD',
   'UMD',
@@ -11,13 +11,15 @@ export enum TargetKinds {
 }
 
 export interface IGmfConfig {
-  bundle: {
+  output?: string;
+  bundle?: {
     entry: string | string[];
-    target: TargetKinds;
+    target?: TargetModuleKinds;
   };
-  plugins: {
+  build?: {};
+  plugins?: {
     pluginName: string;
-    options: Record<string, unknown>;
+    options?: Record<string, unknown>;
   }[];
 }
 

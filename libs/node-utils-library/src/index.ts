@@ -1,6 +1,5 @@
 import * as Fs from './fs-extra';
 import * as Json from './json';
-import * as Measure from './measure';
 import * as Execution from './execution';
 import * as Terminal from './terminal';
 import * as Url from './url';
@@ -15,7 +14,6 @@ export const req: { sync: typeof importSync } = {
 export { Utilities };
 export { Fs };
 export { Json };
-export { Measure };
 export { Execution };
 export { Terminal };
 export { Url };

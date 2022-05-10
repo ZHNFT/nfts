@@ -1,56 +1,42 @@
 {
-	"$schema": "https://json-schema.org/draft/2020-12/schema",
-	"$id": "https://json-schema.org/draft/2020-12/output/schema",
-	"description": "Schema for gmf project",
-	"type": "object",
-	"properties": {
-		"bundle": {
-			"type": "object",
-			"properties": {
-				"entry": {
-					"oneOf": [{ "type": "string" }, { "type": "array", "items": { "type": "string" } }]
-				},
-				"target": {
-					"oneOf": [
-						{ "type": "string", "enum": ["CommonJS", "AMD", "UMD", "ESNext", "System"] },
-						{
-							"type": "array",
-							"uniqueItems": true,
-							"items": {
-								"type": "string",
-								"enum": ["CommonJS", "AMD", "UMD", "ESNext", "System"]
-							}
-						}
-					]
-				}
-			}
-		},
-		"build": {
-			"target": {
-				"type": "string",
-				"enum": [
-					"None",
-					"CommonJS",
-					"AMD",
-					"UMD",
-					"System",
-					"ES2015",
-					"ES2020",
-					"ES2022",
-					"ESNext",
-					"Node12",
-					"NodeNext"
-				]
-			}
-		},
-		"plugins": {
-			"type": "array",
-			"items": {
-				"type": "object",
-				"properties": {
-					"pluginName": { "type": "string" }
-				}
-			}
-		}
-	}
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://json-schema.org/draft/2020-12/output/schema",
+  "description": "Schema for gmf project",
+  "type": "object",
+  "properties": {
+    "output": { "type": "string", "description": "Specified path where build/bundled files generate" },
+    "bundle": {
+      "type": "object",
+      "properties": {
+        "entry": {
+          "oneOf": [{ "type": "string" }, { "type": "array", "items": { "type": "string" } }]
+        },
+        "target": {
+          "oneOf": [
+            { "type": "string", "enum": ["CommonJS", "AMD", "UMD", "ESNext", "System"] },
+            {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": ["CommonJS", "AMD", "UMD", "ESNext", "System"]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "build": {
+      "type": "object"
+    },
+    "plugins": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "pluginName": { "type": "string" }
+        }
+      }
+    }
+  }
 }

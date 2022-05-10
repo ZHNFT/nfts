@@ -1,5 +1,5 @@
 import { Colors } from '@nfts/interactive-query';
-import { Measure } from '@nfts/node-utils-library';
+import { Measure } from '@nfts/noddy';
 import { TypescriptRunner } from './TypescriptRunner';
 import { Plugin, PluginContext } from '../../classes/Plugin';
 
