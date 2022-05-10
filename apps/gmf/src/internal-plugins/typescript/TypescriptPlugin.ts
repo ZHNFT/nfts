@@ -44,7 +44,7 @@ class TypescriptPlugin implements Plugin {
                 // After emit
               }),
             function taskExecutedCallback(spendTimeMS) {
-              logger.log(`Build end with time ${(spendTimeMS / 1000).toFixed(2)}s`);
+              logger.log(`Build end with time ${Measure.msFormat(spendTimeMS)}`);
             }
           );
         });
