@@ -16,7 +16,7 @@ class WebpackPlugin implements Plugin {
   private webpackVersion: string;
   private webpackDevServerVersion: string;
 
-  private readonly webpackRunner = new WebpackRunner();
+  private readonly webpackRunner: WebpackRunner = new WebpackRunner();
 
   apply({ getScopedLogger, hooks }: PluginContext): void | Promise<void> {
     const logger = getScopedLogger(NAME);
@@ -63,9 +63,7 @@ class WebpackPlugin implements Plugin {
       bundle.hooks.compile.add(NAME, async compile => {
         const webpackConfig = (await bundle.hooks.configure.call(undefined)) as Configuration;
         compile.hooks.run.add(NAME, () => {
-          this.webpackRunner.createCompiler(webpackConfig).run({
-            watch: bundle.cmdParams.watch
-          });
+          this.webpackRunner.createCompilerAndRun(webpackConfig, { watch: bundle.cmdParams.watch });
         });
       });
     });

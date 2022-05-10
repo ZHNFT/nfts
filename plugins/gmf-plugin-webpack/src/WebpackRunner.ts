@@ -13,13 +13,28 @@ export class WebpackRunner {
   /*
    * 创建webpack compiler 实例
    * */
-  public createCompiler(config: Configuration): WebpackRunner {
+  public createCompilerAndRun(config: Configuration, opts: WebpackRunOptions): void {
     this.config = config;
-    this.compiler = Webpack(config, this.onCompilerCallback);
-    return this;
+    this.compiler = Webpack(config, (error, stats) => {
+      this.onCompilerCreationCallback(error, stats, opts);
+    });
   }
 
-  public run(options: WebpackRunOptions, compiler?: Compiler): void {
+  private _formatWebpackMessage(stats: Webpack.Stats) {
+    const { errors, warnings, errorsCount, warningsCount } = stats.toJson();
+
+    console.log(process.cwd());
+
+    const errorsFormattedMessage = errors.map(err => {
+      const { file, details } = err;
+      return `${file} \n${details}`;
+    });
+
+    console.log(errorsFormattedMessage.join('/n'));
+    console.log(`Compiled with ${errorsCount} errors and ${warningsCount} warnings`);
+  }
+
+  private _run(options: WebpackRunOptions, compiler?: Compiler): void {
     let innerCompiler = this.compiler;
     if (compiler) {
       innerCompiler = compiler;
@@ -28,12 +43,7 @@ export class WebpackRunner {
     if (options.watch) {
       const devServerOption = this.config.devServer ?? {};
 
-      const watchServer = new WebpackDevServerRunner().run(
-        {
-          ...devServerOption
-        },
-        innerCompiler
-      );
+      const watchServer = new WebpackDevServerRunner().run({ ...devServerOption }, innerCompiler);
 
       watchServer.startCallback(err => {
         if (err) {
@@ -44,18 +54,30 @@ export class WebpackRunner {
         }`;
         console.log(`Successfully started server on ${localUrl}`);
       });
-    }
+    } else {
+      innerCompiler.run((error, stats) => {
+        if (error) {
+          throw error;
+        }
+        if (!stats.hasErrors() && !stats.hasWarnings()) {
+          console.log(`Compile successfully with no errors!`);
+          return;
+        }
 
-    innerCompiler.run(() => {
-      //
-    });
+        this._formatWebpackMessage(stats);
+      });
+    }
   }
 
-  private onCompilerCallback = (errors: Webpack.StatsError, stats: Webpack.Stats) => {
-    if (!stats.hasErrors() && !stats.hasWarnings()) {
-      console.log(`Compile with no errors!`);
+  private onCompilerCreationCallback = (error: Webpack.StatsError, stats: Webpack.Stats, opts: WebpackRunOptions) => {
+    if (error) {
+      throw error;
     }
 
-    console.log(errors);
+    if (!stats.hasErrors() && !stats.hasWarnings()) {
+      console.log(`Compiler create with no errors!`);
+    }
+
+    this._run({ watch: opts?.watch });
   };
 }

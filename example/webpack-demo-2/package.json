@@ -1,0 +1,14 @@
+{
+  "name": "webpack-demo-2",
+  "version": "0.0.1",
+  "devDependencies": {
+    "@nfts/gmf": "workspace:*",
+    "@nfts/gmf-plugin-webpack": "workspace:*",
+    "webpack": "^5.72.0",
+    "webpack-cli": "^4.9.2"
+  },
+  "scripts": {
+    "start": "gmf bundle --watch",
+    "bundle": "gmf bundle"
+  }
+}

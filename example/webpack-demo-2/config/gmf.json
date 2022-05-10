@@ -2,7 +2,7 @@
   "$schema": "../node_modules/@nfts/gmf/schemas/gmf.schema.json",
   "plugins": [
     {
-      "pluginName": "@nfts/gmf-plugin-snowpack"
+      "pluginName": "@nfts/gmf-plugin-webpack"
     }
   ]
 }

@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@nfts/eslint-config": "workspace:*",
+    "@nfts/noddy": "workspace:*",
     "@nfts/gmf": "workspace:*",
     "@types/jest": "^27.0.3",
     "@types/node": "~17.0.5",
