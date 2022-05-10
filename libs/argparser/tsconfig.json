@@ -4,10 +4,10 @@
     "target": "ES2017",
     "outDir": "./dist",
     "declaration": true,
-    "declarationDir": "./dist",
     "moduleResolution": "Node",
     "lib": ["ESNext"],
     "noImplicitAny": true
   },
-  "include": ["src/"]
+  "include": ["src/"],
+  "exclude": ["node_modules/"]
 }

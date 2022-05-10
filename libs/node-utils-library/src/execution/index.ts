@@ -5,7 +5,7 @@ export type TVoidTask<TArgs = unknown> = TSyncTask<TArgs, void>;
 /**
  * @remark 所有的 Task 方法的类型，默认返回值为void
  */
-export type TTask<TArgs = unknown, TRes = void> = (args?: TArgs) => TRes;
+export type TTask<TArgs = unknown, TRes = void> = (args?: TArgs, callback?: TVoidTask<TArgs>) => TRes;
 
 /**
  * 按需执行task，上一个task执行返回的结果作为下一个task的输入，

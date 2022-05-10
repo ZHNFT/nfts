@@ -1,31 +1,38 @@
-# FOLK FROM https://github.com/microsoft/rushstack/blob/master/libraries/ts-command-line/.npmignore
-# THIS IS A STANDARD TEMPLATE FOR .npmignore FILES IN THIS REPO.
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
 
-# Ignore all files by default, to avoid accidentally publishing unintended files.
-*
+# Dependency directories
+node_modules/
 
-# Use negative patterns to bring back the specific things we want to publish.
-!/bin/**
-!/lib/**
-!/lib-*/**
-!/dist/**
-!ThirdPartyNotice.txt
+# TypeScript cache
+*.tsbuildinfo
 
-# Ignore certain patterns that should not get published.
-/dist/*.stats.*
-/lib/**/test/
-/lib-*/**/test/
-*.test.eslintrc.js
+# Optional npm cache directory
+.npm
 
-# NOTE: These don't need to be specified, because NPM includes them automatically.
-#
-# package.eslintrc.json
-# README (and its variants)
-# CHANGELOG (and its variants)
-# LICENSE / LICENCE
+# Optional eslint cache
+.eslintcache
 
-#--------------------------------------------
-# DO NOT MODIFY THE TEMPLATE ABOVE THIS LINE
-#--------------------------------------------
+# dotenv environment variables file
+.env
+.env.test
 
-# (Add your project-specific overrides here)
+dist
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# source code
+test

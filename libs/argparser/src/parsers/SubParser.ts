@@ -63,6 +63,7 @@ export class SubParser<R = unknown> {
 
       if (Utils.hasParamFlagPrefix(currentArg)) {
         const stripParamFlagName = Utils.stripParamFlagPrefix(currentArg);
+        // @ts-ignore
         prevResult[stripParamFlagName] = true;
         _key = currentArg;
         _value = true;
@@ -70,6 +71,7 @@ export class SubParser<R = unknown> {
         const prevArg = _args[currentIndex - 1];
         const prevStripParamFlagName = Utils.stripParamFlagPrefix(prevArg);
         if (prevStripParamFlagName in prevResult) {
+          // @ts-ignore
           prevResult[prevStripParamFlagName] = currentArg;
           _key = prevArg;
           _value = currentArg;
@@ -80,10 +82,12 @@ export class SubParser<R = unknown> {
 
       // Add shortName to result
       if (param.shortName) {
+        // @ts-ignore
         prevResult[Utils.stripParamFlagPrefix(param.shortName)] = _value;
       }
 
       if (param.name) {
+        // @ts-ignore
         prevResult[Utils.stripParamFlagPrefix(param.name)] = _value;
       }
 
