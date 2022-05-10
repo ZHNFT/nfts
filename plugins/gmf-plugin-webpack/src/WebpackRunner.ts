@@ -83,6 +83,8 @@ export class WebpackRunner {
     if (error) {
       throw error;
     }
+
+    // Todo  Where watch node happen, add format for watch mode message
     this._formatWebpackMessage(stats);
     if (!opts.watch) {
       this._runBuild({ watch: opts?.watch });
