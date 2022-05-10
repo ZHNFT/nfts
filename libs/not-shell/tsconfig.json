@@ -3,7 +3,8 @@
     "module": "CommonJS",
     "target": "ES2017",
     "outDir": "./dist",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "noImplicitAny": true
   },
   "include": ["src/"],
   "exclude": ["dist/"]

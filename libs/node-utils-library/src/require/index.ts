@@ -53,6 +53,6 @@ export function sync(moduleName: string, options: ImportModuleSyncOptions = DEFA
   return mod && mod.default ? mod.default : mod;
 }
 
-export function resolveModule(moduleName, options: { cwd: string } = { cwd: process.cwd() }) {
+export function resolveModule(moduleName: string, options: { cwd: string } = { cwd: process.cwd() }) {
   // TODO 添加模块路径解析的逻辑
 }

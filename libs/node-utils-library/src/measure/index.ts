@@ -10,7 +10,7 @@ export enum Unit {
   H
 }
 
-export function millisecondsPrettier(milliseconds, unit = Unit.S): string {
+export function millisecondsPrettier(milliseconds: number, unit = Unit.S): string {
   switch (unit) {
     case Unit.S:
       return (milliseconds / 1000).toFixed(2) + 's';

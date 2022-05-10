@@ -14,15 +14,15 @@ export type TTask<TArgs = unknown, TRes = void> = TSyncTask<TArgs, TRes> | TAsyn
  * @returns {Promise<TArgs = unknown>}
  */
 export async function waterfall<TArgs = unknown>(
-	tasks: (TSyncTask<TArgs, TArgs> | TAsyncTask<TArgs, TArgs>)[],
-	args?: TArgs
+  tasks: (TSyncTask<TArgs, TArgs> | TAsyncTask<TArgs, TArgs>)[],
+  args?: TArgs
 ): Promise<TArgs> {
-	return tasks.reduce((promise, task): Promise<TArgs> => {
-		return promise.then(
-			(nextArgs: TArgs) => task(nextArgs),
-			(e: unknown) => Promise.reject(e)
-		);
-	}, Promise.resolve(args));
+  return tasks.reduce((promise, task): Promise<TArgs> => {
+    return promise.then(
+      (nextArgs: TArgs) => task(nextArgs),
+      (e: unknown) => Promise.reject(e)
+    );
+  }, Promise.resolve(args));
 }
 
 /**
@@ -33,7 +33,7 @@ export async function waterfall<TArgs = unknown>(
  * @returns {Promise<void[]>}
  */
 export async function parallel<TaskArgs = unknown>(tasks: TTask<TaskArgs>[], args?: TaskArgs): Promise<void[]> {
-	return Promise.all(tasks.map(task => task(args)));
+  return Promise.all(tasks.map(task => task(args)));
 }
 
 /**
@@ -43,12 +43,12 @@ export async function parallel<TaskArgs = unknown>(tasks: TTask<TaskArgs>[], arg
  * @returns {Promise<void>}
  */
 export async function serialize<TaskArgs = unknown>(tasks: TTask<TaskArgs>[], args?: TaskArgs): Promise<void> {
-	return tasks.reduce((promise, task): Promise<void> => {
-		return promise.then(
-			() => task(args),
-			(e: Error) => Promise.reject(e)
-		);
-	}, Promise.resolve());
+  return tasks.reduce((promise, task): Promise<void> => {
+    return promise.then(
+      () => task(args),
+      (e: Error) => Promise.reject(e)
+    );
+  }, Promise.resolve());
 }
 
 /**
@@ -57,11 +57,11 @@ export async function serialize<TaskArgs = unknown>(tasks: TTask<TaskArgs>[], ar
  * @returns {boolean}
  */
 export function isAsyncTask(maybeTask: unknown): boolean {
-	return !!(
-		maybeTask &&
-		maybeTask.constructor &&
-		(maybeTask.constructor.name === 'AsyncFunction' || maybeTask.constructor.name === 'GeneratorFunction')
-	);
+  return !!(
+    maybeTask &&
+    maybeTask.constructor &&
+    (maybeTask.constructor.name === 'AsyncFunction' || maybeTask.constructor.name === 'GeneratorFunction')
+  );
 }
 
 /**
@@ -70,5 +70,5 @@ export function isAsyncTask(maybeTask: unknown): boolean {
  * @returns {boolean}
  */
 export function isSyncTask(maybeTask: unknown): boolean {
-	return !!(maybeTask && maybeTask.constructor && maybeTask.constructor.name === 'Function');
+  return !!(maybeTask && maybeTask.constructor && maybeTask.constructor.name === 'Function');
 }

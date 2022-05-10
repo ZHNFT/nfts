@@ -5,7 +5,8 @@
     "outDir": "./dist",
     "declaration": true,
     "moduleResolution": "Node",
-    "lib": ["ESNext"]
+    "lib": ["ESNext"],
+    "noImplicitAny": true
   },
   "include": ["src/"],
   "exclude": ["node_modules/"]
