@@ -2,8 +2,8 @@ import * as os from 'os';
 import * as ts from 'typescript';
 import { Terminal } from '@nfts/node-utils-library';
 import { Debug } from '@nfts/noddy';
-import { Colors } from '@nfts/interactive-query';
-import { BgColorNumbers } from '@nfts/interactive-query/dist/core/Colors';
+import { Colors } from '@nfts/interactive';
+import { BgColorNumbers } from '@nfts/interactive/dist/core/Colors';
 
 interface IWatchCompilerHost {
   configFileName: string;

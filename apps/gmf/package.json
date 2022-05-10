@@ -19,7 +19,7 @@
     "@nfts/argparser": "workspace:*",
     "@nfts/eslint-config": "workspace:*",
     "@nfts/hook": "workspace:*",
-    "@nfts/interactive-query": "workspace:*",
+    "@nfts/interactive": "workspace:*",
     "@nfts/noddy": "workspace:*",
     "@nfts/node-utils-library": "workspace:*"
   },

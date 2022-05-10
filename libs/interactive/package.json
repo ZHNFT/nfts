@@ -1,5 +1,5 @@
 {
-  "name": "@nfts/interactive-query",
+  "name": "@nfts/interactive",
   "version": "0.1.2",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

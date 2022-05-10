@@ -30,7 +30,7 @@ importers:
       '@nfts/argparser': workspace:*
       '@nfts/eslint-config': workspace:*
       '@nfts/hook': workspace:*
-      '@nfts/interactive-query': workspace:*
+      '@nfts/interactive': workspace:*
       '@nfts/noddy': workspace:*
       '@nfts/node-utils-library': workspace:*
       '@types/jest': ^27.0.3
@@ -43,7 +43,7 @@ importers:
       '@nfts/argparser': link:../../libs/argparser
       '@nfts/eslint-config': link:../../config/eslint
       '@nfts/hook': link:../../libs/hook
-      '@nfts/interactive-query': link:../../libs/interactive-query
+      '@nfts/interactive': link:../../libs/interactive
       '@nfts/noddy': link:../../libs/noddy
       '@nfts/node-utils-library': link:../../libs/node-utils-library
     devDependencies:
@@ -260,7 +260,7 @@ importers:
       ts-jest: 27.1.4_3y7pzupgu3ueocdatbfldfrs3i
       typescript: 4.6.4
 
-  libs/interactive-query:
+  libs/interactive:
     specifiers:
       '@nfts/eslint-config': workspace:*
       '@nfts/gmf': workspace:*
