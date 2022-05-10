@@ -22,12 +22,13 @@ export class InteractiveQuery extends QueriesManager {
     this.registerQuery('select', Select);
   }
 
-  public async prompt<T>(): Promise<T> {
+  public async prompt<T extends Record<string, unknown>>(): Promise<T> {
     const answers = {} as T;
 
     for await (const _query of this._queries) {
       const { type, ...restOptions } = _query;
       const _instance = this.createQueryInstance(type, restOptions);
+      // @ts-ignore
       answers[restOptions.name] = await _instance.execute();
       _instance.screen.nextLine().clearInline(-1);
     }

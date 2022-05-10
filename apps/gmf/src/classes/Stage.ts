@@ -1,44 +1,44 @@
 import { AsyncHook } from '@nfts/hook';
 
 export interface StageCommonContext<TParams = unknown, THooks = unknown> {
-	cmdParams: TParams;
-	hooks: THooks;
+  cmdParams: TParams;
+  hooks: THooks;
 }
 
 export interface SubStageCommonContext<THooks = unknown> {
-	hooks: THooks;
+  hooks: THooks;
 }
 
 export abstract class StageSubHook {
-	run: AsyncHook<unknown> = new AsyncHook<unknown>();
+  run: AsyncHook = new AsyncHook<unknown>();
 }
 
 export abstract class Stage<
-	THooks = unknown,
-	TStageProperties = unknown,
-	TStageOptions = unknown,
-	TStageParams = unknown
+  THooks = unknown,
+  TStageProperties = unknown,
+  TStageOptions = unknown,
+  TStageParams = unknown
 > {
-	readonly stageProperties: TStageProperties;
-	readonly stageOptions: TStageOptions;
+  readonly stageProperties: TStageProperties;
+  readonly stageOptions: TStageOptions;
 
-	readonly hooks: THooks;
+  readonly hooks: THooks;
 
-	// 代表当前的 stage 的 hook
-	readonly internalHook: AsyncHook<StageCommonContext<TStageParams, THooks>> = new AsyncHook<
-		StageCommonContext<TStageParams, THooks>
-	>();
-	//
-	protected constructor({ hooks }: { hooks: THooks }) {
-		this.hooks = hooks;
-	}
+  // 代表当前的 stage 的 hook
+  readonly internalHook: AsyncHook<StageCommonContext<TStageParams, THooks>> = new AsyncHook<
+    StageCommonContext<TStageParams, THooks>
+  >();
+  //
+  protected constructor({ hooks }: { hooks: THooks }) {
+    this.hooks = hooks;
+  }
 
-	public async executeInnerHook(params: TStageParams) {
-		await this.internalHook.call({
-			hooks: this.hooks,
-			cmdParams: params
-		});
-	}
+  public async executeInnerHook(params: TStageParams) {
+    await this.internalHook.call({
+      hooks: this.hooks,
+      cmdParams: params
+    });
+  }
 
-	abstract executeAsync(parameter?: unknown): Promise<void>;
+  abstract executeAsync(parameter?: unknown): Promise<void>;
 }

@@ -34,6 +34,7 @@ class TypescriptPlugin implements Plugin {
           const tsRunner: TypescriptRunner = new TypescriptRunner({
             debug: logger
           });
+
           logger.log(
             `Build Start in ${compile.cmdParams.watch ? Colors.green('DEVELOPMENT') : Colors.cyan('PRODUCTION')} mode`
           );

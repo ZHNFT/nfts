@@ -1,5 +1,3 @@
-import { appendColorToStringProto } from './proto';
-
 export enum TextColorNumbers {
   black = 30,
   red = 31,
@@ -43,8 +41,6 @@ const colors = {
   // Style
   bold: () => Colors.print(this, [TextEffects.bold])
 };
-
-appendColorToStringProto(colors);
 
 export class Colors {
   public static cyan(text: string): string {

@@ -1,7 +1,7 @@
 import { Execution } from '@nfts/node-utils-library';
 import { Hook } from '../classes/Hook';
 
-export class AsyncHook<TArgs = unknown> extends Hook<Execution.TTask<TArgs>> {
+export class AsyncHook<TArgs = unknown> extends Hook<Execution.TTask<TArgs, void | Promise<void>>> {
   constructor() {
     super();
   }
