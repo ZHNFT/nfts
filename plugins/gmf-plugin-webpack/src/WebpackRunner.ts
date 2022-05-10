@@ -15,33 +15,43 @@ export class WebpackRunner {
    * */
   public createCompilerAndRun(config: Configuration, opts: WebpackRunOptions): void {
     this.config = config;
-    this.compiler = Webpack(config, (error, stats) => {
-      this.onCompilerCreationCallback(error, stats, opts);
-    });
+    this.compiler = Webpack(
+      {
+        ...config,
+        watch: opts.watch,
+        watchOptions: {}
+      },
+      (error, stats) => {
+        this.onCompilerCreationCallback(error, stats, opts);
+      }
+    );
   }
 
   private _formatWebpackMessage(stats: Webpack.Stats) {
     const { errors, warnings, errorsCount, warningsCount } = stats.toJson();
-
-    console.log(process.cwd());
 
     const errorsFormattedMessage = errors.map(err => {
       const { file, details } = err;
       return `${file} \n${details}`;
     });
 
-    console.log(errorsFormattedMessage.join('/n'));
+    const warningsFormattedMessage = warnings.map(warn => {
+      const { file, details } = warn;
+      return `${file} \n${details}`;
+    });
+
+    console.log([...errorsFormattedMessage, ...warningsFormattedMessage].join('/n'));
     console.log(`Compiled with ${errorsCount} errors and ${warningsCount} warnings`);
   }
 
-  private _run(options: WebpackRunOptions, compiler?: Compiler): void {
+  private _runBuild(options: WebpackRunOptions, compiler?: Compiler): void {
     let innerCompiler = this.compiler;
     if (compiler) {
       innerCompiler = compiler;
     }
 
-    if (options.watch) {
-      const devServerOption = this.config.devServer ?? {};
+    if (options.watch && this.config.devServer) {
+      const devServerOption = this.config.devServer;
 
       const watchServer = new WebpackDevServerRunner().run({ ...devServerOption }, innerCompiler);
 
@@ -73,11 +83,9 @@ export class WebpackRunner {
     if (error) {
       throw error;
     }
-
-    if (!stats.hasErrors() && !stats.hasWarnings()) {
-      console.log(`Compiler create with no errors!`);
+    this._formatWebpackMessage(stats);
+    if (!opts.watch) {
+      this._runBuild({ watch: opts?.watch });
     }
-
-    this._run({ watch: opts?.watch });
   };
 }

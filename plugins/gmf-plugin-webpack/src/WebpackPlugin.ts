@@ -49,11 +49,6 @@ class WebpackPlugin implements Plugin {
             devServerConfig = devServerConfig();
           }
         } catch (e) {
-          logger.log(
-            `Unable to resolve separate dev-server configuration from\n` +
-              `separate file ${Constants.webpackDevServerConfig}\n`
-          );
-          logger.log(`Starting dev-server with configuration from ${configPath}`);
           devServerConfig = config.devServer;
         }
 
