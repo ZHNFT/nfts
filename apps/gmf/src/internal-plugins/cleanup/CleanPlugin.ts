@@ -1,4 +1,4 @@
-import { Plugin, PluginContext } from '../../classes/Plugin';
+import { Plugin, PluginSession } from '../../classes/Plugin';
 
 const NAME = 'CleanPlugin';
 const DESCRIPTION = 'Cleanup dist';
@@ -7,7 +7,7 @@ class CleanPlugin implements Plugin {
   name: string = NAME;
   summary: string = DESCRIPTION;
 
-  apply({ getScopedLogger }: PluginContext): void | Promise<void> {
+  apply({ getScopedLogger }: PluginSession): void | Promise<void> {
     const logger = getScopedLogger(NAME);
     logger.log(NAME);
   }

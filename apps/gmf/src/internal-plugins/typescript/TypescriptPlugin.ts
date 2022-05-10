@@ -1,7 +1,7 @@
 import { Colors } from '@nfts/interactive-query';
 import { Measure } from '@nfts/noddy';
 import { TypescriptRunner } from './TypescriptRunner';
-import { Plugin, PluginContext } from '../../classes/Plugin';
+import { Plugin, PluginSession } from '../../classes/Plugin';
 
 export interface TypescriptPluginOptions {
   // 开启 WatchMode；
@@ -25,7 +25,7 @@ class TypescriptPlugin implements Plugin {
 
   readonly typescriptVersion: string;
 
-  apply({ hooks, getScopedLogger, configuration }: PluginContext, _: TypescriptPluginOptions): void {
+  apply({ hooks, getScopedLogger, configuration }: PluginSession, _: TypescriptPluginOptions): void {
     const logger = getScopedLogger(NAME);
 
     hooks.build.add(NAME, build => {

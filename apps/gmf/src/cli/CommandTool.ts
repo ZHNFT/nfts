@@ -6,38 +6,38 @@ import { BuildCommand } from './commands/BuildCommand';
 import { BuildStage, BundleStage } from '../stages';
 
 export default class GmfTool extends CommandLine {
-	private readonly _pluginManager: PluginManager;
-	private readonly _config: Configuration;
+  private readonly _pluginManager: PluginManager;
+  private readonly _config: Configuration;
 
-	constructor() {
-		super({ toolName: 'gmf', toolDescription: `Develop toolchain` });
+  constructor() {
+    super({ toolName: 'gmf', toolDescription: `Develop toolchain` });
 
-		this._config = new Configuration();
+    this._config = new Configuration();
 
-		const buildStage = new BuildStage();
-		const bundleStage = new BundleStage();
+    const buildStage = new BuildStage();
+    const bundleStage = new BundleStage();
 
-		const stages = {
-			build: buildStage,
-			bundle: bundleStage
-		};
+    const stages = {
+      build: buildStage,
+      bundle: bundleStage
+    };
 
-		const build = new BuildCommand({ stage: stages.build });
-		const bundle = new BundleCommand({ stage: stages.bundle });
+    const build = new BuildCommand({ stage: stages.build });
+    const bundle = new BundleCommand({ stage: stages.bundle });
 
-		this._pluginManager = new PluginManager(this._config, stages, build);
+    this._pluginManager = new PluginManager(this._config, stages, build);
 
-		this.addCommand(build);
-		this.addCommand(bundle);
-	}
+    this.addCommand(build);
+    this.addCommand(bundle);
+  }
 
-	private _loadConfigFromCommandLine() {
-		const { _: commandName, ...params } = this.parseCommandLine();
-	}
+  // private _loadConfigFromCommandLine() {
+  //   const { _: commandName, ...params } = this.parseCommandLine();
+  // }
 
-	public exec(): Promise<void> {
-		this._loadConfigFromCommandLine();
-		this._pluginManager.initPluginsFromConfiguration();
-		return this.execute();
-	}
+  public exec(): Promise<void> {
+    // this._loadConfigFromCommandLine();
+    this._pluginManager.initPluginsFromConfiguration();
+    return this.execute();
+  }
 }

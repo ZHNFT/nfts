@@ -1,5 +1,5 @@
 import { runCLI } from '@jest/core';
-import { Plugin, PluginContext } from '../../classes/Plugin';
+import { Plugin, PluginSession } from '../../classes/Plugin';
 
 const NAME = 'JestPlugin';
 const DESCRIPTION = 'Jest Runner Plugin For gmf';
@@ -15,7 +15,7 @@ class JestPlugin implements Plugin {
   readonly name = NAME;
   readonly summary = DESCRIPTION;
 
-  apply(ctx: PluginContext): void | Promise<void> {
+  apply(ctx: PluginSession): void | Promise<void> {
     ctx.hooks.build.add(NAME, build => {
       build.hooks.compile.add(NAME, compile => {
         compile.hooks.run.add(NAME, async () => {
