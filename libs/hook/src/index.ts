@@ -1,3 +1,4 @@
+export * from './classes/Hook';
 export * from './hooks/AsyncHook';
 export * from './hooks/SyncHook';
 export * from './hooks/ManualHook';

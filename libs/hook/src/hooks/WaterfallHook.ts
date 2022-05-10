@@ -8,7 +8,7 @@ export class WaterfallHook<TArgs = unknown> extends Hook<TWaterfallTask<TArgs>> 
     const tasks = Array.from(this.taskByName.values());
     return Execution.waterfall(
       tasks.map(task => {
-        return task.apply.bind(task) as TWaterfallTask<TArgs>;
+        return task.apply.bind(task);
       }),
       args
     );

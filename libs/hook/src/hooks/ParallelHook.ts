@@ -1,7 +1,7 @@
 import { Execution } from '@nfts/node-utils-library';
 import { Hook } from '../classes/Hook';
 
-export class ParallelHook<TArgs = unknown> extends Hook<TArgs> {
+export class ParallelHook<TArgs = void> extends Hook<TArgs> {
   constructor() {
     super();
   }
@@ -10,7 +10,7 @@ export class ParallelHook<TArgs = unknown> extends Hook<TArgs> {
     const tasks = Array.from(this.taskByName.values());
     return Execution.parallel(
       tasks.map(task => {
-        return task.apply.bind(task) as Execution.TSyncTask<TArgs>;
+        return task.apply.bind(task);
       }),
       args
     );

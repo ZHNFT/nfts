@@ -4,7 +4,9 @@ export type TAsyncTask<TArgs = unknown, TRes = void> = (args?: TArgs, callback?:
 
 export type TVoidTask<TArgs = unknown> = TSyncTask<TArgs, void>;
 
-export type TTask<TArgs = unknown, TRes = void> = TSyncTask<TArgs, TRes> | TAsyncTask<TArgs, TRes>;
+export type TTask<TArgs = unknown, TRes = void> =
+  | ((args?: TArgs) => TRes)
+  | ((args?: TArgs, callback?: TVoidTask<TArgs>) => Promise<TRes>);
 
 /**
  * 按需执行task，上一个task执行返回的结果作为下一个task的输入，

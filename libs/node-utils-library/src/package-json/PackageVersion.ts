@@ -1,7 +1,7 @@
 export enum VersionFieldTypes {
-  Major = 'Major',
-  Minor = 'Minor',
-  Patch = 'Patch'
+  major = 'major',
+  minor = 'minor',
+  patch = 'patch'
 }
 
 export class PackageVersion {
@@ -49,15 +49,15 @@ export class PackageVersion {
   }
 
   public updateMajor(majorValue: string): string {
-    return this._updateVersionField(VersionFieldTypes.Major, majorValue);
+    return this._updateVersionField(VersionFieldTypes.major, majorValue);
   }
 
   public updateMinor(majorValue: string): string {
-    return this._updateVersionField(VersionFieldTypes.Minor, majorValue);
+    return this._updateVersionField(VersionFieldTypes.minor, majorValue);
   }
 
   public updatePatch(majorValue: string): string {
-    return this._updateVersionField(VersionFieldTypes.Patch, majorValue);
+    return this._updateVersionField(VersionFieldTypes.patch, majorValue);
   }
 
   private _updateVersionField(field: keyof typeof VersionFieldTypes, fieldValue: string) {
