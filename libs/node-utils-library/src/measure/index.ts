@@ -10,15 +10,30 @@ export enum Unit {
   H
 }
 
-export function millisecondsPrettier(milliseconds: number, unit = Unit.S): string {
-  switch (unit) {
-    case Unit.S:
-      return (milliseconds / 1000).toFixed(2) + 's';
-    case Unit.M:
-      return (milliseconds / 1000 / 60).toFixed(1) + 'm';
-    case Unit.H:
-      return (milliseconds / 1000 / 60 / 60).toFixed(1) + 'h';
-  }
+/**
+ * human readable ms format
+ * @param milliseconds
+ * @param unit
+ * @returns
+ */
+export function msFormat(milliseconds: number): string {
+  // 秒 0-60        (milliseconds / 1000)
+  // 分 0-60        (milliseconds / (1000 * 60))
+  // 时 0-infinity  (milliseconds / (1000 * 60 * 60))
+  const unit = ['h', 'm', 's', 'ms'];
+  const h = Math.floor(milliseconds / (1000 * 60 * 60));
+  let rest = milliseconds % (1000 * 60 * 60);
+  const m = Math.floor(rest / (1000 * 60));
+  rest = rest % (1000 * 60);
+  const s = Math.floor(rest / 1000);
+  rest = rest % 1000;
+  return [h, m, s, rest].reduce((str, current, index) => {
+    if (current > 0) {
+      str += `${current}${unit[index]}`;
+    }
+
+    return str;
+  }, '');
 }
 
 /**

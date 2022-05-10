@@ -1,12 +1,11 @@
 export type TSyncTask<TArgs = unknown, TRes = unknown> = (args?: TArgs) => TRes;
-
 export type TAsyncTask<TArgs = unknown, TRes = void> = (args?: TArgs, callback?: TVoidTask<TArgs>) => Promise<TRes>;
-
 export type TVoidTask<TArgs = unknown> = TSyncTask<TArgs, void>;
 
-export type TTask<TArgs = unknown, TRes = void> =
-  | ((args?: TArgs) => TRes)
-  | ((args?: TArgs, callback?: TVoidTask<TArgs>) => Promise<TRes>);
+/**
+ * @remark 所有的 Task 方法的类型，默认返回值为void
+ */
+export type TTask<TArgs = unknown, TRes = void> = (args?: TArgs) => TRes;
 
 /**
  * 按需执行task，上一个task执行返回的结果作为下一个task的输入，
