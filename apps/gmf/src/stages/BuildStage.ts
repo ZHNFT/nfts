@@ -16,9 +16,11 @@ export class CompileSubStageHooks extends StageSubHook {
   readonly afterCompile: AsyncHook = new AsyncHook();
 }
 
+export class PreCompileSubStageHooks extends StageSubHook {}
+
 export class BuildStageHooks {
-  readonly compile: AsyncHook<StageCommonContext<BuildCommandLineParametersValue, CompileSubStageHooks>> =
-    new AsyncHook<StageCommonContext<BuildCommandLineParametersValue, CompileSubStageHooks>>();
+  readonly preCompile = new AsyncHook<StageCommonContext<BuildCommandLineParametersValue, PreCompileSubStageHooks>>();
+  readonly compile = new AsyncHook<StageCommonContext<BuildCommandLineParametersValue, CompileSubStageHooks>>();
 }
 
 export class BuildStage extends Stage<BuildStageHooks, unknown, unknown, BuildCommandLineParametersValue> {
@@ -36,11 +38,14 @@ export class BuildStage extends Stage<BuildStageHooks, unknown, unknown, BuildCo
       cmdParams: parameters
     };
 
+    await this.hooks.preCompile.call(compileSubContext);
+    await BuildStage._runSubStageHooks('preCompile', compileSubContext.hooks);
+
     await this.hooks.compile.call(compileSubContext);
-    await this._runSubStageHooks('Compile', compileSubContext.hooks);
+    await BuildStage._runSubStageHooks('compile', compileSubContext.hooks);
   }
 
-  private async _runSubStageHooks(_: string, hooks: StageSubHook) {
+  private static async _runSubStageHooks(_: string, hooks: StageSubHook) {
     await hooks.run.call();
   }
 }

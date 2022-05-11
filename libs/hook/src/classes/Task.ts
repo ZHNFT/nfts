@@ -11,7 +11,6 @@ export class Task<TArgs = unknown, TReturn = unknown> {
   manual: boolean;
 
   constructor(task: Execution.TTask<TArgs, TReturn>) {
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     this.raw = task;
   }
 

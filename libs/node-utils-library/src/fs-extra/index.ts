@@ -160,3 +160,23 @@ export function accessFile(path: string, mode?: number): void | never {
     throw new Error(`Can't access ${path}, make sure you have permission or file is not exist`);
   }
 }
+
+export async function rmdirRecursion(path: string): Promise<void> {
+  const isFolder = (path: string): boolean => {
+    return nodeFs.statSync(path).isDirectory();
+  };
+
+  if (!isFolder(path)) {
+    throw new Error(`Not a folder`);
+  }
+
+  const files = (await nodeFs.promises.readdir(path)).map(filePath => nodePath.resolve(path, filePath));
+
+  for await (const filePath of files) {
+    if (isFolder(filePath)) {
+      await rmdirRecursion(filePath);
+    } else {
+      await nodeFs.promises.unlink(filePath);
+    }
+  }
+}
