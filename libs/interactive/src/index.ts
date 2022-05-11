@@ -28,6 +28,7 @@ export class InteractiveQuery extends QueriesManager {
     for await (const _query of this._queries) {
       const { type, ...restOptions } = _query;
       const _instance = this.createQueryInstance(type, restOptions);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       answers[restOptions.name] = await _instance.execute();
       _instance.screen.nextLine().clearInline(-1);
