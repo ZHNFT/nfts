@@ -18,6 +18,7 @@
     "@nfts/gmf": "workspace:*",
     "@nfts/noddy": "workspace:*",
     "@nfts/argparser": "workspace:*",
+    "@nfts/eslint-config": "workspace:*",
     "@nfts/node-utils-library": "workspace:*"
   },
   "devDependencies": {

@@ -1,3 +1,11 @@
 {
-  "name": "Ray"
+  "name": "{{project.name}}",
+  "version": "0.0.0",
+  "author": {
+    "email": "{{user.email}}",
+    "name": "{{user.name}}",
+    "url": "{{user.url}}"
+  },
+  "description": "Description for your project",
+  "dependencies": {}
 }

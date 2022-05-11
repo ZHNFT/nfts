@@ -9,6 +9,7 @@ importers:
     specifiers:
       '@jest/types': ^27.5.1
       '@nfts/argparser': workspace:*
+      '@nfts/eslint-config': workspace:*
       '@nfts/gmf': workspace:*
       '@nfts/noddy': workspace:*
       '@nfts/node-utils-library': workspace:*
@@ -19,6 +20,7 @@ importers:
       typescript: ^4.5.4
     dependencies:
       '@nfts/argparser': link:../../libs/argparser
+      '@nfts/eslint-config': link:../../config/eslint
       '@nfts/gmf': link:../gmf
       '@nfts/noddy': link:../../libs/noddy
       '@nfts/node-utils-library': link:../../libs/node-utils-library
