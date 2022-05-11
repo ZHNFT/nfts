@@ -53,7 +53,10 @@ export class CommandLine extends CommandLineParameterManager {
   public async execute(_args?: string[]) {
     const { _, ...args } = this._parser.parse(_args) as ParsedCommandLineOption;
     const command = this._findCommand(_);
-    await command.onExecute(args);
+
+    if (command) {
+      await command.onExecute(args);
+    }
   }
 
   public parseCommandLine(): ParsedCommandLineOption {

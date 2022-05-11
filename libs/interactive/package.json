@@ -10,6 +10,7 @@
     "test": "gmf build --test",
     "dev": "gmf build --watch",
     "build": "gmf build",
+    "ttt": "gmf",
     "ask": "node ./test/Ask.demo.js"
   },
   "dependencies": {

@@ -1,6 +1,6 @@
 {
   "name": "@nfts/create-app",
-  "version": "0.1.1",
+  "version": "0.0.1",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
@@ -14,8 +14,12 @@
     "dev": "gmf build --watch",
     "build": "gmf build"
   },
-  "devDependencies": {
+  "dependencies": {
     "@nfts/gmf": "workspace:*",
+    "@nfts/noddy": "workspace:*",
+    "@nfts/argparser": "workspace:*"
+  },
+  "devDependencies": {
     "@types/jest": "^27.0.3",
     "@types/node": "~17.0.5",
     "@jest/types": "^27.5.1",
