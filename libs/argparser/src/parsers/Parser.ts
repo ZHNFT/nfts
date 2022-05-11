@@ -1,12 +1,12 @@
 import { SubParser } from './SubParser';
 import { FlagParameter } from '../parameters';
 
-const ROOT_PARSER = 'ROOT_PARSER';
-const ROOT_PARSER_DESC = 'ROOT_PARSER_SHOULD_NOT_BE_USED';
+// const ROOT_PARSER = 'ROOT_PARSER';
+// const ROOT_PARSER_DESC = 'ROOT_PARSER_SHOULD_NOT_BE_USED';
 
 export class Parser extends SubParser {
-  constructor() {
-    super(ROOT_PARSER, ROOT_PARSER_DESC);
+  constructor({ name, description }: { name: string; description: string }) {
+    super(name, description);
   }
 
   public addHelp(callback: () => void) {
@@ -20,13 +20,12 @@ export class Parser extends SubParser {
     );
   }
 
-  public addVersion(callback: () => void) {
+  public addVersion(version: string) {
     this.addParam(
       new FlagParameter({
         name: '--version',
         shortName: '-v',
-        summary: 'Display version',
-        callback
+        summary: 'Display version'
       })
     );
   }

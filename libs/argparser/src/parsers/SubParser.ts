@@ -63,6 +63,7 @@ export class SubParser<R = unknown> {
 
       if (Utils.hasParamFlagPrefix(currentArg)) {
         const stripParamFlagName = Utils.stripParamFlagPrefix(currentArg);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         prevResult[stripParamFlagName] = true;
         _key = currentArg;
@@ -71,6 +72,7 @@ export class SubParser<R = unknown> {
         const prevArg = _args[currentIndex - 1];
         const prevStripParamFlagName = Utils.stripParamFlagPrefix(prevArg);
         if (prevStripParamFlagName in prevResult) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           prevResult[prevStripParamFlagName] = currentArg;
           _key = prevArg;
@@ -82,16 +84,19 @@ export class SubParser<R = unknown> {
 
       // Add shortName to result
       if (param.shortName) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         prevResult[Utils.stripParamFlagPrefix(param.shortName)] = _value;
       }
 
       if (param.name) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         prevResult[Utils.stripParamFlagPrefix(param.name)] = _value;
       }
 
       if (param.callback) {
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         this._flagCallbacks.add(param.callback);
       }
       return prevResult;
@@ -112,6 +117,20 @@ export class SubParser<R = unknown> {
     return _result;
   }
 
+  /**
+   * 返回当前parser的所有子parser
+   */
+  public getAllParsers(): Readonly<SubParser[]> {
+    return Array.from(this._child.values());
+  }
+
+  /**
+   * 返回parser上定义的所有parameter
+   */
+  public getAllParameters(): Readonly<TParameter[]> {
+    return Array.from(this._parameters.values());
+  }
+
   public findSubParser(name: string): SubParser {
     for (const subParser of this._child.values()) {
       if (subParser.name === name) {
@@ -128,12 +147,12 @@ export class SubParser<R = unknown> {
     }
   }
 
-  private _findRootParser(): SubParser {
+  public _findRootParser(): SubParser {
     if (!this._parent) {
       return this;
     }
     let _parent = this._parent;
-    while (_parent) {
+    while (_parent && _parent._parent) {
       _parent = _parent._parent;
     }
     return _parent;

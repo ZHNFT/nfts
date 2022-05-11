@@ -15,7 +15,10 @@ export class CommandLine extends CommandLineParameterManager {
   private readonly _commands: Command[] = [];
 
   protected constructor({ toolName, toolDescription }: { toolName: string; toolDescription: string }) {
-    const parser = new Parser();
+    const parser = new Parser({
+      name: toolName,
+      description: toolDescription
+    });
 
     super({ parser });
 

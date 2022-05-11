@@ -17,7 +17,8 @@
     "url": "*"
   },
   "dependencies": {
-    "@nfts/node-utils-library": "workspace:*"
+    "@nfts/node-utils-library": "workspace:*",
+    "@nfts/interactive": "workspace:*"
   },
   "devDependencies": {
     "@nfts/eslint-config": "workspace:*",

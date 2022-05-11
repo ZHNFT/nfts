@@ -107,9 +107,9 @@ export class TypescriptRunner {
     await this._emit(program).then(() => {
       onEmitCallback();
     });
-    await new Promise(() => {
-      // Never resolved by self
-    });
+    // await new Promise(() => {
+    //   // Never resolved by self
+    // });
   }
   /**
    * 写入编译好的代码到文件
