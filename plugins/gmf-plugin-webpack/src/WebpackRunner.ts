@@ -31,13 +31,15 @@ export class WebpackRunner {
     const { errors, warnings, errorsCount, warningsCount } = stats.toJson();
 
     const errorsFormattedMessage = errors.map(err => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const { file, details } = err;
-      return `${file} \n${details}`;
+      return `${file} \n${details as string}`;
     });
 
     const warningsFormattedMessage = warnings.map(warn => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const { file, details } = warn;
-      return `${file} \n${details}`;
+      return `${file} \n${details as string}`;
     });
 
     console.log([...errorsFormattedMessage, ...warningsFormattedMessage].join('/n'));
