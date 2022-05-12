@@ -1,5 +1,5 @@
-import { Colors } from '@nfts/interactive';
 import { Measure } from '@nfts/noddy';
+import { chalk } from '@nfts/node-utils-library';
 import { TypescriptRunner } from './TypescriptRunner';
 import { Plugin, PluginSession } from '../../classes/Plugin';
 
@@ -36,7 +36,7 @@ class TypescriptPlugin implements Plugin {
           });
 
           logger.log(
-            `Build Start in ${compile.cmdParams.watch ? Colors.green('DEVELOPMENT') : Colors.cyan('PRODUCTION')} mode`
+            `Build Start in ${compile.cmdParams.watch ? chalk.green('DEVELOPMENT') : chalk.cyan('PRODUCTION')} mode`
           );
 
           await Measure.taskAsync(
@@ -45,7 +45,9 @@ class TypescriptPlugin implements Plugin {
                 // After emit
               }),
             function taskExecutedCallback(spendTimeMS) {
-              logger.log(`Build end with time ${Measure.msFormat(spendTimeMS)}`);
+              if (!build.cmdParams.watch) {
+                logger.log(`Build end with time ${Measure.msFormat(spendTimeMS)}`);
+              }
             }
           );
         });

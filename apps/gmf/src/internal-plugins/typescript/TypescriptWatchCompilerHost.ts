@@ -1,9 +1,7 @@
 import * as os from 'os';
 import * as ts from 'typescript';
-import { Terminal } from '@nfts/node-utils-library';
+import { Terminal, chalk } from '@nfts/node-utils-library';
 import { Debug } from '@nfts/noddy';
-import { Colors } from '@nfts/interactive';
-import { BgColorNumbers } from '@nfts/interactive/dist/core/Colors';
 
 interface IWatchCompilerHost {
   configFileName: string;
@@ -95,23 +93,21 @@ export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
       const tip = `${TypescriptWatchCompilerHost.arrayOf(
         ' ',
         errorOffset + String(errorLineNo).length + 2 // 一个冒号一个空格
-      )}${TypescriptWatchCompilerHost.arrayOf(Colors.red('~'), _d.length)}`;
+      )}${TypescriptWatchCompilerHost.arrayOf(chalk.red('~'), _d.length)}`;
 
       const outPut = [
-        `      ${Colors.print(String(lastLineNo).padStart(String(errorLineNo).length, ' ') + ':', [
-          BgColorNumbers.black
-        ])} ${
+        `      ${chalk.bgBlack(`${String(lastLineNo).padStart(String(errorLineNo).length, ' ')}:`)} ${
           lines[lastLineNo - 1] // 行数下标是 1 开始，在数组中用需要减一
         }`,
-        `      ${Colors.print(String(errorLineNo) + ':', [BgColorNumbers.black])} ${lines[lineNo - 1]}`,
-        `      ${tip}${os.EOL}` + `      ${Colors.red(_d.messageText as string)}\n\r`
+        `      ${chalk.bgBlack(String(errorLineNo) + ':')} ${lines[lineNo - 1]}`,
+        `      ${tip}${os.EOL}` + `      ${chalk.red(_d.messageText as string)}\n\r`
       ];
 
       groupByFilename[filename] = [...(groupByFilename[filename] ?? []), outPut.join(os.EOL)];
     }
 
     Object.keys(groupByFilename).forEach(filename => {
-      console.log(`--> ${Colors.yellow(filename)}`);
+      console.log(`--> ${chalk.yellow(filename)}`);
       console.log(groupByFilename[filename].join(os.EOL));
     });
   }

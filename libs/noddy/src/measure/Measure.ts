@@ -13,14 +13,14 @@ export class Measure {
    */
   public static msFormat(milliseconds: number): string {
     const unit = ['h', 'm', 's'];
-    const h = Math.floor(milliseconds / (1000 * 60 * 60));
+    const h = Math.floor(milliseconds / (1000 * 60 * 60)).toFixed(0);
     let rest = milliseconds % (1000 * 60 * 60);
-    const m = Math.floor(rest / (1000 * 60));
+    const m = Math.floor(rest / (1000 * 60)).toFixed(0);
     rest = rest % (1000 * 60);
-    const s = Math.floor(rest / 1000);
+    const s = (rest / 1000).toFixed(1); // Math.floor(rest / 1000);
 
     return [h, m, s].reduce((str, current, index) => {
-      if (current > 0) {
+      if (current > '0') {
         str += `${current}${unit[index]}`;
       }
 

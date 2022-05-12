@@ -4,7 +4,7 @@
  */
 import * as fs from 'fs';
 import * as path from 'path';
-import * as NodeModule from 'module';
+import NodeModule from 'module';
 import * as Constants from '../Constants';
 import * as Json from '../json';
 import * as Package from '../package-json';

@@ -5,6 +5,7 @@
     "outDir": "./dist",
     "declaration": true,
     "moduleResolution": "Node",
+    "esModuleInterop": true,
     "lib": ["ESNext"],
     "noImplicitAny": true,
     "types": ["jest", "node"]
