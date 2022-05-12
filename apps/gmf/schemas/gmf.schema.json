@@ -11,6 +11,7 @@
         "entry": {
           "oneOf": [{ "type": "string" }, { "type": "array", "items": { "type": "string" } }]
         },
+        "output": { "type": "string" },
         "target": {
           "oneOf": [
             { "type": "string", "enum": ["CommonJS", "AMD", "UMD", "ESNext", "System"] },

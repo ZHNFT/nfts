@@ -1,10 +1,10 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { Json, Module } from '@nfts/node-utils-library';
+import { Module } from '@nfts/node-utils-library';
 import type { IGmfConfig } from '@nfts/gmf';
 import WebpackBar from 'webpackbar';
 import HTMLWebpackPlugin from 'html-webpack-plugin';
-import type { Configuration } from 'webpack';
+import type { Configuration, RuleSetRule } from 'webpack';
 import type { Configuration as DevServerConfiguration } from 'webpack-dev-server';
 
 export type TWebpackConfigurationFunction = (
@@ -13,6 +13,20 @@ export type TWebpackConfigurationFunction = (
 ) => Configuration;
 
 export type TWebpackDevServerConfigurationFunction = (config: DevServerConfiguration) => DevServerConfiguration;
+
+const ModuleFileExtensions = [
+  '.web.mjs',
+  '.mjs',
+  '.web.js',
+  '.js',
+  '.web.ts',
+  '.ts',
+  '.web.tsx',
+  '.tsx',
+  '.json',
+  '.web.jsx',
+  '.jsx'
+];
 
 export class WebpackConfigLoader {
   public static loadConfigFromFile(path: string): Configuration | TWebpackConfigurationFunction {
@@ -29,19 +43,33 @@ export class WebpackConfigLoader {
     }
   }
 
+  private static resolveEntry(): string {
+    const { isTypescriptProject, isReactProject } = this.resolveEnv();
+    return `./src/index.${isReactProject ? (isTypescriptProject ? 'tsx' : 'jsx') : isTypescriptProject ? 'ts' : 'js'}`;
+  }
+
+  private static resolveOutput(relPath?: string): string {
+    return path.resolve(
+      //
+      process.cwd(),
+      relPath ?? './build'
+    );
+  }
+
   public static createBasicWebpackConfiguration(gmfConfig: IGmfConfig): Configuration {
-    const isDev = process.env.NODE_ENV === 'development';
+    const { isProd, isDev, sourcemap } = this.resolveEnv();
 
     return {
-      mode: 'development',
-      entry: gmfConfig.bundle.entry ?? './src/index.js',
-      experiments: {
-        outputModule: true
-      },
+      mode: isDev ? 'development' : isProd ? 'production' : 'none',
+      entry: gmfConfig.bundle.entry ?? this.resolveEntry(),
       output: {
-        path: path.resolve(process.cwd(), 'dist'),
-        filename: '[name].js',
-        libraryTarget: 'module'
+        path: this.resolveOutput(gmfConfig.bundle.output),
+        filename: isProd ? 'static/js/[name].[contenthash:8].js' : 'static/js/bundle.js',
+        chunkFilename: isProd ? 'static/js/[name].[contenthash:8].chunk.js' : 'static/js/[name].chunk.js',
+        publicPath: '/'
+      },
+      resolve: {
+        extensions: this.resolveExtensions()
       },
       plugins: [
         new HTMLWebpackPlugin(
@@ -70,7 +98,13 @@ export class WebpackConfigLoader {
           )
         ),
         new WebpackBar()
-      ]
+      ],
+      module: this.createModule(),
+      performance: false,
+      stats: 'errors-warnings',
+      target: ['browserslist'],
+      bail: isDev,
+      devtool: isProd ? (sourcemap ? 'source-map' : false) : isDev && 'cheap-module-source-map'
     };
   }
 
@@ -100,8 +134,175 @@ export class WebpackConfigLoader {
     }
   }
 
-  public static createModule() {
-    const isUsingTypescript = WebpackConfigLoader.isUsingTypescript();
-    const isUsingReact = WebpackConfigLoader.isUsingReact();
+  public static isUsingJSXRuntime(): boolean {
+    try {
+      Module.resolve('react/jsx-runtime');
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  private static resolveExtensions(): string[] {
+    const { isTypescriptProject } = this.resolveEnv();
+
+    return ModuleFileExtensions.filter(ext => {
+      return isTypescriptProject ? true : ext.endsWith('ts') || ext.endsWith('tsx');
+    });
+  }
+
+  public static createModule(): Configuration['module'] {
+    const { sourcemap } = this.resolveEnv();
+
+    const module: Configuration['module'] = {
+      parser: {
+        javascript: {
+          exportsPresence: 'error'
+        }
+      },
+      rules: [
+        sourcemap && {
+          enforce: 'pre',
+          exclude: /@babel(?:\/|\\{1,2})runtime/,
+          test: /\.(js|mjs|jsx|ts|tsx|css)$/,
+          loader: require.resolve('source-map-loader')
+        },
+        {
+          oneOf: [
+            ...this.getAssetLoader(),
+            ...this.getBabelLoader(),
+            {
+              exclude: [/^$/, /\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
+              type: 'asset/resource'
+            }
+          ]
+        }
+      ].filter(Boolean) as RuleSetRule[]
+    };
+
+    return module;
+  }
+
+  private static env: {
+    sourcemap: boolean;
+    isDev: boolean;
+    isProd: boolean;
+    isTypescriptProject: boolean;
+    isReactProject: boolean;
+    isJSXRuntime: boolean;
+  };
+
+  private static resolveEnv(): {
+    sourcemap: boolean;
+    isDev: boolean;
+    isProd: boolean;
+    isTypescriptProject: boolean;
+    isReactProject: boolean;
+    isJSXRuntime: boolean;
+  } {
+    if (this.env) {
+      return this.env;
+    }
+
+    const isDev = process.env.NODE_ENV === 'development';
+    const isProd = process.env.NODE_ENV === 'production';
+    const isTypescriptProject = this.isUsingTypescript();
+    const isReactProject = this.isUsingReact();
+    const isJSXRuntime = this.isUsingJSXRuntime();
+    const sourcemap = process.env.SOURCEMAP === 'true';
+
+    this.env = {
+      isDev,
+      isProd,
+      isReactProject,
+      isTypescriptProject,
+      isJSXRuntime,
+      sourcemap
+    };
+
+    return this.env;
+  }
+
+  private static getBabelLoader(): RuleSetRule[] {
+    const { isJSXRuntime, isDev, isProd, sourcemap } = this.resolveEnv();
+    return [
+      {
+        test: /\.(js|mjs|jsx|ts|tsx)$/,
+        loader: require.resolve('babel-loader'),
+        options: {
+          customize: require.resolve('babel-preset-react-app/webpack-overrides'),
+          presets: [
+            [
+              require.resolve('babel-preset-react-app'),
+              {
+                runtime: isJSXRuntime ? 'automatic' : 'classic'
+              }
+            ]
+          ],
+          configFile: false,
+          // plugins: [isDev && require.resolve('react-refresh/babel')].filter(Boolean),
+          cacheDirectory: true,
+          cacheCompression: false,
+          compact: isProd
+        }
+      },
+      {
+        test: /\.(js|mjs)$/,
+        exclude: /@babel(?:\/|\\{1,2})runtime/,
+        loader: require.resolve('babel-loader'),
+        options: {
+          babelrc: false,
+          configFile: false,
+          compact: false,
+          presets: [[require.resolve('babel-preset-react-app/dependencies'), { helpers: true }]],
+          cacheDirectory: true,
+          // See #6846 for context on why cacheCompression is disabled
+          cacheCompression: false,
+          sourceMaps: sourcemap,
+          inputSourceMap: sourcemap
+        }
+      }
+    ];
+  }
+
+  // 处理静态文件，
+  private static getAssetLoader(): RuleSetRule[] {
+    return [
+      {
+        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+        type: 'asset',
+        parser: {
+          dataUrlCondition: {
+            maxSize: 10000
+          }
+        }
+      },
+      {
+        test: /\.svg$/,
+        use: [
+          {
+            loader: require.resolve('@svgr/webpack'),
+            options: {
+              prettier: false,
+              svgo: false,
+              svgoConfig: {
+                plugins: [{ removeViewBox: false }]
+              },
+              titleProp: true,
+              ref: true
+            }
+          },
+          {
+            loader: require.resolve('file-loader'),
+            options: {
+              name: 'static/media/[name].[hash].[ext]'
+            }
+          }
+        ],
+        issuer: {
+          and: [/\.(ts|tsx|js|jsx|md|mdx)$/]
+        }
+      }
+    ];
   }
 }

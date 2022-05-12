@@ -9,6 +9,7 @@
     "dev": "gmf build --watch"
   },
   "devDependencies": {
+    "@nfts/argparser": "workspace:*",
     "@nfts/eslint-config": "workspace:*",
     "@nfts/gmf": "workspace:*",
     "@nfts/noddy": "workspace:*",
@@ -21,8 +22,13 @@
   },
   "dependencies": {
     "@nfts/node-utils-library": "workspace:*",
+    "@svgr/webpack": "^5.5.0",
+    "babel-preset-react-app": "^10.0.1",
     "dotenv": "^10.0.0",
+    "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
+    "react-refresh": "^0.11.0",
+    "source-map-loader": "^3.0.0",
     "terser-webpack-plugin": "^5.2.5",
     "webpack": "^5.72.0",
     "webpack-dev-server": "^4.8.1"

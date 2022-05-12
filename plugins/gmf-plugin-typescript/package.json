@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "gmf build --watch",
-    "build": "gmf build --test --clean"
+    "build": "gmf build --test"
   },
   "dependencies": {
     "@nfts/gmf": "workspace:*",

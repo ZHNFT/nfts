@@ -1,29 +1,16 @@
 import { Plugin, PluginSession, BundleCommandParameters } from '@nfts/gmf';
+import { FlagParameter } from '@nfts/argparser';
 import type { Configuration } from 'webpack';
 import type { Configuration as DevServerConfiguration } from 'webpack-dev-server';
 import * as path from 'path';
 import * as fs from 'fs';
 import dotenv from 'dotenv';
-import { WebpackConfigLoader, TWebpackConfigurationFunction } from './WebpackConfigLoader';
+import { WebpackConfigLoader } from './WebpackConfigLoader';
 import { Constants } from './Constants';
 import { WebpackRunner } from './WebpackRunner';
 
 const NAME = 'WebpackPlugin';
 const DESCRIPTION = 'Bundle With Webpack';
-
-const ModuleFileExtensions = [
-  'web.mjs',
-  'mjs',
-  'web.js',
-  'js',
-  'web.ts',
-  'ts',
-  'web.tsx',
-  'tsx',
-  'json',
-  'web.jsx',
-  'jsx'
-];
 
 class WebpackPlugin implements Plugin {
   name: string = NAME;
@@ -34,14 +21,21 @@ class WebpackPlugin implements Plugin {
 
   private readonly webpackRunner: WebpackRunner = new WebpackRunner();
 
-  apply({ getScopedLogger, hooks, configuration: gmfConfiguration }: PluginSession): void | Promise<void> {
-    const logger = getScopedLogger(NAME);
+  sourceMap: FlagParameter;
+
+  apply({ getScopedLogger, hooks, configuration: gmfConfiguration, command }: PluginSession): void | Promise<void> {
+    this.sourceMap = command.flagParameter({
+      name: '--sourcemap',
+      shortName: '-s',
+      summary: 'Generate source-map'
+    });
+
     hooks.bundle.add(NAME, bundle => {
       this.setupEnv(bundle.cmdParams);
 
       bundle.hooks.configure.add(NAME, (): Configuration => {
-        let configPath = this.resolveConfigPath(),
-          devConfigPath = this.resolveDevServerConfigPath(),
+        let configPath = WebpackPlugin.resolveConfigPath(),
+          devConfigPath = WebpackPlugin.resolveDevServerConfigPath(),
           configuration: Configuration,
           devConfiguration: DevServerConfiguration;
 
@@ -105,7 +99,9 @@ class WebpackPlugin implements Plugin {
     });
 
     const extraEnvFromCommandLine: Record<string, string> = {
-      WEBPACK_CONFIG: config
+      WEBPACK_CONFIG: config,
+      SOURCEMAP: this.sourceMap.value ? 'true' : undefined,
+      NODE_ENV: isDev ? 'development' : 'production'
     };
 
     Object.keys(extraEnvFromCommandLine).map((key: string) => {
@@ -115,7 +111,7 @@ class WebpackPlugin implements Plugin {
     });
   };
 
-  private resolveConfigPath(): string | undefined {
+  private static resolveConfigPath(): string | undefined {
     const configPathDefinedInEnv = process.env.WEBPACK_CONFIG;
     const maybeConfigPath = Constants.maybeWebpackConfig;
     const defaultConfigPath = Constants.webpackConfig;
@@ -129,7 +125,7 @@ class WebpackPlugin implements Plugin {
     );
   }
 
-  private resolveDevServerConfigPath(): string | undefined {
+  private static resolveDevServerConfigPath(): string | undefined {
     const configPathDefinedInEnv = process.env.WEBPACK_CONFIG;
     const maybeConfigPath = Constants.maybeWebpackDevServerConfig;
     const defaultConfigPath = Constants.webpackDevServerConfig;

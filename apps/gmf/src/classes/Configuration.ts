@@ -14,6 +14,7 @@ export interface IGmfConfig {
   output?: string;
   bundle?: {
     entry: string | string[];
+    output: string;
     target?: TargetModuleKinds;
   };
   build?: {};
