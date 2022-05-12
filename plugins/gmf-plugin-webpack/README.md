@@ -1,4 +1,4 @@
-# @nfts/gmf-plugin-webpack
+# @nfts/plugin-webpack
 
 ## Pre-requirement
 

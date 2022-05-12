@@ -35,6 +35,9 @@ importers:
   apps/create-app/templates/node-typescript:
     specifiers: {}
 
+  apps/create-app/templates/react-typescript:
+    specifiers: {}
+
   apps/gmf:
     specifiers:
       '@jest/core': ^27.5.1
@@ -108,7 +111,7 @@ importers:
     specifiers:
       '@babel/core': ^7.16.0
       '@nfts/gmf': workspace:*
-      '@nfts/gmf-plugin-webpack': workspace:*
+      '@nfts/plugin-webpack': workspace:*
       '@pmmmwh/react-refresh-webpack-plugin': ^0.5.3
       '@svgr/webpack': ^5.5.0
       '@testing-library/jest-dom': ^5.16.4
@@ -164,7 +167,7 @@ importers:
     dependencies:
       '@babel/core': 7.17.10
       '@nfts/gmf': link:../../apps/gmf
-      '@nfts/gmf-plugin-webpack': link:../../plugins/gmf-plugin-webpack
+      '@nfts/plugin-webpack': link:../../plugins/gmf-plugin-webpack
       '@pmmmwh/react-refresh-webpack-plugin': 0.5.6_cduugdvdzx7dfkit7irvewwovq
       '@svgr/webpack': 5.5.0
       '@testing-library/jest-dom': 5.16.4
@@ -221,12 +224,12 @@ importers:
   example/webpack-demo-2:
     specifiers:
       '@nfts/gmf': workspace:*
-      '@nfts/gmf-plugin-webpack': workspace:*
+      '@nfts/plugin-webpack': workspace:*
       webpack: ^5.72.0
       webpack-cli: ^4.9.2
     devDependencies:
       '@nfts/gmf': link:../../apps/gmf
-      '@nfts/gmf-plugin-webpack': link:../../plugins/gmf-plugin-webpack
+      '@nfts/plugin-webpack': link:../../plugins/gmf-plugin-webpack
       webpack: 5.72.1_webpack-cli@4.9.2
       webpack-cli: 4.9.2_webpack@5.72.1
 
@@ -340,6 +343,32 @@ importers:
       jest: 27.5.1
       ts-jest: 27.1.4_3y7pzupgu3ueocdatbfldfrs3i
       typescript: 4.6.4
+
+  plugins/gmf-plugin-react:
+    specifiers:
+      '@nfts/eslint-config': workspace:*
+      '@nfts/gmf': workspace:*
+    dependencies:
+      '@nfts/gmf': link:../../apps/gmf
+    devDependencies:
+      '@nfts/eslint-config': link:../../config/eslint
+
+  plugins/gmf-plugin-typescript:
+    specifiers:
+      '@nfts/eslint-config': workspace:*
+      '@nfts/gmf': workspace:*
+      '@types/jest': ^27.5.1
+      '@types/node': ^17.0.32
+      typescript: ^4.5.4
+      webpack: ^5.72.1
+    dependencies:
+      '@nfts/gmf': link:../../apps/gmf
+      typescript: 4.6.4
+    devDependencies:
+      '@nfts/eslint-config': link:../../config/eslint
+      '@types/jest': 27.5.1
+      '@types/node': 17.0.32
+      webpack: 5.72.1
 
   plugins/gmf-plugin-webpack:
     specifiers:
@@ -2561,6 +2590,13 @@ packages:
     dependencies:
       jest-matcher-utils: 27.5.1
       pretty-format: 27.5.1
+
+  /@types/jest/27.5.1:
+    resolution: {integrity: sha512-fUy7YRpT+rHXto1YlL+J9rs0uLGyiqVt3ZOTQR+4ROc47yNl8WLdVLgUloBRhOxP1PZvguHl44T3H0wAWxahYQ==}
+    dependencies:
+      jest-matcher-utils: 27.5.1
+      pretty-format: 27.5.1
+    dev: true
 
   /@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
@@ -9126,7 +9162,6 @@ packages:
     resolution: {integrity: sha512-9ia/jWHIEbo49HfjrLGfKbZSuWo9iTMwXO+Ca3pRsSpbsMbc7/IU8NKdCZVRRBafVPGnoJeFL76ZOAA84I9fEg==}
     engines: {node: '>=4.2.0'}
     hasBin: true
-    dev: true
 
   /unbox-primitive/1.0.2:
     resolution: {integrity: sha512-61pPlCD9h51VoreyJ0BReideM3MDKMKnh6+V9L08331ipq6Q8OFXZYiqP6n/tbHx4s5I9uRhcye6BrbkizkBDw==}
@@ -9455,7 +9490,6 @@ packages:
       - '@swc/core'
       - esbuild
       - uglify-js
-    dev: false
 
   /webpack/5.72.1_webpack-cli@4.9.2:
     resolution: {integrity: sha512-dXG5zXCLspQR4krZVR6QgajnZOjW2K/djHvdcRaDQvsjV9z9vaW6+ja5dZOYbqBBjF6kGXka/2ZyxNdc+8Jung==}

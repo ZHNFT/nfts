@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@nfts/gmf": "workspace:*",
-    "@nfts/gmf-plugin-webpack": "workspace:*",
+    "@nfts/plugin-webpack": "workspace:*",
     "@babel/core": "^7.16.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@svgr/webpack": "^5.5.0",

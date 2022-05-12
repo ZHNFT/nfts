@@ -1,0 +1,10 @@
+{
+  "name": "@nfts/plugin-react",
+  "version": "0.0.1",
+  "dependencies": {
+    "@nfts/gmf": "workspace:*"
+  },
+  "devDependencies": {
+    "@nfts/eslint-config": "workspace:*"
+  }
+}
