@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { req } from '@nfts/node-utils-library';
+import { Json, Module } from '@nfts/node-utils-library';
+import type { IGmfConfig } from '@nfts/gmf';
 import WebpackBar from 'webpackbar';
 import HTMLWebpackPlugin from 'html-webpack-plugin';
 import type { Configuration } from 'webpack';
@@ -16,7 +17,7 @@ export type TWebpackDevServerConfigurationFunction = (config: DevServerConfigura
 export class WebpackConfigLoader {
   public static loadConfigFromFile(path: string): Configuration | TWebpackConfigurationFunction {
     if (fs.existsSync(path)) {
-      return req.sync(path);
+      return Module.sync(path);
     }
   }
 
@@ -24,16 +25,16 @@ export class WebpackConfigLoader {
     path: string
   ): DevServerConfiguration | TWebpackDevServerConfigurationFunction {
     if (fs.existsSync(path)) {
-      return req.sync(path);
+      return Module.sync(path);
     }
   }
 
-  public static createBasicWebpackConfiguration(): Configuration {
+  public static createBasicWebpackConfiguration(gmfConfig: IGmfConfig): Configuration {
     const isDev = process.env.NODE_ENV === 'development';
 
     return {
       mode: 'development',
-      entry: './src/index.js',
+      entry: gmfConfig.bundle.entry ?? './src/index.js',
       experiments: {
         outputModule: true
       },
@@ -79,5 +80,28 @@ export class WebpackConfigLoader {
       host: '0.0.0.0',
       port: '8080'
     };
+  }
+
+  public static isUsingReact(): boolean {
+    try {
+      Module.resolve('react');
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  public static isUsingTypescript(): boolean {
+    try {
+      Module.resolve('typescript');
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  public static createModule() {
+    const isUsingTypescript = WebpackConfigLoader.isUsingTypescript();
+    const isUsingReact = WebpackConfigLoader.isUsingReact();
   }
 }

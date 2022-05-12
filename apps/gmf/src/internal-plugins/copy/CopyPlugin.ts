@@ -8,8 +8,7 @@ class CopyPlugin implements Plugin {
   summary: string = DESCRIPTION;
 
   apply({ getScopedLogger }: PluginSession): void | Promise<void> {
-    const logger = getScopedLogger(NAME);
-    logger.log(NAME);
+    //
   }
 }
 

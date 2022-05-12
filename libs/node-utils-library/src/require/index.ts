@@ -53,6 +53,20 @@ export function sync(moduleName: string, options: ImportModuleSyncOptions = DEFA
   return mod && mod.default ? mod.default : mod;
 }
 
-export function resolveModule(moduleName: string, options: { cwd: string } = { cwd: process.cwd() }) {
-  // TODO 添加模块路径解析的逻辑
+/**
+ * resolve module path
+ * @param moduleName
+ * @param options
+ * @returns
+ */
+export function resolve(moduleName: string, options: ImportModuleSyncOptions = DEFAULT_IMPORT_SYNC_OPTIONS) {
+  options = objectUtils.merge(DEFAULT_IMPORT_SYNC_OPTIONS, options);
+  const req = NodeModule.createRequire(options.cwd);
+  const fileModuleFullPath = path.resolve(options.cwd, moduleName);
+
+  if (fs.existsSync(fileModuleFullPath) && fs.statSync(fileModuleFullPath).isFile()) {
+    return fileModuleFullPath;
+  } else {
+    return req.resolve(moduleName, { paths: [options.node_modules] });
+  }
 }

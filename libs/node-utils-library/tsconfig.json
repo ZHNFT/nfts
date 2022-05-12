@@ -6,7 +6,8 @@
     "declaration": true,
     "moduleResolution": "Node",
     "lib": ["ESNext"],
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "types": ["jest", "node"]
   },
   "include": ["src/"],
   "exclude": ["node_modules/"]

@@ -5,6 +5,7 @@ import * as Terminal from './terminal';
 import * as Url from './url';
 import * as PackageJson from './package-json';
 import * as Utilities from './utilities';
+import * as Module from './require';
 import { sync as importSync } from './require';
 
 export const req: { sync: typeof importSync } = {
@@ -18,3 +19,4 @@ export { Execution };
 export { Terminal };
 export { Url };
 export { PackageJson };
+export { Module };

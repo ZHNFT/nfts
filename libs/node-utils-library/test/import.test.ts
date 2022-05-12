@@ -1,5 +1,5 @@
 import { dirname, resolve } from 'path';
-import { sync } from '../src/require';
+import { sync, resolve as requireResolve } from '../src/require';
 
 describe('导入 .scripts、.eslintrc.js 文件模块', function () {
   it('should import .eslintrc.js correct', function () {
@@ -19,7 +19,13 @@ describe('导入 .scripts、.eslintrc.js 文件模块', function () {
 
 describe('导入JSON文件', () => {
   it('成功导入，并且读取到JSON数据', () => {
-    const json = sync('./json/data.json', { cwd: resolve(dirname(__dirname), 'test') });
+    const json = sync('./json/data.json', {
+      cwd: resolve(dirname(__dirname), 'test')
+    });
+    const f = requireResolve('./json/data.json', {
+      cwd: resolve(dirname(__dirname), 'test')
+    });
+    console.log(f);
     expect(json).toEqual({ name: 'test-import' });
   });
 });
@@ -30,6 +36,13 @@ describe('导入 npm 包模块', function () {
       // cwd: dirname(__filename)
     });
 
+    const f = requireResolve('@nfts/gmf');
+    console.log(f);
     expect(t).toBeTruthy();
+    expect(f).toBeTruthy();
+  });
+
+  test('should throw when import module is not exist', () => {
+    const f = expect(() => requireResolve('@nfts/gmfxxx')).toThrow();
   });
 });

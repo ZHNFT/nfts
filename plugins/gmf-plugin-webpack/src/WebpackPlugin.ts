@@ -34,7 +34,7 @@ class WebpackPlugin implements Plugin {
 
   private readonly webpackRunner: WebpackRunner = new WebpackRunner();
 
-  apply({ getScopedLogger, hooks }: PluginSession): void | Promise<void> {
+  apply({ getScopedLogger, hooks, configuration: gmfConfiguration }: PluginSession): void | Promise<void> {
     const logger = getScopedLogger(NAME);
     hooks.bundle.add(NAME, bundle => {
       this.setupEnv(bundle.cmdParams);
@@ -49,7 +49,7 @@ class WebpackPlugin implements Plugin {
          * 创建一个默认的 webpack 配置；
          * 默认配置以一个 React 应用为蓝本而创建；
          */
-        const defaultConfig = WebpackConfigLoader.createBasicWebpackConfiguration();
+        const defaultConfig = WebpackConfigLoader.createBasicWebpackConfiguration(gmfConfiguration.config);
 
         if (configPath) {
           configPath = path.resolve(process.cwd(), configPath);
@@ -61,8 +61,6 @@ class WebpackPlugin implements Plugin {
         } else {
           configuration = defaultConfig;
         }
-
-        let devServerConfig: TWebpackConfigurationFunction;
 
         if (devConfigPath) {
           devConfigPath = path.resolve(process.cwd(), devConfigPath);
