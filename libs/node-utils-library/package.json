@@ -20,5 +20,23 @@
     "jest": "^27.4.5",
     "ts-jest": "^27.1.2",
     "typescript": "^4.5.4"
-  }
+  },
+  "eslintConfig": {
+    "extends": [
+      "@nfts"
+    ]
+  },
+  "eslintIgnore": [
+    "*.log*",
+    "node_modules",
+    "*.tsbuildinfo",
+    ".npm",
+    ".eslintcache",
+    ".env",
+    ".env.test",
+    "dist",
+    ".yarn/**",
+    ".npn.*",
+    "test"
+  ]
 }
