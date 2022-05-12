@@ -10,5 +10,9 @@
   "scripts": {
     "start": "gmf bundle --watch",
     "bundle": "gmf bundle"
+  },
+  "dependencies": {
+    "html-webpack-plugin": "^5.5.0",
+    "terser-webpack-plugin": "^5.2.5"
   }
 }

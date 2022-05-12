@@ -15,81 +15,60 @@ export class WebpackRunner {
    * */
   public createCompilerAndRun(config: Configuration, opts: WebpackRunOptions): void {
     this.config = config;
-    this.compiler = Webpack(
-      {
-        ...config,
-        watch: opts.watch,
-        watchOptions: {}
-      },
-      (error, stats) => {
-        this.onCompilerCreationCallback(error, stats, opts);
+    this.compiler = Webpack(config);
+
+    if (opts.watch) {
+      const devServerConfig = this.config.devServer;
+      const watchServer = new WebpackDevServerRunner().run({ ...devServerConfig }, this.compiler);
+      watchServer.startCallback(err => {
+        if (err) {
+          watchServer.close();
+        }
+        const localUrl = `${devServerConfig.https ? 'https' : 'http'}://${devServerConfig.host || 'localhost'}:${
+          devServerConfig.port || '8080'
+        }`;
+        console.log(`Successfully started server on ${localUrl}`);
+      });
+      return;
+    }
+
+    this.compiler.run((err, stats) => {
+      if (err) {
+        throw err;
       }
-    );
+
+      if (!stats.hasErrors() && !stats.hasWarnings()) {
+        return;
+      }
+
+      this._formatWebpackMessage(stats);
+    });
   }
 
   private _formatWebpackMessage(stats: Webpack.Stats) {
     const { errors, warnings, errorsCount, warningsCount } = stats.toJson();
 
-    const errorsFormattedMessage = errors.map(err => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const { file, details } = err;
-      return `${file} \n${details as string}`;
-    });
-
-    const warningsFormattedMessage = warnings.map(warn => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const { file, details } = warn;
-      return `${file} \n${details as string}`;
-    });
-
-    console.log([...errorsFormattedMessage, ...warningsFormattedMessage].join('/n'));
-    console.log(`Compiled with ${errorsCount} errors and ${warningsCount} warnings`);
-  }
-
-  private _runBuild(options: WebpackRunOptions, compiler?: Compiler): void {
-    let innerCompiler = this.compiler;
-    if (compiler) {
-      innerCompiler = compiler;
+    if (errorsCount === 0 && warningsCount === 0) {
+      return;
     }
 
-    if (options.watch && this.config.devServer) {
-      const devServerOption = this.config.devServer;
-
-      const watchServer = new WebpackDevServerRunner().run({ ...devServerOption }, innerCompiler);
-
-      watchServer.startCallback(err => {
-        if (err) {
-          watchServer.close();
-        }
-        const localUrl = `${devServerOption.https ? 'https' : 'http'}://${devServerOption.host || 'localhost'}:${
-          devServerOption.port || '8080'
-        }`;
-        console.log(`Successfully started server on ${localUrl}`);
+    if (warningsCount > 0) {
+      const warningsFormattedMessage = warnings.map(warn => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const { file, details, message } = warn;
+        return `${file || ''} \n${(details as string) || ''}\n ${message || ''}`;
       });
-    } else {
-      innerCompiler.run((error, stats) => {
-        if (error) {
-          throw error;
-        }
-        if (!stats.hasErrors() && !stats.hasWarnings()) {
-          console.log(`Compile successfully with no errors!`);
-          return;
-        }
+      console.log(warningsFormattedMessage.join('\n'));
+    }
 
-        this._formatWebpackMessage(stats);
+    if (errorsCount > 0) {
+      const errorsFormattedMessage = errors.map(err => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const { file, details, message } = err;
+        return `${file || ''} \n${(details as string) || ''}\n ${message || ''}`;
       });
+
+      console.log(errorsFormattedMessage.join('\n'));
     }
   }
-
-  private onCompilerCreationCallback = (error: Webpack.StatsError, stats: Webpack.Stats, opts: WebpackRunOptions) => {
-    if (error) {
-      throw error;
-    }
-
-    // Todo  Where watch node happen, add format for watch mode message
-    this._formatWebpackMessage(stats);
-    if (!opts.watch) {
-      this._runBuild({ watch: opts?.watch });
-    }
-  };
 }
