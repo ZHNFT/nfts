@@ -64,7 +64,7 @@ class WebpackPlugin implements Plugin {
             devConfiguration = configFromFile(defaultConfig.devServer);
           }
         } else {
-          devConfiguration = await WebpackConfigLoader.createBasicDevServerConfiguration(defaultConfig.devServer);
+          devConfiguration = await WebpackConfigLoader.createBasicDevServerConfiguration();
         }
 
         return Object.assign(configuration, { devServer: devConfiguration });

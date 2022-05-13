@@ -97,9 +97,7 @@ export class WebpackConfigLoader {
     };
   }
 
-  public static async createBasicDevServerConfiguration(
-    config: DevServerConfiguration
-  ): Promise<DevServerConfiguration> {
+  public static async createBasicDevServerConfiguration(): Promise<DevServerConfiguration> {
     const { appHtml, publicUrl, appSrc } = this.resolvePaths();
 
     return this.getHttpServerConfig().then(({ port, host }) => {
@@ -237,7 +235,7 @@ export class WebpackConfigLoader {
   };
 
   private static getBabelLoader(): RuleSetRule[] {
-    const { isJSXRuntime, isDev, isProd, sourcemap } = this.resolveEnv();
+    const { isJSXRuntime, isProd, sourcemap } = this.resolveEnv();
     return [
       {
         test: /\.(js|mjs|jsx|ts|tsx)$/,
@@ -384,7 +382,7 @@ export class WebpackConfigLoader {
       appRoot,
       appSrc: resolveApp('src'),
       appPublic: resolveApp('public'),
-      appHtml: resolveApp('public/index.html'),
+      appHtml: resolveApp('index.html'),
       appPackageJson: resolveApp('package.json'),
       appTsConfig: resolveApp('tsconfig.json'),
       appJsConfig: resolveApp('jsconfig.json'),
