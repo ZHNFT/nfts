@@ -1,4 +1,4 @@
-import * as path from 'path';
+import path from 'path';
 import { Fs } from '@nfts/node-utils-library';
 import { Debug } from '@nfts/noddy';
 import { Plugin, PluginSession } from '../../classes/Plugin';

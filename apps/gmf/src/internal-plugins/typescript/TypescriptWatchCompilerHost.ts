@@ -1,5 +1,5 @@
-import * as os from 'os';
-import * as ts from 'typescript';
+import os from 'os';
+import ts from 'typescript';
 import { Terminal, chalk } from '@nfts/node-utils-library';
 import { Debug } from '@nfts/noddy';
 

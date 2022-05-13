@@ -1,6 +1,7 @@
 {
   "name": "@nfts/gmf",
   "version": "0.1.1",
+  "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
@@ -12,7 +13,7 @@
   "scripts": {
     "test": "./bin/cli.js build --test",
     "dev": "./bin/cli.js build --watch",
-    "build": "./bin/cli.js build"
+    "build": "./bin/cli.js build --clean"
   },
   "dependencies": {
     "@jest/core": "^27.5.1",
@@ -35,5 +36,9 @@
     "preset": "ts-jest",
     "testEnvironment": "node",
     "passWithNoTests": true
+  },
+  "engineStrict": true,
+  "engines": {
+    "node": ">14"
   }
 }

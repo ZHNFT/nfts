@@ -3,10 +3,11 @@
   "version": "0.1.1",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "type": "module",
   "scripts": {
     "test": "gmf build --test",
     "build": "gmf build --clean",
-    "dev": "gmf build --watch"
+    "dev": "./node_modules/@nfts/gmf/bin/cli.js build --watch"
   },
   "devDependencies": {
     "@nfts/argparser": "workspace:*",

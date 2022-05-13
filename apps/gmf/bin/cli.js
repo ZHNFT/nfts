@@ -1,3 +1,3 @@
-#!/usr/bin/env node
+#!/usr/bin/env -S node --experimental-specifier-resolution=node
 
-require('../dist/exec.js');
+import '../dist/exec';

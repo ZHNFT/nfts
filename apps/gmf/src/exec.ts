@@ -1,8 +1,8 @@
-import CLI from './cli/CLI';
+import CLI from './cli/CLI.js';
 
 new CLI().run().then(
   () => {
-    // console.log('Finished');
+    //
   },
   e => console.log(e)
 );
