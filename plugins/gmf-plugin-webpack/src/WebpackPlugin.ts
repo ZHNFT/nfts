@@ -33,7 +33,7 @@ class WebpackPlugin implements Plugin {
     hooks.bundle.add(NAME, bundle => {
       this.setupEnv(bundle.cmdParams);
 
-      bundle.hooks.configure.add(NAME, (): Configuration => {
+      bundle.hooks.configure.add(NAME, async (): Promise<Configuration> => {
         let configPath = WebpackPlugin.resolveConfigPath(),
           devConfigPath = WebpackPlugin.resolveDevServerConfigPath(),
           configuration: Configuration,
@@ -64,7 +64,7 @@ class WebpackPlugin implements Plugin {
             devConfiguration = configFromFile(defaultConfig.devServer);
           }
         } else {
-          devConfiguration = WebpackConfigLoader.createBasicDevServerConfiguration(defaultConfig.devServer);
+          devConfiguration = await WebpackConfigLoader.createBasicDevServerConfiguration(defaultConfig.devServer);
         }
 
         return Object.assign(configuration, { devServer: devConfiguration });

@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { Module } from '@nfts/node-utils-library';
+import { Module, Url } from '@nfts/node-utils-library';
 import type { IGmfConfig } from '@nfts/gmf';
 import WebpackBar from 'webpackbar';
 import HTMLWebpackPlugin from 'html-webpack-plugin';
@@ -43,25 +43,12 @@ export class WebpackConfigLoader {
     }
   }
 
-  private static resolveEntry(): string {
-    const { isTypescriptProject, isReactProject } = this.resolveEnv();
-    return `./src/index.${isReactProject ? (isTypescriptProject ? 'tsx' : 'jsx') : isTypescriptProject ? 'ts' : 'js'}`;
-  }
-
-  private static resolveOutput(relPath?: string): string {
-    return path.resolve(
-      //
-      process.cwd(),
-      relPath ?? './build'
-    );
-  }
-
   public static createBasicWebpackConfiguration(gmfConfig: IGmfConfig): Configuration {
     const { isProd, isDev, sourcemap } = this.resolveEnv();
 
     return {
       mode: isDev ? 'development' : isProd ? 'production' : 'none',
-      entry: gmfConfig.bundle.entry ?? this.resolveEntry(),
+      entry: this.resolveEntry(gmfConfig.bundle.entry),
       output: {
         path: this.resolveOutput(gmfConfig.bundle.output),
         filename: isProd ? 'static/js/[name].[contenthash:8].js' : 'static/js/bundle.js',
@@ -108,12 +95,53 @@ export class WebpackConfigLoader {
     };
   }
 
-  public static createBasicDevServerConfiguration(config: DevServerConfiguration): DevServerConfiguration {
-    // todo 检查参数config
-    return {
-      host: '0.0.0.0',
-      port: '8080'
-    };
+  public static async createBasicDevServerConfiguration(
+    config: DevServerConfiguration
+  ): Promise<DevServerConfiguration> {
+    const { appHtml } = this.resolvePaths();
+
+    return this.getHttpServerConfig().then(({ port, host }) => {
+      return {
+        host,
+        port,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': '*',
+          'Access-Control-Allow-Headers': '*'
+        },
+        // Enable gzip compression of generated files.
+        compress: true,
+        static: {
+          directory: '/',
+          publicPath: ['/'],
+          watch: {
+            // ignored:
+          }
+        },
+        client: {
+          overlay: {
+            errors: true,
+            warnings: false
+          }
+        },
+        historyApiFallback: {
+          disableDotRule: true,
+          index: appHtml
+        }
+      };
+    });
+  }
+
+  public static async getHttpServerConfig(): Promise<{ host: string; port: string | number }> {
+    const HOST = process.env.HOST || '0.0.0.0';
+    const PORT = process.env.PORT || 8080;
+
+    return Url.chosePort(PORT).then(port => {
+      return {
+        port,
+        host: HOST
+      };
+    });
   }
 
   public static isUsingReact(): boolean {
@@ -191,37 +219,6 @@ export class WebpackConfigLoader {
     isReactProject: boolean;
     isJSXRuntime: boolean;
   };
-
-  private static resolveEnv(): {
-    sourcemap: boolean;
-    isDev: boolean;
-    isProd: boolean;
-    isTypescriptProject: boolean;
-    isReactProject: boolean;
-    isJSXRuntime: boolean;
-  } {
-    if (this.env) {
-      return this.env;
-    }
-
-    const isDev = process.env.NODE_ENV === 'development';
-    const isProd = process.env.NODE_ENV === 'production';
-    const isTypescriptProject = this.isUsingTypescript();
-    const isReactProject = this.isUsingReact();
-    const isJSXRuntime = this.isUsingJSXRuntime();
-    const sourcemap = process.env.SOURCEMAP === 'true';
-
-    this.env = {
-      isDev,
-      isProd,
-      isReactProject,
-      isTypescriptProject,
-      isJSXRuntime,
-      sourcemap
-    };
-
-    return this.env;
-  }
 
   private static getBabelLoader(): RuleSetRule[] {
     const { isJSXRuntime, isDev, isProd, sourcemap } = this.resolveEnv();
@@ -304,5 +301,83 @@ export class WebpackConfigLoader {
         }
       }
     ];
+  }
+
+  private static resolveEntry(entry?: string): string {
+    const { appRoot } = this.resolvePaths();
+    return entry ? path.resolve(appRoot, entry) : path.resolve(appRoot, 'src/index');
+  }
+
+  private static resolveOutput(relPath?: string): string {
+    return path.resolve(
+      //
+      process.cwd(),
+      relPath ?? './build'
+    );
+  }
+
+  private static resolveEnv(): {
+    sourcemap: boolean;
+    isDev: boolean;
+    isProd: boolean;
+    isTypescriptProject: boolean;
+    isReactProject: boolean;
+    isJSXRuntime: boolean;
+  } {
+    if (this.env) {
+      return this.env;
+    }
+
+    const isDev = process.env.NODE_ENV === 'development';
+    const isProd = process.env.NODE_ENV === 'production';
+    const isTypescriptProject = this.isUsingTypescript();
+    const isReactProject = this.isUsingReact();
+    const isJSXRuntime = this.isUsingJSXRuntime();
+    const sourcemap = process.env.SOURCEMAP === 'true';
+
+    this.env = {
+      isDev,
+      isProd,
+      isReactProject,
+      isTypescriptProject,
+      isJSXRuntime,
+      sourcemap
+    };
+
+    return this.env;
+  }
+
+  public static resolvePaths(): {
+    appRoot: string;
+    appSrc: string;
+    appPublic: string;
+    appHtml: string;
+    appPackageJson: string;
+    appTsConfig: string;
+    appJsConfig: string;
+    appNodeModule: string;
+  } {
+    const appRoot = fs.realpathSync(process.cwd());
+
+    const resolveApp = (relativePath: string): string => {
+      return path.resolve(appRoot, relativePath);
+    };
+
+    // const resolveConfig = (configFile: string): string => {
+    //   return path.resolve(resolveApp('config'), configFile);
+    // };
+
+    const paths = {
+      appRoot,
+      appSrc: resolveApp('src'),
+      appPublic: resolveApp('public'),
+      appHtml: resolveApp('public/index.html'),
+      appPackageJson: resolveApp('package.json'),
+      appTsConfig: resolveApp('tsconfig.json'),
+      appJsConfig: resolveApp('jsconfig.json'),
+      appNodeModule: resolveApp('node_modules')
+    };
+
+    return paths;
   }
 }

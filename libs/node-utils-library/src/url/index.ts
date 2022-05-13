@@ -3,7 +3,9 @@ import { createServer } from 'net';
 export const DEFAULT_PORT = 8080;
 
 /* 返回可用的端口号。默认 80 端口 */
-export async function chosePort(port: number = DEFAULT_PORT): Promise<number> {
+export async function chosePort(port: number | string = DEFAULT_PORT): Promise<number> {
+  port = Number(port);
+
   const portUse = (_port: number): Promise<number | Error> => {
     return new Promise<number | Error>((resolve, reject) => {
       const server = createServer()

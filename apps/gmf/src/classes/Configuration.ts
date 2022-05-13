@@ -13,7 +13,7 @@ export enum TargetModuleKinds {
 export interface IGmfConfig {
   output?: string;
   bundle?: {
-    entry: string | string[];
+    entry: string;
     output: string;
     target?: TargetModuleKinds;
   };
