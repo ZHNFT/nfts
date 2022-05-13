@@ -1,4 +1,4 @@
-import * as readline from 'readline';
+import readline from 'readline';
 
 export function clearScreen() {
   process.stdout.write('\x1b[0f');

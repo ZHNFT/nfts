@@ -7,7 +7,7 @@
   "scripts": {
     "test": "gmf build --test",
     "build": "gmf build --clean",
-    "dev": "./node_modules/@nfts/gmf/bin/cli.js build --watch"
+    "dev": "gmf build --watch"
   },
   "devDependencies": {
     "@nfts/argparser": "workspace:*",

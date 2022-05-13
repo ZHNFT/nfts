@@ -1,5 +1,5 @@
-import type { Configuration, Compiler } from 'webpack';
 import Webpack from 'webpack';
+import type { Configuration, Compiler } from 'webpack';
 import { WebpackDevServerRunner } from './WebpackDevServerRunner';
 
 export interface WebpackRunOptions {

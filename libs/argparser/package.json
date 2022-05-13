@@ -1,12 +1,13 @@
 {
   "name": "@nfts/argparser",
   "version": "0.1.1",
+  "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
     "test": "gmf build --test",
     "dev": "gmf build --watch",
-    "build": "gmf build"
+    "build": "gmf build --clean"
   },
   "publishConfig": {
     "access": "public"

@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
-    "module": "CommonJS",
-    "target": "ES2017",
+    "module": "ESNext",
+    "target": "ESNext",
     "outDir": "./dist",
     "declaration": true,
     "declarationDir": "./dist",
+    "esModuleInterop": true,
     "lib": ["ESNext"],
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "moduleResolution": "node"
   },
   "include": ["src"],
   "exclude": ["dist", "test"]

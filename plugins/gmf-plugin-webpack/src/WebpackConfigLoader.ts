@@ -1,5 +1,5 @@
-import * as fs from 'fs';
-import * as path from 'path';
+import fs from 'fs';
+import path from 'path';
 import { Module, Url } from '@nfts/node-utils-library';
 import type { IGmfConfig } from '@nfts/gmf';
 import WebpackBar from 'webpackbar';

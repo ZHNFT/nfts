@@ -1,6 +1,7 @@
 {
   "name": "@nfts/node-utils-library",
   "version": "0.1.1",
+  "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "publishConfig": {
@@ -9,8 +10,7 @@
   "scripts": {
     "test": "gmf build --test",
     "dev": "gmf build --watch",
-    "build": "gmf build",
-    "jest": "npx jest"
+    "build": "gmf build --clean"
   },
   "devDependencies": {
     "@nfts/eslint-config": "workspace:*",

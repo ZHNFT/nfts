@@ -1,5 +1,5 @@
-import * as os from 'os';
-import { Colors } from '@nfts/interactive';
+import os from 'os';
+import { chalk } from '@nfts/node-utils-library';
 import { Parser } from '../parsers/Parser';
 import { SubParser } from '../parsers/SubParser';
 import { TParameter } from '../parameters';
@@ -106,6 +106,6 @@ export class Utils {
       return accumulate;
     }, '');
 
-    return `  ${Colors.green(parser.name)}` + `  ${parser.description}\n` + str;
+    return `  ${chalk.green(parser.name)}` + `  ${parser.description}\n` + str;
   }
 }

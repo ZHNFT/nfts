@@ -1,8 +1,8 @@
 /**
  * @deprecated
  * */
-import * as nodePath from 'path';
-import * as nodeFs from 'fs';
+import nodePath from 'path';
+import nodeFs from 'fs';
 import { IPackageJson } from './PackageJson';
 import { readJsonSync } from '../json';
 

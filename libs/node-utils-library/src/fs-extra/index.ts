@@ -2,8 +2,8 @@
  * 对于常用文件操作的补充方法
  * @status WIP
  * */
-import * as nodeFs from 'fs';
-import * as nodePath from 'path';
+import nodeFs from 'fs';
+import nodePath from 'path';
 import { serialize } from '../execution';
 
 export interface IFileOperationOpts {

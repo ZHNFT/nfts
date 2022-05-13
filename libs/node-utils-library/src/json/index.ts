@@ -1,4 +1,4 @@
-import * as nodeFs from 'fs';
+import nodeFs from 'fs';
 import { writeFile, accessFile } from '../fs-extra';
 
 /**

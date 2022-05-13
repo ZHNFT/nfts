@@ -2,8 +2,8 @@
  * 模块的同步导入实现
  * @status WIP
  */
-import * as fs from 'fs';
-import * as path from 'path';
+import fs from 'fs';
+import path from 'path';
 import NodeModule from 'module';
 import * as Constants from '../Constants';
 import * as Json from '../json';
