@@ -5,7 +5,7 @@ import type { IGmfConfig } from '@nfts/gmf';
 import WebpackBar from 'webpackbar';
 import HTMLWebpackPlugin from 'html-webpack-plugin';
 import type { Configuration, RuleSetRule } from 'webpack';
-import type { Configuration as DevServerConfiguration } from 'webpack-dev-server';
+import type { Configuration as DevServerConfiguration, ProxyConfigArrayItem } from 'webpack-dev-server';
 
 export type TWebpackConfigurationFunction = (
   env: 'production' | 'development' | string,
@@ -127,6 +127,14 @@ export class WebpackConfigLoader {
         historyApiFallback: {
           disableDotRule: true,
           index: appHtml
+        },
+        proxy: {
+          '/': {
+            bypass: (req, res, options) => {
+              console.log('Skipping proxy for browser request.');
+              return appHtml;
+            }
+          }
         }
       };
     });
