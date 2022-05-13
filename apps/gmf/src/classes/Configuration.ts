@@ -41,7 +41,6 @@ export class Configuration {
   }
 
   public loadConfigFromFile(filePath: string): IGmfConfig | undefined {
-    //
     if (this.config) return this.config;
 
     if (!existsSync(filePath)) {
