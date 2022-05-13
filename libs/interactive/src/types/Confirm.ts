@@ -1,7 +1,7 @@
 import { Key } from 'readline';
+import { chalk } from '@nfts/node-utils-library';
 import { Query } from '../core/Query';
 import { Keys } from '../core/Keys';
-import { Colors } from '../core/Colors';
 import { InlineClearType } from '../core/Screen';
 
 export interface IConfirmConfig {
@@ -32,16 +32,13 @@ export class Confirm extends Query<boolean> {
           this.screen
             .upLine()
             .clearInline(1)
-            .hardWrite(
-              `${this._config.summary} ${this._isTruthyInput() ? Colors.cyan('Yes') : Colors.red('No')}`,
-              e => {
-                if (e) {
-                  reject(e);
-                } else {
-                  resolve(this._isTruthyInput());
-                }
+            .hardWrite(`${this._config.summary} ${this._isTruthyInput() ? chalk.cyan('Yes') : chalk.red('No')}`, e => {
+              if (e) {
+                reject(e);
+              } else {
+                resolve(this._isTruthyInput());
               }
-            );
+            });
         })
         .on('error', (e: Error) => {
           reject(e);

@@ -1,7 +1,7 @@
 import { clearLine, Key, moveCursor } from 'readline';
+import { chalk } from '@nfts/node-utils-library';
 import { Query } from '../core/Query';
 import { Keys } from '../core/Keys';
-import { Colors } from '../core/Colors';
 import { Shapes } from '../core/Shapes';
 import { InlineClearType } from '../core/Screen';
 
@@ -45,7 +45,7 @@ export class Select extends Query<string> {
           this.screen
             .goToLine(0)
             .clearInline(InlineClearType.Right)
-            .hardWrite(`${this._config.summary} ${Colors.cyan(item.name)}`, e => {
+            .hardWrite(`${this._config.summary} ${chalk.cyan(item.name)}`, e => {
               if (e) {
                 resolve(item.name);
               } else {
@@ -101,7 +101,7 @@ export class Select extends Query<string> {
       .map(alt => alt.name)
       .map((name, i) => {
         if (i === _cursorIndex) {
-          return Colors.green(`${Shapes.arrowRight} ${name}`);
+          return chalk.green(`${Shapes.arrowRight} ${name}`);
         }
 
         return `  ${name}`;

@@ -1,7 +1,7 @@
 import { Key } from 'readline';
+import { chalk } from '@nfts/node-utils-library';
 import { Query } from '../core/Query';
 import { Keys } from '../core/Keys';
-import { Colors } from '../core/Colors';
 import { InlineClearType } from '../core/Screen';
 
 export interface IPasswordConfig {
@@ -33,7 +33,7 @@ export class Password extends Query<string> {
           this.screen
             .upLine()
             .clearScreenDown()
-            .hardWrite(`${this._config.summary} ${Colors.cyan(this._input)}`, e => {
+            .hardWrite(`${this._config.summary} ${chalk.cyan(this._input)}`, e => {
               if (e) {
                 reject(e);
               } else {

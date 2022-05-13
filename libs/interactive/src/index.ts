@@ -3,6 +3,8 @@ import { IInputConfig, Input } from './types/Input';
 import { IPasswordConfig, Password } from './types/Password';
 import { ISelectConfig, Select } from './types/Select';
 import { QueriesManager } from './QueryManager';
+import { Screen } from './core/Screen';
+import { Query } from './core/Query';
 
 export type TQueryConfig = (IConfirmConfig | IInputConfig | IPasswordConfig | ISelectConfig) & {
   type: 'confirm' | 'input' | 'password' | 'select';
@@ -42,7 +44,5 @@ export { Confirm, IConfirmConfig };
 export { IInputConfig, Input };
 export { IPasswordConfig, Password };
 export { ISelectConfig, Select };
-
-export { Screen } from './core/Screen';
-export { Colors, BgColorNumbers, TextColorNumbers } from './core/Colors';
-export { Query } from './core/Query';
+export { Screen };
+export { Query };

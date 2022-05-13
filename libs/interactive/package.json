@@ -10,11 +10,12 @@
     "test": "gmf build --test",
     "dev": "gmf build --watch",
     "build": "tsc",
-    "ttt": "gmf",
     "ask": "node ./test/Ask.demo.js"
   },
   "dependencies": {
-    "@nfts/hook": "workspace:*"
+    "@nfts/hook": "workspace:*",
+    "@nfts/node-utils-library": "workspace:*",
+    "chalk": "4.1.2"
   },
   "devDependencies": {
     "@nfts/eslint-config": "workspace:*",

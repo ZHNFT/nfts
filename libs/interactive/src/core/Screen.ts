@@ -1,4 +1,4 @@
-import * as readline from 'readline';
+import readline from 'readline';
 
 export enum InlineClearType {
   Left = -1,
