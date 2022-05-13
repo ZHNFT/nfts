@@ -1,14 +1,7 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "module": "CommonJS",
-    "target": "ES2017",
-    "outDir": "dist",
-    "declaration": true,
-    "declarationDir": "dist",
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "types": ["node", "jest"],
-    "noImplicitAny": true
+    "outDir": "./dist"
   },
-  "include": ["src"]
+  "include": ["./src"]
 }

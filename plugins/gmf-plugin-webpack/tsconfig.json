@@ -1,15 +1,7 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "module": "Commonjs",
-    "target": "ES2017",
-    "outDir": "dist",
-    "declaration": true,
-    "declarationDir": "dist",
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "types": ["node", "jest"],
-    "noImplicitAny": true
+    "outDir": "./dist"
   },
-  "include": ["src/"],
-  "exclude": ["node_modules/", "test/", "**/__tests__/**"]
+  "include": ["./src"]
 }

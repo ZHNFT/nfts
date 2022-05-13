@@ -1,18 +1,7 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "module": "Commonjs",
-    "target": "ES2017",
-    "outDir": "dist",
-    "declaration": true,
-    "declarationDir": "dist",
-    "moduleResolution": "Node",
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "allowJs": false,
-    "types": ["node", "jest"],
-    "noImplicitAny": true,
-    "skipLibCheck": true
+    "outDir": "./dist"
   },
-  "include": ["src/"],
-  "exclude": ["node_modules/", "test/", "**/__tests__/**"]
+  "include": ["./src"]
 }

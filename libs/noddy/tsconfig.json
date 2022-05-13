@@ -1,15 +1,7 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "module": "Commonjs",
-    "target": "ESNext",
-    "outDir": "./dist",
-    "declaration": true,
-    "declarationDir": "./dist",
-    "esModuleInterop": true,
-    "lib": ["ESNext"],
-    "noImplicitAny": true,
-    "moduleResolution": "node"
+    "outDir": "./dist"
   },
-  "include": ["src"],
-  "exclude": ["dist", "test"]
+  "include": ["./src"]
 }
