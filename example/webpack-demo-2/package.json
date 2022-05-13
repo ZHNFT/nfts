@@ -1,21 +1,21 @@
 {
   "name": "webpack-demo-2",
   "version": "0.0.1",
-  "devDependencies": {
-    "@nfts/gmf": "workspace:*",
-    "@nfts/plugin-webpack": "workspace:*",
-    "@types/react": "^18.0.9",
-    "@types/react-dom": "^18.0.3"
-  },
   "scripts": {
     "start": "gmf bundle --watch",
-    "bundle": "gmf bundle"
+    "build": "gmf bundle"
   },
   "dependencies": {
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0"
+  },
+  "devDependencies": {
+    "@nfts/gmf": "workspace:*",
+    "@nfts/plugin-webpack": "workspace:*",
+    "@types/react": "^18.0.9",
+    "@types/react-dom": "^18.0.3"
   },
   "browserslist": [
     "> 0.4%"

@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { URL } from 'url';
 import { Module, Url } from '@nfts/node-utils-library';
 import type { IGmfConfig } from '@nfts/gmf';
 import WebpackBar from 'webpackbar';
@@ -45,6 +46,7 @@ export class WebpackConfigLoader {
 
   public static createBasicWebpackConfiguration(gmfConfig: IGmfConfig): Configuration {
     const { isProd, isDev, sourcemap } = this.resolveEnv();
+    const { publicUrl } = this.resolvePaths();
 
     return {
       mode: isDev ? 'development' : isProd ? 'production' : 'none',
@@ -53,7 +55,7 @@ export class WebpackConfigLoader {
         path: this.resolveOutput(gmfConfig.bundle.output),
         filename: isProd ? 'static/js/[name].[contenthash:8].js' : 'static/js/bundle.js',
         chunkFilename: isProd ? 'static/js/[name].[contenthash:8].chunk.js' : 'static/js/[name].chunk.js',
-        publicPath: '/'
+        publicPath: publicUrl
       },
       resolve: {
         extensions: this.resolveExtensions()
@@ -98,7 +100,7 @@ export class WebpackConfigLoader {
   public static async createBasicDevServerConfiguration(
     config: DevServerConfiguration
   ): Promise<DevServerConfiguration> {
-    const { appHtml } = this.resolvePaths();
+    const { appHtml, publicUrl, appSrc } = this.resolvePaths();
 
     return this.getHttpServerConfig().then(({ port, host }) => {
       return {
@@ -112,8 +114,8 @@ export class WebpackConfigLoader {
         // Enable gzip compression of generated files.
         compress: true,
         static: {
-          directory: '/',
-          publicPath: ['/'],
+          directory: appSrc,
+          publicPath: [publicUrl],
           watch: {
             // ignored:
           }
@@ -129,9 +131,15 @@ export class WebpackConfigLoader {
           index: appHtml
         },
         proxy: {
+          /**
+           * 拦截所有的请求，对浏览器刷新造成的路由请求，统一返回 index.html 文件
+           */
           '/': {
-            bypass: (req, res, options) => {
-              console.log('Skipping proxy for browser request.');
+            changeOrigin: true,
+            bypass: req => {
+              if (req.headers.accept.indexOf('html') !== -1) {
+                return '/index.html';
+              }
               return appHtml;
             }
           }
@@ -364,16 +372,13 @@ export class WebpackConfigLoader {
     appTsConfig: string;
     appJsConfig: string;
     appNodeModule: string;
+    publicUrl: string;
   } {
     const appRoot = fs.realpathSync(process.cwd());
 
     const resolveApp = (relativePath: string): string => {
       return path.resolve(appRoot, relativePath);
     };
-
-    // const resolveConfig = (configFile: string): string => {
-    //   return path.resolve(resolveApp('config'), configFile);
-    // };
 
     const paths = {
       appRoot,
@@ -383,9 +388,26 @@ export class WebpackConfigLoader {
       appPackageJson: resolveApp('package.json'),
       appTsConfig: resolveApp('tsconfig.json'),
       appJsConfig: resolveApp('jsconfig.json'),
-      appNodeModule: resolveApp('node_modules')
+      appNodeModule: resolveApp('node_modules'),
+
+      publicUrl: this.getPublicPathOrUrl()
     };
 
     return paths;
+  }
+
+  private static getPublicPathOrUrl(): string {
+    const localBase = 'http://0.0.0.0:8080';
+    // publicPath 可以使路径也可以是一个地址，但是必须以 / 结尾，
+    // 检查路径是否合法，竟可能地完善路径；
+    const envPublicUrl = process.env.PUBLIC_URL;
+    if (!envPublicUrl) return '/';
+    let publicUrl = new URL(envPublicUrl, localBase);
+
+    if (publicUrl.pathname.endsWith('/')) {
+      return publicUrl.href;
+    } else {
+      return `${publicUrl.origin}${publicUrl.pathname}/`;
+    }
   }
 }
