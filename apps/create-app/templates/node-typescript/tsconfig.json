@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "module": "CommonJS",
-    "target": "ES2017",
+    "module": "ESNext",
+    "target": "esnext",
     "outDir": "dist",
     "declaration": true,
     "declarationDir": "dist",
@@ -9,5 +9,6 @@
     "esModuleInterop": true,
     "noImplicitAny": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["node_modules/", "**/*.spec.ts", "**/*.test.ts"]
 }

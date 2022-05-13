@@ -1,12 +1,13 @@
 {
   "name": "{{project.name}}",
   "version": "0.0.0",
+  "type": "module",
   "author": {
     "email": "{{user.email}}",
     "name": "{{user.name}}",
     "url": "{{user.url}}"
   },
-  "description": "Description for your project",
+  "description": "Description of the project",
   "eslintConfig": {
     "extends": [
       "@nfts"

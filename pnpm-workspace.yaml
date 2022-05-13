@@ -4,5 +4,5 @@ packages:
   - 'config/**'
   - 'plugins/**'
   - 'example/**'
-  # exclude packages that are inside test directories
+  # exclude packages that inside test directories
   - '!**/test/**'
