@@ -3,7 +3,6 @@ import { req } from '@nfts/node-utils-library';
 
 import jestPlugin from '../internal-plugins/jest/JestPlugin';
 import typescriptPlugin from '../internal-plugins/typescript/TypescriptPlugin';
-import copyPlugin from '../internal-plugins/copy/CopyPlugin';
 import cleanPlugin from '../internal-plugins/cleanup/CleanPlugin';
 
 import { Configuration } from './Configuration';
@@ -24,7 +23,6 @@ export class PluginManager {
 
     this.applyPlugin(typescriptPlugin);
     this.applyPlugin(jestPlugin);
-    this.applyPlugin(copyPlugin);
     this.applyPlugin(cleanPlugin);
   }
 

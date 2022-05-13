@@ -167,7 +167,7 @@ importers:
     dependencies:
       '@babel/core': 7.17.10
       '@nfts/gmf': link:../../apps/gmf
-      '@nfts/plugin-webpack': link:../../plugins/gmf-plugin-webpack
+      '@nfts/plugin-webpack': link:../../plugins/plugin-webpack
       '@pmmmwh/react-refresh-webpack-plugin': 0.5.6_cduugdvdzx7dfkit7irvewwovq
       '@svgr/webpack': 5.5.0
       '@testing-library/jest-dom': 5.16.4
@@ -238,7 +238,7 @@ importers:
       react-router-dom: 6.3.0_ef5jwxihqo6n7gxfmzogljlgcm
     devDependencies:
       '@nfts/gmf': link:../../apps/gmf
-      '@nfts/plugin-webpack': link:../../plugins/gmf-plugin-webpack
+      '@nfts/plugin-webpack': link:../../plugins/plugin-webpack
       '@types/react': 18.0.9
       '@types/react-dom': 18.0.3
 
@@ -360,7 +360,7 @@ importers:
       ts-jest: 27.1.4_ibhx3ehxrt2kgmkik4bkzmyeei
       typescript: 4.6.4
 
-  plugins/gmf-plugin-react:
+  plugins/plugin-react:
     specifiers:
       '@nfts/eslint-config': workspace:*
       '@nfts/gmf': workspace:*
@@ -369,7 +369,7 @@ importers:
     devDependencies:
       '@nfts/eslint-config': link:../../config/eslint
 
-  plugins/gmf-plugin-webpack:
+  plugins/plugin-webpack:
     specifiers:
       '@nfts/argparser': workspace:*
       '@nfts/eslint-config': workspace:*
