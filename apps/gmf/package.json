@@ -1,7 +1,6 @@
 {
   "name": "@nfts/gmf",
   "version": "0.1.1",
-  "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
@@ -11,9 +10,8 @@
     "access": "public"
   },
   "scripts": {
-    "test": "./bin/cli.js build --test",
-    "dev": "./bin/cli.js build --watch",
-    "build": "./bin/cli.js build --clean"
+    "dev": "tsc --watch",
+    "build": "tsc"
   },
   "dependencies": {
     "@jest/core": "^27.5.1",

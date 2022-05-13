@@ -1,7 +1,6 @@
 {
   "name": "@nfts/hook",
   "version": "0.1.1",
-  "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "publishConfig": {
@@ -10,7 +9,7 @@
   "scripts": {
     "test": "gmf build --test",
     "dev": "gmf build --watch",
-    "build": "gmf build"
+    "build": "tsc"
   },
   "repository": {
     "directory": "libs/hook",

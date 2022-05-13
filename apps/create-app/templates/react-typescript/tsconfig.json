@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "esnext",
+    "module": "Commonjs",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "importHelpers": true,

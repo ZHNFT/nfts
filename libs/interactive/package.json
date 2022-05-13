@@ -10,7 +10,7 @@
   "scripts": {
     "test": "gmf build --test",
     "dev": "gmf build --watch",
-    "build": "gmf build",
+    "build": "tsc",
     "ttt": "gmf",
     "ask": "node ./test/Ask.demo.js"
   },

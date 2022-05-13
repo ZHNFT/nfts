@@ -12,7 +12,7 @@
   "scripts": {
     "test": "gmf build --test",
     "dev": "gmf build --watch",
-    "build": "gmf build"
+    "build": "tsc"
   },
   "dependencies": {
     "@nfts/gmf": "workspace:*",

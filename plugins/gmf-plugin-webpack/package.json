@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "gmf build --test",
-    "build": "gmf build --clean",
+    "build": "tsc",
     "dev": "gmf build --watch"
   },
   "devDependencies": {

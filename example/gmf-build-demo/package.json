@@ -7,7 +7,7 @@
   "scripts": {
     "test": "gmf build --test",
     "dev": "gmf build --watch",
-    "build": "gmf build  --clean",
+    "build": "tsc",
     "bundle": "gmf bundle"
   }
 }

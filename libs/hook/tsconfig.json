@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
+    "module": "Commonjs",
     "target": "esnext",
     "outDir": "./dist",
     "declaration": true,
     "declarationDir": "./dist",
     "moduleResolution": "Node",
     "noImplicitAny": true,
+    "esModuleInterop": true,
     "lib": ["ESNext"]
   },
   "include": ["src/"],
