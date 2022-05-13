@@ -1,6 +1,10 @@
 {
   "name": "@nfts/root",
   "version": "0.0.0",
+  "private": true,
+  "publishConfig": {
+    "access": "restricted"
+  },
   "author": {
     "name": "Ray"
   },

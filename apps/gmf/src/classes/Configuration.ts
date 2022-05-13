@@ -17,7 +17,6 @@ export interface IGmfConfig {
     output: string;
     target?: TargetModuleKinds;
   };
-  build?: {};
   plugins?: {
     pluginName: string;
     options?: Record<string, unknown>;

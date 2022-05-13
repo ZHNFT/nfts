@@ -6,7 +6,7 @@ import type { IGmfConfig } from '@nfts/gmf';
 import WebpackBar from 'webpackbar';
 import HTMLWebpackPlugin from 'html-webpack-plugin';
 import type { Configuration, RuleSetRule } from 'webpack';
-import type { Configuration as DevServerConfiguration, ProxyConfigArrayItem } from 'webpack-dev-server';
+import type { Configuration as DevServerConfiguration } from 'webpack-dev-server';
 
 export type TWebpackConfigurationFunction = (
   env: 'production' | 'development' | string,
@@ -400,7 +400,7 @@ export class WebpackConfigLoader {
     // 检查路径是否合法，竟可能地完善路径；
     const envPublicUrl = process.env.PUBLIC_URL;
     if (!envPublicUrl) return '/';
-    let publicUrl = new URL(envPublicUrl, localBase);
+    const publicUrl = new URL(envPublicUrl, localBase);
 
     if (publicUrl.pathname.endsWith('/')) {
       return publicUrl.href;

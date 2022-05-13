@@ -42,8 +42,8 @@ export class PluginManager {
 
     for (const stageName in this._stages) {
       if (Object.prototype.hasOwnProperty.call(this._stages, stageName)) {
-        const stage: Stage = this._stages[stageName as string] as Stage;
-        hooks[stageName as string] = stage.internalHook;
+        const stage: Stage = this._stages[stageName];
+        hooks[stageName] = stage.internalHook;
       }
     }
 
