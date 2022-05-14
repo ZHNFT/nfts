@@ -1,7 +1,7 @@
+import { resolve } from 'path';
 import { CommandLine, Command } from '@nfts/noddy';
 import { FlagParameter, ArrayParameter, ValueOfParameters } from '@nfts/argparser';
 import { Generator } from './Generator';
-import * as process from 'process';
 
 /*
  * 模板目标平台
@@ -38,7 +38,7 @@ class createCommand extends Command implements TCreationCommandLineParameters {
       ts: this.ts.value,
       platform: this.platform.value
     };
-    await Generator.run(parameters, process.cwd());
+    await Generator.run(parameters, resolve(process.cwd(), 'dist/temp'));
   }
 
   onDefineParameters(): void {
@@ -55,7 +55,7 @@ class createCommand extends Command implements TCreationCommandLineParameters {
   }
 }
 
-export default class Creation extends CommandLine {
+class Creation extends CommandLine {
   constructor() {
     super({
       toolName: 'create-app',
@@ -65,3 +65,5 @@ export default class Creation extends CommandLine {
     this.addCommand(new createCommand());
   }
 }
+
+export default new Creation();
