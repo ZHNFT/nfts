@@ -16,11 +16,12 @@ export class Generator {
     // 重置所有文件写入的 TASK
     this.fileEmitTasks = [];
     const { ts, platform } = opts;
+    const targetPlatform = (platform?.[0] || 'node') as Platforms;
     let dependencies = ['@nfts/gmf', '@nfts/eslint-config'];
     if (ts) {
       dependencies.push('typescript');
     }
-    switch (platform[0]) {
+    switch (targetPlatform) {
       case 'node':
         break;
       case 'react':
@@ -30,10 +31,8 @@ export class Generator {
         break;
     }
 
-    this.makePackageJson(this.getCurrentUserInfo(), {
-      platform: opts.platform[0] as keyof typeof Platforms
-    });
-    this.makeTemplateFiles(cwd);
+    this.makePackageJson(targetPlatform, cwd);
+    this.makeTemplateFiles(targetPlatform, cwd);
     // 开始写入文件
     await Execution.parallel(this.fileEmitTasks);
     console.log('文件写入结束');
@@ -42,7 +41,7 @@ export class Generator {
   /*
    * 获取当前用户的 git user 配置信息
    * */
-  public static getCurrentUserInfo(): TUserInfo | undefined {
+  public static getCurrentUserInfo(): TUserInfo {
     try {
       const name = spawnSync('git', ['config', '--global', 'user.name']).stdout.toString();
       const email = spawnSync('git', ['config', '--global', 'user.email']).stdout.toString();
@@ -63,15 +62,10 @@ export class Generator {
   }
 
   // 生成 package.json 文件
-  private static makePackageJson(userInfo: TUserInfo, opts?: TPackageJsonInfo): void {
-    opts = Utilities.object.merge(
-      {
-        platform: Platforms.node
-      },
-      opts ?? {}
-    ) as TPackageJsonInfo;
+  private static makePackageJson(platform: Platforms, cwd: string): void {
+    const userInfo = this.getCurrentUserInfo();
 
-    const platformCommand = opts.platform === Platforms.react ? 'bundle' : 'build';
+    const platformCommand = platform === Platforms.react ? 'bundle' : 'build';
 
     const pkg = {
       name: 'new_project',
@@ -104,7 +98,7 @@ export class Generator {
       prettier: this.getPrettierConfig()
     };
 
-    this.fileEmitTasks.push(() => this.makeFileTask('package.json', JSON.stringify(pkg)));
+    this.fileEmitTasks.push(() => this.makeFileTask(resolve(cwd, 'package.json'), JSON.stringify(pkg)));
   }
 
   private static getPrettierConfig(): Config {
@@ -118,49 +112,70 @@ export class Generator {
   }
 
   // 创建模板文件
-  private static makeTemplateFiles(cwd: string) {
+  private static makeTemplateFiles(platform: Platforms, cwd: string) {
     const files: { [index: string]: string } = {
       // .eslintrc.js
-      '.eslintrc.js': `const { dirname } = require('path');
-      /** @type {import("eslint").Linter.Config} */
-      module.exports = {
-        root: true,
-        extends: ['@nfts'],
-        ignorePatterns: ['*.(test|spec).*', 'node_modules', 'dist', '.yarn'],
-        parserOptions: {
-          tsconfigRootDir: dirname(__filename)
-        }
-      };`,
+      '.eslintrc.js': `
+const { dirname } = require('path');
+/** @type {import("eslint").Linter.Config} */
+module.exports = {
+  root: true,
+  extends: ['@nfts'],
+  ignorePatterns: ['*.(test|spec).*', 'node_modules', 'dist', '.yarn'],
+  parserOptions: {
+    tsconfigRootDir: dirname(__filename)
+  }
+};`,
       // .gitignore
-      '.gitignore': `# IDEs
-      .idea/
-      .vscode/
+      '.gitignore': `
+# IDEs
+.idea/
+.vscode/
 
-      # Build/Release
-      dist/
-      build/
+# Build/Release
+dist/
+build/
 
-      # Modules
-      node_modules/
+# Modules
+node_modules/
 
-      # Lock files
-      yarn.lock
-      pnpm-lock.yaml
-      package-lock.json`,
+# Lock files
+yarn.lock
+pnpm-lock.yaml
+package-lock.json`,
       // .npmignore
-      '.npmignore': `*
-
-      !/dist/**
-      !/bin/**
-      !/schemas/**`,
+      '.npmignore': `
+*
+!/dist/**
+!/bin/**
+!/schemas/**`,
       // jest.config.js
-      'jest.config.js': `/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
-      module.exports = {
-        preset: 'ts-jest',
-        testEnvironment: 'node',
-        passWithNoTests: true
-      };`,
-      'tsconfig.json': ``
+      'jest.config.js': `
+/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
+module.exports = {
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  passWithNoTests: true
+};`,
+      'tsconfig.json': `
+{
+  "compilerOptions": {
+    "module": "Commonjs",
+    "target": "ES2017",
+    "declaration": true,
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "allowJs": false,
+    "types": ["@types/node", "@types/jest"],
+    "noImplicitAny": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "emitDeclarationOnly": ${platform !== 'node' ? 'false' : 'true'}
+  },
+  "exclude": ["**/node_modules/**/*", "**/*.(test|spec).*", "**/template/**/*"]
+}
+`
     };
 
     Object.keys(files).forEach((fileName: string) => {

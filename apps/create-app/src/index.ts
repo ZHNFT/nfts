@@ -1,5 +1,5 @@
 import { resolve } from 'path';
-import { CommandLine, Command } from '@nfts/noddy';
+import { CommandLine } from '@nfts/noddy';
 import { FlagParameter, ArrayParameter, ValueOfParameters } from '@nfts/argparser';
 import { Generator } from './Generator';
 
@@ -21,27 +21,16 @@ export type TCreationCommandLineParameters = {
 
 export type ICreationParameters = ValueOfParameters<TCreationCommandLineParameters>;
 
-class createCommand extends Command implements TCreationCommandLineParameters {
+class Creation extends CommandLine implements TCreationCommandLineParameters {
   ts: FlagParameter;
   platform: ArrayParameter;
 
   constructor() {
     super({
-      commandName: 'create',
-      commandDescription: 'Generating web/nodejs startup template'
+      toolName: 'create-app',
+      toolDescription: 'Web project templates'
     });
-  }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
-  async onExecute(): Promise<void> {
-    const parameters: ValueOfParameters<{ ts: FlagParameter; platform: ArrayParameter }> = {
-      ts: this.ts.value,
-      platform: this.platform.value
-    };
-    await Generator.run(parameters, resolve(process.cwd(), 'dist/temp'));
-  }
-
-  onDefineParameters(): void {
     this.ts = this.flagParameter({
       name: '--ts',
       summary: 'Using typescript boostrap your project'
@@ -53,16 +42,13 @@ class createCommand extends Command implements TCreationCommandLineParameters {
       alternatives: Object.keys(Platforms)
     });
   }
-}
 
-class Creation extends CommandLine {
-  constructor() {
-    super({
-      toolName: 'create-app',
-      toolDescription: 'Web project templates'
-    });
-
-    this.addCommand(new createCommand());
+  async onExecute(): Promise<void> {
+    const parameters: ValueOfParameters<{ ts: FlagParameter; platform: ArrayParameter }> = {
+      ts: this.ts.value,
+      platform: this.platform.value
+    };
+    await Generator.run(parameters, resolve(process.cwd(), 'test/temp'));
   }
 }
 

@@ -8,7 +8,7 @@ export interface ParsedCommandLineOption {
   [key: string]: string | string[];
 }
 
-export class CommandLine extends CommandLineParameterManager {
+export abstract class CommandLine extends CommandLineParameterManager {
   private readonly _debug: Debug;
   private readonly _parser: Parser;
 
@@ -35,7 +35,7 @@ export class CommandLine extends CommandLineParameterManager {
     this._parser.addSubParser(command.subParser);
   }
 
-  private _findCommand(name: string[]): Command {
+  private _findCommand(name: string[]): Command | undefined {
     if (name.length > 1) {
       throw new Error(`Multi level sub-command is not support currently`);
     }
@@ -56,6 +56,8 @@ export class CommandLine extends CommandLineParameterManager {
 
     if (command) {
       await command.onExecute(args);
+    } else {
+      await this.onExecute(args);
     }
   }
 
@@ -63,4 +65,10 @@ export class CommandLine extends CommandLineParameterManager {
     const result = this._parser.parse() as ParsedCommandLineOption;
     return Object.freeze(result);
   }
+
+  /**
+   * 执行逻辑
+   * @param args
+   */
+  abstract onExecute(args?: unknown): Promise<void>;
 }
