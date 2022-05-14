@@ -106,7 +106,3 @@ typings/
 .nova/
 .idea/
 .vscode/
-
-**/.DS_Store
-**/temp
-**/dist

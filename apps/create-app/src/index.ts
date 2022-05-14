@@ -1,20 +1,29 @@
 import { CommandLine, Command } from '@nfts/noddy';
-import { FlagParameter, StringParameter } from '@nfts/argparser';
+import { FlagParameter, ArrayParameter, ValueOfParameters } from '@nfts/argparser';
 import { Generator } from './Generator';
+import * as process from 'process';
 
-export interface ICreationParameter {
-  ts: FlagParameter;
-  platform: StringParameter;
+/*
+ * 模板目标平台
+ * */
+export enum Platforms {
+  web = 'web',
+  node = 'node'
 }
 
-export interface ICreationParameterValue {
-  ts?: boolean;
-  platform?: string;
-}
-
-class createCommand extends Command implements ICreationParameter {
+/*
+ * create 指令的参数
+ * */
+export type TCreationCommandLineParameters = {
   ts: FlagParameter;
-  platform: StringParameter;
+  platform: ArrayParameter;
+};
+
+export type ICreationParameters = ValueOfParameters<TCreationCommandLineParameters>;
+
+class createCommand extends Command implements TCreationCommandLineParameters {
+  ts: FlagParameter;
+  platform: ArrayParameter;
 
   constructor() {
     super({
@@ -23,23 +32,25 @@ class createCommand extends Command implements ICreationParameter {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   async onExecute(): Promise<void> {
-    const parameters: ICreationParameterValue = {
+    const parameters: ValueOfParameters<{ ts: FlagParameter; platform: ArrayParameter }> = {
       ts: this.ts.value,
-      platform: this.platform.name
+      platform: this.platform.value
     };
-    await Generator.run(parameters);
+    Generator.run(parameters, process.cwd());
   }
 
   onDefineParameters(): void {
     this.ts = this.flagParameter({
       name: '--ts',
-      summary: 'Generate typescript project'
+      summary: 'Using typescript boostrap your project'
     });
 
-    this.platform = this.stringParameter({
+    this.platform = this.arrayParameter({
       name: '--platform',
-      summary: 'Generate typescript project'
+      summary: 'Generate template for specific platform',
+      alternatives: Object.keys(Platforms)
     });
   }
 }

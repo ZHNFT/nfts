@@ -1,10 +1,12 @@
+import type { Config as PrettierConfig } from 'prettier';
+import { Linter } from 'eslint';
 import { PackageVersion } from './PackageVersion';
 import { PackageName } from './PackageName';
 
 export interface IPackageAuthor {
-  name: string;
+  name?: string;
   email?: string;
-  url: string;
+  url?: string;
 }
 
 export interface IPackageRepository {
@@ -29,6 +31,17 @@ export interface IPackageJson {
    * 包的作者名称
    */
   author?: string | IPackageAuthor;
+  /*
+   * .d.ts 文件路径
+   * */
+  types?: string;
+  /*
+   * npm public 发布的配置
+   * */
+  publishConfig?: {
+    access?: 'public' | 'restricted';
+    registry?: string;
+  };
   /**
    * 代码贡献者
    */
@@ -74,6 +87,8 @@ export interface IPackageJson {
    * Babel、Autoprefixer 和其他工具会用到它，以将所需的 polyfill 和 fallback 添加到目标浏览器。
    */
   browserslist?: string[];
+  eslint?: Linter.Config;
+  prettier?: PrettierConfig;
 }
 
 export class PackageJson {

@@ -1,8 +1,0 @@
-{
-  "$schema": "../node_modules/@nfts/gmf/schemas/gmf.schema.json",
-  "plugins": [
-    {
-      "pluginName": "@nfts/plugin-webpack"
-    }
-  ]
-}

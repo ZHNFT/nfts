@@ -6,5 +6,8 @@ export {
   StringParameter,
   StringOptionDefinition,
   ArrayParameter,
-  ArrayParameterDefinition
+  ArrayParameterDefinition,
+  TParameter,
+  ValueOfParameters,
+  KeyOfParameters
 } from './parameters';
