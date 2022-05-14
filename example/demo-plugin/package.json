@@ -1,8 +1,0 @@
-{
-  "name": "@nfts/init-plugin",
-  "main": "lib/index.js",
-  "version": "0.0.0",
-  "devDependencies": {
-    "@nfts/gmf": "workspace:*"
-  }
-}
