@@ -7,7 +7,7 @@ import * as process from 'process';
  * 模板目标平台
  * */
 export enum Platforms {
-  web = 'web',
+  react = 'react',
   node = 'node'
 }
 
@@ -38,7 +38,7 @@ class createCommand extends Command implements TCreationCommandLineParameters {
       ts: this.ts.value,
       platform: this.platform.value
     };
-    Generator.run(parameters, process.cwd());
+    await Generator.run(parameters, process.cwd());
   }
 
   onDefineParameters(): void {

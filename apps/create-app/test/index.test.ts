@@ -1,5 +1,9 @@
-import plus from '../src';
+import { spawnSync } from 'child_process';
 
-test('a + b', () => {
-  expect(plus(1, 2)).toBe(3);
+describe('生成模板文件', () => {
+  test('测试生成模板', () => {
+    expect(() => {
+      spawnSync('node', ['./bin/create-app', '--ts', '--platform', 'react']);
+    }).not.toThrow();
+  });
 });

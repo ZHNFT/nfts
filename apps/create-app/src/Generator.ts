@@ -1,7 +1,8 @@
 import { spawnSync } from 'child_process';
+import { resolve } from 'path';
+import { writeFile } from 'fs/promises';
 import { ICreationParameters, Platforms } from '.';
-import { PackageJson, Execution, Utilities } from '@nfts/node-utils-library';
-import { Linter } from 'eslint';
+import { Execution, Utilities } from '@nfts/node-utils-library';
 import type { Config } from 'prettier';
 
 export type TUserInfo = { name: string; email: string };
@@ -9,15 +10,33 @@ export type TPackageJsonInfo = { usingTs?: boolean; platform?: keyof typeof Plat
 
 export class Generator {
   // 所有待创建的文件都先缓存在该数据结构中
-  private static fileEmitTasks: Execution.TTask<undefined, void>[];
+  private static fileEmitTasks: Execution.TTask<void, void>[];
 
-  public static run(opts: ICreationParameters, cwd: string = process.cwd()) {
+  public static async run(opts: ICreationParameters, cwd: string = process.cwd()) {
     // 重置所有文件写入的 TASK
     this.fileEmitTasks = [];
-
     const { ts, platform } = opts;
-    const localUsr = Generator.getCurrentUserInfo();
-    const packageJsonContent = Generator.getPackageJson(localUsr);
+    let dependencies = ['@nfts/gmf', '@nfts/eslint-config'];
+    if (ts) {
+      dependencies.push('typescript');
+    }
+    switch (platform[0]) {
+      case 'node':
+        break;
+      case 'react':
+        dependencies = dependencies.concat(['react', 'react-dom', '@nfts/plugin-webpack']);
+        break;
+      default:
+        break;
+    }
+
+    this.makePackageJson(this.getCurrentUserInfo(), {
+      platform: opts.platform[0] as keyof typeof Platforms
+    });
+    this.makeTemplateFiles(cwd);
+    // 开始写入文件
+    await Execution.parallel(this.fileEmitTasks);
+    console.log('文件写入结束');
   }
 
   /*
@@ -39,35 +58,22 @@ export class Generator {
     }
   }
 
+  public static async installDeps(): Promise<void> {
+    //
+  }
+
   // 生成 package.json 文件
-  private static getPackageJson(userInfo: TUserInfo, opts?: TPackageJsonInfo): PackageJson.IPackageJson {
+  private static makePackageJson(userInfo: TUserInfo, opts?: TPackageJsonInfo): void {
     opts = Utilities.object.merge(
       {
-        usingTs: true,
         platform: Platforms.node
       },
       opts ?? {}
     ) as TPackageJsonInfo;
 
-    const dependencies = ['@nfts/gmf', '@nfts/eslint-config'];
-    const devDependencies = ['@types/jest', '@types/node'];
+    const platformCommand = opts.platform === Platforms.react ? 'bundle' : 'build';
 
-    const testPackage = ['jest', 'ts-jest'];
-
-    if (opts.usingTs) {
-      dependencies.push('typescript');
-    }
-
-    switch (opts.platform) {
-      case 'node':
-        break;
-      case 'web':
-        break;
-      default:
-        break;
-    }
-
-    return {
+    const pkg = {
       name: 'new_project',
       version: '0.0.1',
       main: './dist/index.js',
@@ -81,19 +87,24 @@ export class Generator {
         access: 'public'
       },
       scripts: {
-        test: 'gmf build --test',
-        dev: 'gmf build --watch',
-        build: 'gmf build --test --clean'
+        test: `gmf ${platformCommand} --test`,
+        dev: `gmf ${platformCommand} --watch`,
+        build: `gmf ${platformCommand} --test --clean`
+      },
+      dependencies: {
+        '@nfts/gmf': '@latest',
+        '@nfts/eslint-config': '@latest'
       },
       devDependencies: {
         '@types/jest': '~27.5.1',
         '@types/node': '~17.0.5',
         jest: '~27.4.5',
-        'ts-jest': '~27.1.2',
-        typescript: '~4.5.4'
+        'ts-jest': '~27.1.2'
       },
       prettier: this.getPrettierConfig()
     };
+
+    this.fileEmitTasks.push(() => this.makeFileTask('package.json', JSON.stringify(pkg)));
   }
 
   private static getPrettierConfig(): Config {
@@ -106,7 +117,62 @@ export class Generator {
     };
   }
 
-  private static makeFileTask(filePath: string, content: string) {
-    //
+  // 创建模板文件
+  private static makeTemplateFiles(cwd: string) {
+    const files: { [index: string]: string } = {
+      // .eslintrc.js
+      '.eslintrc.js': `const { dirname } = require('path');
+      /** @type {import("eslint").Linter.Config} */
+      module.exports = {
+        root: true,
+        extends: ['@nfts'],
+        ignorePatterns: ['*.(test|spec).*', 'node_modules', 'dist', '.yarn'],
+        parserOptions: {
+          tsconfigRootDir: dirname(__filename)
+        }
+      };`,
+      // .gitignore
+      '.gitignore': `# IDEs
+      .idea/
+      .vscode/
+
+      # Build/Release
+      dist/
+      build/
+
+      # Modules
+      node_modules/
+
+      # Lock files
+      yarn.lock
+      pnpm-lock.yaml
+      package-lock.json`,
+      // .npmignore
+      '.npmignore': `*
+
+      !/dist/**
+      !/bin/**
+      !/schemas/**`,
+      // jest.config.js
+      'jest.config.js': `/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
+      module.exports = {
+        preset: 'ts-jest',
+        testEnvironment: 'node',
+        passWithNoTests: true
+      };`,
+      'tsconfig.json': ``
+    };
+
+    Object.keys(files).forEach((fileName: string) => {
+      const content = files[fileName];
+      this.fileEmitTasks.push(() => this.makeFileTask(resolve(cwd, fileName), content));
+    });
+  }
+
+  // 创建写文件的 Task
+  private static async makeFileTask(filePath: string, content: string): Promise<void> {
+    await writeFile(filePath, content, {
+      encoding: 'utf-8'
+    });
   }
 }

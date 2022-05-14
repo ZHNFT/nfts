@@ -4,7 +4,7 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
-    "gmf": "bin/cli.js"
+    "create-app": "bin/create-app"
   },
   "publishConfig": {
     "access": "public"
