@@ -42,8 +42,10 @@ export class PluginManager {
 
     for (const stageName in this._stages) {
       if (Object.prototype.hasOwnProperty.call(this._stages, stageName)) {
-        const stage: Stage = this._stages[stageName];
-        hooks[stageName] = stage.internalHook;
+        const stage = this._stages[stageName as keyof IStages];
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        hooks[stageName as keyof IStageHooks] = stage.internalHook;
       }
     }
 

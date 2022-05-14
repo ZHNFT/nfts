@@ -6,19 +6,19 @@ export class SubParser<R = unknown> {
   public readonly name: string;
   public readonly description: string;
 
-  private _parent: SubParser;
-  private _child: Set<SubParser> = new Set<SubParser>();
+  private _parent?: SubParser<R>;
+  private _child: Set<SubParser<R>> = new Set<SubParser<R>>();
   private _parameters: Set<TParameter> = new Set<TParameter>();
   private _flagCallbacks: Set<Execution.TTask<R>> = new Set<Execution.TTask<R>>();
 
-  private _executeFile: string;
+  private _executeFile?: string;
 
   constructor(action: string, description: string) {
     this.name = action;
     this.description = description;
   }
 
-  public addSubParser(parser: SubParser): SubParser {
+  public addSubParser(parser: SubParser<R>): SubParser<R> {
     parser._parent = this;
     this._child.add(parser);
     return this;
@@ -54,9 +54,9 @@ export class SubParser<R = unknown> {
 
     //
     const _rootParser = this._findRootParser();
-    const _activeParser = Utils.findActiveParser(_rootParser, _actions);
+    const _activeParser = Utils.findActiveParser(_rootParser as SubParser<unknown>, _actions);
 
-    this._appendRootParamsToActiveParser(_rootParser, _activeParser);
+    this._appendRootParamsToActiveParser(_rootParser as SubParser<unknown>, _activeParser as SubParser<unknown>);
 
     const _result = args.reduce((prevResult, currentArg, currentIndex, _args) => {
       let _key: string, _value: string | boolean;
@@ -80,22 +80,22 @@ export class SubParser<R = unknown> {
         }
       }
 
-      const param = Utils.applyParameterValue(_activeParser, _key, _value);
+      const param = Utils.applyParameterValue(_activeParser, _key!, _value!);
 
       // Add shortName to result
-      if (param.shortName) {
+      if (param?.shortName) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         prevResult[Utils.stripParamFlagPrefix(param.shortName)] = _value;
       }
 
-      if (param.name) {
+      if (param?.name) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         prevResult[Utils.stripParamFlagPrefix(param.name)] = _value;
       }
 
-      if (param.callback) {
+      if (param?.callback) {
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
         this._flagCallbacks.add(param.callback);
       }
@@ -120,7 +120,7 @@ export class SubParser<R = unknown> {
   /**
    * 返回当前parser的所有子parser
    */
-  public getAllParsers(): Readonly<SubParser[]> {
+  public getAllParsers(): Readonly<SubParser<R>[]> {
     return Array.from(this._child.values());
   }
 
@@ -131,7 +131,7 @@ export class SubParser<R = unknown> {
     return Array.from(this._parameters.values());
   }
 
-  public findSubParser(name: string): SubParser {
+  public findSubParser(name: string): SubParser<R> | undefined {
     for (const subParser of this._child.values()) {
       if (subParser.name === name) {
         return subParser;
@@ -139,7 +139,7 @@ export class SubParser<R = unknown> {
     }
   }
 
-  public findParameter(name: string): TParameter {
+  public findParameter(name: string): TParameter | undefined {
     for (const param of this._parameters.values()) {
       if (param.name === name || param.shortName === name) {
         return param;
@@ -147,7 +147,7 @@ export class SubParser<R = unknown> {
     }
   }
 
-  public _findRootParser(): SubParser {
+  public _findRootParser(): SubParser<R> {
     if (!this._parent) {
       return this;
     }

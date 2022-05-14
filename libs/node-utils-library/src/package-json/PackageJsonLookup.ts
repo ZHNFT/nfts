@@ -37,7 +37,7 @@ export class PackageJsonLookup {
     // todo
     // -[ ] 添加`path`是否是文件夹的判断
     const _options = this._resolveOptions(options);
-    const _relPath = nodePath.isAbsolute(path) ? path : nodePath.resolve(_options.cwd, path);
+    const _relPath = nodePath.isAbsolute(path) ? path : nodePath.resolve(_options.cwd!, path);
 
     const _pkgPath = this._resolvePackageJsonPath(_relPath);
 
@@ -49,7 +49,7 @@ export class PackageJsonLookup {
       }
       return _pkg;
     } else {
-      return this._cache.get(_pkg.name);
+      return this._cache.get(_pkg.name)!;
     }
   }
 

@@ -26,10 +26,10 @@ export interface BuildCommandLineParametersValue {
 export class BuildCommand extends Command implements BuildCommandLineParameters {
   private readonly stage: BuildStage;
 
-  clean: FlagParameter;
-  test: FlagParameter;
-  watch: FlagParameter;
-  tsconfig: StringParameter;
+  clean!: FlagParameter;
+  test!: FlagParameter;
+  watch!: FlagParameter;
+  tsconfig!: StringParameter;
 
   constructor({ stage }: BuildCommandInitOption) {
     super({

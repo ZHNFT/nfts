@@ -7,8 +7,8 @@ export interface WebpackRunOptions {
 }
 
 export class WebpackRunner {
-  compiler: Compiler;
-  config: Configuration;
+  compiler!: Compiler;
+  config!: Configuration;
 
   /*
    * 创建webpack compiler 实例
@@ -24,8 +24,8 @@ export class WebpackRunner {
         if (err) {
           watchServer.close();
         }
-        const localUrl = `${devServerConfig.https ? 'https' : 'http'}://${devServerConfig.host || 'localhost'}:${
-          devServerConfig.port || '8080'
+        const localUrl = `${devServerConfig?.https ? 'https' : 'http'}://${devServerConfig?.host || 'localhost'}:${
+          devServerConfig?.port || '8080'
         }`;
         console.log(`Successfully started server on ${localUrl}`);
       });
@@ -37,11 +37,13 @@ export class WebpackRunner {
         throw err;
       }
 
-      if (!stats.hasErrors() && !stats.hasWarnings()) {
-        return;
-      }
+      if (stats) {
+        if (!stats.hasErrors() && !stats.hasWarnings()) {
+          return;
+        }
 
-      this._formatWebpackMessage(stats);
+        this._formatWebpackMessage(stats);
+      }
     });
   }
 
@@ -52,23 +54,23 @@ export class WebpackRunner {
       return;
     }
 
-    if (warningsCount > 0) {
-      const warningsFormattedMessage = warnings.map(warn => {
+    if (!warningsCount || warningsCount > 0) {
+      const warningsFormattedMessage = warnings?.map(warn => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const { file, details, message } = warn;
         return `${file || ''} \n${(details as string) || ''}\n ${message || ''}`;
       });
-      console.log(warningsFormattedMessage.join('\n'));
+      warningsFormattedMessage && console.log(warningsFormattedMessage.join('\n'));
     }
 
-    if (errorsCount > 0) {
-      const errorsFormattedMessage = errors.map(err => {
+    if (!errorsCount || errorsCount > 0) {
+      const errorsFormattedMessage = errors?.map(err => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const { file, details, message } = err;
         return `${file || ''} \n${(details as string) || ''}\n ${message || ''}`;
       });
 
-      console.log(errorsFormattedMessage.join('\n'));
+      errorsFormattedMessage && console.log(errorsFormattedMessage.join('\n'));
     }
   }
 }

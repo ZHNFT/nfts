@@ -21,7 +21,7 @@ export class PackageName {
       throw new Error(`Invalid package name: ${name}\n` + `Expecting "xx" / "xx-xx" / "@scope/xx" / "@scope/xx-xx"`);
     }
 
-    const [, packageScope, packageName] = PackageName.nameRegex.exec(name);
+    const [, packageScope, packageName] = PackageName.nameRegex.exec(name) as string[];
 
     this.scope = packageScope;
     this.value = packageName;

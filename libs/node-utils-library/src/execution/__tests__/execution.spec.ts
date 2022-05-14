@@ -44,7 +44,11 @@ describe('execution 方法测试用例', () => {
   });
 
   test('execution utilities', () => {
-    expect(isAsyncTask(() => {})).toBeFalsy();
+    expect(
+      isAsyncTask(() => {
+        //
+      })
+    ).toBeFalsy();
     expect(isAsyncTask(async () => Promise.resolve(2))).toBeTruthy();
     expect(
       isAsyncTask(function* () {
@@ -52,7 +56,11 @@ describe('execution 方法测试用例', () => {
       })
     ).toBeTruthy();
 
-    expect(isSyncTask(() => {})).toBeTruthy();
+    expect(
+      isSyncTask(() => {
+        //
+      })
+    ).toBeTruthy();
     expect(isSyncTask(async () => Promise.resolve(2))).toBeFalsy();
     expect(
       isSyncTask(function* () {

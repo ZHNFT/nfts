@@ -26,9 +26,9 @@ const DEFAULT_IMPORT_SYNC_OPTIONS = {
  * @param options
  */
 export function sync(moduleName: string, options: ImportModuleSyncOptions = DEFAULT_IMPORT_SYNC_OPTIONS): unknown {
-  options = objectUtils.merge(DEFAULT_IMPORT_SYNC_OPTIONS, options);
-  const req = NodeModule.createRequire(options.cwd);
-  const fileModuleFullPath = path.resolve(options.cwd, moduleName);
+  options = objectUtils.merge(DEFAULT_IMPORT_SYNC_OPTIONS, options) as ImportModuleSyncOptions;
+  const req = NodeModule.createRequire(options.cwd!);
+  const fileModuleFullPath = path.resolve(options.cwd!, moduleName);
 
   // file module
   if (fs.existsSync(fileModuleFullPath) && fs.statSync(fileModuleFullPath).isFile()) {
@@ -36,11 +36,11 @@ export function sync(moduleName: string, options: ImportModuleSyncOptions = DEFA
   }
 
   // package module
-  const packagePath = path.resolve(options.cwd, options.node_modules, moduleName);
+  const packagePath = path.resolve(options.cwd!, options.node_modules!, moduleName);
   const packageJsonPath = path.resolve(packagePath, Constants.packageJsonPath);
 
   if (!fs.existsSync(packageJsonPath)) {
-    throw Error(`No package.json file found in package "${path.relative(options.cwd, packagePath)}"`);
+    throw Error(`No package.json file found in package "${path.relative(options.cwd!, packagePath)}"`);
   }
 
   const pkgJson: Package.IPackageJson = Json.readJsonSync(packageJsonPath);
@@ -60,13 +60,13 @@ export function sync(moduleName: string, options: ImportModuleSyncOptions = DEFA
  * @returns
  */
 export function resolve(moduleName: string, options: ImportModuleSyncOptions = DEFAULT_IMPORT_SYNC_OPTIONS) {
-  options = objectUtils.merge(DEFAULT_IMPORT_SYNC_OPTIONS, options);
-  const req = NodeModule.createRequire(options.cwd);
-  const fileModuleFullPath = path.resolve(options.cwd, moduleName);
+  options = objectUtils.merge(DEFAULT_IMPORT_SYNC_OPTIONS, options) as ImportModuleSyncOptions;
+  const req = NodeModule.createRequire(options.cwd!);
+  const fileModuleFullPath = path.resolve(options.cwd!, moduleName);
 
   if (fs.existsSync(fileModuleFullPath) && fs.statSync(fileModuleFullPath).isFile()) {
     return fileModuleFullPath;
   } else {
-    return req.resolve(moduleName, { paths: [options.node_modules] });
+    return req.resolve(moduleName, { paths: [options.node_modules!] });
   }
 }

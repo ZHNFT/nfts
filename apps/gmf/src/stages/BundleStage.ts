@@ -20,7 +20,7 @@ export class BundleStage extends Stage<BundleStageHooks> {
     });
   }
 
-  async executeAsync(parameters?: BundleCommandLineParametersValue): Promise<void> {
+  async executeAsync(parameters: BundleCommandLineParametersValue): Promise<void> {
     await this.executeInnerHook(parameters);
 
     const bundleArgs: TBundleCompileSubStageContext = {

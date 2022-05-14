@@ -19,8 +19,8 @@ export abstract class Stage<
   TStageOptions = unknown,
   TStageParams = unknown
 > {
-  readonly stageProperties: TStageProperties;
-  readonly stageOptions: TStageOptions;
+  readonly stageProperties!: TStageProperties;
+  readonly stageOptions!: TStageOptions;
 
   readonly hooks: THooks;
 

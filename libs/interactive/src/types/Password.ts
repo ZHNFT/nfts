@@ -59,7 +59,7 @@ export class Password extends Query<string> {
 
   private _maskPassword(): string {
     if (!this._config.hidden) {
-      return this._config.mask.repeat(this._input.length);
+      return this._config.mask!.repeat(this._input.length);
     }
 
     return '';

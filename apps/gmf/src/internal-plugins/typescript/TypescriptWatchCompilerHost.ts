@@ -19,7 +19,7 @@ type TCustomWatchCompilerHostOpts = Omit<IWatchCompilerHost, 'system'>;
 export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
   configFileName: string;
   optionsToExtend: ts.CompilerOptions;
-  system: ts.System;
+  system!: ts.System;
   watchOptionsToExtend?: ts.WatchOptions;
   extraFileExtensions?: readonly ts.FileExtensionInfo[];
 
@@ -35,7 +35,7 @@ export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
     watchOptionsToExtend
   }: { debug: Debug } & TCustomWatchCompilerHostOpts) {
     this.debug = debug;
-    this.optionsToExtend = optionsToExtend;
+    this.optionsToExtend = optionsToExtend!;
     this.watchOptionsToExtend = watchOptionsToExtend;
     this.configFileName = configFileName;
     this.extraFileExtensions = extraFileExtensions;
@@ -45,7 +45,7 @@ export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
     this.diagnosticsInOneTick.push(diagnostic);
   }
 
-  reportWatchStatus(diagnostic: ts.Diagnostic, newLine: string, options: ts.CompilerOptions, errorCount: number) {
+  reportWatchStatus(diagnostic: ts.Diagnostic, newLine: string, options: ts.CompilerOptions, errorCount?: number) {
     if (!errorCount || errorCount === 0) {
       Terminal.clearScreen();
       this.diagnosticsInOneTick = [];
@@ -62,20 +62,20 @@ export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
     for (let i = 0; i < _ds.length; i++) {
       const _d = _ds[i];
 
-      const source = _d.file.text;
-      const filename = _d.file.fileName;
+      const source = _d.file?.text;
+      const filename = _d.file?.fileName;
       const pos = {
-        start: _d.start,
-        end: _d.start + _d.length
+        start: _d.start ?? 0,
+        end: (_d.start ?? 0) + (_d.length ?? 0)
       };
 
-      const lines = source.split('\n');
+      const lines = source?.split('\n') ?? [];
 
       let lineNo = 0;
       let prevCount = 0;
       let count = 0;
 
-      while (count <= pos.start) {
+      while (count <= pos?.start) {
         prevCount = count;
         count += lines[lineNo].length + 1; // 每一行都要多算一个 \n 字符
         lineNo += 1;
@@ -93,7 +93,7 @@ export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
       const tip = `${TypescriptWatchCompilerHost.arrayOf(
         ' ',
         errorOffset + String(errorLineNo).length + 2 // 一个冒号一个空格
-      )}${TypescriptWatchCompilerHost.arrayOf(chalk.red('~'), _d.length)}`;
+      )}${TypescriptWatchCompilerHost.arrayOf(chalk.red('~'), _d?.length ?? 0)}`;
 
       const outPut = [
         `      ${chalk.bgBlack(`${String(lastLineNo).padStart(String(errorLineNo).length, ' ')}:`)} ${
@@ -103,7 +103,7 @@ export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
         `      ${tip}${os.EOL}` + `      ${chalk.red(_d.messageText as string)}\n\r`
       ];
 
-      groupByFilename[filename] = [...(groupByFilename[filename] ?? []), outPut.join(os.EOL)];
+      groupByFilename[filename!] = [...(groupByFilename[filename!] ?? []), outPut.join(os.EOL)];
     }
 
     Object.keys(groupByFilename).forEach(filename => {
@@ -120,7 +120,7 @@ export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
     return ts.createWatchCompilerHost(
       this.configFileName,
       undefined,
-      undefined,
+      this.system,
       undefined,
       d => this.reportDiagnostic(d),
       (...args) => this.reportWatchStatus(...args)

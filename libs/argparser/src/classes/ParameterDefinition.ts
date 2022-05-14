@@ -38,21 +38,25 @@ export abstract class ParameterDefinition implements IParameterDefinition {
   readonly type: string;
   readonly required: boolean;
   readonly summary: string;
-  readonly shortName: string;
-  readonly callback: (args: unknown) => void | Promise<void>;
+  readonly shortName?: string;
+  readonly callback?: (args: unknown) => void | Promise<void>;
 
   get strippedName(): string {
     return this.name.replace(/^-{1,2}/, '');
   }
 
   get strippedShortName(): string {
-    return this?.shortName?.replace(/^-{1,2}/, '');
+    if (!this.shortName) {
+      throw new Error(`shortName is not defined`);
+    } else {
+      return this.shortName?.replace(/^-{1,2}/, '');
+    }
   }
 
   protected constructor(definition: IParameterDefinition) {
     this.name = definition.name;
     this.type = definition.type;
-    this.required = definition.required;
+    this.required = definition.required ?? false;
     this.summary = definition.summary;
     this.shortName = definition.shortName;
     this.callback = definition.callback;

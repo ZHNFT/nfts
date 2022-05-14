@@ -3,7 +3,7 @@ import fs from 'fs';
 import { Fs } from '@nfts/node-utils-library';
 
 export class TypescriptConfigHost implements ts.ParseConfigHost {
-  useCaseSensitiveFileNames: boolean;
+  useCaseSensitiveFileNames = false;
 
   public fileExists(path: string): boolean {
     return fs.existsSync(path);

@@ -27,7 +27,7 @@ export interface IGmfConfig {
  * gmf 需要的配置文件，
  */
 export class Configuration {
-  config: IGmfConfig;
+  config!: IGmfConfig;
 
   public loadConfig(): IGmfConfig | undefined {
     if (this.config) return this.config;

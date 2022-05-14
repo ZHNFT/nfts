@@ -16,14 +16,14 @@ class WebpackPlugin implements Plugin {
   name: string = NAME;
   summary: string = DESCRIPTION;
 
-  private webpackVersion: string;
-  private webpackDevServerVersion: string;
+  private webpackVersion!: string;
+  private webpackDevServerVersion!: string;
 
   private readonly webpackRunner: WebpackRunner = new WebpackRunner();
 
-  sourceMap: FlagParameter;
+  sourceMap!: FlagParameter;
 
-  apply({ getScopedLogger, hooks, configuration: gmfConfiguration, command }: PluginSession): void | Promise<void> {
+  apply({ hooks, configuration: gmfConfiguration, command }: PluginSession): void | Promise<void> {
     this.sourceMap = command.flagParameter({
       name: '--sourcemap',
       shortName: '-s',
@@ -36,8 +36,8 @@ class WebpackPlugin implements Plugin {
       bundle.hooks.configure.add(NAME, async (): Promise<Configuration> => {
         let configPath = WebpackPlugin.resolveConfigPath(),
           devConfigPath = WebpackPlugin.resolveDevServerConfigPath(),
-          configuration: Configuration,
-          devConfiguration: DevServerConfiguration;
+          configuration: Configuration = {},
+          devConfiguration: DevServerConfiguration = {};
 
         /**
          * 创建一个默认的 webpack 配置；
@@ -61,7 +61,7 @@ class WebpackPlugin implements Plugin {
           const configFromFile = WebpackConfigLoader.loadDevServerConfigurationFromFile(devConfigPath);
 
           if (typeof configFromFile === 'function') {
-            devConfiguration = configFromFile(defaultConfig.devServer);
+            devConfiguration = configFromFile(defaultConfig?.devServer);
           }
         } else {
           devConfiguration = await WebpackConfigLoader.createBasicDevServerConfiguration();
@@ -98,7 +98,7 @@ class WebpackPlugin implements Plugin {
       });
     });
 
-    const extraEnvFromCommandLine: Record<string, string> = {
+    const extraEnvFromCommandLine: Record<string, string | undefined> = {
       WEBPACK_CONFIG: config,
       SOURCEMAP: this.sourceMap.value ? 'true' : undefined,
       NODE_ENV: isDev ? 'development' : 'production'

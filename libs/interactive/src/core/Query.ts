@@ -10,7 +10,7 @@ export abstract class Query<TAnswer = unknown> {
   public readonly rl: readline.Interface;
   public readonly screen: Screen;
 
-  protected constructor({ prompt }: { prompt?: string }) {
+  protected constructor({ prompt }: { prompt: string }) {
     this.rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,

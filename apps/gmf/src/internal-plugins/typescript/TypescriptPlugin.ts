@@ -23,7 +23,7 @@ class TypescriptPlugin implements Plugin {
   readonly name = NAME;
   readonly summary = DESCRIPTION;
 
-  readonly typescriptVersion: string;
+  readonly typescriptVersion!: string;
 
   apply({ hooks, getScopedLogger }: PluginSession): void {
     const logger = getScopedLogger(NAME);

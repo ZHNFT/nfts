@@ -24,9 +24,9 @@ export interface BundleCommandLineParametersValue {
 export class BundleCommand extends Command implements BundleCommandLineParameters {
   readonly stage: BundleStage;
 
-  clean: FlagParameter;
-  watch: FlagParameter;
-  config: StringParameter;
+  clean!: FlagParameter;
+  watch!: FlagParameter;
+  config!: StringParameter;
 
   constructor({ stage }: BundleCommandInitOption) {
     super({

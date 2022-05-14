@@ -9,11 +9,11 @@ import type { Configuration, RuleSetRule } from 'webpack';
 import type { Configuration as DevServerConfiguration } from 'webpack-dev-server';
 
 export type TWebpackConfigurationFunction = (
-  env: 'production' | 'development' | string,
-  config: Configuration
+  env?: 'production' | 'development' | string,
+  config?: Configuration
 ) => Configuration;
 
-export type TWebpackDevServerConfigurationFunction = (config: DevServerConfiguration) => DevServerConfiguration;
+export type TWebpackDevServerConfigurationFunction = (config?: DevServerConfiguration) => DevServerConfiguration;
 
 const ModuleFileExtensions = [
   '.web.mjs',
@@ -30,17 +30,17 @@ const ModuleFileExtensions = [
 ];
 
 export class WebpackConfigLoader {
-  public static loadConfigFromFile(path: string): Configuration | TWebpackConfigurationFunction {
+  public static loadConfigFromFile(path: string): Configuration | TWebpackConfigurationFunction | undefined {
     if (fs.existsSync(path)) {
-      return Module.sync(path);
+      return Module.sync(path) as Configuration | TWebpackConfigurationFunction;
     }
   }
 
   public static loadDevServerConfigurationFromFile(
     path: string
-  ): DevServerConfiguration | TWebpackDevServerConfigurationFunction {
+  ): DevServerConfiguration | TWebpackDevServerConfigurationFunction | undefined {
     if (fs.existsSync(path)) {
-      return Module.sync(path);
+      return Module.sync(path) as DevServerConfiguration | TWebpackDevServerConfigurationFunction;
     }
   }
 
@@ -50,9 +50,9 @@ export class WebpackConfigLoader {
 
     return {
       mode: isDev ? 'development' : isProd ? 'production' : 'none',
-      entry: this.resolveEntry(gmfConfig.bundle.entry),
+      entry: this.resolveEntry(gmfConfig.bundle?.entry),
       output: {
-        path: this.resolveOutput(gmfConfig.bundle.output),
+        path: this.resolveOutput(gmfConfig.bundle?.output),
         filename: isProd ? 'static/js/[name].[contenthash:8].js' : 'static/js/bundle.js',
         chunkFilename: isProd ? 'static/js/[name].[contenthash:8].chunk.js' : 'static/js/[name].chunk.js',
         publicPath: publicUrl
@@ -135,7 +135,7 @@ export class WebpackConfigLoader {
           '/': {
             changeOrigin: true,
             bypass: req => {
-              if (req.headers.accept.indexOf('html') !== -1) {
+              if (req.headers.accept?.indexOf('html') !== -1) {
                 return '/index.html';
               }
               return appHtml;

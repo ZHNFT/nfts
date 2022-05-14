@@ -1,11 +1,11 @@
-export type TSyncTask<TArgs = unknown, TRes = unknown> = (args?: TArgs) => TRes;
-export type TAsyncTask<TArgs = unknown, TRes = void> = (args?: TArgs, callback?: TVoidTask<TArgs>) => Promise<TRes>;
+export type TSyncTask<TArgs = unknown, TRes = void> = (args: TArgs) => TRes;
+export type TAsyncTask<TArgs = unknown, TRes = void> = (args: TArgs, callback?: TVoidTask<TArgs>) => Promise<TRes>;
 export type TVoidTask<TArgs = unknown> = TSyncTask<TArgs, void>;
 
 /**
  * @remark 所有的 Task 方法的类型，默认返回值为void
  */
-export type TTask<TArgs = unknown, TRes = void> = (args?: TArgs, callback?: TVoidTask<TArgs>) => TRes;
+export type TTask<TArgs = unknown, TRes = void> = (args: TArgs, callback?: TVoidTask<TArgs>) => TRes;
 
 /**
  * 按需执行task，上一个task执行返回的结果作为下一个task的输入，
@@ -15,8 +15,8 @@ export type TTask<TArgs = unknown, TRes = void> = (args?: TArgs, callback?: TVoi
  * @returns {Promise<TArgs = unknown>}
  */
 export async function waterfall<TArgs = unknown>(
-  tasks: (TSyncTask<TArgs, TArgs> | TAsyncTask<TArgs, TArgs>)[],
-  args?: TArgs
+  tasks: TTask<TArgs, TArgs | Promise<TArgs>>[],
+  args: TArgs
 ): Promise<TArgs> {
   return tasks.reduce((promise, task): Promise<TArgs> => {
     return promise.then(
@@ -33,7 +33,7 @@ export async function waterfall<TArgs = unknown>(
  * @param args
  * @returns {Promise<void[]>}
  */
-export async function parallel<TaskArgs = unknown>(tasks: TTask<TaskArgs>[], args?: TaskArgs): Promise<void[]> {
+export async function parallel<TArgs = unknown>(tasks: TTask<TArgs>[], args: TArgs = {} as TArgs): Promise<void[]> {
   return Promise.all(tasks.map(task => task(args)));
 }
 
@@ -43,7 +43,10 @@ export async function parallel<TaskArgs = unknown>(tasks: TTask<TaskArgs>[], arg
  * @param args
  * @returns {Promise<void>}
  */
-export async function serialize<TaskArgs = unknown>(tasks: TTask<TaskArgs>[], args?: TaskArgs): Promise<void> {
+export async function serialize<TaskArgs = unknown>(
+  tasks: TTask<TaskArgs>[],
+  args: TaskArgs = {} as TaskArgs
+): Promise<void> {
   return tasks.reduce((promise, task): Promise<void> => {
     return promise.then(
       () => task(args),
@@ -60,7 +63,13 @@ export async function serialize<TaskArgs = unknown>(tasks: TTask<TaskArgs>[], ar
 export function isAsyncTask(maybeTask: unknown): boolean {
   return !!(
     maybeTask &&
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     maybeTask.constructor &&
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     (maybeTask.constructor.name === 'AsyncFunction' || maybeTask.constructor.name === 'GeneratorFunction')
   );
 }
@@ -71,5 +80,14 @@ export function isAsyncTask(maybeTask: unknown): boolean {
  * @returns {boolean}
  */
 export function isSyncTask(maybeTask: unknown): boolean {
-  return !!(maybeTask && maybeTask.constructor && maybeTask.constructor.name === 'Function');
+  return !!(
+    maybeTask &&
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    maybeTask.constructor &&
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    maybeTask.constructor.name === 'Function'
+  );
 }

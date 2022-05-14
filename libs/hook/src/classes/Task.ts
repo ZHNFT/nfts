@@ -3,12 +3,12 @@ import { Execution } from '@nfts/node-utils-library';
 /**
  * 用来包装Task
  */
-export class Task<TArgs = unknown, TReturn = unknown> {
+export class Task<TArgs = unknown, TReturn = void> {
   readonly raw: Execution.TTask<TArgs, TReturn>;
 
-  next: Task<TArgs, TReturn>;
-  isUsed: boolean;
-  manual: boolean;
+  next: Task<TArgs, TReturn> | undefined;
+  isUsed = false;
+  manual = false;
 
   constructor(task: Execution.TTask<TArgs, TReturn>) {
     this.raw = task;
@@ -30,6 +30,8 @@ export class Task<TArgs = unknown, TReturn = unknown> {
       };
     }
 
-    return this.raw.call(null, ...args, callback);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    return this.raw.call(null, ...(args as TArgs[]), callback);
   }
 }

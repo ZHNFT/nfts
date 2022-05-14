@@ -30,7 +30,7 @@ export class BuildStage extends Stage<BuildStageHooks, unknown, unknown, BuildCo
     });
   }
 
-  async executeAsync(parameters?: BuildCommandLineParametersValue): Promise<void> {
+  async executeAsync(parameters: BuildCommandLineParametersValue): Promise<void> {
     await this.executeInnerHook(parameters);
 
     const compileSubContext = {

@@ -105,7 +105,7 @@ export class TypescriptRunner {
     const watchProgram = ts.createWatchProgram(host.resolve());
     const program = watchProgram.getProgram();
     await this._emit(program).then(() => {
-      onEmitCallback();
+      onEmitCallback?.();
     });
     // await new Promise(() => {
     // });

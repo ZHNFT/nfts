@@ -12,7 +12,7 @@ class CleanPlugin implements Plugin {
   name: string = NAME;
   summary: string = DESCRIPTION;
 
-  logger: Debug;
+  logger!: Debug;
 
   apply({ getScopedLogger, hooks }: PluginSession): void | Promise<void> {
     this.logger = getScopedLogger(NAME);

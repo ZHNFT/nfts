@@ -107,7 +107,7 @@ export enum DataTypes {
  * @return {DataTypes}    [description]
  */
 export function typeOf(data: unknown): keyof typeof DataTypes {
-  return (Object.prototype.toString.call(data) as string).slice(8, -1).toLowerCase() as keyof typeof DataTypes;
+  return Object.prototype.toString.call(data).slice(8, -1).toLowerCase() as keyof typeof DataTypes;
 }
 
 export interface IMergeOptions {

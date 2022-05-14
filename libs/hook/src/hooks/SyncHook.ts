@@ -4,7 +4,7 @@ import { Hook } from '../classes/Hook';
 /**
  * 同步任务的支持
  */
-export class SyncHook<TArgs = unknown> extends Hook<Execution.TTask<TArgs>> {
+export class SyncHook<TArgs = unknown> extends Hook<TArgs, void | Promise<void>> {
   public add(taskName: string, task: Execution.TTask<TArgs>): void {
     if (!Execution.isSyncTask(task)) {
       if (Execution.isAsyncTask(task)) {

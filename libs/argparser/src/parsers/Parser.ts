@@ -20,7 +20,7 @@ export class Parser extends SubParser {
     );
   }
 
-  public addVersion(version: string) {
+  public addVersion() {
     this.addParam(
       new FlagParameter({
         name: '--version',

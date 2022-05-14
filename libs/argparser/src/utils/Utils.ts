@@ -16,10 +16,10 @@ export class Utils {
    * @param rootParser
    * @param actionNames
    */
-  public static findActiveParser = (rootParser: SubParser, actionNames: string[]): SubParser => {
+  public static findActiveParser = (rootParser: SubParser, actionNames: string[]): SubParser | undefined => {
     const _actionNames = actionNames.slice(0);
-    let _actionName: string;
-    let _next: Parser | SubParser = rootParser;
+    let _actionName: string | undefined;
+    let _next: Parser | SubParser | undefined = rootParser;
     while ((_actionName = _actionNames.shift())) {
       if (!_next) {
         Utils.printHelp(rootParser);
@@ -37,7 +37,15 @@ export class Utils {
    * @param paramName  target parameter
    * @param value      value
    */
-  public static applyParameterValue(parser: SubParser | Parser, paramName: string, value: unknown): TParameter {
+  public static applyParameterValue(
+    parser: SubParser | Parser | undefined,
+    paramName: string,
+    value: unknown
+  ): TParameter | undefined {
+    if (!parser) {
+      return;
+    }
+
     const _param = parser.findParameter(paramName);
 
     if (!_param) {

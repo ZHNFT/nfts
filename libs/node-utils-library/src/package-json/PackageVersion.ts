@@ -34,7 +34,7 @@ export class PackageVersion {
     if (!PackageVersion.isValidVersion(version)) {
       throw new Error(`Invalid valid version: ${version}\n` + `Expecting "xx.xx.xx"`);
     }
-    const [, major, minor, patch] = PackageVersion.versionRegex.exec(version);
+    const [, major, minor, patch] = PackageVersion.versionRegex.exec(version) as string[];
     this.major = major;
     this.minor = minor;
     this.patch = patch;

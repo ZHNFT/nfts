@@ -1,5 +1,6 @@
 import { Execution } from '@nfts/node-utils-library';
 import { Task } from './Task';
+import { TTask } from '../../../node-utils-library/src/execution/index';
 
 /**
  * Hook的基础类型；
@@ -7,11 +8,11 @@ import { Task } from './Task';
  * 1. 一个taskName只对应一个task方法；
  * 2. 一个Hook中只存在一种类型的task；
  */
-export abstract class Hook<TTask> {
-  protected lastAddedTask: Task;
-  protected readonly taskByName: Map<string, Task> = new Map();
+export abstract class Hook<TArgs, TReturn = void | Promise<void>> {
+  protected lastAddedTask: Task<TArgs, TReturn> | undefined;
+  protected readonly taskByName: Map<string, Task<TArgs, TReturn>> = new Map();
 
-  public add(taskName: string, task: TTask): void {
+  public add(taskName: string, task: TTask<TArgs>): void {
     if (!Execution.isSyncTask(task) && !Execution.isAsyncTask(task)) {
       throw new Error(`Expecting a hook task type 'function', instead of '${typeof task}'`);
     }
@@ -21,7 +22,7 @@ export abstract class Hook<TTask> {
     } else {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      const taskWrapper = new Task(task);
+      const taskWrapper = new Task<TArgs, TReturn>(task);
 
       if (this.lastAddedTask) {
         this.lastAddedTask.next = taskWrapper;
