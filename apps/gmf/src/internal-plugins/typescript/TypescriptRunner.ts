@@ -108,7 +108,6 @@ export class TypescriptRunner {
       onEmitCallback();
     });
     // await new Promise(() => {
-    //   // Never resolved by self
     // });
   }
   /**

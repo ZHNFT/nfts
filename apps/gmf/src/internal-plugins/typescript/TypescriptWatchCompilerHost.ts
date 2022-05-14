@@ -82,7 +82,7 @@ export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
       }
 
       if (pos.end > count) {
-        // TODO 跨越两行的错误？
+        // TODO 跨越多行的错误？
       }
 
       const lastLineNo = lineNo - 1;
@@ -107,7 +107,7 @@ export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
     }
 
     Object.keys(groupByFilename).forEach(filename => {
-      console.log(`--> ${chalk.yellow(filename)}`);
+      console.log(`→ ${chalk.yellow(filename)}`);
       console.log(groupByFilename[filename].join(os.EOL));
     });
   }

@@ -25,7 +25,7 @@ class TypescriptPlugin implements Plugin {
 
   readonly typescriptVersion: string;
 
-  apply({ hooks, getScopedLogger, configuration }: PluginSession, _: TypescriptPluginOptions): void {
+  apply({ hooks, getScopedLogger }: PluginSession): void {
     const logger = getScopedLogger(NAME);
 
     hooks.build.add(NAME, build => {
