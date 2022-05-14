@@ -23,10 +23,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - uses: KSXGitHub/github-actions-setup-pnpm@master
-        with:
-          version: 4.11.1
-
       - name: Install dependencies
         run: pnpm install
 
