@@ -1,6 +1,5 @@
 import { Execution } from '@nfts/node-utils-library';
 import { Task } from './Task';
-import { TTask } from '../../../node-utils-library/src/execution/index';
 
 /**
  * Hook的基础类型；
@@ -12,7 +11,7 @@ export abstract class Hook<TArgs, TReturn = void | Promise<void>> {
   protected lastAddedTask: Task<TArgs, TReturn> | undefined;
   protected readonly taskByName: Map<string, Task<TArgs, TReturn>> = new Map();
 
-  public add(taskName: string, task: TTask<TArgs>): void {
+  public add(taskName: string, task: Execution.TTask<TArgs>): void {
     if (!Execution.isSyncTask(task) && !Execution.isAsyncTask(task)) {
       throw new Error(`Expecting a hook task type 'function', instead of '${typeof task}'`);
     }
