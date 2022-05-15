@@ -1,4 +1,4 @@
-import * as os from 'os';
+import os from "os";
 
 export interface LoggerOpts {
   timestamp?: boolean;
@@ -8,7 +8,7 @@ export interface LoggerOpts {
 export class Debug {
   private static MAX_LOG_COUNTS = 1000;
 
-  public static readonly instance = Debug.getScopedLogger('');
+  public static readonly instance = Debug.getScopedLogger("");
   public static readonly logsByScopeName: Map<string, string[]> = new Map();
 
   public readonly scope: string;

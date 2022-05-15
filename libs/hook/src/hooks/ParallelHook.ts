@@ -1,16 +1,16 @@
-import { Execution } from '@nfts/node-utils-library';
-import { Hook } from '../classes/Hook';
+import { Execution } from "@nfts/node-utils-library";
+import { Hook } from "../classes/Hook";
 
-export class ParallelHook<TArgs = void> extends Hook<TArgs, void | Promise<void>> {
+export class ParallelHook<TArgs = void> extends Hook<TArgs> {
   constructor() {
     super();
   }
 
-  call(args?: TArgs): Promise<void[]> {
+  call(args: TArgs): Promise<void[]> {
     const tasks = Array.from(this.taskByName.values());
     return Execution.parallel(
-      tasks.map(task => {
-        return task.apply.bind(task) as Execution.TTask<TArgs>;
+      tasks.map((task) => {
+        return task.apply.bind(task) as Execution.TaskFunc<TArgs>;
       }),
       args
     );

@@ -9,7 +9,9 @@
   "scripts": {
     "test": "gmf build --test",
     "dev": "gmf build --watch",
-    "build": "tsc"
+    "build": "gmf build --clean --test",
+    "tsc": "tsc",
+    "tsc:watch": "tsc -w"
   },
   "repository": {
     "directory": "libs/hook",
@@ -28,5 +30,11 @@
     "jest": "^27.4.5",
     "ts-jest": "^27.1.2",
     "typescript": "^4.5.4"
+  },
+  "jest": {
+    "rootDir": ".",
+    "preset": "ts-jest",
+    "passWithNoTests": true,
+    "testEnvironment": "node"
   }
 }

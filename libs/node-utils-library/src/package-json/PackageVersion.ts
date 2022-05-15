@@ -1,7 +1,7 @@
 export enum VersionFieldTypes {
-  major = 'major',
-  minor = 'minor',
-  patch = 'patch'
+  major = "major",
+  minor = "minor",
+  patch = "patch",
 }
 
 export class PackageVersion {
@@ -9,32 +9,38 @@ export class PackageVersion {
   /**
    * @type {string} major版本号
    */
-  private major = '0';
+  private major = "0";
   /**
    * @type {string} minor版本号
    */
-  private minor = '0';
+  private minor = "0";
   /**
    * @type {string} patch版本号
    */
-  private patch = '0';
+  private patch = "0";
 
   /**
    * @type {RegExp} 版本字符串校验正则表达式
    */
-  public static versionRegex = /(?<major>[0-9]+).(?<minor>[0-9]+).(?<patch>[0-9]+)/;
+  public static versionRegex =
+    /(?<major>[0-9]+).(?<minor>[0-9]+).(?<patch>[0-9]+)/;
   /**
    * 校验版本
    * @param version
    * @returns {boolean}
    */
-  public static isValidVersion = (version: string): boolean => PackageVersion.versionRegex.test(version);
+  public static isValidVersion = (version: string): boolean =>
+    PackageVersion.versionRegex.test(version);
 
   constructor(version: string) {
     if (!PackageVersion.isValidVersion(version)) {
-      throw new Error(`Invalid valid version: ${version}\n` + `Expecting "xx.xx.xx"`);
+      throw new Error(
+        `Invalid valid version: ${version}\n` + `Expecting "xx.xx.xx"`
+      );
     }
-    const [, major, minor, patch] = PackageVersion.versionRegex.exec(version) as string[];
+    const [, major, minor, patch] = PackageVersion.versionRegex.exec(
+      version
+    ) as string[];
     this.major = major;
     this.minor = minor;
     this.patch = patch;
@@ -60,8 +66,11 @@ export class PackageVersion {
     return this._updateVersionField(VersionFieldTypes.patch, majorValue);
   }
 
-  private _updateVersionField(field: keyof typeof VersionFieldTypes, fieldValue: string) {
-    if (isNaN(Number(fieldValue)) || typeof Number(fieldValue) === 'number') {
+  private _updateVersionField(
+    field: keyof typeof VersionFieldTypes,
+    fieldValue: string
+  ) {
+    if (isNaN(Number(fieldValue)) || typeof Number(fieldValue) === "number") {
       throw new Error(`Version ${field} field value is not valid`);
     }
 

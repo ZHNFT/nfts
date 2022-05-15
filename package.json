@@ -9,6 +9,7 @@
     "name": "Ray"
   },
   "scripts": {
+    "tsc:all": "pnpm --filter \"@nfts/*\" tsc",
     "build:all": "pnpm --filter \"@nfts/*\" build",
     "test:all": "pnpm --filter \"@nfts/*\" test",
     "dev:all": "pnpm --filter \"@nfts/*\" dev",

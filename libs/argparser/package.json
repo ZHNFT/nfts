@@ -6,7 +6,9 @@
   "scripts": {
     "test": "gmf build --test",
     "dev": "gmf build --watch",
-    "build": "tsc"
+    "build": "gmf build --test",
+    "tsc": "tsc",
+    "tsc:watch": "tsc -w"
   },
   "publishConfig": {
     "access": "public"

@@ -1,9 +1,9 @@
-import { Command } from '@nfts/noddy';
-import { FlagParameter, StringParameter } from '@nfts/argparser';
-import { BundleStage } from '../../stages/index.js';
+import { Command } from "@nfts/noddy";
+import { FlagParameter, StringParameter } from "@nfts/argparser";
+import { BundleStage } from "../../stages";
 
-const NAME = 'bundle';
-const DESCRIPTION = 'Run bundle process using extra plugin';
+const NAME = "bundle";
+const DESCRIPTION = "Run bundle process using extra plugin";
 
 export interface BundleCommandInitOption {
   stage: BundleStage;
@@ -21,7 +21,10 @@ export interface BundleCommandLineParametersValue {
   config?: string;
 }
 
-export class BundleCommand extends Command implements BundleCommandLineParameters {
+export class BundleCommand
+  extends Command
+  implements BundleCommandLineParameters
+{
   readonly stage: BundleStage;
 
   clean!: FlagParameter;
@@ -31,25 +34,25 @@ export class BundleCommand extends Command implements BundleCommandLineParameter
   constructor({ stage }: BundleCommandInitOption) {
     super({
       commandName: NAME,
-      commandDescription: DESCRIPTION
+      commandDescription: DESCRIPTION,
     });
     this.stage = stage;
   }
 
   onDefineParameters(): void {
     this.clean = this.flagParameter({
-      name: '--clean',
-      summary: 'Delete the outputs of all projects.'
+      name: "--clean",
+      summary: "Delete the outputs of all projects.",
     });
 
     this.watch = this.flagParameter({
-      name: '--watch',
-      summary: 'Watch input files.'
+      name: "--watch",
+      summary: "Watch input files.",
     });
 
     this.config = this.stringParameter({
-      name: '--config',
-      summary: 'Specified webpack configuration file path'
+      name: "--config",
+      summary: "Specified webpack configuration file path",
     });
   }
 
@@ -57,7 +60,7 @@ export class BundleCommand extends Command implements BundleCommandLineParameter
     const parameters: BundleCommandLineParametersValue = {
       clean: this.clean.value,
       watch: this.watch.value,
-      config: this.config.value
+      config: this.config.value,
     };
 
     await this.stage.executeAsync(parameters);

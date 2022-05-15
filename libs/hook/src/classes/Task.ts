@@ -1,28 +1,30 @@
-import { Execution } from '@nfts/node-utils-library';
+import { Execution } from "@nfts/node-utils-library";
 
 /**
  * 用来包装Task
  */
-export class Task<TArgs = unknown, TReturn = void> {
-  readonly raw: Execution.TTask<TArgs, TReturn>;
+export class Task<TArgs = unknown, TReturn = unknown> {
+  readonly raw: Execution.TaskFunc<TArgs, TReturn>;
 
-  next: Task<TArgs, TReturn> | undefined;
+  next!: Task<TArgs, TReturn>;
   isUsed = false;
   manual = false;
 
-  constructor(task: Execution.TTask<TArgs, TReturn>) {
+  constructor(task: Execution.TaskFunc<TArgs, TReturn>) {
     this.raw = task;
   }
 
-  apply(...args: Array<unknown>): unknown {
+  apply(...args: [TArgs]): TReturn {
     if (this.isUsed) {
-      return this.next ? this.next.apply(args) : undefined;
+      return this.next?.apply(...args);
     }
 
-    let callback: (args?: TArgs) => void;
+    let callback: (args: TArgs) => void = () => {
+      //  do nothing
+    };
 
     if (this.manual) {
-      callback = (args?: TArgs): void => {
+      callback = (args: TArgs): void => {
         this.isUsed = true;
         if (this.next) {
           this.next.apply(args);
@@ -30,8 +32,6 @@ export class Task<TArgs = unknown, TReturn = void> {
       };
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return this.raw.call(null, ...(args as TArgs[]), callback);
+    return this.raw.call(null, ...args, callback);
   }
 }

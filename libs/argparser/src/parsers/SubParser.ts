@@ -1,6 +1,6 @@
-import { Execution } from '@nfts/node-utils-library';
-import { TParameter } from '../parameters';
-import { Utils } from '../utils/Utils';
+import { Execution } from "@nfts/node-utils-library";
+import { TParameter } from "../parameters";
+import { Utils } from "../utils/Utils";
 
 export class SubParser<R = unknown> {
   public readonly name: string;
@@ -9,7 +9,9 @@ export class SubParser<R = unknown> {
   private _parent?: SubParser<R>;
   private _child: Set<SubParser<R>> = new Set<SubParser<R>>();
   private _parameters: Set<TParameter> = new Set<TParameter>();
-  private _flagCallbacks: Set<Execution.TTask<R>> = new Set<Execution.TTask<R>>();
+  private _flagCallbacks: Set<Execution.TaskFunc<R>> = new Set<
+    Execution.TaskFunc<R>
+  >();
 
   private _executeFile?: string;
 
@@ -54,64 +56,73 @@ export class SubParser<R = unknown> {
 
     //
     const _rootParser = this._findRootParser();
-    const _activeParser = Utils.findActiveParser(_rootParser as SubParser<unknown>, _actions);
+    const _activeParser = Utils.findActiveParser(
+      _rootParser as SubParser<unknown>,
+      _actions
+    );
 
-    this._appendRootParamsToActiveParser(_rootParser as SubParser<unknown>, _activeParser as SubParser<unknown>);
+    this._appendRootParamsToActiveParser(
+      _rootParser as SubParser<unknown>,
+      _activeParser as SubParser<unknown>
+    );
 
-    const _result = args.reduce((prevResult, currentArg, currentIndex, _args) => {
-      let _key: string, _value: string | boolean;
+    const _result = args.reduce(
+      (prevResult, currentArg, currentIndex, _args) => {
+        let _key: string, _value: string | boolean;
 
-      if (Utils.hasParamFlagPrefix(currentArg)) {
-        const stripParamFlagName = Utils.stripParamFlagPrefix(currentArg);
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        prevResult[stripParamFlagName] = true;
-        _key = currentArg;
-        _value = true;
-      } else {
-        const prevArg = _args[currentIndex - 1];
-        const prevStripParamFlagName = Utils.stripParamFlagPrefix(prevArg);
-        if (prevStripParamFlagName in prevResult) {
+        if (Utils.hasParamFlagPrefix(currentArg)) {
+          const stripParamFlagName = Utils.stripParamFlagPrefix(currentArg);
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          prevResult[prevStripParamFlagName] = currentArg;
-          _key = prevArg;
-          _value = currentArg;
+          prevResult[stripParamFlagName] = true;
+          _key = currentArg;
+          _value = true;
+        } else {
+          const prevArg = _args[currentIndex - 1];
+          const prevStripParamFlagName = Utils.stripParamFlagPrefix(prevArg);
+          if (prevStripParamFlagName in prevResult) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            prevResult[prevStripParamFlagName] = currentArg;
+            _key = prevArg;
+            _value = currentArg;
+          }
         }
-      }
 
-      const param = Utils.applyParameterValue(_activeParser, _key!, _value!);
+        const param = Utils.applyParameterValue(_activeParser, _key!, _value!);
 
-      // Add shortName to result
-      if (param?.shortName) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        prevResult[Utils.stripParamFlagPrefix(param.shortName)] = _value;
-      }
+        // Add shortName to result
+        if (param?.shortName) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          prevResult[Utils.stripParamFlagPrefix(param.shortName)] = _value;
+        }
 
-      if (param?.name) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        prevResult[Utils.stripParamFlagPrefix(param.name)] = _value;
-      }
+        if (param?.name) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          prevResult[Utils.stripParamFlagPrefix(param.name)] = _value;
+        }
 
-      if (param?.callback) {
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        this._flagCallbacks.add(param.callback);
-      }
-      return prevResult;
-    }, {}) as R;
+        if (param?.callback) {
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
+          this._flagCallbacks.add(param.callback);
+        }
+        return prevResult;
+      },
+      {}
+    ) as R;
 
     this._executeFlagCallback(_result);
 
     /**
      * append sub command
      * */
-    Object.defineProperty(_result, '_', {
+    Object.defineProperty(_result, "_", {
       configurable: false,
       enumerable: true,
       writable: false,
-      value: _actions.slice(0)
+      value: _actions.slice(0),
     });
 
     return _result;
@@ -166,7 +177,7 @@ export class SubParser<R = unknown> {
 
   private _appendRootParamsToActiveParser(root: SubParser, active: SubParser) {
     const _params = Array.from(root._parameters.values());
-    _params.forEach(param => {
+    _params.forEach((param) => {
       active.addParam(param);
     });
   }

@@ -1,11 +1,8 @@
-export type TSyncTask<TArgs = unknown, TRes = void> = (args: TArgs) => TRes;
-export type TAsyncTask<TArgs = unknown, TRes = void> = (args: TArgs, callback?: TVoidTask<TArgs>) => Promise<TRes>;
-export type TVoidTask<TArgs = unknown> = TSyncTask<TArgs, void>;
-
-/**
- * @remark 所有的 Task 方法的类型，默认返回值为void
- */
-export type TTask<TArgs = unknown, TRes = void> = (args: TArgs, callback?: TVoidTask<TArgs>) => TRes;
+// Task function
+export type TaskFunc<TArgs, TReturn = void | Promise<void>> = (
+  args: TArgs,
+  callback?: TaskFunc<TArgs, void>
+) => TReturn;
 
 /**
  * 按需执行task，上一个task执行返回的结果作为下一个task的输入，
@@ -15,7 +12,7 @@ export type TTask<TArgs = unknown, TRes = void> = (args: TArgs, callback?: TVoid
  * @returns {Promise<TArgs = unknown>}
  */
 export async function waterfall<TArgs = unknown>(
-  tasks: TTask<TArgs, TArgs | Promise<TArgs>>[],
+  tasks: TaskFunc<TArgs, TArgs | Promise<TArgs>>[],
   args: TArgs
 ): Promise<TArgs> {
   return tasks.reduce((promise, task): Promise<TArgs> => {
@@ -33,8 +30,11 @@ export async function waterfall<TArgs = unknown>(
  * @param args
  * @returns {Promise<void[]>}
  */
-export async function parallel<TArgs = unknown>(tasks: TTask<TArgs>[], args: TArgs = {} as TArgs): Promise<void[]> {
-  return Promise.all(tasks.map(task => task(args)));
+export async function parallel<TArgs = unknown>(
+  tasks: TaskFunc<TArgs>[],
+  args: TArgs
+): Promise<void[]> {
+  return Promise.all(tasks.map((task) => task(args)));
 }
 
 /**
@@ -43,9 +43,9 @@ export async function parallel<TArgs = unknown>(tasks: TTask<TArgs>[], args: TAr
  * @param args
  * @returns {Promise<void>}
  */
-export async function serialize<TaskArgs = unknown>(
-  tasks: TTask<TaskArgs>[],
-  args: TaskArgs = {} as TaskArgs
+export async function serialize<TArgs = unknown>(
+  tasks: TaskFunc<TArgs>[],
+  args: TArgs
 ): Promise<void> {
   return tasks.reduce((promise, task): Promise<void> => {
     return promise.then(
@@ -60,17 +60,13 @@ export async function serialize<TaskArgs = unknown>(
  * @param maybeTask 校验函数是否是 async function 或者 generator function
  * @returns {boolean}
  */
-export function isAsyncTask(maybeTask: unknown): boolean {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function isAsyncTask(maybeTask: Function): boolean {
   return !!(
     maybeTask &&
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     maybeTask.constructor &&
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    (maybeTask.constructor.name === 'AsyncFunction' || maybeTask.constructor.name === 'GeneratorFunction')
+    (maybeTask.constructor.name === "AsyncFunction" ||
+      maybeTask.constructor.name === "GeneratorFunction")
   );
 }
 
@@ -79,15 +75,11 @@ export function isAsyncTask(maybeTask: unknown): boolean {
  * @param maybeTask 校验函数是否是 function
  * @returns {boolean}
  */
-export function isSyncTask(maybeTask: unknown): boolean {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function isSyncTask(maybeTask: Function): boolean {
   return !!(
     maybeTask &&
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     maybeTask.constructor &&
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    maybeTask.constructor.name === 'Function'
+    maybeTask.constructor.name === "Function"
   );
 }

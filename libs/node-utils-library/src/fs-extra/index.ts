@@ -2,9 +2,10 @@
  * 对于常用文件操作的补充方法
  * @status WIP
  * */
-import nodeFs from 'fs';
-import nodePath from 'path';
-import { serialize } from '../execution';
+import nodeFs from "fs";
+import nodePath from "path";
+import { serialize } from "../execution";
+import * as path from "path";
 
 export interface IFileOperationOpts {
   cwd?: string;
@@ -15,7 +16,7 @@ export interface IWriteFileOpts extends IFileOperationOpts {
 }
 
 export const defaultWriteFileOpts = {
-  ensureRoot: true
+  ensureRoot: true,
 };
 
 /**
@@ -24,7 +25,11 @@ export const defaultWriteFileOpts = {
  * @param {string} content
  * @param usrOptions
  */
-export async function writeFile(filename: string, content: string, usrOptions?: IWriteFileOpts): Promise<void> {
+export async function writeFile(
+  filename: string,
+  content: string,
+  usrOptions?: IWriteFileOpts
+): Promise<void> {
   if (!usrOptions) {
     usrOptions = defaultWriteFileOpts;
   } else {
@@ -49,7 +54,10 @@ export async function writeFile(filename: string, content: string, usrOptions?: 
       parentDir = nextParentDir;
     }
   }
-  await serialize(dirsReadyToCreate.map(dir => () => mkdir(dir)));
+  await serialize(
+    dirsReadyToCreate.map((dir) => () => mkdir(dir)),
+    {}
+  );
   await nodeFs.promises.writeFile(filename, content);
 }
 
@@ -70,8 +78,9 @@ export async function mkdir(
     // 经过前面的检查，不知道到这里还还会有什么错误，
     // 没有权限？？？
     if (
-      (options?.throwWhenExist && (e as NodeJS.ErrnoException).code === 'EEXIST') ||
-      (e as NodeJS.ErrnoException).code !== 'EEXIST'
+      (options?.throwWhenExist &&
+        (e as NodeJS.ErrnoException).code === "EEXIST") ||
+      (e as NodeJS.ErrnoException).code !== "EEXIST"
     ) {
       throw e;
     }
@@ -84,11 +93,14 @@ export async function mkdir(
  */
 const RecursionDirCache: Set<number> = new Set();
 
-function createStat(stat: nodeFs.Stats, extraProps: { [key: string]: unknown }): nodeFs.Stats {
+function createStat(
+  stat: nodeFs.Stats,
+  extraProps: { [key: string]: unknown }
+): nodeFs.Stats {
   for (const extraPropsKey in extraProps) {
     if (Object.prototype.hasOwnProperty.call(extraProps, extraPropsKey)) {
       Object.defineProperty(stat, extraPropsKey, {
-        value: extraProps[extraPropsKey]
+        value: extraProps[extraPropsKey],
       });
       // Object.assign(stat, extraPropsKey, extraProps[extraPropsKey]);
     }
@@ -124,6 +136,8 @@ export function readDirRecursionSync(
     files = [];
   }
 
+  dirname = path.resolve(dirname);
+
   const stat = nodeFs.statSync(dirname);
   if (!stat.isDirectory()) {
     return files;
@@ -157,7 +171,9 @@ export function accessFile(path: string, mode?: number): void | never {
   try {
     nodeFs.accessSync(path, mode);
   } catch (e) {
-    throw new Error(`Can't access ${path}, make sure you have permission or file is not exist`);
+    throw new Error(
+      `Can't access ${path}, make sure you have permission or file is not exist`
+    );
   }
 }
 
@@ -170,7 +186,9 @@ export async function rmdirRecursion(path: string): Promise<void> {
     throw new Error(`Not a folder`);
   }
 
-  const files = (await nodeFs.promises.readdir(path)).map(filePath => nodePath.resolve(path, filePath));
+  const files = (await nodeFs.promises.readdir(path)).map((filePath) =>
+    nodePath.resolve(path, filePath)
+  );
 
   for await (const filePath of files) {
     if (isFolder(filePath)) {

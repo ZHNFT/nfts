@@ -1,15 +1,14 @@
-import { Command } from '@nfts/noddy';
-import { req } from '@nfts/node-utils-library';
+import { Command } from "@nfts/noddy";
+import { req } from "@nfts/node-utils-library";
 
-import jestPlugin from '../internal-plugins/jest/JestPlugin';
-import typescriptPlugin from '../internal-plugins/typescript/TypescriptPlugin';
-import cleanPlugin from '../internal-plugins/cleanup/CleanPlugin';
+import jestPlugin from "../internal-plugins/jest/JestPlugin";
+import typescriptPlugin from "../internal-plugins/typescript/TypescriptPlugin";
+import cleanPlugin from "../internal-plugins/cleanup/CleanPlugin";
 
-import { Configuration } from './Configuration';
-import { Plugin } from './Plugin';
-import type { IStageHooks, IStages } from '../stages';
-import { getScopedLogger } from '../utils/getScopeLogger';
-import { Stage } from './Stage';
+import { Configuration } from "./Configuration";
+import { Plugin } from "./Plugin";
+import type { IStageHooks, IStages } from "../stages";
+import { getScopedLogger } from "../utils/getScopeLogger";
 
 export class PluginManager {
   private readonly _command: Command;
@@ -30,7 +29,7 @@ export class PluginManager {
     const config = this._config.loadConfig();
 
     if (config?.plugins && Array.isArray(config.plugins)) {
-      config.plugins.forEach(plugin => {
+      config.plugins.forEach((plugin) => {
         const { pluginName, options } = plugin;
         this.applyPlugin(req.sync(pluginName) as Plugin, options);
       });
@@ -58,7 +57,7 @@ export class PluginManager {
         hooks: this._getStageHooks(),
         configuration: this._config,
         command: this._command,
-        getScopedLogger
+        getScopedLogger,
       },
       options
     );

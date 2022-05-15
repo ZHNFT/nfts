@@ -12,7 +12,9 @@
   "scripts": {
     "test": "gmf build --test",
     "dev": "gmf build --watch",
-    "build": "tsc"
+    "build": "gmf build --clean --test",
+    "tsc": "tsc",
+    "tsc:watch": "tsc -w"
   },
   "dependencies": {
     "@nfts/argparser": "workspace:*",
@@ -22,7 +24,6 @@
     "@nfts/node-utils-library": "workspace:*"
   },
   "devDependencies": {
-    "@jest/types": "^27.5.1",
     "@types/jest": "^27.0.3",
     "@types/node": "~17.0.5",
     "@nfts/project-profiles": "workspace:*",

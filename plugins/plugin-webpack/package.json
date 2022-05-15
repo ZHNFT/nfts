@@ -5,8 +5,10 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "test": "gmf build --test",
-    "build": "tsc",
-    "dev": "gmf build --watch"
+    "dev": "gmf build --watch",
+    "build": "gmf build --clean --test",
+    "tsc": "tsc",
+    "tsc:watch": "tsc -w"
   },
   "devDependencies": {
     "@nfts/argparser": "workspace:*",

@@ -1,5 +1,5 @@
-import { Execution } from '@nfts/node-utils-library';
-import { Task } from './Task';
+import { Execution } from "@nfts/node-utils-library";
+import { Task } from "./Task";
 
 /**
  * Hook的基础类型；
@@ -8,19 +8,22 @@ import { Task } from './Task';
  * 2. 一个Hook中只存在一种类型的task；
  */
 export abstract class Hook<TArgs, TReturn = void | Promise<void>> {
-  protected lastAddedTask: Task<TArgs, TReturn> | undefined;
-  protected readonly taskByName: Map<string, Task<TArgs, TReturn>> = new Map();
+  protected lastAddedTask!: Task<TArgs, TReturn>;
+  protected taskByName: Map<string, Task<TArgs, TReturn>> = new Map();
 
-  public add(taskName: string, task: Execution.TTask<TArgs>): void {
+  public add(taskName: string, task: Execution.TaskFunc<TArgs, TReturn>): void {
     if (!Execution.isSyncTask(task) && !Execution.isAsyncTask(task)) {
-      throw new Error(`Expecting a hook task type 'function', instead of '${typeof task}'`);
+      throw new Error(
+        `Expecting a hook task type 'function', instead of '${typeof task}'`
+      );
     }
 
     if (this.taskByName.has(taskName)) {
-      console.warn(`Task with name '${taskName}' already be registered` + `Consider to use a different task name`);
+      console.warn(
+        `Task with name '${taskName}' already be registered` +
+          `Consider to use a different task name`
+      );
     } else {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       const taskWrapper = new Task<TArgs, TReturn>(task);
 
       if (this.lastAddedTask) {

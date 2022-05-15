@@ -2,9 +2,9 @@
  * 基础交互类；
  * 所有拓展类必须继承该类来获取必要的数据；
  */
-import * as readline from 'readline';
-import * as process from 'process';
-import { Screen } from './Screen';
+import readline from "readline";
+import process from "process";
+import { Screen } from "./Screen";
 
 export abstract class Query<TAnswer = unknown> {
   public readonly rl: readline.Interface;
@@ -16,22 +16,22 @@ export abstract class Query<TAnswer = unknown> {
       output: process.stdout,
       terminal: true,
       prompt: `${prompt} `,
-      historySize: 0
+      historySize: 0,
     });
 
     this.screen = new Screen({
       stdin: process.stdin,
       stdout: process.stdout,
-      rl: this.rl
+      rl: this.rl,
     });
 
     const keypressHandler = (input: string, key: readline.Key) => {
       this.onKeyPress(input, key);
     };
 
-    process.stdin.on('keypress', keypressHandler);
-    this.rl.on('close', () => {
-      process.stdin.off('keypress', keypressHandler);
+    process.stdin.on("keypress", keypressHandler);
+    this.rl.on("close", () => {
+      process.stdin.off("keypress", keypressHandler);
     });
   }
 
