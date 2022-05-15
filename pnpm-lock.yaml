@@ -13,6 +13,7 @@ importers:
       '@nfts/gmf': workspace:*
       '@nfts/noddy': workspace:*
       '@nfts/node-utils-library': workspace:*
+      '@nfts/project-profiles': workspace:*
       '@types/jest': ^27.0.3
       '@types/node': ~17.0.5
       eslint: ^8.15.0
@@ -28,6 +29,7 @@ importers:
       '@nfts/node-utils-library': link:../../libs/node-utils-library
     devDependencies:
       '@jest/types': 27.5.1
+      '@nfts/project-profiles': link:../../config/project-profiles
       '@types/jest': 27.5.1
       '@types/node': 17.0.33
       eslint: 8.15.0
@@ -35,12 +37,6 @@ importers:
       prettier: 2.6.2
       ts-jest: 27.1.4_ibhx3ehxrt2kgmkik4bkzmyeei
       typescript: 4.6.4
-
-  apps/create-app/templates/node-typescript:
-    specifiers: {}
-
-  apps/create-app/templates/react-typescript:
-    specifiers: {}
 
   apps/gmf:
     specifiers:
@@ -52,6 +48,7 @@ importers:
       '@nfts/interactive': workspace:*
       '@nfts/noddy': workspace:*
       '@nfts/node-utils-library': workspace:*
+      '@nfts/project-profiles': workspace:*
       '@types/jest': ^27.0.3
       '@types/node': ~17.0.5
       jest: ^27.4.5
@@ -67,6 +64,7 @@ importers:
       '@nfts/node-utils-library': link:../../libs/node-utils-library
     devDependencies:
       '@jest/types': 27.5.1
+      '@nfts/project-profiles': link:../../config/project-profiles
       '@types/jest': 27.5.1
       '@types/node': 17.0.33
       jest: 27.5.1
@@ -89,6 +87,9 @@ importers:
       eslint-plugin-react: 7.29.4_eslint@8.15.0
     devDependencies:
       '@types/eslint': 8.4.2
+
+  config/project-profiles:
+    specifiers: {}
 
   example/gmf-build-demo:
     specifiers:
@@ -237,6 +238,7 @@ importers:
       '@nfts/gmf': workspace:*
       '@nfts/interactive': workspace:*
       '@nfts/node-utils-library': workspace:*
+      '@nfts/project-profiles': workspace:*
       '@types/jest': ^27.5.0
       '@types/node': ~17.0.5
       jest: ^27.4.5
@@ -248,6 +250,7 @@ importers:
     devDependencies:
       '@nfts/eslint-config': link:../../config/eslint
       '@nfts/gmf': link:../../apps/gmf
+      '@nfts/project-profiles': link:../../config/project-profiles
       '@types/jest': 27.5.1
       '@types/node': 17.0.33
       jest: 27.5.1
@@ -259,6 +262,7 @@ importers:
       '@nfts/eslint-config': workspace:*
       '@nfts/gmf': workspace:*
       '@nfts/node-utils-library': workspace:*
+      '@nfts/project-profiles': workspace:*
       '@types/jest': ^27.0.3
       '@types/node': ~17.0.5
       jest: ^27.4.5
@@ -269,6 +273,7 @@ importers:
     devDependencies:
       '@nfts/eslint-config': link:../../config/eslint
       '@nfts/gmf': link:../../apps/gmf
+      '@nfts/project-profiles': link:../../config/project-profiles
       '@types/jest': 27.5.1
       '@types/node': 17.0.33
       jest: 27.5.1
@@ -281,6 +286,7 @@ importers:
       '@nfts/gmf': workspace:*
       '@nfts/hook': workspace:*
       '@nfts/node-utils-library': workspace:*
+      '@nfts/project-profiles': workspace:*
       '@types/jest': ^27.0.3
       '@types/node': ~17.0.5
       chalk: 4.1.2
@@ -294,6 +300,7 @@ importers:
     devDependencies:
       '@nfts/eslint-config': link:../../config/eslint
       '@nfts/gmf': link:../../apps/gmf
+      '@nfts/project-profiles': link:../../config/project-profiles
       '@types/jest': 27.5.1
       '@types/node': 17.0.33
       jest: 27.5.1
@@ -307,6 +314,7 @@ importers:
       '@nfts/gmf': workspace:*
       '@nfts/hook': workspace:*
       '@nfts/node-utils-library': workspace:*
+      '@nfts/project-profiles': workspace:*
       '@types/jest': ^27.0.3
       '@types/node': ~17.0.5
       jest: ^27.4.5
@@ -319,6 +327,7 @@ importers:
     devDependencies:
       '@nfts/eslint-config': link:../../config/eslint
       '@nfts/gmf': link:../../apps/gmf
+      '@nfts/project-profiles': link:../../config/project-profiles
       '@types/jest': 27.5.1
       '@types/node': 17.0.33
       jest: 27.5.1
@@ -332,6 +341,7 @@ importers:
     specifiers:
       '@nfts/eslint-config': workspace:*
       '@nfts/gmf': workspace:*
+      '@nfts/project-profiles': workspace:*
       '@types/jest': ^27.0.3
       '@types/node': ^17.0.4
       chalk: 4.1.2
@@ -345,6 +355,7 @@ importers:
     devDependencies:
       '@nfts/eslint-config': link:../../config/eslint
       '@nfts/gmf': link:../../apps/gmf
+      '@nfts/project-profiles': link:../../config/project-profiles
       '@types/jest': 27.5.1
       '@types/node': 17.0.33
       eslint: 8.15.0
@@ -357,10 +368,12 @@ importers:
     specifiers:
       '@nfts/eslint-config': workspace:*
       '@nfts/gmf': workspace:*
+      '@nfts/project-profiles': workspace:*
     dependencies:
       '@nfts/gmf': link:../../apps/gmf
     devDependencies:
       '@nfts/eslint-config': link:../../config/eslint
+      '@nfts/project-profiles': link:../../config/project-profiles
 
   plugins/plugin-webpack:
     specifiers:
@@ -369,6 +382,7 @@ importers:
       '@nfts/gmf': workspace:*
       '@nfts/noddy': workspace:*
       '@nfts/node-utils-library': workspace:*
+      '@nfts/project-profiles': workspace:*
       '@svgr/webpack': ^5.5.0
       '@types/jest': ^27.0.3
       '@types/node': ~17.0.5
@@ -402,6 +416,7 @@ importers:
       '@nfts/eslint-config': link:../../config/eslint
       '@nfts/gmf': link:../../apps/gmf
       '@nfts/noddy': link:../../libs/noddy
+      '@nfts/project-profiles': link:../../config/project-profiles
       '@types/jest': 27.5.1
       '@types/node': 17.0.33
       jest: 27.5.1

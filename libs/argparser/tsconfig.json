@@ -1,8 +1,6 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "./node_modules/@nfts/project-profiles/profiles/tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "./dist",
     "types": ["node", "jest"]
-  },
-  "include": ["./src"]
+  }
 }

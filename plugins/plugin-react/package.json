@@ -5,6 +5,7 @@
     "@nfts/gmf": "workspace:*"
   },
   "devDependencies": {
-    "@nfts/eslint-config": "workspace:*"
+    "@nfts/eslint-config": "workspace:*",
+    "@nfts/project-profiles": "workspace:*"
   }
 }

@@ -9,6 +9,8 @@ import { TypescriptConfigHost } from './TypescriptConfigHost';
 import { TypescriptWatchCompilerHost } from './TypescriptWatchCompilerHost';
 import Constants from '../../Constants';
 
+export type VoidFunction = () => void;
+
 export class TypescriptRunner {
   private readonly debug: Debug;
   private readonly parseConfigHost: TypescriptConfigHost;
