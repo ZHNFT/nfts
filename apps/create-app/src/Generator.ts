@@ -169,7 +169,7 @@ package-lock.json`,
 !/dist/**
 !/bin/**
 !/schemas/**`,
-      // jest.config.js
+      // jest.profiles.js
       "jest.config.js": `
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {

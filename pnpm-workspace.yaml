@@ -1,8 +1,8 @@
 packages:
-  - 'apps/**'
-  - 'libs/**'
-  - 'config/**'
-  - 'plugins/**'
-  - 'example/**'
+  - "apps/**"
+  - "libs/**"
+  - "profiles/**"
+  - "plugins/**"
+  - "example/**"
   # exclude packages that inside test directories
-  - '!**/test/**'
+  - "!**/test/**"

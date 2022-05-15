@@ -51,7 +51,7 @@ export class BundleCommand
     });
 
     this.config = this.stringParameter({
-      name: "--config",
+      name: "--profiles",
       summary: "Specified webpack configuration file path",
     });
   }

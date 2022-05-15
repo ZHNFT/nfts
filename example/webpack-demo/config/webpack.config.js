@@ -58,9 +58,9 @@ const imageInlineSizeLimit = parseInt(
 // Check if TypeScript is setup
 const useTypeScript = fs.existsSync(paths.appTsConfig);
 
-// Check if Tailwind config exists
+// Check if Tailwind profiles exists
 const useTailwind = fs.existsSync(
-  path.join(paths.appPath, 'tailwind.config.js')
+  path.join(paths.appPath, 'tailwind.profiles.js')
 );
 
 // Get the path to the uncompiled service worker (if it exists).
@@ -144,7 +144,7 @@ module.exports = function (webpackEnv) {
                     },
                   ],
                   // Adds PostCSS Normalize as the reset css with default options,
-                  // so that it honors browserslist config in package.json
+                  // so that it honors browserslist profiles in package.json
                   // which in turn let's users customize the target behavior as per their needs.
                   'postcss-normalize',
                 ]
@@ -351,7 +351,7 @@ module.exports = function (webpackEnv) {
           // match the requirements. When no loader matches it will fall
           // back to the "file" loader at the end of the loader list.
           oneOf: [
-            // TODO: Merge this config once `image/avif` is in the mime-db
+            // TODO: Merge this profiles once `image/avif` is in the mime-db
             // https://github.com/jshttp/mime-db
             {
               test: [/\.avif$/],
@@ -419,7 +419,7 @@ module.exports = function (webpackEnv) {
                     },
                   ],
                 ],
-                
+
                 plugins: [
                   isEnvDevelopment &&
                     shouldUseReactRefresh &&
@@ -453,7 +453,7 @@ module.exports = function (webpackEnv) {
                 cacheDirectory: true,
                 // See #6846 for context on why cacheCompression is disabled
                 cacheCompression: false,
-                
+
                 // Babel sourcemaps are needed for debugging into node_modules
                 // code.  Without the options below, debuggers like VSCode
                 // show incorrect code and set breakpoints on the wrong lines.
@@ -739,7 +739,7 @@ module.exports = function (webpackEnv) {
           cwd: paths.appPath,
           resolvePluginsRelativeTo: __dirname,
           baseConfig: {
-            extends: [require.resolve('eslint-config-react-app/base')],
+            extends: [require.resolve('eslint-profiles-react-app/base')],
             rules: {
               ...(!hasJsxRuntime && {
                 'react/react-in-jsx-scope': 'error',

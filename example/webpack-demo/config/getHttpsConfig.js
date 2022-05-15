@@ -43,7 +43,7 @@ function readEnvFile(file, type) {
   return fs.readFileSync(file);
 }
 
-// Get the https config
+// Get the https profiles
 // Return cert files if provided in env, otherwise just true or false
 function getHttpsConfig() {
   const { SSL_CRT_FILE, SSL_KEY_FILE, HTTPS } = process.env;

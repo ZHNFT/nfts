@@ -2,17 +2,17 @@ export class Constants {
   /*
    * webpack 配置文件路径
    * */
-  public static maybeWebpackConfig = './webpack.config.js';
+  public static maybeWebpackConfig = './webpack.profiles.js';
   /*
    * webpack 配置文件路径
    * */
-  public static webpackConfig = './config/webpack.config.js';
+  public static webpackConfig = './profiles/webpack.profiles.js';
   /*
    * webpack-dev-server 配置文件路径
    * */
-  public static maybeWebpackDevServerConfig = './webpackDevServer.config.js';
+  public static maybeWebpackDevServerConfig = './webpackDevServer.profiles.js';
   /*
    * webpack-dev-server 配置文件路径
    * */
-  public static webpackDevServerConfig = './config/webpackDevServer.config.js';
+  public static webpackDevServerConfig = './profiles/webpackDevServer.profiles.js';
 }
