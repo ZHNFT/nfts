@@ -61,9 +61,9 @@ export class WebpackConfigLoader {
 
     return {
       mode: isDev ? "development" : isProd ? "production" : "none",
-      entry: this.resolveEntry(gmfConfig.bundle?.entry),
+      entry: this.resolveEntry(gmfConfig.entryFile),
       output: {
-        path: this.resolveOutput(gmfConfig.bundle?.output),
+        path: this.resolveOutput(gmfConfig.buildPath),
         filename: isProd
           ? "static/js/[name].[contenthash:8].js"
           : "static/js/bundle.js",

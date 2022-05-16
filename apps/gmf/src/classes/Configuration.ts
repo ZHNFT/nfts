@@ -2,21 +2,9 @@ import { existsSync } from "fs";
 import { Fs } from "@nfts/node-utils-library";
 import Constants from "../Constants";
 
-export enum TargetModuleKinds {
-  "CommonJS",
-  "AMD",
-  "UMD",
-  "ESNext",
-  "System",
-}
-
 export interface IGmfConfig {
-  output?: string;
-  bundle?: {
-    entry: string;
-    output: string;
-    target?: TargetModuleKinds;
-  };
+  entryFile: string;
+  buildPath: string;
   plugins?: {
     pluginName: string;
     options?: Record<string, unknown>;

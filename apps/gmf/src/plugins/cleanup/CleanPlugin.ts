@@ -24,7 +24,7 @@ class CleanPlugin implements Plugin {
 
     const cleanBuildPath = path.resolve(
       process.cwd(),
-      configuration?.config?.output ?? "./dist"
+      configuration.config.buildPath ?? "./dist"
     );
 
     hooks.build.add(NAME, (build) => {

@@ -1,9 +1,6 @@
 {
   "$schema": "../node_modules/@nfts/gmf/schemas/gmf.schema.json",
-  "bundle": {
-    "entry": "./src/index.tsx",
-    "output": "./build"
-  },
+  "buildPath": "./build",
   "plugins": [
     {
       "pluginName": "@nfts/plugin-webpack"
