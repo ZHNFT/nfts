@@ -1,16 +1,16 @@
-import { CommandLine } from '@nfts/noddy';
-import { PluginManager } from '../classes/PluginManager';
-import { Configuration } from '../classes/Configuration';
-import { BundleCommand } from './commands/BundleCommand';
-import { BuildCommand } from './commands/BuildCommand';
-import { BuildStage, BundleStage } from '../stages';
+import { CommandLine } from "@nfts/noddy";
+import { PluginManager } from "../classes/PluginManager";
+import { Configuration } from "../classes/Configuration";
+import { BundleCommand } from "./commands/BundleCommand";
+import { BuildCommand } from "./commands/BuildCommand";
+import { BuildStage, BundleStage } from "../stages";
 
 export default class GmfTool extends CommandLine {
   private readonly _pluginManager: PluginManager;
   private readonly _config: Configuration;
 
   constructor() {
-    super({ toolName: 'gmf', toolDescription: `Develop toolchain` });
+    super({ toolName: "gmf", toolDescription: `Develop toolchain` });
 
     this._config = new Configuration();
 
@@ -19,7 +19,7 @@ export default class GmfTool extends CommandLine {
 
     const stages = {
       build: buildStage,
-      bundle: bundleStage
+      bundle: bundleStage,
     };
 
     const build = new BuildCommand({ stage: stages.build });
@@ -42,6 +42,6 @@ export default class GmfTool extends CommandLine {
   }
 
   onExecute(): Promise<void> {
-    throw new Error('Method not implemented.');
+    throw new Error("Method not implemented.");
   }
 }

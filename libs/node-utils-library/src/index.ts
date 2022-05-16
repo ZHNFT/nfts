@@ -7,10 +7,11 @@ import * as Utilities from "./utilities";
 import { chalk } from "./chalk";
 import glob from "./Glob";
 
-import { sync as importSync } from "./Reuqire";
+import { sync, resolve } from "./Reuqire";
 
-export const req: { sync: typeof importSync } = {
-  sync: importSync,
+export const req: { sync: typeof sync; resolve: typeof resolve } = {
+  sync,
+  resolve,
 };
 
 export { Utilities };
