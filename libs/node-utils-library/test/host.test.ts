@@ -1,12 +1,12 @@
-import { chosePort } from '../src/url';
+import { chosePort } from "../src/Url";
 
-describe('HOST 方法测试', () => {
-  test('端口占用测试', () => {
+describe("HOST 方法测试", () => {
+  test("端口占用测试", () => {
     return chosePort()
-      .then(port => {
+      .then((port) => {
         expect(port).toBe(8080);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
       });
   });

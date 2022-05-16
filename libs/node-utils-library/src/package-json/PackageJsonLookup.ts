@@ -1,14 +1,14 @@
 /**
  * @deprecated
  * */
-import nodePath from 'path';
-import nodeFs from 'fs';
-import { IPackageJson } from './PackageJson';
-import { readJsonSync } from '../json';
+import nodePath from "path";
+import nodeFs from "fs";
+import { IPackageJson } from "./PackageJson";
+import { readJsonSync } from "../FsExtra";
 
 export class Constants {
-  public static PackageJson = './package.json';
-  public static DefaultMainEntryFle = './index.js';
+  public static PackageJson = "./package.json";
+  public static DefaultMainEntryFle = "./index.js";
 }
 
 interface LookupOptions {
@@ -22,7 +22,7 @@ export class PackageJsonLookup {
   private _cache: Map<string, IPackageJson> = new Map();
   private _defaultOptions: LookupOptions = {
     force: false,
-    cwd: process.cwd()
+    cwd: process.cwd(),
   };
 
   public lookup() {
@@ -37,7 +37,9 @@ export class PackageJsonLookup {
     // todo
     // -[ ] 添加`path`是否是文件夹的判断
     const _options = this._resolveOptions(options);
-    const _relPath = nodePath.isAbsolute(path) ? path : nodePath.resolve(_options.cwd!, path);
+    const _relPath = nodePath.isAbsolute(path)
+      ? path
+      : nodePath.resolve(_options.cwd!, path);
 
     const _pkgPath = this._resolvePackageJsonPath(_relPath);
 

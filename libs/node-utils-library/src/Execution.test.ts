@@ -1,4 +1,10 @@
-import { waterfall, serialize, parallel, isAsyncTask, isSyncTask } from "../";
+import {
+  waterfall,
+  serialize,
+  parallel,
+  isAsyncTask,
+  isSyncTask,
+} from "./Execution";
 
 describe("execution 方法测试用例", () => {
   test("waterfall execution", () => {

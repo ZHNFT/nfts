@@ -1,15 +1,13 @@
-import * as Fs from "./fs-extra";
-import * as Json from "./json";
-import * as Execution from "./execution";
-import * as Terminal from "./terminal";
-import * as Url from "./url";
+import * as Fs from "./FsExtra";
+import * as Execution from "./Execution";
+import * as Terminal from "./Terminal";
+import * as Url from "./Url";
 import * as PackageJson from "./package-json";
 import * as Utilities from "./utilities";
-import * as Module from "./require";
 import { chalk } from "./chalk";
 import glob from "./Glob";
 
-import { sync as importSync } from "./require";
+import { sync as importSync } from "./Reuqire";
 
 export const req: { sync: typeof importSync } = {
   sync: importSync,
@@ -17,11 +15,9 @@ export const req: { sync: typeof importSync } = {
 
 export { Utilities };
 export { Fs };
-export { Json };
 export { Execution };
 export { Terminal };
 export { Url };
 export { PackageJson };
-export { Module };
 export { chalk };
 export { glob };

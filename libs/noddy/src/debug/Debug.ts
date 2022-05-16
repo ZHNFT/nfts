@@ -1,4 +1,5 @@
 import os from "os";
+import { chalk } from "@nfts/node-utils-library";
 
 export interface LoggerOpts {
   timestamp?: boolean;
@@ -34,7 +35,7 @@ export class Debug {
 
   private _messageAfterDecorator(msg: string): string {
     if (this.loggerOpts.scopePrefix) {
-      msg = `[${this.scope}] ${msg}`;
+      msg = `${chalk.dim(`[${this.scope}]:`)} ${msg}`;
     }
 
     if (this.loggerOpts.timestamp) {

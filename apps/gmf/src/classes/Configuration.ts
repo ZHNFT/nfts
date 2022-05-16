@@ -1,13 +1,13 @@
-import { existsSync } from 'fs';
-import { Json } from '@nfts/node-utils-library';
-import Constants from '../Constants';
+import { existsSync } from "fs";
+import { Fs } from "@nfts/node-utils-library";
+import Constants from "../Constants";
 
 export enum TargetModuleKinds {
-  'CommonJS',
-  'AMD',
-  'UMD',
-  'ESNext',
-  'System'
+  "CommonJS",
+  "AMD",
+  "UMD",
+  "ESNext",
+  "System",
 }
 
 export interface IGmfConfig {
@@ -36,7 +36,7 @@ export class Configuration {
       return undefined;
     }
 
-    return (this.config = Json.readJsonSync(Constants.GMF_CONFIG_PATH));
+    return (this.config = Fs.readJsonSync(Constants.GMF_CONFIG_PATH));
   }
 
   public loadConfigFromFile(filePath: string): IGmfConfig | undefined {
@@ -46,6 +46,6 @@ export class Configuration {
       return undefined;
     }
 
-    return (this.config = Json.readJsonSync(filePath));
+    return (this.config = Fs.readJsonSync(filePath));
   }
 }

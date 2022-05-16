@@ -15,30 +15,42 @@ class CleanPlugin implements Plugin {
 
   logger!: Debug;
 
-  apply({ getScopedLogger, hooks }: PluginSession): void | Promise<void> {
+  apply({
+    getScopedLogger,
+    hooks,
+    configuration,
+  }: PluginSession): void | Promise<void> {
     this.logger = getScopedLogger(NAME);
+
+    const cleanBuildPath = path.resolve(
+      process.cwd(),
+      configuration?.config?.output ?? "./dist"
+    );
 
     hooks.build.add(NAME, (build) => {
       if (build.cmdParams.clean) {
-        build.hooks.preCompile.add(NAME, this.cleanupDist);
+        build.hooks.preCompile.add(NAME, () =>
+          this.cleanupDist(cleanBuildPath)
+        );
       }
     });
 
     hooks.bundle.add(NAME, (bundle) => {
       if (bundle.cmdParams.clean) {
-        bundle.hooks.preCompile.add(NAME, this.cleanupDist);
+        bundle.hooks.preCompile.add(NAME, () =>
+          this.cleanupDist(cleanBuildPath)
+        );
       }
     });
   }
 
-  private cleanupDist = async () => {
-    this.logger.log(`Cleanup dist...`);
-
-    const targetPath = path.resolve(process.cwd(), CleanupDistPath);
-
-    if (existsSync(targetPath)) {
-      await Fs.rmdirRecursion(targetPath);
+  private cleanupDist = async (path: string) => {
+    if (existsSync(path)) {
+      await Fs.rmdirRecursion(path);
+      return;
     }
+
+    this.logger.log(`Path is not exist`);
   };
 }
 

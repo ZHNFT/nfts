@@ -5,11 +5,9 @@ export type TaskFunc<TArgs, TReturn = void | Promise<void>> = (
 ) => TReturn;
 
 /**
- * 按需执行task，上一个task执行返回的结果作为下一个task的输入，
- * 如果有错误的话，立即终端；
+ * 按需执行task，上一个task执行返回的结果作为下一个task的输入，如果有错误的话，立即终端；
  * @param tasks
  * @param args
- * @returns {Promise<TArgs = unknown>}
  */
 export async function waterfall<TArgs = unknown>(
   tasks: TaskFunc<TArgs, TArgs | Promise<TArgs>>[],
@@ -24,11 +22,9 @@ export async function waterfall<TArgs = unknown>(
 }
 
 /**
- * 使用 all 方法模拟所有 task 的同步执行，
- * 所有的 task 按顺序执行，但是并非按序返回。
+ * 使用 all 方法模拟所有 task 的同步执行，所有的 task 按顺序执行，但是并非按序返回。
  * @param tasks
  * @param args
- * @returns {Promise<void[]>}
  */
 export async function parallel<TArgs = unknown>(
   tasks: TaskFunc<TArgs>[],
@@ -41,7 +37,6 @@ export async function parallel<TArgs = unknown>(
  * 顺序执行所有的任务
  * @param tasks
  * @param args
- * @returns {Promise<void>}
  */
 export async function serialize<TArgs = unknown>(
   tasks: TaskFunc<TArgs>[],
@@ -57,8 +52,7 @@ export async function serialize<TArgs = unknown>(
 
 /**
  *
- * @param maybeTask 校验函数是否是 async function 或者 generator function
- * @returns {boolean}
+ * @param maybeTask
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function isAsyncTask(maybeTask: Function): boolean {
@@ -72,8 +66,7 @@ export function isAsyncTask(maybeTask: Function): boolean {
 
 /**
  *
- * @param maybeTask 校验函数是否是 function
- * @returns {boolean}
+ * @param maybeTask
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function isSyncTask(maybeTask: Function): boolean {

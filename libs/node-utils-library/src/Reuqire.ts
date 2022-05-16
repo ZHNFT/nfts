@@ -5,10 +5,10 @@
 import fs from "fs";
 import path from "path";
 import NodeModule from "module";
-import * as Constants from "../Constants";
-import * as Json from "../json";
-import * as Package from "../package-json";
-import { object as objectUtils } from "../utilities";
+import * as Constants from "./Constants";
+import * as Package from "./package-json";
+import { readJsonSync } from "./FsExtra";
+import { object as objectUtils } from "./utilities";
 
 export interface ImportModuleSyncOptions {
   cwd?: string;
@@ -61,7 +61,7 @@ export function sync(
     );
   }
 
-  const pkgJson: Package.IPackageJson = Json.readJsonSync(packageJsonPath);
+  const pkgJson: Package.IPackageJson = readJsonSync(packageJsonPath);
   // const mainEntry: string;
   if (pkgJson.main === undefined) {
     throw new Error(

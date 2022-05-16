@@ -1,4 +1,4 @@
-import { readJson } from '../src/json';
+import { readJson } from "../src/FsExtra";
 
 interface TObj {
   name: string;
@@ -6,11 +6,11 @@ interface TObj {
   main: string;
 }
 
-describe('测试 Json 读取', function () {
-  it('should return correct', async function () {
-    const obj = await readJson<TObj>('./test/json/data.json');
+describe("测试 Json 读取", function () {
+  it("should return correct", async function () {
+    const obj = await readJson<TObj>("./test/json/data.json");
     expect(obj).toStrictEqual({
-      name: 'test-import'
+      name: "test-import",
     });
   });
 });

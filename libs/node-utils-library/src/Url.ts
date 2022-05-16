@@ -1,22 +1,24 @@
-import { createServer } from 'net';
+import { createServer } from "net";
 
 export const DEFAULT_PORT = 8080;
 
 /* 返回可用的端口号。默认 80 端口 */
-export async function chosePort(port: number | string = DEFAULT_PORT): Promise<number> {
+export async function chosePort(
+  port: number | string = DEFAULT_PORT
+): Promise<number> {
   port = Number(port);
 
   const portUse = (_port: number): Promise<number | Error> => {
     return new Promise<number | Error>((resolve, reject) => {
       const server = createServer()
         .listen(_port)
-        .on('listening', () => {
+        .on("listening", () => {
           server.close(() => resolve(_port));
         })
-        .on('error', (err: Error) => {
+        .on("error", (err: Error) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          if (err.code == 'EADDRINUSE') {
+          if (err.code == "EADDRINUSE") {
             resolve(err);
             return;
           }
@@ -28,7 +30,7 @@ export async function chosePort(port: number | string = DEFAULT_PORT): Promise<n
 
   let res = await portUse(DEFAULT_PORT);
 
-  while (typeof res !== 'number') {
+  while (typeof res !== "number") {
     port++;
     res = await portUse(port);
   }

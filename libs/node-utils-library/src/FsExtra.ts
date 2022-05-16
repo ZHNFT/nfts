@@ -4,8 +4,7 @@
  * */
 import nodeFs from "fs";
 import nodePath from "path";
-import { serialize } from "../execution";
-import * as path from "path";
+import { serialize } from "./Execution";
 
 export interface IFileOperationOpts {
   cwd?: string;
@@ -15,26 +14,26 @@ export interface IWriteFileOpts extends IFileOperationOpts {
   ensureRoot?: boolean;
 }
 
+export interface IMkdirOpts extends IFileOperationOpts {
+  throwWhenExist?: boolean;
+}
+
 export const defaultWriteFileOpts = {
   ensureRoot: true,
 };
 
 /**
- * 写文件内容，同时生成文件所处的文件夹
- * @param {string} filename
- * @param {string} content
+ * 写文件内容，同时生成文件路径
+ * @param filename
+ * @param content
  * @param usrOptions
  */
 export async function writeFile(
   filename: string,
   content: string,
-  usrOptions?: IWriteFileOpts
+  usrOptions: IWriteFileOpts = {}
 ): Promise<void> {
-  if (!usrOptions) {
-    usrOptions = defaultWriteFileOpts;
-  } else {
-    usrOptions = Object.assign({}, defaultWriteFileOpts, usrOptions);
-  }
+  usrOptions = Object.assign({}, defaultWriteFileOpts, usrOptions);
 
   const dirsReadyToCreate: string[] = [];
   let parentDir = nodePath.dirname(filename);
@@ -68,9 +67,7 @@ export async function writeFile(
  */
 export async function mkdir(
   dirname: string,
-  options?: {
-    throwWhenExist?: boolean;
-  }
+  options?: IMkdirOpts
 ): Promise<void> {
   try {
     await nodeFs.promises.mkdir(dirname);
@@ -102,7 +99,6 @@ function createStat(
       Object.defineProperty(stat, extraPropsKey, {
         value: extraProps[extraPropsKey],
       });
-      // Object.assign(stat, extraPropsKey, extraProps[extraPropsKey]);
     }
   }
 
@@ -111,20 +107,9 @@ function createStat(
 
 /**
  * 递归读取文件夹中的文件
- */
-// export function readDirRecursion(
-//   dirname: string,
-//   files?: fs.Stats[]
-// ): Promise<fs.Stats[]> {
-//   const stat = fs.statSync(dirname);
-// }
-
-/**
- * 递归读取文件夹中的文件
- * @param     {string}                     dirname  目标目录
- * @param     {{ stat?: boolean }}         options 选项
- * @param     {(nodeFs.Stats | string)[]}      files   所有递归到的文件都会被放到files中，默认为undefined
- * @returns   {(nodeFs.Stats | string)[]}
+ * @param dirname 目标目录
+ * @param options 选项
+ * @param files   所有递归到的文件都会被放到files中，默认为undefined
  */
 export function readDirRecursionSync(
   dirname: string,
@@ -136,7 +121,7 @@ export function readDirRecursionSync(
     files = [];
   }
 
-  dirname = path.resolve(dirname);
+  dirname = nodePath.resolve(dirname);
 
   const stat = nodeFs.statSync(dirname);
   if (!stat.isDirectory()) {
@@ -166,6 +151,8 @@ export function readDirRecursionSync(
 
 /**
  * 测试文件是否存在，是否可访问
+ * @param path
+ * @param mode
  */
 export function accessFile(path: string, mode?: number): void | never {
   try {
@@ -177,6 +164,10 @@ export function accessFile(path: string, mode?: number): void | never {
   }
 }
 
+/**
+ * 递归删除文件夹
+ * @param path
+ */
 export async function rmdirRecursion(path: string): Promise<void> {
   const isFolder = (path: string): boolean => {
     return nodeFs.statSync(path).isDirectory();
@@ -197,4 +188,64 @@ export async function rmdirRecursion(path: string): Promise<void> {
       await nodeFs.promises.unlink(filePath);
     }
   }
+
+  //  删除完所有的文件之后，删除文件夹
+  await nodeFs.promises.rmdir(path);
+}
+
+/**
+ * 读取JSON文件内容
+ * @param filename
+ */
+export async function readJson<T = unknown>(filename: string): Promise<T> {
+  accessFile(filename);
+  let chunk = "";
+
+  return await new Promise<T>((resolve, reject) => {
+    nodeFs
+      .createReadStream(filename)
+      .on("data", (_chunk) => {
+        chunk += _chunk;
+      })
+      .on("end", () => {
+        resolve(JSON.parse(chunk) as T);
+      })
+      .on("error", reject);
+  });
+}
+
+/**
+ * 读取JSON文件内容
+ * @param path
+ */
+export function readJsonSync<T = unknown>(path: string): T {
+  accessFile(path);
+
+  const buf = nodeFs.readFileSync(path);
+
+  try {
+    return JSON.parse(buf.toString("utf-8")) as T;
+  } catch (_) {
+    throw new Error(`${path} is not a valid json data`);
+  }
+}
+
+/**
+ * 向JSON文件写入内容
+ * @param path
+ * @param data
+ */
+export async function writeJson(path: string, data: unknown): Promise<void> {
+  const dataString = JSON.stringify(data, null, 2);
+  await writeFile(path, dataString);
+}
+
+/**
+ * 向JSON文件写入内容
+ * @param path
+ * @param data
+ */
+export function writeJsonSync(path: string, data: unknown): void {
+  accessFile(path);
+  nodeFs.writeFileSync(path, JSON.stringify(data, null, 2));
 }

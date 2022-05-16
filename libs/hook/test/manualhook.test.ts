@@ -1,4 +1,4 @@
-import { ManualHook } from "../src/hooks/ManualHook";
+import { ManualHook } from "../src";
 
 describe("manualHook测试", () => {
   const fn = jest.fn();
