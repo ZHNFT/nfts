@@ -1,9 +1,9 @@
 import { Command } from "@nfts/noddy";
 import { req } from "@nfts/node-utils-library";
 
-import jestPlugin from "../internal-plugins/jest/JestPlugin";
-import typescriptPlugin from "../internal-plugins/typescript/TypescriptPlugin";
-import cleanPlugin from "../internal-plugins/cleanup/CleanPlugin";
+import jestPlugin from "../plugins/jest/JestPlugin";
+import typescriptPlugin from "../plugins/typescript/TypescriptPlugin";
+import cleanPlugin from "../plugins/cleanup/CleanPlugin";
 
 import { Configuration } from "./Configuration";
 import { Plugin } from "./Plugin";

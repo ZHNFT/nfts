@@ -93,7 +93,7 @@ export class Generator {
       author: {
         name: userInfo.name,
         email: userInfo.email,
-        url: "",
+        url: "*",
       },
       publishConfig: {
         access: "public",
@@ -169,7 +169,7 @@ package-lock.json`,
 !/dist/**
 !/bin/**
 !/schemas/**`,
-      // jest.profiles.js
+      // jest.config.js
       "jest.config.js": `
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
@@ -179,22 +179,9 @@ module.exports = {
 };`,
       "tsconfig.json": `
 {
-  "compilerOptions": {
-    "module": "Commonjs",
-    "target": "ES2017",
-    "declaration": true,
-    "moduleResolution": "Node",
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "allowJs": false,
-    "types": ["@types/node", "@types/jest"],
-    "noImplicitAny": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "emitDeclarationOnly": ${platform !== "node" ? "false" : "true"}
-  },
-  "exclude": ["**/node_modules/**/*", "**/*.(test|spec).*", "**/template/**/*"]
+  "extends": "./node_modules/@nfts/project-profiles/profiles/tsconfig.base.json",
 }
+
 `,
     };
 
