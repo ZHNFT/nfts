@@ -2,7 +2,7 @@ packages:
   - "apps/**"
   - "libs/**"
   - "profiles/**"
-  - "plugins/**"
+  - "gmf-plugins/**"
   - "example/**"
   # exclude packages that inside test directories
   - "!**/test/**"

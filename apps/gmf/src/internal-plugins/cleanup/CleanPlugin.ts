@@ -1,12 +1,13 @@
-import path from 'path';
-import { Fs } from '@nfts/node-utils-library';
-import { Debug } from '@nfts/noddy';
-import { Plugin, PluginSession } from '../../classes/Plugin';
+import path from "path";
+import { Fs } from "@nfts/node-utils-library";
+import { Debug } from "@nfts/noddy";
+import { Plugin, PluginSession } from "../../classes/Plugin";
+import { existsSync } from "fs";
 
-const NAME = 'CleanPlugin';
-const DESCRIPTION = 'Cleanup dist';
+const NAME = "CleanPlugin";
+const DESCRIPTION = "Cleanup dist";
 
-const CleanupDistPath = './dist';
+const CleanupDistPath = "./dist";
 
 class CleanPlugin implements Plugin {
   name: string = NAME;
@@ -17,13 +18,13 @@ class CleanPlugin implements Plugin {
   apply({ getScopedLogger, hooks }: PluginSession): void | Promise<void> {
     this.logger = getScopedLogger(NAME);
 
-    hooks.build.add(NAME, build => {
+    hooks.build.add(NAME, (build) => {
       if (build.cmdParams.clean) {
         build.hooks.preCompile.add(NAME, this.cleanupDist);
       }
     });
 
-    hooks.bundle.add(NAME, bundle => {
+    hooks.bundle.add(NAME, (bundle) => {
       if (bundle.cmdParams.clean) {
         bundle.hooks.preCompile.add(NAME, this.cleanupDist);
       }
@@ -32,7 +33,12 @@ class CleanPlugin implements Plugin {
 
   private cleanupDist = async () => {
     this.logger.log(`Cleanup dist...`);
-    await Fs.rmdirRecursion(path.resolve(process.cwd(), CleanupDistPath));
+
+    const targetPath = path.resolve(process.cwd(), CleanupDistPath);
+
+    if (existsSync(targetPath)) {
+      await Fs.rmdirRecursion(targetPath);
+    }
   };
 }
 

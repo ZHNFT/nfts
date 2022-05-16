@@ -1,10 +1,9 @@
-import { Generator } from '../Generator';
+import { Generator } from "../Generator";
 
-describe('Generator test cases', () => {
-  test('Generator.getCurrentUsrInfo()', () => {
+describe("Generator test cases", () => {
+  test("Generator.getCurrentUsrInfo()", () => {
     expect(() => {
-      const user = Generator.getCurrentUserInfo();
-      console.log(user);
+      Generator.getCurrentUserInfo();
     }).not.toThrow();
   });
 });

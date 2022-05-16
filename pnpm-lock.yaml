@@ -135,7 +135,7 @@ importers:
     dependencies:
       '@babel/core': 7.17.10
       '@nfts/gmf': link:../../apps/gmf
-      '@nfts/plugin-webpack': link:../../plugins/plugin-webpack
+      '@nfts/plugin-webpack': link:../../gmf-plugins/plugin-webpack
       '@pmmmwh/react-refresh-webpack-plugin': 0.5.6_cduugdvdzx7dfkit7irvewwovq
       '@svgr/webpack': 5.5.0
       '@testing-library/jest-dom': 5.16.4
@@ -206,9 +206,69 @@ importers:
       react-router-dom: 6.3.0_ef5jwxihqo6n7gxfmzogljlgcm
     devDependencies:
       '@nfts/gmf': link:../../apps/gmf
-      '@nfts/plugin-webpack': link:../../plugins/plugin-webpack
+      '@nfts/plugin-webpack': link:../../gmf-plugins/plugin-webpack
       '@types/react': 18.0.9
-      '@types/react-dom': 18.0.3
+      '@types/react-dom': 18.0.4
+
+  gmf-plugins/plugin-react:
+    specifiers:
+      '@nfts/eslint-config': workspace:*
+      '@nfts/gmf': workspace:*
+      '@nfts/project-profiles': workspace:*
+    dependencies:
+      '@nfts/gmf': link:../../apps/gmf
+    devDependencies:
+      '@nfts/eslint-config': link:../../profiles/eslint
+      '@nfts/project-profiles': link:../../profiles/project-profiles
+
+  gmf-plugins/plugin-webpack:
+    specifiers:
+      '@nfts/argparser': workspace:*
+      '@nfts/eslint-config': workspace:*
+      '@nfts/gmf': workspace:*
+      '@nfts/noddy': workspace:*
+      '@nfts/node-utils-library': workspace:*
+      '@nfts/project-profiles': workspace:*
+      '@svgr/webpack': ^5.5.0
+      '@types/jest': ^27.0.3
+      '@types/node': ~17.0.5
+      babel-preset-react-app: ^10.0.1
+      dotenv: ^10.0.0
+      file-loader: ^6.2.0
+      html-webpack-plugin: ^5.5.0
+      jest: ^27.4.5
+      react-refresh: ^0.11.0
+      source-map-loader: ^3.0.0
+      terser-webpack-plugin: ^5.2.5
+      ts-jest: ^27.1.2
+      typescript: ^4.5.4
+      webpack: ^5.72.0
+      webpack-dev-server: ^4.8.1
+      webpackbar: ^5.0.2
+    dependencies:
+      '@nfts/node-utils-library': link:../../libs/node-utils-library
+      '@svgr/webpack': 5.5.0
+      babel-preset-react-app: 10.0.1
+      dotenv: 10.0.0
+      file-loader: 6.2.0_webpack@5.72.1
+      html-webpack-plugin: 5.5.0_webpack@5.72.1
+      react-refresh: 0.11.0
+      source-map-loader: 3.0.1_webpack@5.72.1
+      terser-webpack-plugin: 5.3.1_webpack@5.72.1
+      webpack: 5.72.1
+      webpack-dev-server: 4.9.0_webpack@5.72.1
+    devDependencies:
+      '@nfts/argparser': link:../../libs/argparser
+      '@nfts/eslint-config': link:../../profiles/eslint
+      '@nfts/gmf': link:../../apps/gmf
+      '@nfts/noddy': link:../../libs/noddy
+      '@nfts/project-profiles': link:../../profiles/project-profiles
+      '@types/jest': 27.5.1
+      '@types/node': 17.0.33
+      jest: 27.5.1
+      ts-jest: 27.1.4_ibhx3ehxrt2kgmkik4bkzmyeei
+      typescript: 4.6.4
+      webpackbar: 5.0.2_webpack@5.72.1
 
   libs/argparser:
     specifiers:
@@ -324,12 +384,14 @@ importers:
       '@types/node': ^17.0.4
       chalk: 4.1.2
       eslint: ^8.15.0
+      globby: 11.1.0
       jest: ^27.4.5
       prettier: ^2.6.2
       ts-jest: ^27.1.2
       typescript: ^4.5.4
     dependencies:
       chalk: 4.1.2
+      globby: 11.1.0
     devDependencies:
       '@nfts/eslint-config': link:../../profiles/eslint
       '@nfts/gmf': link:../../apps/gmf
@@ -341,66 +403,6 @@ importers:
       prettier: 2.6.2
       ts-jest: 27.1.4_ibhx3ehxrt2kgmkik4bkzmyeei
       typescript: 4.6.4
-
-  plugins/plugin-react:
-    specifiers:
-      '@nfts/eslint-config': workspace:*
-      '@nfts/gmf': workspace:*
-      '@nfts/project-profiles': workspace:*
-    dependencies:
-      '@nfts/gmf': link:../../apps/gmf
-    devDependencies:
-      '@nfts/eslint-config': link:../../profiles/eslint
-      '@nfts/project-profiles': link:../../profiles/project-profiles
-
-  plugins/plugin-webpack:
-    specifiers:
-      '@nfts/argparser': workspace:*
-      '@nfts/eslint-config': workspace:*
-      '@nfts/gmf': workspace:*
-      '@nfts/noddy': workspace:*
-      '@nfts/node-utils-library': workspace:*
-      '@nfts/project-profiles': workspace:*
-      '@svgr/webpack': ^5.5.0
-      '@types/jest': ^27.0.3
-      '@types/node': ~17.0.5
-      babel-preset-react-app: ^10.0.1
-      dotenv: ^10.0.0
-      file-loader: ^6.2.0
-      html-webpack-plugin: ^5.5.0
-      jest: ^27.4.5
-      react-refresh: ^0.11.0
-      source-map-loader: ^3.0.0
-      terser-webpack-plugin: ^5.2.5
-      ts-jest: ^27.1.2
-      typescript: ^4.5.4
-      webpack: ^5.72.0
-      webpack-dev-server: ^4.8.1
-      webpackbar: ^5.0.2
-    dependencies:
-      '@nfts/node-utils-library': link:../../libs/node-utils-library
-      '@svgr/webpack': 5.5.0
-      babel-preset-react-app: 10.0.1
-      dotenv: 10.0.0
-      file-loader: 6.2.0_webpack@5.72.1
-      html-webpack-plugin: 5.5.0_webpack@5.72.1
-      react-refresh: 0.11.0
-      source-map-loader: 3.0.1_webpack@5.72.1
-      terser-webpack-plugin: 5.3.1_webpack@5.72.1
-      webpack: 5.72.1
-      webpack-dev-server: 4.9.0_webpack@5.72.1
-    devDependencies:
-      '@nfts/argparser': link:../../libs/argparser
-      '@nfts/eslint-config': link:../../profiles/eslint
-      '@nfts/gmf': link:../../apps/gmf
-      '@nfts/noddy': link:../../libs/noddy
-      '@nfts/project-profiles': link:../../profiles/project-profiles
-      '@types/jest': 27.5.1
-      '@types/node': 17.0.33
-      jest: 27.5.1
-      ts-jest: 27.1.4_ibhx3ehxrt2kgmkik4bkzmyeei
-      typescript: 4.6.4
-      webpackbar: 5.0.2_webpack@5.72.1
 
   profiles/eslint:
     specifiers:
@@ -2225,7 +2227,7 @@ packages:
       webpack-dev-server: 4.9.0_webpack@5.72.1
     dev: false
 
-  /@rollup/plugin-babel/5.3.1_ddp4whfhauf2n5cf6yj7gaerwe:
+  /@rollup/plugin-babel/5.3.1_5ey36jajczjbmcqmomvpimwrdu:
     resolution: {integrity: sha512-WFfdLWU/xVWKeRQnKmIAQULUI7Il0gZnBIH/ZFO069wYIfPu+8zrfp/KMW0atmELoRDq8FbiP3VCss9MhCut7Q==}
     engines: {node: '>= 10.0.0'}
     peerDependencies:
@@ -2238,36 +2240,36 @@ packages:
     dependencies:
       '@babel/core': 7.17.10
       '@babel/helper-module-imports': 7.16.7
-      '@rollup/pluginutils': 3.1.0_rollup@2.72.1
-      rollup: 2.72.1
+      '@rollup/pluginutils': 3.1.0_rollup@2.73.0
+      rollup: 2.73.0
     dev: false
 
-  /@rollup/plugin-node-resolve/11.2.1_rollup@2.72.1:
+  /@rollup/plugin-node-resolve/11.2.1_rollup@2.73.0:
     resolution: {integrity: sha512-yc2n43jcqVyGE2sqV5/YCmocy9ArjVAP/BeXyTtADTBBX6V0e5UMqwO8CdQ0kzjb6zu5P1qMzsScCMRvE9OlVg==}
     engines: {node: '>= 10.0.0'}
     peerDependencies:
       rollup: ^1.20.0||^2.0.0
     dependencies:
-      '@rollup/pluginutils': 3.1.0_rollup@2.72.1
+      '@rollup/pluginutils': 3.1.0_rollup@2.73.0
       '@types/resolve': 1.17.1
       builtin-modules: 3.3.0
       deepmerge: 4.2.2
       is-module: 1.0.0
       resolve: 1.22.0
-      rollup: 2.72.1
+      rollup: 2.73.0
     dev: false
 
-  /@rollup/plugin-replace/2.4.2_rollup@2.72.1:
+  /@rollup/plugin-replace/2.4.2_rollup@2.73.0:
     resolution: {integrity: sha512-IGcu+cydlUMZ5En85jxHH4qj2hta/11BHq95iHEyb2sbgiN0eCdzvUcHw5gt9pBL5lTi4JDYJ1acCoMGpTvEZg==}
     peerDependencies:
       rollup: ^1.20.0 || ^2.0.0
     dependencies:
-      '@rollup/pluginutils': 3.1.0_rollup@2.72.1
+      '@rollup/pluginutils': 3.1.0_rollup@2.73.0
       magic-string: 0.25.9
-      rollup: 2.72.1
+      rollup: 2.73.0
     dev: false
 
-  /@rollup/pluginutils/3.1.0_rollup@2.72.1:
+  /@rollup/pluginutils/3.1.0_rollup@2.73.0:
     resolution: {integrity: sha512-GksZ6pr6TpIjHm8h9lSQ8pi8BE9VeubNT0OMJ3B5uZJ8pz73NPiqOtCog/x2/QzM1ENChPKxMDhiQuRHsqc+lg==}
     engines: {node: '>= 8.0.0'}
     peerDependencies:
@@ -2276,7 +2278,7 @@ packages:
       '@types/estree': 0.0.39
       estree-walker: 1.0.1
       picomatch: 2.3.1
-      rollup: 2.72.1
+      rollup: 2.73.0
     dev: false
 
   /@rushstack/eslint-patch/1.1.3:
@@ -2453,7 +2455,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.17.9
       '@testing-library/dom': 8.13.0
-      '@types/react-dom': 18.0.3
+      '@types/react-dom': 18.0.4
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
     dev: false
@@ -2613,7 +2615,7 @@ packages:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
 
   /@types/json5/0.0.29:
-    resolution: {integrity: sha1-7ihweulOEdK4J7y+UnC86n8+ce4=}
+    resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
     dev: false
 
   /@types/mime/1.3.2:
@@ -2645,8 +2647,8 @@ packages:
     resolution: {integrity: sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==}
     dev: false
 
-  /@types/react-dom/18.0.3:
-    resolution: {integrity: sha512-1RRW9kst+67gveJRYPxGmVy8eVJ05O43hg77G2j5m76/RFJtMbcfAs2viQ2UNsvvDg8F7OfQZx8qQcl6ymygaQ==}
+  /@types/react-dom/18.0.4:
+    resolution: {integrity: sha512-FgTtbqPOCI3dzZPZoC2T/sx3L34qxy99ITWn4eoSA95qPyXDMH0ALoAqUp49ITniiJFsXUVBtalh/KffMpg21Q==}
     dependencies:
       '@types/react': 18.0.9
 
@@ -3159,7 +3161,7 @@ packages:
     dev: false
 
   /array-flatten/1.1.1:
-    resolution: {integrity: sha1-ml9pkFGx5wczKPKgCJaLZOopVdI=}
+    resolution: {integrity: sha512-PCVAQswWemu6UdxsDFFX/+gVeYqKAod3D3UVm91jHwynguOwAvYPhx8nNlM++NqRcK6CxxpUafjmhIdKiHibqg==}
     dev: false
 
   /array-flatten/2.1.2:
@@ -3203,11 +3205,11 @@ packages:
     dev: false
 
   /asap/2.0.6:
-    resolution: {integrity: sha1-5QNHYR1+aQlDIIu9r+vLwvuGbUY=}
+    resolution: {integrity: sha512-BSHWgDSAiKs50o2Re8ppvp3seVHXSRM44cdSsT9FfNEUUZLOGWVCsiWaRPWM1Znn+mqZ1OfVZ3z3DWEzSp7hRA==}
     dev: false
 
   /ast-types-flow/0.0.7:
-    resolution: {integrity: sha1-9wtzXGvKGlycItmCw+Oef+ujva0=}
+    resolution: {integrity: sha512-eBvWn1lvIApYMhzQMsu9ciLfkBY499mFZlNqG+/9WR7PVlroQw0vG30cOQQbaKz3sCEc44TAOu2ykzqXSNnwag==}
     dev: false
 
   /async/3.2.3:
@@ -3215,7 +3217,7 @@ packages:
     dev: false
 
   /asynckit/0.4.0:
-    resolution: {integrity: sha1-x57Zf380y48robyXkLzDZkdLS3k=}
+    resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
 
   /at-least-node/1.0.0:
     resolution: {integrity: sha512-+q/t7Ekv1EDY2l6Gda6LLiX14rU9TV20Wa3ofeQmwPFZbOMo9DXrLbOjFaaclkXKWidIaopwAObQDqwWtGUjqg==}
@@ -3483,7 +3485,7 @@ packages:
     dev: false
 
   /boolbase/1.0.0:
-    resolution: {integrity: sha1-aN/1++YMUes3cl6p4+0xDcwed24=}
+    resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
     dev: false
 
   /brace-expansion/1.1.11:
@@ -8295,20 +8297,20 @@ packages:
     dependencies:
       glob: 7.2.0
 
-  /rollup-plugin-terser/7.0.2_rollup@2.72.1:
+  /rollup-plugin-terser/7.0.2_rollup@2.73.0:
     resolution: {integrity: sha512-w3iIaU4OxcF52UUXiZNsNeuXIMDvFrr+ZXK6bFZ0Q60qyVfq4uLptoS4bbq3paG3x216eQllFZX7zt6TIImguQ==}
     peerDependencies:
       rollup: ^2.0.0
     dependencies:
       '@babel/code-frame': 7.16.7
       jest-worker: 26.6.2
-      rollup: 2.72.1
+      rollup: 2.73.0
       serialize-javascript: 4.0.0
       terser: 5.13.1
     dev: false
 
-  /rollup/2.72.1:
-    resolution: {integrity: sha512-NTc5UGy/NWFGpSqF1lFY8z9Adri6uhyMLI6LvPAXdBKoPRFhIIiBUpt+Qg2awixqO3xvzSijjhnb4+QEZwJmxA==}
+  /rollup/2.73.0:
+    resolution: {integrity: sha512-h/UngC3S4Zt28mB3g0+2YCMegT5yoftnQplwzPqGZcKvlld5e+kT/QRmJiL+qxGyZKOYpgirWGdLyEO1b0dpLQ==}
     engines: {node: '>=10.0.0'}
     hasBin: true
     optionalDependencies:
@@ -9530,9 +9532,9 @@ packages:
       '@babel/core': 7.17.10
       '@babel/preset-env': 7.17.10_@babel+core@7.17.10
       '@babel/runtime': 7.17.9
-      '@rollup/plugin-babel': 5.3.1_ddp4whfhauf2n5cf6yj7gaerwe
-      '@rollup/plugin-node-resolve': 11.2.1_rollup@2.72.1
-      '@rollup/plugin-replace': 2.4.2_rollup@2.72.1
+      '@rollup/plugin-babel': 5.3.1_5ey36jajczjbmcqmomvpimwrdu
+      '@rollup/plugin-node-resolve': 11.2.1_rollup@2.73.0
+      '@rollup/plugin-replace': 2.4.2_rollup@2.73.0
       '@surma/rollup-plugin-off-main-thread': 2.2.3
       ajv: 8.11.0
       common-tags: 1.8.2
@@ -9541,8 +9543,8 @@ packages:
       glob: 7.2.0
       lodash: 4.17.21
       pretty-bytes: 5.6.0
-      rollup: 2.72.1
-      rollup-plugin-terser: 7.0.2_rollup@2.72.1
+      rollup: 2.73.0
+      rollup-plugin-terser: 7.0.2_rollup@2.73.0
       source-map: 0.8.0-beta.0
       stringify-object: 3.3.0
       strip-comments: 2.0.1
