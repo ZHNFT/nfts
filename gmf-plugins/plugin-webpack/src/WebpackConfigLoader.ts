@@ -220,7 +220,7 @@ export class WebpackConfigLoader {
   public static createModule(): Configuration["module"] {
     const { sourcemap } = this.resolveEnv();
 
-    const module: Configuration["module"] = {
+    return {
       parser: {
         javascript: {
           exportsPresence: "error",
@@ -245,8 +245,6 @@ export class WebpackConfigLoader {
         },
       ].filter(Boolean) as RuleSetRule[],
     };
-
-    return module;
   }
 
   private static env: {
