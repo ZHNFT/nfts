@@ -7,5 +7,10 @@
   "devDependencies": {
     "@nfts/eslint-config": "workspace:*",
     "@nfts/project-profiles": "workspace:*"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "passWithNoTests": true
   }
 }

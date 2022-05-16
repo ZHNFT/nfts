@@ -7,8 +7,6 @@ import { existsSync } from "fs";
 const NAME = "CleanPlugin";
 const DESCRIPTION = "Cleanup dist";
 
-const CleanupDistPath = "./dist";
-
 class CleanPlugin implements Plugin {
   name: string = NAME;
   summary: string = DESCRIPTION;
@@ -24,7 +22,7 @@ class CleanPlugin implements Plugin {
 
     const cleanBuildPath = path.resolve(
       process.cwd(),
-      configuration.config.buildPath ?? "./dist"
+      configuration.loadConfig()?.buildPath ?? "./dist"
     );
 
     hooks.build.add(NAME, (build) => {

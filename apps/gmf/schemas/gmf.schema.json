@@ -1,43 +1,24 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://json-schema.org/draft/2020-12/output/schema",
-  "description": "Schema for gmf project",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/leiwenpeng0424/nfts/main/apps/gmf/schemas/gmf.schema.json",
+  "description": "Schema definition for gmf.json, configuration for @nfts/gmf package",
   "type": "object",
   "properties": {
-    "output": { "type": "string", "description": "Specified path where build/bundled files generate" },
-    "bundle": {
-      "type": "object",
-      "properties": {
-        "entry": {
-          "oneOf": [{ "type": "string" }, { "type": "array", "items": { "type": "string" } }]
-        },
-        "output": { "type": "string" },
-        "target": {
-          "oneOf": [
-            { "type": "string", "enum": ["CommonJS", "AMD", "UMD", "ESNext", "System"] },
-            {
-              "type": "array",
-              "uniqueItems": true,
-              "items": {
-                "type": "string",
-                "enum": ["CommonJS", "AMD", "UMD", "ESNext", "System"]
-              }
-            }
-          ]
-        }
-      }
-    },
-    "build": {
-      "type": "object"
-    },
+    "entryFile": { "type": "string" },
+    "buildPath": { "type": "string" },
     "plugins": {
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
-          "pluginName": { "type": "string" }
-        }
+          "pluginName": { "type": "string" },
+          "options": {
+            "type": "object"
+          }
+        },
+        "required": ["pluginName"]
       }
     }
-  }
+  },
+  "required": ["buildPath", "entryFile"]
 }

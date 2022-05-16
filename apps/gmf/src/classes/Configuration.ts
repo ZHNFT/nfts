@@ -4,7 +4,7 @@ import Constants from "../Constants";
 
 export interface IGmfConfig {
   entryFile: string;
-  buildPath: string;
+  buildPath?: string;
   plugins?: {
     pluginName: string;
     options?: Record<string, unknown>;

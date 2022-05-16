@@ -35,4 +35,5 @@ dist
 .pnp.*
 
 # source code
-test
+test/
+dist/
