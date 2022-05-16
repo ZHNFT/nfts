@@ -13,7 +13,6 @@ describe("AsyncHook 测试", function () {
       () =>
         new Promise<void>((resolve) => {
           setTimeout(() => {
-            console.log(3000);
             fn();
             resolve();
           }, 3000);
@@ -25,7 +24,6 @@ describe("AsyncHook 测试", function () {
       () =>
         new Promise<void>((resolve) => {
           setTimeout(() => {
-            console.log(2000);
             fn();
             resolve();
           }, 2000);
@@ -37,7 +35,6 @@ describe("AsyncHook 测试", function () {
       () =>
         new Promise<void>((resolve) => {
           setTimeout(() => {
-            console.log(1000);
             fn();
             resolve();
           }, 1000);
@@ -48,7 +45,6 @@ describe("AsyncHook 测试", function () {
       .resolves.toBe(undefined)
       .then(() => {
         expect(fn).toBeCalledTimes(3);
-        console.log("ended");
       });
   });
 });

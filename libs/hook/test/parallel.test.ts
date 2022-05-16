@@ -6,7 +6,6 @@ const randomSleepFn = (cb: () => void) => {
   return new Promise<void>((resolve) => {
     let timer = setTimeout(() => {
       clearTimeout(timer);
-      timer = undefined;
       resolve(cb());
     }, randomInterval);
   });

@@ -1,18 +1,5 @@
 
 {
-  "compilerOptions": {
-    "module": "Commonjs",
-    "target": "ES2017",
-    "declaration": true,
-    "moduleResolution": "Node",
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "allowJs": false,
-    "types": ["@types/node", "@types/jest"],
-    "noImplicitAny": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "emitDeclarationOnly": false
-  },
-  "exclude": ["**/node_modules/**/*", "**/*.(test|spec).*", "**/template/**/*"]
+  "extends": "./node_modules/@nfts/project-profiles/profiles/tsconfig.base.json",
 }
+

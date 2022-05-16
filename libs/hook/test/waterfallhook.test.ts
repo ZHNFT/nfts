@@ -39,14 +39,10 @@ describe("WaterfallHook测试", () => {
   });
 
   test("waterfall返回正确的参数", () => {
-    return expect(waterfallHook.call(initialTaskArgs))
-      .resolves.toStrictEqual({
-        name: "ray",
-        age: 12,
-        address: "chengdu-shuangliu",
-      })
-      .then((args) => {
-        console.log("test finished");
-      });
+    return expect(waterfallHook.call(initialTaskArgs)).resolves.toStrictEqual({
+      name: "ray",
+      age: 12,
+      address: "chengdu-shuangliu",
+    });
   });
 });
