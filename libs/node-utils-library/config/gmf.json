@@ -1,5 +1,4 @@
 {
   "$schema": "../node_modules/@nfts/gmf/schemas/gmf.schema.json",
-  "buildPath": "dist",
-  "plugins": []
+  "buildPath": "dist"
 }

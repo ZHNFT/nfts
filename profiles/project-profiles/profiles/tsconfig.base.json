@@ -24,7 +24,7 @@
     "lib": ["es2017"]
   },
   "exclude": [
-    "../../../../node_module",
+    "../../../../node_modules",
     "../../../../**/*.{spec,test}.{js,ts,jsx,tsx}",
     "../../../../**/__tests__/**/*.{spec,test}.{js,ts,jsx,tsx}"
   ],
