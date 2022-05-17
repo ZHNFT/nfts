@@ -1,3 +1,5 @@
 {
-  "plugins": []
+  "$schema": "../node_modules/@nfts/gmf/schemas/gmf.schema.json",
+  "entryFile": "./src/index.ts",
+  "buildPath": "./dist"
 }

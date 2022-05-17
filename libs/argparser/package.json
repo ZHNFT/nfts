@@ -6,7 +6,7 @@
   "scripts": {
     "test": "gmf build --test",
     "dev": "gmf build --watch",
-    "build": "gmf build --test",
+    "build": "gmf build --clean --test",
     "tsc": "tsc",
     "tsc:watch": "tsc -w"
   },

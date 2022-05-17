@@ -1,18 +1,32 @@
-import { Plugin, PluginSession, BundleCommandParameters } from '@nfts/gmf';
-import { FlagParameter } from '@nfts/argparser';
-import type { Configuration } from 'webpack';
-import type { Configuration as DevServerConfiguration } from 'webpack-dev-server';
-import path from 'path';
-import fs from 'fs';
-import dotenv from 'dotenv';
-import { WebpackConfigLoader } from './WebpackConfigLoader';
-import { Constants } from './Constants';
-import { WebpackRunner } from './WebpackRunner';
+import { Plugin, PluginSession } from "@nfts/gmf";
+import {
+  FlagParameter,
+  StringParameter,
+  ValueOfParameters,
+} from "@nfts/argparser";
+import { Command } from "@nfts/noddy";
+import type { Configuration } from "webpack";
+import type { Configuration as DevServerConfiguration } from "webpack-dev-server";
+import path from "path";
+import fs from "fs";
+import dotenv from "dotenv";
+import { WebpackConfigLoader } from "./WebpackConfigLoader";
+import { Constants } from "./Constants";
+import { WebpackRunner } from "./WebpackRunner";
 
-const NAME = 'WebpackPlugin';
-const DESCRIPTION = 'Bundle With Webpack';
+const NAME = "WebpackPlugin";
+const DESCRIPTION = "Bundle With Webpack";
 
-class WebpackPlugin implements Plugin {
+type WebpackPluginParameters = {
+  config: StringParameter;
+  sourceMap: FlagParameter;
+};
+
+type WebpackPluginParametersValue = ValueOfParameters<WebpackPluginParameters>;
+
+class WebpackPlugin
+  implements Plugin<WebpackPluginParametersValue>, WebpackPluginParameters
+{
   name: string = NAME;
   summary: string = DESCRIPTION;
 
@@ -22,17 +36,19 @@ class WebpackPlugin implements Plugin {
   private readonly webpackRunner: WebpackRunner = new WebpackRunner();
 
   sourceMap!: FlagParameter;
+  config!: StringParameter;
 
-  apply({ hooks, configuration: gmfConfiguration, command }: PluginSession): void | Promise<void> {
-    this.sourceMap = command.flagParameter({
-      name: '--sourcemap',
-      shortName: '-s',
-      summary: 'Generate source-map'
-    });
-
-    hooks.bundle.add(NAME, bundle => {
-      this.setupEnv(bundle.cmdParams);
-
+  apply({
+    hooks,
+    configuration: gmfConfiguration,
+    command,
+  }: PluginSession<WebpackPluginParametersValue>): void | Promise<void> {
+    hooks.bundle.add(NAME, (bundle) => {
+      this.onParameterDefinition(command);
+      this.setupEnvs({
+        watch: bundle.cmdParams.watch,
+        config: bundle.cmdParams.config,
+      });
       bundle.hooks.configure.add(NAME, async (): Promise<Configuration> => {
         let configPath = WebpackPlugin.resolveConfigPath(),
           devConfigPath = WebpackPlugin.resolveDevServerConfigPath(),
@@ -43,13 +59,17 @@ class WebpackPlugin implements Plugin {
          * 创建一个默认的 webpack 配置；
          * 默认配置以一个 React 应用为蓝本而创建；
          */
-        const defaultConfig = WebpackConfigLoader.createBasicWebpackConfiguration(gmfConfiguration.config);
+        const defaultConfig =
+          WebpackConfigLoader.createBasicWebpackConfiguration(
+            gmfConfiguration.config
+          );
 
         if (configPath) {
           configPath = path.resolve(process.cwd(), configPath);
-          const configFromFile = WebpackConfigLoader.loadConfigFromFile(configPath);
+          const configFromFile =
+            WebpackConfigLoader.loadConfigFromFile(configPath);
 
-          if (typeof configFromFile === 'function') {
+          if (typeof configFromFile === "function") {
             configuration = configFromFile(process.env.NODE_ENV, defaultConfig);
           }
         } else {
@@ -58,50 +78,64 @@ class WebpackPlugin implements Plugin {
 
         if (devConfigPath) {
           devConfigPath = path.resolve(process.cwd(), devConfigPath);
-          const configFromFile = WebpackConfigLoader.loadDevServerConfigurationFromFile(devConfigPath);
+          const configFromFile =
+            WebpackConfigLoader.loadDevServerConfigurationFromFile(
+              devConfigPath
+            );
 
-          if (typeof configFromFile === 'function') {
+          if (typeof configFromFile === "function") {
             devConfiguration = configFromFile(defaultConfig?.devServer);
           }
         } else {
-          devConfiguration = await WebpackConfigLoader.createBasicDevServerConfiguration();
+          devConfiguration =
+            await WebpackConfigLoader.createBasicDevServerConfiguration();
         }
 
         return Object.assign(configuration, { devServer: devConfiguration });
       });
 
-      bundle.hooks.compile.add(NAME, async compile => {
-        const webpackConfig = (await bundle.hooks.configure.call(undefined)) as Configuration;
+      bundle.hooks.compile.add(NAME, async (compile) => {
+        const webpackConfig = (await bundle.hooks.configure.call(
+          undefined
+        )) as Configuration;
         compile.hooks.run.add(NAME, () => {
-          this.webpackRunner.createCompilerAndRun(webpackConfig, { watch: bundle.cmdParams.watch });
+          this.webpackRunner.createCompilerAndRun(webpackConfig, {
+            watch: bundle.cmdParams.watch,
+          });
         });
       });
     });
   }
 
-  private setupEnv = ({ watch, config }: BundleCommandParameters) => {
+  private setupEnvs = ({
+    watch,
+    config,
+  }: {
+    watch?: boolean;
+    config?: string;
+  }) => {
     const isDev = watch === true;
     // todo Add test env support
 
     // 可能在使用的一些.env文件
     const envFiles = [
       `.env`,
-      `.env.${isDev ? 'development' : 'production'}`,
-      `.env.${isDev ? 'development' : 'production'}.local`
+      `.env.${isDev ? "development" : "production"}`,
+      `.env.${isDev ? "development" : "production"}.local`,
     ]
-      .map(envFile => path.resolve(process.cwd(), envFile))
+      .map((envFile) => path.resolve(process.cwd(), envFile))
       .filter(fs.existsSync);
 
-    envFiles.forEach(envFile => {
+    envFiles.forEach((envFile) => {
       dotenv.config({
-        path: envFile
+        path: envFile,
       });
     });
 
     const extraEnvFromCommandLine: Record<string, string | undefined> = {
       WEBPACK_CONFIG: config,
-      SOURCEMAP: this.sourceMap.value ? 'true' : undefined,
-      NODE_ENV: isDev ? 'development' : 'production'
+      SOURCEMAP: this.sourceMap.value ? "true" : undefined,
+      NODE_ENV: isDev ? "development" : "production",
     };
 
     Object.keys(extraEnvFromCommandLine).map((key: string) => {
@@ -116,12 +150,20 @@ class WebpackPlugin implements Plugin {
     const maybeConfigPath = Constants.maybeWebpackConfig;
     const defaultConfigPath = Constants.webpackConfig;
 
-    const maybeConfigPathExist = fs.existsSync(path.resolve(process.cwd(), maybeConfigPath));
-    const defaultConfigPathExist = fs.existsSync(path.resolve(process.cwd(), defaultConfigPath));
+    const maybeConfigPathExist = fs.existsSync(
+      path.resolve(process.cwd(), maybeConfigPath)
+    );
+    const defaultConfigPathExist = fs.existsSync(
+      path.resolve(process.cwd(), defaultConfigPath)
+    );
 
     return (
       configPathDefinedInEnv ??
-      (defaultConfigPathExist ? defaultConfigPath : maybeConfigPathExist ? maybeConfigPath : undefined)
+      (defaultConfigPathExist
+        ? defaultConfigPath
+        : maybeConfigPathExist
+        ? maybeConfigPath
+        : undefined)
     );
   }
 
@@ -130,13 +172,35 @@ class WebpackPlugin implements Plugin {
     const maybeConfigPath = Constants.maybeWebpackDevServerConfig;
     const defaultConfigPath = Constants.webpackDevServerConfig;
 
-    const maybeConfigPathExist = fs.existsSync(path.resolve(process.cwd(), maybeConfigPath));
-    const defaultConfigPathExist = fs.existsSync(path.resolve(process.cwd(), defaultConfigPath));
+    const maybeConfigPathExist = fs.existsSync(
+      path.resolve(process.cwd(), maybeConfigPath)
+    );
+    const defaultConfigPathExist = fs.existsSync(
+      path.resolve(process.cwd(), defaultConfigPath)
+    );
 
     return (
       configPathDefinedInEnv ??
-      (defaultConfigPathExist ? defaultConfigPath : maybeConfigPathExist ? maybeConfigPath : undefined)
+      (defaultConfigPathExist
+        ? defaultConfigPath
+        : maybeConfigPathExist
+        ? maybeConfigPath
+        : undefined)
     );
+  }
+
+  onParameterDefinition(command: Command) {
+    this.sourceMap = command.flagParameter({
+      name: "--sourcemap",
+      shortName: "-s",
+      summary: "Generate source-map",
+    });
+
+    this.config = command.stringParameter({
+      name: "--config",
+      shortName: "-c",
+      summary: "Specified webpack.config.js file path",
+    });
   }
 }
 

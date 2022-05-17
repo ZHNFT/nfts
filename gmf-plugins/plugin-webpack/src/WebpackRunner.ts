@@ -1,6 +1,6 @@
-import Webpack from 'webpack';
-import type { Configuration, Compiler } from 'webpack';
-import { WebpackDevServerRunner } from './WebpackDevServerRunner';
+import Webpack from "webpack";
+import type { Configuration, Compiler } from "webpack";
+import { WebpackDevServerRunner } from "./WebpackDevServerRunner";
 
 export interface WebpackRunOptions {
   watch?: boolean;
@@ -13,21 +13,28 @@ export class WebpackRunner {
   /*
    * 创建webpack compiler 实例
    * */
-  public createCompilerAndRun(config: Configuration, opts: WebpackRunOptions): void {
+  public createCompilerAndRun(
+    config: Configuration,
+    opts: WebpackRunOptions
+  ): void {
     this.config = config;
     this.compiler = Webpack(config);
 
     if (opts.watch) {
       const devServerConfig = this.config.devServer;
-      const watchServer = new WebpackDevServerRunner().run({ ...devServerConfig }, this.compiler);
-      watchServer.startCallback(err => {
+      const watchServer = new WebpackDevServerRunner().run(
+        { ...devServerConfig },
+        this.compiler
+      );
+      watchServer.startCallback((err) => {
         if (err) {
           watchServer.close();
         }
-        const localUrl = `${devServerConfig?.https ? 'https' : 'http'}://${devServerConfig?.host || 'localhost'}:${
-          devServerConfig?.port || '8080'
-        }`;
-        console.log(`Successfully started server on ${localUrl}`);
+        const localUrl = `${devServerConfig?.https ? "https" : "http"}://${
+          devServerConfig?.host || "localhost"
+        }:${devServerConfig?.port || "8080"}`;
+        console.log(`    Successfully started server on ${localUrl}\n`);
+        console.log(`    Please enjoy!\n`);
       });
       return;
     }
@@ -55,22 +62,27 @@ export class WebpackRunner {
     }
 
     if (!warningsCount || warningsCount > 0) {
-      const warningsFormattedMessage = warnings?.map(warn => {
+      const warningsFormattedMessage = warnings?.map((warn) => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const { file, details, message } = warn;
-        return `${file || ''} \n${(details as string) || ''}\n ${message || ''}`;
+        return `${file || ""} \n${(details as string) || ""}\n ${
+          message || ""
+        }`;
       });
-      warningsFormattedMessage && console.log(warningsFormattedMessage.join('\n'));
+      warningsFormattedMessage &&
+        console.log(warningsFormattedMessage.join("\n"));
     }
 
     if (!errorsCount || errorsCount > 0) {
-      const errorsFormattedMessage = errors?.map(err => {
+      const errorsFormattedMessage = errors?.map((err) => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const { file, details, message } = err;
-        return `${file || ''} \n${(details as string) || ''}\n ${message || ''}`;
+        return `${file || ""} \n${(details as string) || ""}\n ${
+          message || ""
+        }`;
       });
 
-      errorsFormattedMessage && console.log(errorsFormattedMessage.join('\n'));
+      errorsFormattedMessage && console.log(errorsFormattedMessage.join("\n"));
     }
   }
 }
