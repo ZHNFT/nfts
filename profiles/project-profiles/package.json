@@ -1,8 +1,8 @@
 {
-  "name": "@nfts/project-profiles",
-  "main": ".",
-  "version": "0.0.1",
-  "author": {
-    "name": "ray"
-  }
+	"name": "@nfts/project-profiles",
+	"main": ".",
+	"version": "0.0.1",
+	"author": {
+		"name": "ray"
+	}
 }

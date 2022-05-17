@@ -1,18 +1,24 @@
 {
-  "name": "@nfts/root",
-  "version": "0.0.0",
-  "private": true,
-  "publishConfig": {
-    "access": "restricted"
-  },
-  "author": {
-    "name": "Ray"
-  },
-  "scripts": {
-    "tsc:all": "pnpm --filter \"@nfts/*\" tsc",
-    "build:all": "pnpm --filter \"@nfts/*\" build",
-    "test:all": "pnpm --filter \"@nfts/*\" test",
-    "dev:all": "pnpm --filter \"@nfts/*\" dev",
-    "bundle:all": "pnpm --filter \"@nfts/*\" bundle"
-  }
+	"name": "@nfts/root",
+	"version": "0.0.0",
+	"private": true,
+	"workspaces": [
+		"libs/*",
+		"apps/*",
+		"profiles/*",
+		"gmf-plugins/*"
+	],
+	"publishConfig": {
+		"access": "restricted"
+	},
+	"author": {
+		"name": "Ray"
+	},
+	"scripts": {
+		"tsc:all": "pnpm --filter \"@nfts/*\" tsc",
+		"build:all": "pnpm --filter \"@nfts/*\" build",
+		"test:all": "pnpm --filter \"@nfts/*\" test",
+		"dev:all": "pnpm --filter \"@nfts/*\" dev",
+		"bundle:all": "pnpm --filter \"@nfts/*\" bundle"
+	}
 }
