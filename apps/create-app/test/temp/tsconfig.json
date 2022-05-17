@@ -1,0 +1,5 @@
+
+{
+  "extends": "./node_modules/@nfts/project-profiles/profiles/tsconfig.base.json",
+}
+

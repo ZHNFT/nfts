@@ -72,8 +72,8 @@ class TypescriptPlugin
     });
   }
 
-  onDefineParameters(Command: Command) {
-    Command.stringParameter({
+  onDefineParameters(command: Command) {
+    this.project = command.stringParameter({
       name: "--project",
       shortName: undefined,
       summary:
