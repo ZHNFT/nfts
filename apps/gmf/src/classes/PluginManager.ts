@@ -8,7 +8,7 @@ import { getScopedLogger } from "../utils/getScopeLogger";
 
 //  plugins
 import jestPlugin from "../plugins/jest/JestPlugin";
-import typescriptPlugin from "../plugins/typescript/TypescriptPlugin";
+import typescriptPlugin from "../plugins/typescript";
 import cleanPlugin from "../plugins/cleanup/CleanPlugin";
 
 export class PluginManager {
