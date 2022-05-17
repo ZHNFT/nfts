@@ -1,7 +1,7 @@
-import { spawnSync } from "child_process";
+import childProcess from "child_process";
 import { resolve } from "path";
 import { writeFile } from "fs/promises";
-import { ICreationParameters, Platforms } from ".";
+import { TCreationParameters, Platforms } from ".";
 import { Execution } from "@nfts/node-utils-library";
 import type { Config } from "prettier";
 
@@ -16,7 +16,7 @@ export class Generator {
   private static fileEmitTasks: Execution.TaskFunc<void, void>[];
 
   public static async run(
-    opts: ICreationParameters,
+    opts: TCreationParameters,
     cwd: string = process.cwd()
   ) {
     // 重置所有文件写入的 TASK
@@ -45,6 +45,7 @@ export class Generator {
     this.makeTemplateFiles(targetPlatform, cwd);
     // 开始写入文件
     await Execution.parallel(this.fileEmitTasks, undefined);
+    this.prettierCode();
     console.log("文件写入结束");
   }
 
@@ -53,16 +54,12 @@ export class Generator {
    * */
   public static getCurrentUserInfo(): TUserInfo {
     try {
-      const name = spawnSync("git", [
-        "config",
-        "--global",
-        "user.name",
-      ]).stdout.toString();
-      const email = spawnSync("git", [
-        "config",
-        "--global",
-        "user.email",
-      ]).stdout.toString();
+      const name = childProcess
+        .spawnSync("git", ["config", "--global", "user.name"])
+        .stdout.toString();
+      const email = childProcess
+        .spawnSync("git", ["config", "--global", "user.email"])
+        .stdout.toString();
       return {
         name: name.replace("\n", ""),
         email: email.replace("\n", ""),
@@ -77,6 +74,10 @@ export class Generator {
 
   public static async installDeps(): Promise<void> {
     //
+  }
+
+  public static prettierCode(): void {
+    childProcess.spawnSync("npx", ["prettier", "-w"]);
   }
 
   // 生成 package.json 文件
@@ -114,6 +115,11 @@ export class Generator {
         "ts-jest": "~27.1.2",
       },
       prettier: this.getPrettierConfig(),
+      jest: {
+        preset: "ts-jest",
+        testEnvironment: "node",
+        passWithNoTests: true,
+      },
     };
 
     this.fileEmitTasks.push(() =>
@@ -162,21 +168,21 @@ node_modules/
 # Lock files
 yarn.lock
 pnpm-lock.yaml
-package-lock.json`,
+package-lock.json
+
+# log
+*.log
+log/
+`,
+
       // .npmignore
       ".npmignore": `
 *
+
 !/dist/**
 !/bin/**
 !/schemas/**`,
-      // jest.config.js
-      "jest.config.js": `
-/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
-module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
-  passWithNoTests: true
-};`,
+      // tsconfig
       "tsconfig.json": `
 {
   "extends": "./node_modules/@nfts/project-profiles/profiles/tsconfig.base.json",

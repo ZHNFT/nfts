@@ -1,29 +1,39 @@
-import { Parser } from '@nfts/argparser';
-import { Command } from './Command';
-import { Debug } from '../debug/Debug';
-import { CommandLineParameterManager } from './CommandLineParameter';
+import { Parser } from "@nfts/argparser";
+import { Command } from "./Command";
+// import { Debug } from "../debug/Debug";
+import { CommandLineParameterManager } from "./CommandLineParameter";
 
 export interface ParsedCommandLineOption {
   _: string[];
   [key: string]: string | string[];
 }
 
+export interface CommandLine {
+  onExecute?(args?: unknown): Promise<void>;
+}
+
 export abstract class CommandLine extends CommandLineParameterManager {
-  private readonly _debug: Debug;
+  // private readonly _debug: Debug;
   private readonly _parser: Parser;
 
   private readonly _commands: Command[] = [];
 
-  protected constructor({ toolName, toolDescription }: { toolName: string; toolDescription: string }) {
+  protected constructor({
+    toolName,
+    toolDescription,
+  }: {
+    toolName: string;
+    toolDescription: string;
+  }) {
     const parser = new Parser({
       name: toolName,
-      description: toolDescription
+      description: toolDescription,
     });
 
     super({ parser });
 
     this._parser = parser;
-    this._debug = Debug.getScopedLogger(toolName);
+    // this._debug = Debug.getScopedLogger(toolName);
   }
 
   public addCommand(command: Command) {
@@ -57,7 +67,7 @@ export abstract class CommandLine extends CommandLineParameterManager {
     if (command) {
       await command.onExecute(args);
     } else {
-      await this.onExecute(args);
+      await this.onExecute?.(args);
     }
   }
 
@@ -65,10 +75,4 @@ export abstract class CommandLine extends CommandLineParameterManager {
     const result = this._parser.parse() as ParsedCommandLineOption;
     return Object.freeze(result);
   }
-
-  /**
-   * 执行逻辑
-   * @param args
-   */
-  abstract onExecute(args?: unknown): Promise<void>;
 }

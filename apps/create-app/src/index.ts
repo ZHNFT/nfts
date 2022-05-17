@@ -23,7 +23,7 @@ export type TCreationCommandLineParameters = {
   platform: ArrayParameter;
 };
 
-export type ICreationParameters =
+export type TCreationParameters =
   ValueOfParameters<TCreationCommandLineParameters>;
 
 class Creation extends CommandLine implements TCreationCommandLineParameters {
@@ -33,7 +33,7 @@ class Creation extends CommandLine implements TCreationCommandLineParameters {
   constructor() {
     super({
       toolName: "create-app",
-      toolDescription: "Web project templates",
+      toolDescription: "Project templates",
     });
 
     this.ts = this.flagParameter({
