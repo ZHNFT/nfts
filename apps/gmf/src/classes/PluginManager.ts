@@ -1,14 +1,15 @@
 import { Command } from "@nfts/noddy";
 import { req } from "@nfts/node-utils-library";
 
-import jestPlugin from "../plugins/jest/JestPlugin";
-import typescriptPlugin from "../plugins/typescript/TypescriptPlugin";
-import cleanPlugin from "../plugins/cleanup/CleanPlugin";
-
 import { Configuration } from "./Configuration";
 import { Plugin } from "./Plugin";
 import type { IStageHooks, IStages } from "../stages";
 import { getScopedLogger } from "../utils/getScopeLogger";
+
+//  plugins
+import jestPlugin from "../plugins/jest/JestPlugin";
+import typescriptPlugin from "../plugins/typescript/TypescriptPlugin";
+import cleanPlugin from "../plugins/cleanup/CleanPlugin";
 
 export class PluginManager {
   private readonly _command: Command;

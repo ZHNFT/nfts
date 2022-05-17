@@ -9,6 +9,7 @@ export interface ParsedCommandLineOption {
 }
 
 export interface CommandLine {
+  // onExecute?: (args?: unknown) => Promise<void>;
   onExecute?(args?: unknown): Promise<void>;
 }
 

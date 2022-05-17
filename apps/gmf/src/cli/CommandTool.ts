@@ -31,17 +31,9 @@ export default class GmfTool extends CommandLine {
     this.addCommand(bundle);
   }
 
-  // private _loadConfigFromCommandLine() {
-  //   const { _: commandName, ...params } = this.parseCommandLine();
-  // }
-
   public exec(): Promise<void> {
     // this._loadConfigFromCommandLine();
     this._pluginManager.initPluginsFromConfiguration();
     return this.execute();
-  }
-
-  onExecute(): Promise<void> {
-    throw new Error("Method not implemented.");
   }
 }

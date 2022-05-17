@@ -44,10 +44,6 @@ class Tool extends CommandLine {
 
     this.addCommand(new Reader());
   }
-
-  onExecute(args?: unknown): Promise<void> {
-    return Promise.resolve(undefined);
-  }
 }
 
 describe("Command Tool Test Case", function () {

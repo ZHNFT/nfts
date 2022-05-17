@@ -1,8 +1,4 @@
 {
   "$schema": "../schemas/gmf.schema.json",
-  "output": "dist",
-  "bundle": {
-    "entry": "../src/exec.ts",
-    "target": "CommonJS"
-  }
+  "buildPath": "./dist"
 }

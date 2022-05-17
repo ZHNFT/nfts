@@ -1,4 +1,4 @@
-import CommandTool from './CommandTool';
+import CommandTool from "./CommandTool";
 
 export default class CLI extends CommandTool {
   constructor() {
