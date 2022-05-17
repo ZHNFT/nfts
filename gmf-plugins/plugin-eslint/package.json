@@ -1,0 +1,23 @@
+{
+  "name": "@nfts/plugin-eslint",
+  "version": "0.0.1",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "dependencies": {
+    "@nfts/gmf": "workspace:*",
+    "@nfts/node-utils-library": "workspace:*",
+    "eslint": "^8.15.0"
+  },
+  "scripts": {
+    "build": "gmf build --clean"
+  },
+  "devDependencies": {
+    "@nfts/eslint-config": "workspace:*",
+    "@nfts/project-profiles": "workspace:*"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "passWithNoTests": true
+  }
+}

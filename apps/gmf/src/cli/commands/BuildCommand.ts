@@ -1,9 +1,5 @@
 import { Command } from "@nfts/noddy";
-import {
-  FlagParameter,
-  StringParameter,
-  ValueOfParameters,
-} from "@nfts/argparser";
+import { FlagParameter, ValueOfParameters } from "@nfts/argparser";
 import { BuildStage } from "../../stages";
 
 const NAME = "build";
@@ -31,7 +27,6 @@ export class BuildCommand
   clean!: FlagParameter;
   test!: FlagParameter;
   watch!: FlagParameter;
-  tsconfig!: StringParameter;
 
   constructor({ stage }: BuildCommandInitOption) {
     super({

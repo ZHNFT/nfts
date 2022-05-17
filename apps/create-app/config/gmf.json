@@ -1,4 +1,10 @@
 {
   "$schema": "../node_modules/@nfts/gmf/schemas/gmf.schema.json",
-  "buildPath": "./dist"
+  "buildPath": "./dist",
+  "entryFile": "./src/index.ts",
+  "plugins": [
+    {
+      "pluginName": "@nfts/plugin-eslint"
+    }
+  ]
 }
