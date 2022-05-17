@@ -1,29 +1,31 @@
-import { Command } from '@nfts/noddy';
-import { FlagParameter, StringParameter } from '@nfts/argparser';
-import { BuildStage } from '../../stages';
+import { Command } from "@nfts/noddy";
+import {
+  FlagParameter,
+  StringParameter,
+  ValueOfParameters,
+} from "@nfts/argparser";
+import { BuildStage } from "../../stages";
 
-const NAME = 'build';
-const DESCRIPTION = 'Run build process';
+const NAME = "build";
+const DESCRIPTION = "Run build process";
 
 export interface BuildCommandInitOption {
   stage: BuildStage;
 }
 
-export interface BuildCommandLineParameters {
+export type BuildCommandLineParameters = {
   readonly clean: FlagParameter;
   readonly test: FlagParameter;
   readonly watch: FlagParameter;
-  readonly tsconfig: StringParameter;
-}
+};
 
-export interface BuildCommandLineParametersValue {
-  clean?: boolean;
-  test?: boolean;
-  watch?: boolean;
-  tsconfig?: string;
-}
+export type BuildCommandLineParametersValue =
+  ValueOfParameters<BuildCommandLineParameters>;
 
-export class BuildCommand extends Command implements BuildCommandLineParameters {
+export class BuildCommand
+  extends Command
+  implements BuildCommandLineParameters
+{
   private readonly stage: BuildStage;
 
   clean!: FlagParameter;
@@ -34,7 +36,7 @@ export class BuildCommand extends Command implements BuildCommandLineParameters 
   constructor({ stage }: BuildCommandInitOption) {
     super({
       commandName: NAME,
-      commandDescription: DESCRIPTION
+      commandDescription: DESCRIPTION,
     });
 
     this.stage = stage;
@@ -42,23 +44,18 @@ export class BuildCommand extends Command implements BuildCommandLineParameters 
 
   onDefineParameters(): void {
     this.clean = this.flagParameter({
-      name: '--clean',
-      summary: 'Delete the outputs of all projects.'
+      name: "--clean",
+      summary: "Delete the outputs of all projects.",
     });
 
     this.test = this.flagParameter({
-      name: '--test',
-      summary: 'Run all test case, after build.'
+      name: "--test",
+      summary: "Run all test case, after build.",
     });
 
     this.watch = this.flagParameter({
-      name: '--watch',
-      summary: 'Watch input files.'
-    });
-
-    this.tsconfig = this.stringParameter({
-      name: '--tsconfig',
-      summary: `Compile the project given the path to its configuration file, or to a folder with a 'tsconfig.json'.`
+      name: "--watch",
+      summary: "Watch input files.",
     });
   }
 
@@ -67,7 +64,6 @@ export class BuildCommand extends Command implements BuildCommandLineParameters 
       clean: this.clean.value,
       test: this.test.value,
       watch: this.watch.value,
-      tsconfig: this.tsconfig.value
     };
 
     await this.stage.executeAsync(parameters);

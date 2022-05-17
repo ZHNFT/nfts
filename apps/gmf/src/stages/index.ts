@@ -10,12 +10,18 @@ export interface IStages {
   bundle: BundleStage;
 }
 
-export interface IStageHooks {
+export interface IStageHooks<PluginOptions = unknown> {
   build: AsyncHook<
-    StageCommonContext<BuildCommandLineParametersValue, BuildStageHooks>
+    StageCommonContext<
+      BuildCommandLineParametersValue & PluginOptions,
+      BuildStageHooks
+    >
   >;
   bundle: AsyncHook<
-    StageCommonContext<BundleCommandLineParametersValue, BundleStageHooks>
+    StageCommonContext<
+      BundleCommandLineParametersValue & PluginOptions,
+      BundleStageHooks
+    >
   >;
 }
 

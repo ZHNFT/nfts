@@ -1,5 +1,9 @@
 import { Command } from "@nfts/noddy";
-import { FlagParameter, StringParameter } from "@nfts/argparser";
+import {
+  FlagParameter,
+  StringParameter,
+  ValueOfParameters,
+} from "@nfts/argparser";
 import { BundleStage } from "../../stages";
 
 const NAME = "bundle";
@@ -9,17 +13,14 @@ export interface BundleCommandInitOption {
   stage: BundleStage;
 }
 
-export interface BundleCommandLineParameters {
+export type BundleCommandLineParameters = {
   clean: FlagParameter;
   watch: FlagParameter;
-  config: StringParameter;
-}
+  test: FlagParameter;
+};
 
-export interface BundleCommandLineParametersValue {
-  clean?: boolean;
-  watch?: boolean;
-  config?: string;
-}
+export type BundleCommandLineParametersValue =
+  ValueOfParameters<BundleCommandLineParameters>;
 
 export class BundleCommand
   extends Command
@@ -29,7 +30,7 @@ export class BundleCommand
 
   clean!: FlagParameter;
   watch!: FlagParameter;
-  config!: StringParameter;
+  test!: FlagParameter;
 
   constructor({ stage }: BundleCommandInitOption) {
     super({
@@ -50,9 +51,9 @@ export class BundleCommand
       summary: "Watch input files.",
     });
 
-    this.config = this.stringParameter({
-      name: "--profiles",
-      summary: "Specified webpack configuration file path",
+    this.test = this.flagParameter({
+      name: "--test",
+      summary: "Run all test case, after build.",
     });
   }
 
@@ -60,7 +61,7 @@ export class BundleCommand
     const parameters: BundleCommandLineParametersValue = {
       clean: this.clean.value,
       watch: this.watch.value,
-      config: this.config.value,
+      test: this.test.value,
     };
 
     await this.stage.executeAsync(parameters);

@@ -1,8 +1,8 @@
-import { runCLI } from '@jest/core';
-import { Plugin, PluginSession } from '../../classes/Plugin';
+import { runCLI } from "@jest/core";
+import { Plugin, PluginSession } from "../../classes/Plugin";
 
-const NAME = 'JestPlugin';
-const DESCRIPTION = 'Jest Runner Plugin For gmf';
+const NAME = "JestPlugin";
+const DESCRIPTION = "Jest Runner Plugin For gmf";
 
 export interface IJestPluginOpts {
   fake?: boolean;
@@ -16,15 +16,15 @@ class JestPlugin implements Plugin {
   readonly summary = DESCRIPTION;
 
   apply(ctx: PluginSession): void | Promise<void> {
-    ctx.hooks.build.add(NAME, build => {
-      build.hooks.compile.add(NAME, compile => {
+    ctx.hooks.build.add(NAME, (build) => {
+      build.hooks.compile.add(NAME, (compile) => {
         compile.hooks.run.add(NAME, async () => {
           if (build.cmdParams.test) {
             await runCLI(
               {
-                testRegex: ['.*/(__tests?__|tests?)/.+.(test|spec).[jt]sx?'],
+                testRegex: [".*/(__tests?__|tests?)/.+.(test|spec).[jt]sx?"],
                 _: [],
-                $0: ''
+                $0: "",
               },
               [process.cwd()]
             );

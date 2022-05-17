@@ -21,9 +21,9 @@ export class PluginManager {
     this._stages = stages;
     this._command = command;
 
-    this.applyPlugin(typescriptPlugin);
-    this.applyPlugin(jestPlugin);
-    this.applyPlugin(cleanPlugin);
+    this.applyPlugin(typescriptPlugin as Plugin);
+    this.applyPlugin(jestPlugin as Plugin);
+    this.applyPlugin(cleanPlugin as Plugin);
   }
 
   public initPluginsFromConfiguration() {

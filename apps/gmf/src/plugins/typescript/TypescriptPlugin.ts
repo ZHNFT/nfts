@@ -1,33 +1,38 @@
-import { Measure } from "@nfts/noddy";
+import { Measure, Command } from "@nfts/noddy";
+import { StringParameter, ValueOfParameters } from "@nfts/argparser";
 import { chalk } from "@nfts/node-utils-library";
 import { TypescriptRunner } from "./TypescriptRunner";
 import { Plugin, PluginSession } from "../../classes/Plugin";
 
-export interface TypescriptPluginOptions {
-  // 开启 WatchMode；
-  watch?: boolean;
-  // 输出所有构建信息；
-  verbose?: boolean;
-  // tsconfig.json 文件相对路径
-  tsconfigPath: string;
-}
-
 const NAME = "TypescriptPlugin";
 const DESCRIPTION = "Default compiler for gmf project";
 
-export interface TypescriptPluginOptions {
-  NO_OPTIONS_RIGHT_NOW: unknown;
-}
+type TypescriptPluginParameters = {
+  readonly project: StringParameter;
+};
 
-class TypescriptPlugin implements Plugin {
+type TypescriptPluginParametersValue =
+  ValueOfParameters<TypescriptPluginParameters>;
+
+class TypescriptPlugin
+  implements
+    Plugin<TypescriptPluginParametersValue>,
+    TypescriptPluginParameters
+{
   readonly name = NAME;
   readonly summary = DESCRIPTION;
 
   readonly typescriptVersion!: string;
 
-  apply({ hooks, getScopedLogger }: PluginSession): void {
-    const logger = getScopedLogger(NAME);
+  project!: StringParameter;
 
+  apply({
+    hooks,
+    getScopedLogger,
+    command,
+  }: PluginSession<TypescriptPluginParametersValue>): void {
+    const logger = getScopedLogger(NAME);
+    this.onDefineParameters(command);
     hooks.build.add(NAME, (build) => {
       build.hooks.compile.add(NAME, (compile) => {
         compile.hooks.run.add(NAME, async () => {
@@ -46,7 +51,10 @@ class TypescriptPlugin implements Plugin {
           await Measure.taskAsync(
             async () =>
               await tsRunner._runBuild(
-                { commandLineParameters: compile.cmdParams },
+                {
+                  watch: compile.cmdParams.watch,
+                  tsconfig: this.project.value,
+                },
                 function onEmitCallback() {
                   // After emit
                 }
@@ -61,6 +69,15 @@ class TypescriptPlugin implements Plugin {
           );
         });
       });
+    });
+  }
+
+  onDefineParameters(Command: Command) {
+    Command.stringParameter({
+      name: "--project",
+      shortName: undefined,
+      summary:
+        "Compile the project given the path to its configuration file, or to a folder with a 'tsconfig.json'.",
     });
   }
 }

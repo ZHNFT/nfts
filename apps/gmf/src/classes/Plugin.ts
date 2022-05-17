@@ -1,10 +1,10 @@
-import { Debug, Command } from '@nfts/noddy';
-import { IStageHooks } from '../stages';
-import { Configuration } from './Configuration';
+import { Debug, Command } from "@nfts/noddy";
+import { IStageHooks } from "../stages";
+import { Configuration } from "./Configuration";
 
-export interface PluginSession {
+export interface PluginSession<PluginOptions = unknown> {
   command: Command;
-  hooks: IStageHooks;
+  hooks: IStageHooks<PluginOptions>;
   configuration: Configuration;
   getScopedLogger: (scopeName: string) => Debug;
 }
@@ -12,5 +12,8 @@ export interface PluginSession {
 export abstract class Plugin<PluginOptions = unknown> {
   abstract readonly name: string;
   abstract readonly summary: string;
-  abstract apply(ctx: PluginSession, options: PluginOptions): void;
+  abstract apply(
+    session: PluginSession<PluginOptions>,
+    options: PluginOptions
+  ): void;
 }

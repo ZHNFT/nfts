@@ -1,13 +1,13 @@
-import ts from 'typescript';
-import fs from 'fs';
-import path from 'path';
-import { Fs, Execution } from '@nfts/node-utils-library';
-import { Debug } from '@nfts/noddy';
-import { dirname } from 'path';
-import { BuildCommandLineParametersValue } from '../../cli/commands/BuildCommand';
-import { TypescriptConfigHost } from './TypescriptConfigHost';
-import { TypescriptWatchCompilerHost } from './TypescriptWatchCompilerHost';
-import Constants from '../../Constants';
+import ts from "typescript";
+import fs from "fs";
+import path from "path";
+import { Fs, Execution } from "@nfts/node-utils-library";
+import { Debug } from "@nfts/noddy";
+import { dirname } from "path";
+import { BuildCommandLineParametersValue } from "../../cli/commands/BuildCommand";
+import { TypescriptConfigHost } from "./TypescriptConfigHost";
+import { TypescriptWatchCompilerHost } from "./TypescriptWatchCompilerHost";
+import Constants from "../../Constants";
 
 export type VoidFunction = () => void;
 
@@ -23,8 +23,8 @@ export class TypescriptRunner {
   private _loadTsconfig(tsconfigPath: string): {
     tsconfig: ts.ParsedCommandLine;
   } {
-    const configFile = ts.readConfigFile(tsconfigPath, fileName => {
-      return fs.readFileSync(fileName).toString('utf-8');
+    const configFile = ts.readConfigFile(tsconfigPath, (fileName) => {
+      return fs.readFileSync(fileName).toString("utf-8");
     });
 
     const tsconfig = ts.parseJsonConfigFileContent(
@@ -36,35 +36,41 @@ export class TypescriptRunner {
     );
 
     return {
-      tsconfig
+      tsconfig,
     };
   }
 
   public async _runBuild(
-    { commandLineParameters }: { commandLineParameters: BuildCommandLineParametersValue },
+    buildOptions: { tsconfig?: string; watch?: boolean },
     onEmitCallback?: VoidFunction
   ) {
-    if (commandLineParameters.tsconfig) {
-      const configStat = fs.statSync(commandLineParameters.tsconfig);
+    if (buildOptions.tsconfig) {
+      const configStat = fs.statSync(buildOptions.tsconfig);
       if (configStat.isDirectory()) {
-        commandLineParameters.tsconfig = path.resolve(commandLineParameters.tsconfig, Constants.TSCONFIG_PATH);
+        buildOptions.tsconfig = path.resolve(
+          buildOptions.tsconfig,
+          Constants.TSCONFIG_PATH
+        );
       } else {
         if (!configStat.isFile()) {
           throw new Error(
-            `file/folder ${commandLineParameters.tsconfig} is not a valid tsconfig.json file,` +
+            `file/folder ${buildOptions.tsconfig} is not a valid tsconfig.json file,` +
               `or not a folder contains tsconfig.json`
           );
         }
       }
     } else {
-      commandLineParameters.tsconfig = Constants.TSCONFIG_PATH;
+      buildOptions.tsconfig = Constants.TSCONFIG_PATH;
     }
 
-    const config = this._loadTsconfig(commandLineParameters.tsconfig);
+    const config = this._loadTsconfig(buildOptions.tsconfig);
 
-    if (commandLineParameters.watch) {
+    if (buildOptions.watch) {
       // Startup dev server
-      await this._runWatchBuild({ tsconfigPath: commandLineParameters.tsconfig }, onEmitCallback);
+      await this._runWatchBuild(
+        { tsconfigPath: buildOptions.tsconfig },
+        onEmitCallback
+      );
     } else {
       // Startup incremental-build process
       await this._runIncrementalBuild(config, onEmitCallback);
@@ -83,7 +89,7 @@ export class TypescriptRunner {
     const program = ts.createIncrementalProgram({
       rootNames: tsconfig.fileNames,
       host,
-      options: tsconfig.options
+      options: tsconfig.options,
     });
     await this._emit(program).then(() => onEmitCallback?.());
   }
@@ -101,7 +107,7 @@ export class TypescriptRunner {
       debug: this.debug,
       configFileName: tsconfigPath,
       optionsToExtend: undefined,
-      watchOptionsToExtend: undefined
+      watchOptionsToExtend: undefined,
     });
 
     const watchProgram = ts.createWatchProgram(host.resolve());
@@ -117,11 +123,17 @@ export class TypescriptRunner {
    * @param program
    */
   private async _emit(
-    program: ts.Program | ts.EmitAndSemanticDiagnosticsBuilderProgram | ts.BuilderProgram
+    program:
+      | ts.Program
+      | ts.EmitAndSemanticDiagnosticsBuilderProgram
+      | ts.BuilderProgram
   ): Promise<void> {
     let files: { filename: string; content: string; depth: number }[] = [];
 
-    async function _createWriteFileTask(filename: string, content: string): Promise<void> {
+    async function _createWriteFileTask(
+      filename: string,
+      content: string
+    ): Promise<void> {
       return await Fs.writeFile(filename, content);
     }
 
@@ -129,14 +141,16 @@ export class TypescriptRunner {
       files.push({
         filename,
         content,
-        depth: filename.split('/').length
+        depth: filename.split("/").length,
       });
     });
 
     files = files.sort((a, b) => (a.depth > b.depth ? 1 : -1));
 
     await Execution.serialize(
-      files.map(file => () => _createWriteFileTask(file.filename, file.content)),
+      files.map(
+        (file) => () => _createWriteFileTask(file.filename, file.content)
+      ),
       void 0
     );
   }
