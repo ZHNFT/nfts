@@ -122,7 +122,7 @@ export class SubParser<R = unknown> {
       configurable: false,
       enumerable: true,
       writable: false,
-      value: _actions.slice(0),
+      value: _actions,
     });
 
     return _result;

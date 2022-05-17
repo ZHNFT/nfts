@@ -27,7 +27,7 @@ export abstract class Command extends CommandLineParameterManager {
    * 执行逻辑
    * @param args
    */
-  abstract onExecute(args?: unknown): Promise<void>;
+  abstract onExecute(args?: unknown, actions?: string[]): Promise<void>;
   /**
    * 命令行参数配置逻辑
    * 子类型必须实现以完成命令行参数的配置

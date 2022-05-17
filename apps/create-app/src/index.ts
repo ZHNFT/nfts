@@ -48,7 +48,7 @@ class Creation extends CommandLine implements TCreationCommandLineParameters {
     });
   }
 
-  async onExecute(): Promise<void> {
+  async onExecute(_: unknown, actions: string[]): Promise<void> {
     const parameters: ValueOfParameters<{
       ts: FlagParameter;
       platform: ArrayParameter;
@@ -56,7 +56,8 @@ class Creation extends CommandLine implements TCreationCommandLineParameters {
       ts: this.ts.value,
       platform: this.platform.value,
     };
-    await Generator.run(parameters, resolve(process.cwd(), "test/temp"));
+
+    await Generator.run(parameters, resolve(process.cwd(), actions[1] ?? "."));
   }
 }
 

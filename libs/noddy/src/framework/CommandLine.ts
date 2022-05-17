@@ -10,7 +10,7 @@ export interface ParsedCommandLineOption {
 
 export interface CommandLine {
   // onExecute?: (args?: unknown) => Promise<void>;
-  onExecute?(args?: unknown): Promise<void>;
+  onExecute?(args?: unknown, actions?: string[]): Promise<void>;
 }
 
 export abstract class CommandLine extends CommandLineParameterManager {
@@ -66,9 +66,9 @@ export abstract class CommandLine extends CommandLineParameterManager {
     const command = this._findCommand(_);
 
     if (command) {
-      await command.onExecute(args);
+      await command.onExecute(args, _);
     } else {
-      await this.onExecute?.(args);
+      await this.onExecute?.(args, _);
     }
   }
 
