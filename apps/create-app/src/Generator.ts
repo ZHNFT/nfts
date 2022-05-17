@@ -1,147 +1,147 @@
 import childProcess from "child_process";
 import { resolve } from "path";
 import { writeFile } from "fs/promises";
-import { TCreationParameters, Platforms } from ".";
+import { TCreationParameters, Platforms } from "./Creator";
 import { Execution } from "@nfts/node-utils-library";
 import type { Config } from "prettier";
 
 export type TUserInfo = { name: string; email: string };
 export type TPackageJsonInfo = {
-  usingTs?: boolean;
-  platform?: keyof typeof Platforms;
+	usingTs?: boolean;
+	platform?: keyof typeof Platforms;
 };
 
 export class Generator {
-  // 所有待创建的文件都先缓存在该数据结构中
-  private static fileEmitTasks: Execution.TaskFunc<void, void>[];
+	// 所有待创建的文件都先缓存在该数据结构中
+	private static fileEmitTasks: Execution.TaskFunc<void, void>[];
 
-  public static async run(
-    opts: TCreationParameters,
-    cwd: string = process.cwd()
-  ) {
-    // 重置所有文件写入的 TASK
-    this.fileEmitTasks = [];
-    const { ts, platform } = opts;
-    const targetPlatform = (platform?.[0] || "node") as Platforms;
-    let dependencies = ["@nfts/gmf", "@nfts/eslint-config"];
-    if (ts) {
-      dependencies.push("typescript");
-    }
-    switch (targetPlatform) {
-      case "node":
-        break;
-      case "react":
-        dependencies = dependencies.concat([
-          "react",
-          "react-dom",
-          "@nfts/plugin-webpack",
-        ]);
-        break;
-      default:
-        break;
-    }
+	public static async run(
+		opts: TCreationParameters,
+		cwd: string = process.cwd()
+	) {
+		// 重置所有文件写入的 TASK
+		this.fileEmitTasks = [];
+		const { ts, platform } = opts;
+		const targetPlatform = (platform?.[0] || "node") as Platforms;
+		let dependencies = ["@nfts/gmf", "@nfts/eslint-config"];
+		if (ts) {
+			dependencies.push("typescript");
+		}
+		switch (targetPlatform) {
+			case "node":
+				break;
+			case "react":
+				dependencies = dependencies.concat([
+					"react",
+					"react-dom",
+					"@nfts/plugin-webpack",
+				]);
+				break;
+			default:
+				break;
+		}
 
-    this.makePackageJson(targetPlatform, cwd);
-    this.makeTemplateFiles(targetPlatform, cwd);
-    // 开始写入文件
-    await Execution.parallel(this.fileEmitTasks, undefined);
-    this.prettierCode();
-    console.log("文件写入结束");
-  }
+		this.makePackageJson(targetPlatform, cwd);
+		this.makeTemplateFiles(targetPlatform, cwd);
+		// 开始写入文件
+		await Execution.parallel(this.fileEmitTasks, undefined);
+		this.prettierCode();
+		console.log("文件写入结束");
+	}
 
-  /*
-   * 获取当前用户的 git user 配置信息
-   * */
-  public static getCurrentUserInfo(): TUserInfo {
-    try {
-      const name = childProcess
-        .spawnSync("git", ["config", "--global", "user.name"])
-        .stdout.toString();
-      const email = childProcess
-        .spawnSync("git", ["config", "--global", "user.email"])
-        .stdout.toString();
-      return {
-        name: name.replace("\n", ""),
-        email: email.replace("\n", ""),
-      };
-    } catch (e) {
-      return {
-        name: "",
-        email: "",
-      };
-    }
-  }
+	/*
+	 * 获取当前用户的 git user 配置信息
+	 * */
+	public static getCurrentUserInfo(): TUserInfo {
+		try {
+			const name = childProcess
+				.spawnSync("git", ["config", "--global", "user.name"])
+				.stdout.toString();
+			const email = childProcess
+				.spawnSync("git", ["config", "--global", "user.email"])
+				.stdout.toString();
+			return {
+				name: name.replace("\n", ""),
+				email: email.replace("\n", ""),
+			};
+		} catch (e) {
+			return {
+				name: "",
+				email: "",
+			};
+		}
+	}
 
-  public static async installDeps(): Promise<void> {
-    //
-  }
+	public static async installDeps(): Promise<void> {
+		//
+	}
 
-  public static prettierCode(): void {
-    childProcess.spawnSync("npx", ["prettier", "-w"]);
-  }
+	public static prettierCode(): void {
+		childProcess.spawnSync("npx", ["prettier", "-w"]);
+	}
 
-  // 生成 package.json 文件
-  private static makePackageJson(platform: Platforms, cwd: string): void {
-    const userInfo = this.getCurrentUserInfo();
+	// 生成 package.json 文件
+	private static makePackageJson(platform: Platforms, cwd: string): void {
+		const userInfo = this.getCurrentUserInfo();
 
-    const platformCommand = platform === Platforms.react ? "bundle" : "build";
+		const platformCommand = platform === Platforms.react ? "bundle" : "build";
 
-    const pkg = {
-      name: "new_project",
-      version: "0.0.1",
-      main: "./dist/index.js",
-      types: "./dist/index.d.ts",
-      author: {
-        name: userInfo.name,
-        email: userInfo.email,
-        url: "*",
-      },
-      publishConfig: {
-        access: "public",
-      },
-      scripts: {
-        test: `gmf ${platformCommand} --test`,
-        dev: `gmf ${platformCommand} --watch`,
-        build: `gmf ${platformCommand} --test --clean`,
-      },
-      dependencies: {
-        "@nfts/gmf": "@latest",
-        "@nfts/eslint-config": "@latest",
-      },
-      devDependencies: {
-        "@types/jest": "~27.5.1",
-        "@types/node": "~17.0.5",
-        jest: "~27.4.5",
-        "ts-jest": "~27.1.2",
-      },
-      prettier: this.getPrettierConfig(),
-      jest: {
-        preset: "ts-jest",
-        testEnvironment: "node",
-        passWithNoTests: true,
-      },
-    };
+		const pkg = {
+			name: "new_project",
+			version: "0.0.1",
+			main: "./dist/index.js",
+			types: "./dist/index.d.ts",
+			author: {
+				name: userInfo.name,
+				email: userInfo.email,
+				url: "*",
+			},
+			publishConfig: {
+				access: "public",
+			},
+			scripts: {
+				test: `gmf ${platformCommand} --test`,
+				dev: `gmf ${platformCommand} --watch`,
+				build: `gmf ${platformCommand} --test --clean`,
+			},
+			dependencies: {
+				"@nfts/gmf": "@latest",
+				"@nfts/eslint-config": "@latest",
+			},
+			devDependencies: {
+				"@types/jest": "~27.5.1",
+				"@types/node": "~17.0.5",
+				jest: "~27.4.5",
+				"ts-jest": "~27.1.2",
+			},
+			prettier: this.getPrettierConfig(),
+			jest: {
+				preset: "ts-jest",
+				testEnvironment: "node",
+				passWithNoTests: true,
+			},
+		};
 
-    this.fileEmitTasks.push(() =>
-      this.makeFileTask(resolve(cwd, "package.json"), JSON.stringify(pkg))
-    );
-  }
+		this.fileEmitTasks.push(() =>
+			this.makeFileTask(resolve(cwd, "package.json"), JSON.stringify(pkg))
+		);
+	}
 
-  private static getPrettierConfig(): Config {
-    return {
-      printWidth: 120,
-      endOfLine: "auto",
-      singleQuote: true,
-      trailingComma: "none",
-      arrowParens: "avoid",
-    };
-  }
+	private static getPrettierConfig(): Config {
+		return {
+			printWidth: 120,
+			endOfLine: "auto",
+			singleQuote: true,
+			trailingComma: "none",
+			arrowParens: "avoid",
+		};
+	}
 
-  // 创建模板文件
-  private static makeTemplateFiles(platform: Platforms, cwd: string) {
-    const files: { [index: string]: string } = {
-      // .eslintrc.js
-      ".eslintrc.js": `
+	// 创建模板文件
+	private static makeTemplateFiles(platform: Platforms, cwd: string) {
+		const files: { [index: string]: string } = {
+			// .eslintrc.js
+			".eslintrc.js": `
 const { dirname } = require('path');
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
@@ -152,8 +152,8 @@ module.exports = {
     tsconfigRootDir: dirname(__filename)
   }
 };`,
-      // .gitignore
-      ".gitignore": `
+			// .gitignore
+			".gitignore": `
 # IDEs
 .idea/
 .vscode/
@@ -175,37 +175,37 @@ package-lock.json
 log/
 `,
 
-      // .npmignore
-      ".npmignore": `
+			// .npmignore
+			".npmignore": `
 *
 
 !/dist/**
 !/bin/**
 !/schemas/**`,
-      // tsconfig
-      "tsconfig.json": `
+			// tsconfig
+			"tsconfig.json": `
 {
   "extends": "./node_modules/@nfts/project-profiles/profiles/tsconfig.base.json",
 }
 
 `,
-    };
+		};
 
-    Object.keys(files).forEach((fileName: string) => {
-      const content = files[fileName];
-      this.fileEmitTasks.push(() =>
-        this.makeFileTask(resolve(cwd, fileName), content)
-      );
-    });
-  }
+		Object.keys(files).forEach((fileName: string) => {
+			const content = files[fileName];
+			this.fileEmitTasks.push(() =>
+				this.makeFileTask(resolve(cwd, fileName), content)
+			);
+		});
+	}
 
-  // 创建写文件的 Task
-  private static async makeFileTask(
-    filePath: string,
-    content: string
-  ): Promise<void> {
-    await writeFile(filePath, content, {
-      encoding: "utf-8",
-    });
-  }
+	// 创建写文件的 Task
+	private static async makeFileTask(
+		filePath: string,
+		content: string
+	): Promise<void> {
+		await writeFile(filePath, content, {
+			encoding: "utf-8",
+		});
+	}
 }
