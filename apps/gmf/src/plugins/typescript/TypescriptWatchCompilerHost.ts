@@ -1,7 +1,7 @@
-import os from 'os';
-import ts from 'typescript';
-import { Terminal, chalk } from '@nfts/node-utils-library';
-import { Debug } from '@nfts/noddy';
+import os from "os";
+import ts from "typescript";
+import { Terminal, chalk } from "@nfts/node-utils-library";
+import { Debug } from "@nfts/noddy";
 
 interface IWatchCompilerHost {
   configFileName: string;
@@ -14,7 +14,7 @@ interface IWatchCompilerHost {
   extraFileExtensions?: readonly ts.FileExtensionInfo[];
 }
 
-type TCustomWatchCompilerHostOpts = Omit<IWatchCompilerHost, 'system'>;
+type TCustomWatchCompilerHostOpts = Omit<IWatchCompilerHost, "system">;
 
 export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
   configFileName: string;
@@ -32,7 +32,7 @@ export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
     extraFileExtensions,
     configFileName,
     optionsToExtend,
-    watchOptionsToExtend
+    watchOptionsToExtend,
   }: { debug: Debug } & TCustomWatchCompilerHostOpts) {
     this.debug = debug;
     this.optionsToExtend = optionsToExtend!;
@@ -45,7 +45,12 @@ export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
     this.diagnosticsInOneTick.push(diagnostic);
   }
 
-  reportWatchStatus(diagnostic: ts.Diagnostic, newLine: string, options: ts.CompilerOptions, errorCount?: number) {
+  reportWatchStatus(
+    diagnostic: ts.Diagnostic,
+    newLine: string,
+    options: ts.CompilerOptions,
+    errorCount?: number
+  ) {
     if (!errorCount || errorCount === 0) {
       Terminal.clearScreen();
       this.diagnosticsInOneTick = [];
@@ -66,10 +71,10 @@ export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
       const filename = _d.file?.fileName;
       const pos = {
         start: _d.start ?? 0,
-        end: (_d.start ?? 0) + (_d.length ?? 0)
+        end: (_d.start ?? 0) + (_d.length ?? 0),
       };
 
-      const lines = source?.split('\n') ?? [];
+      const lines = source?.split("\n") ?? [];
 
       let lineNo = 0;
       let prevCount = 0;
@@ -91,29 +96,39 @@ export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
       const errorOffset = pos.start - prevCount;
 
       const tip = `${TypescriptWatchCompilerHost.arrayOf(
-        ' ',
+        " ",
         errorOffset + String(errorLineNo).length + 2 // 一个冒号一个空格
-      )}${TypescriptWatchCompilerHost.arrayOf(chalk.red('~'), _d?.length ?? 0)}`;
+      )}${TypescriptWatchCompilerHost.arrayOf(
+        chalk.red("~"),
+        _d?.length ?? 0
+      )}`;
 
       const outPut = [
-        `      ${chalk.bgBlack(`${String(lastLineNo).padStart(String(errorLineNo).length, ' ')}:`)} ${
+        `      ${chalk.bgBlack(
+          `${String(lastLineNo).padStart(String(errorLineNo).length, " ")}:`
+        )} ${
           lines[lastLineNo - 1] // 行数下标是 1 开始，在数组中用需要减一
         }`,
-        `      ${chalk.bgBlack(String(errorLineNo) + ':')} ${lines[lineNo - 1]}`,
-        `      ${tip}${os.EOL}` + `      ${chalk.red(_d.messageText as string)}\n\r`
+        `      ${chalk.bgBlack(String(errorLineNo) + ":")} ${
+          lines[lineNo - 1]
+        }`,
+        `      ${tip}${os.EOL}` +
+          `      ${chalk.red(_d.messageText as string)}\n\r`,
       ];
-
-      groupByFilename[filename!] = [...(groupByFilename[filename!] ?? []), outPut.join(os.EOL)];
+      groupByFilename[filename!] = [
+        ...(groupByFilename[filename!] ?? []),
+        outPut.join(os.EOL),
+      ];
     }
 
-    Object.keys(groupByFilename).forEach(filename => {
+    Object.keys(groupByFilename).forEach((filename) => {
       console.log(`→ ${chalk.yellow(filename)}`);
       console.log(groupByFilename[filename].join(os.EOL));
     });
   }
 
   private static arrayOf(char: string, count: number) {
-    return new Array(count).fill(char).join('');
+    return new Array(count).fill(char).join("");
   }
 
   public resolve(): ts.WatchCompilerHostOfConfigFile<ts.BuilderProgram> {
@@ -122,7 +137,7 @@ export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
       undefined,
       this.system,
       undefined,
-      d => this.reportDiagnostic(d),
+      (d) => this.reportDiagnostic(d),
       (...args) => this.reportWatchStatus(...args)
     );
   }

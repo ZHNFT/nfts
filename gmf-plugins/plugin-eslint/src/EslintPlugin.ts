@@ -1,16 +1,33 @@
-import { PluginSession, Plugin } from "@nfts/gmf";
-import { Linter, ESLint } from "eslint";
-import { req, chalk, Utilities } from "@nfts/node-utils-library";
 import path from "path";
 import os from "os";
+import { PluginSession, Plugin } from "@nfts/gmf";
+import { Linter, ESLint } from "eslint";
+import { Command } from "@nfts/noddy";
+import { FlagParameter, ValueOfParameters } from "@nfts/argparser";
+import { req, chalk, Utilities } from "@nfts/node-utils-library";
 
 const NAME = "EslintPlugin";
 const DESCRIPTION = "Code quality checker";
 
-class EslintPlugin implements Plugin<void> {
+type EslintPluginParameters = {
+  fix: FlagParameter;
+  cache: FlagParameter;
+};
+
+type EslintPluginParametersValue = ValueOfParameters<EslintPluginParameters>;
+
+class EslintPlugin
+  implements Plugin<EslintPluginParametersValue>, EslintPluginParameters
+{
   name = NAME;
   summary = DESCRIPTION;
-  apply(session: PluginSession<void>): void {
+
+  fix!: FlagParameter;
+  cache!: FlagParameter;
+
+  apply(session: PluginSession<EslintPluginParametersValue>): void {
+    this.onParametersDefinition(session.command);
+
     session.hooks.build.add(NAME, (build) => {
       build.hooks.lint.add(NAME, (test) => {
         test.hooks.run.add(NAME, async () => {
@@ -33,7 +50,7 @@ class EslintPlugin implements Plugin<void> {
     const lint = new ESLint({
       cwd: process.cwd(),
       useEslintrc: true,
-      fix: true,
+      fix: this.fix.value ?? false,
       cache: true,
       cacheLocation: path.resolve(process.cwd(), ".temp/.eslintcache"),
       ignore: true,
@@ -51,7 +68,7 @@ class EslintPlugin implements Plugin<void> {
   }
 
   // 格式化
-  public eslintMessagePrettier(results: ESLint.LintResult[]) {
+  public eslintMessagePrettier(results: ESLint.LintResult[]): void {
     // const fileMap = new Map<string, string[]>();
     let fixableCount = 0;
 
@@ -78,7 +95,7 @@ class EslintPlugin implements Plugin<void> {
         `→ ${chalk.yellow(path.relative(process.cwd(), filePath))}`;
 
       const formattedMessages = messages.map((lintMessage) => {
-        const { message, severity, line, endLine, column, endColumn } =
+        const { message, line, endLine, column, endColumn, ruleId } =
           lintMessage;
 
         return [
@@ -94,20 +111,25 @@ class EslintPlugin implements Plugin<void> {
             .join("")}${Utilities.array
             .arrayOf((endColumn || column) - column, chalk.red("~"))
             .join("")}`,
-          `      ${message}`,
-          `      ${chalk.bgBlack(
-            `${String(line + 1).padStart(String(endLine).length, " ")}:`
-          )}  ${lines[line]}`,
+          `      ${chalk.red(message)}(${chalk.dim(ruleId)})`,
+          " ",
         ]
           .filter(Boolean)
           .join(os.EOL);
       });
 
       // fileMap.set(filePath, formattedMessages);
-
       console.log(header());
-      console.log("");
       console.log(formattedMessages.join(os.EOL));
+      console.log("");
+    }
+
+    if (fixableCount > 0) {
+      console.log(
+        chalk.red(
+          `${fixableCount} errors and warnings potentially fixable with the \`--fix\` option`
+        )
+      );
     }
   }
 
@@ -127,6 +149,18 @@ class EslintPlugin implements Plugin<void> {
     } catch (_) {
       return false;
     }
+  }
+
+  private onParametersDefinition(command: Command) {
+    this.fix = command.flagParameter({
+      name: "--fix",
+      summary: "Automatically fix problems",
+    });
+
+    this.cache = command.flagParameter({
+      name: "--cache",
+      summary: "Only check changed files",
+    });
   }
 }
 
