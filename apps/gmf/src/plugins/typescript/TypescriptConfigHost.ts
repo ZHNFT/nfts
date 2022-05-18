@@ -2,19 +2,10 @@ import ts from "typescript";
 import fs from "fs";
 import path from "path";
 import { glob } from "@nfts/node-utils-library";
+import Const from "./Constants";
 
 export class TypescriptConfigHost implements ts.ParseConfigHost {
   useCaseSensitiveFileNames = false;
-
-  // 默认设置的 incldue 在src目录下
-  defaultIncludeFiles = "./src/**/*.{js,ts,jsx,tsx}";
-
-  //  默认 exclude 的文件，包括 node_modules 以及一些测试文件
-  defaultExcludeFiles = [
-    "**/node_modules/**",
-    "**/*.{spec,test}.{js,ts,jsx,tsx}",
-    "**/__tests__/**/*.{spec,test}.{js,ts,jsx,tsx}",
-  ];
 
   public fileExists(path: string): boolean {
     return fs.existsSync(path);
@@ -26,19 +17,16 @@ export class TypescriptConfigHost implements ts.ParseConfigHost {
     excludes: string[] | undefined,
     includes: string[]
   ): readonly string[] {
-    return glob.sync(
-      includes.length === 0 ? this.defaultIncludeFiles : includes,
-      {
-        cwd: rootDir,
-        onlyFiles: true,
-        // Hardcode exclude file for possible test files
-        ignore: excludes
-          ? excludes.map((excludePattern) => {
-              return path.relative(rootDir, path.resolve(excludePattern));
-            })
-          : this.defaultExcludeFiles,
-      }
-    );
+    return glob.sync(includes.length === 0 ? Const.include : includes, {
+      cwd: rootDir,
+      onlyFiles: true,
+      // Hardcode exclude file for possible test files
+      ignore: excludes
+        ? excludes.map((excludePattern) => {
+            return path.relative(rootDir, path.resolve(excludePattern));
+          })
+        : Const.excludes,
+    });
   }
 
   public readFile(path: string): string | undefined {

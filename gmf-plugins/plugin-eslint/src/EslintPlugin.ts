@@ -61,13 +61,16 @@ class EslintPlugin
     });
 
     const lintResult = await lint.lintFiles(["**/*.{ts,js,jsx,tsx}"]);
+
     this.eslintMessagePrettier(lintResult);
   }
 
-  // 格式化
+  // 美化输出
   public eslintMessagePrettier(results: ESLint.LintResult[]): void {
     // const fileMap = new Map<string, string[]>();
     let fixableCount = 0;
+    let totalErrorCount = 0;
+    let totalWarningCount = 0;
 
     for (const lintResult of results) {
       const {
@@ -78,6 +81,7 @@ class EslintPlugin
         filePath,
         messages,
         source,
+        output,
       } = lintResult;
 
       if (errorCount === 0 && warningCount === 0) {
@@ -85,8 +89,10 @@ class EslintPlugin
       }
 
       fixableCount += fixableErrorCount + fixableWarningCount;
+      totalErrorCount += errorCount;
+      totalWarningCount += warningCount;
 
-      const lines = (source as string).split("\n");
+      const lines = ((source as string) || (output as string)).split("\n");
 
       const header = () =>
         `→ ${chalk.yellow(path.relative(process.cwd(), filePath))}`;
@@ -130,6 +136,26 @@ class EslintPlugin
           `${fixableCount} errors and warnings potentially fixable with the \`--fix\` option`
         )
       );
+    }
+
+    if (totalErrorCount > 0) {
+      console.log(
+        chalk.red(
+          `Lint failed with ${totalErrorCount} errors and ${totalWarningCount} warnings` +
+            "\n" +
+            `Please fix those errors before you try again`
+        )
+      );
+
+      process.exit(1);
+    } else {
+      if (totalWarningCount > 0) {
+        console.log(
+          `Lint passed with ${totalWarningCount} warnings` +
+            `\n` +
+            `Please fix those warnings before you try again`
+        );
+      }
     }
   }
 

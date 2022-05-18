@@ -8,14 +8,14 @@ export class CompileSubStageHooks extends StageSubHook {
 
 export class PreCompileSubStageHooks extends StageSubHook {}
 
-export class TestSubStageHooks extends StageSubHook {}
+export class LintSubStageHooks extends StageSubHook {}
 
 export class BuildStageHooks {
   readonly preCompile = new AsyncHook<
     StageCommonContext<BuildCommandLineParametersValue, PreCompileSubStageHooks>
   >();
   readonly lint = new AsyncHook<
-    StageCommonContext<BuildCommandLineParametersValue, TestSubStageHooks>
+    StageCommonContext<BuildCommandLineParametersValue, LintSubStageHooks>
   >();
   readonly compile = new AsyncHook<
     StageCommonContext<BuildCommandLineParametersValue, CompileSubStageHooks>
@@ -39,18 +39,31 @@ export class BuildStage extends Stage<
   ): Promise<void> {
     await this.executeInnerHook(parameters);
 
-    const compileSubContext = {
-      hooks: new CompileSubStageHooks(),
+    const preCompileSubContext = {
+      hooks: new PreCompileSubStageHooks(),
       cmdParams: parameters,
     };
 
     // Pre-compile
-    await this.hooks.preCompile.call(compileSubContext);
-    await BuildStage._runSubStageHooks("preCompile", compileSubContext.hooks);
+    await this.hooks.preCompile.call(preCompileSubContext);
+    await BuildStage._runSubStageHooks(
+      "preCompile",
+      preCompileSubContext.hooks
+    );
+
+    const lintSubContext = {
+      hooks: new LintSubStageHooks(),
+      cmdParams: parameters,
+    };
 
     // Lint
-    await this.hooks.lint.call(compileSubContext);
-    await BuildStage._runSubStageHooks("test", compileSubContext.hooks);
+    await this.hooks.lint.call(lintSubContext);
+    await BuildStage._runSubStageHooks("test", lintSubContext.hooks);
+
+    const compileSubContext = {
+      hooks: new CompileSubStageHooks(),
+      cmdParams: parameters,
+    };
 
     // Build
     await this.hooks.compile.call(compileSubContext);

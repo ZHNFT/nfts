@@ -1,3 +1,4 @@
+import os from "os";
 import { Measure, Command } from "@nfts/noddy";
 import { StringParameter, ValueOfParameters } from "@nfts/argparser";
 import { chalk } from "@nfts/node-utils-library";
@@ -57,11 +58,11 @@ class TypescriptPlugin
                     tsconfig: this.project.value,
                   },
                   function onEmitCallback() {
-                    // After emit
+                    //
                   }
                 )
                 .catch((e) => {
-                  logger.log(e.message);
+                  throw e;
                 }),
             function taskExecutedCallback(spendTimeMS) {
               if (!build.cmdParams.watch) {
@@ -71,6 +72,8 @@ class TypescriptPlugin
               }
             }
           );
+
+          process.stdout.write(os.EOL);
         });
       });
     });

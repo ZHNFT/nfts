@@ -12,7 +12,6 @@ export class BundleSubStageHooks extends StageSubHook {}
 export class TestSubStageHooks extends StageSubHook {}
 
 export class BundleStageHooks {
-  // 修改 webpack 配置的 hook
   readonly configure: WaterfallHook<unknown> = new WaterfallHook<unknown>();
   readonly preCompile = new AsyncHook<TBundleCompileSubStageContext>();
   readonly lint = new AsyncHook<TBundleCompileSubStageContext>();
@@ -40,7 +39,7 @@ export class BundleStage extends Stage<BundleStageHooks> {
     await BundleStage._runSubStageHooks("preCompile", bundleArgs.hooks);
 
     await this.hooks.lint.call(bundleArgs);
-    await BundleStage._runSubStageHooks("preCompile", bundleArgs.hooks);
+    await BundleStage._runSubStageHooks("test", bundleArgs.hooks);
 
     await this.hooks.compile.call(bundleArgs);
     await BundleStage._runSubStageHooks("compile", bundleArgs.hooks);
