@@ -9,11 +9,14 @@ export type TBundleCompileSubStageContext = StageCommonContext<
 
 export class BundleSubStageHooks extends StageSubHook {}
 
+export class TestSubStageHooks extends StageSubHook {}
+
 export class BundleStageHooks {
   // 修改 webpack 配置的 hook
   readonly configure: WaterfallHook<unknown> = new WaterfallHook<unknown>();
-  readonly compile = new AsyncHook<TBundleCompileSubStageContext>();
   readonly preCompile = new AsyncHook<TBundleCompileSubStageContext>();
+  readonly lint = new AsyncHook<TBundleCompileSubStageContext>();
+  readonly compile = new AsyncHook<TBundleCompileSubStageContext>();
 }
 
 export class BundleStage extends Stage<BundleStageHooks> {
@@ -32,7 +35,11 @@ export class BundleStage extends Stage<BundleStageHooks> {
       hooks: new BundleSubStageHooks(),
       cmdParams: parameters,
     };
+
     await this.hooks.preCompile.call(bundleArgs);
+    await BundleStage._runSubStageHooks("preCompile", bundleArgs.hooks);
+
+    await this.hooks.lint.call(bundleArgs);
     await BundleStage._runSubStageHooks("preCompile", bundleArgs.hooks);
 
     await this.hooks.compile.call(bundleArgs);

@@ -4,7 +4,6 @@ import path from "path";
 import { Fs, Execution } from "@nfts/node-utils-library";
 import { Debug } from "@nfts/noddy";
 import { dirname } from "path";
-import { BuildCommandLineParametersValue } from "../../cli/commands/BuildCommand";
 import { TypescriptConfigHost } from "./TypescriptConfigHost";
 import { TypescriptWatchCompilerHost } from "./TypescriptWatchCompilerHost";
 import Constants from "../../Constants";

@@ -14,7 +14,7 @@ export class BuildStageHooks {
   readonly preCompile = new AsyncHook<
     StageCommonContext<BuildCommandLineParametersValue, PreCompileSubStageHooks>
   >();
-  readonly test = new AsyncHook<
+  readonly lint = new AsyncHook<
     StageCommonContext<BuildCommandLineParametersValue, TestSubStageHooks>
   >();
   readonly compile = new AsyncHook<
@@ -49,7 +49,7 @@ export class BuildStage extends Stage<
     await BuildStage._runSubStageHooks("preCompile", compileSubContext.hooks);
 
     // Test
-    await this.hooks.test.call(compileSubContext);
+    await this.hooks.lint.call(compileSubContext);
     await BuildStage._runSubStageHooks("test", compileSubContext.hooks);
 
     // Build

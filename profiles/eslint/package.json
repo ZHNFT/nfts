@@ -8,11 +8,8 @@
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.7.0",
-    "eslint": "^8.12.0",
+    "eslint": "^8.15.0",
     "eslint-plugin-hooks": "^0.4.3",
     "eslint-plugin-react": "^7.29.4"
-  },
-  "devDependencies": {
-    "@types/eslint": "^8.4.1"
   }
 }

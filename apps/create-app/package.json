@@ -21,7 +21,8 @@
     "@nfts/eslint-config": "workspace:*",
     "@nfts/gmf": "workspace:*",
     "@nfts/noddy": "workspace:*",
-    "@nfts/node-utils-library": "workspace:*"
+    "@nfts/node-utils-library": "workspace:*",
+    "@nfts/plugin-eslint": "workspace:*"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",

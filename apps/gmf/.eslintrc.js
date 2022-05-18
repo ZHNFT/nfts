@@ -4,7 +4,7 @@ const { dirname } = require("path");
 module.exports = {
   root: true,
   extends: ["@nfts"],
-  ignorePatterns: ["/dist/*.js"],
+  ignorePatterns: ["test", "dist"],
   parserOptions: {
     tsconfigRootDir: dirname(__filename),
   },
