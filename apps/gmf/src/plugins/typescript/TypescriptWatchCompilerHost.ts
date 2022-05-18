@@ -58,12 +58,19 @@ export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
       return;
     }
 
-    this._formatRawDiagnostic();
+    const diagnostics = TypescriptWatchCompilerHost.tsDiagnosticsPrettier(
+      this.diagnosticsInOneTick
+    );
+
+    console.log(diagnostics);
   }
 
-  private _formatRawDiagnostic() {
+  public static tsDiagnosticsPrettier(
+    diagnostics: ts.Diagnostic[],
+    newLine: string = os.EOL
+  ): string {
     const groupByFilename: Record<string, string[]> = {};
-    const _ds = this.diagnosticsInOneTick.slice(0);
+    const _ds = diagnostics.slice(0);
     for (let i = 0; i < _ds.length; i++) {
       const _d = _ds[i];
 
@@ -74,7 +81,7 @@ export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
         end: (_d.start ?? 0) + (_d.length ?? 0),
       };
 
-      const lines = source?.split("\n") ?? [];
+      const lines = source?.split(newLine) ?? [];
 
       let lineNo = 0;
       let prevCount = 0;
@@ -112,19 +119,24 @@ export class TypescriptWatchCompilerHost implements IWatchCompilerHost {
         `      ${chalk.bgBlack(String(errorLineNo) + ":")} ${
           lines[lineNo - 1]
         }`,
-        `      ${tip}${os.EOL}` +
+        `      ${tip}${newLine}` +
           `      ${chalk.red(_d.messageText as string)}\n\r`,
       ];
       groupByFilename[filename!] = [
         ...(groupByFilename[filename!] ?? []),
-        outPut.join(os.EOL),
+        outPut.join(newLine),
       ];
     }
 
+    let str = "";
+
     Object.keys(groupByFilename).forEach((filename) => {
-      console.log(`→ ${chalk.yellow(filename)}`);
-      console.log(groupByFilename[filename].join(os.EOL));
+      str += `→ ${chalk.yellow(filename)}${newLine}${groupByFilename[
+        filename
+      ].join(newLine)}`;
     });
+
+    return str;
   }
 
   private static arrayOf(char: string, count: number) {

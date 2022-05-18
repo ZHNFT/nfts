@@ -50,15 +50,19 @@ class TypescriptPlugin
 
           await Measure.taskAsync(
             async () =>
-              await tsRunner._runBuild(
-                {
-                  watch: compile.cmdParams.watch,
-                  tsconfig: this.project.value,
-                },
-                function onEmitCallback() {
-                  // After emit
-                }
-              ),
+              await tsRunner
+                ._runBuild(
+                  {
+                    watch: compile.cmdParams.watch,
+                    tsconfig: this.project.value,
+                  },
+                  function onEmitCallback() {
+                    // After emit
+                  }
+                )
+                .catch((e) => {
+                  logger.log(e.message);
+                }),
             function taskExecutedCallback(spendTimeMS) {
               if (!build.cmdParams.watch) {
                 logger.log(

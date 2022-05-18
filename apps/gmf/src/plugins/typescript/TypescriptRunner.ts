@@ -1,7 +1,7 @@
 import ts from "typescript";
 import fs from "fs";
 import path from "path";
-import { Fs, Execution } from "@nfts/node-utils-library";
+import { Fs, Execution, chalk } from "@nfts/node-utils-library";
 import { Debug } from "@nfts/noddy";
 import { dirname } from "path";
 import { TypescriptConfigHost } from "./TypescriptConfigHost";
@@ -11,11 +11,11 @@ import Constants from "../../Constants";
 export type VoidFunction = () => void;
 
 export class TypescriptRunner {
-  private readonly debug: Debug;
+  private readonly logger: Debug;
   private readonly parseConfigHost: TypescriptConfigHost;
 
   constructor({ debug }: { debug: Debug }) {
-    this.debug = debug;
+    this.logger = debug;
     this.parseConfigHost = new TypescriptConfigHost();
   }
 
@@ -90,6 +90,7 @@ export class TypescriptRunner {
       host,
       options: tsconfig.options,
     });
+
     await this._emit(program).then(() => onEmitCallback?.());
   }
 
@@ -103,7 +104,7 @@ export class TypescriptRunner {
     onEmitCallback?: VoidFunction
   ): Promise<void> {
     const host = new TypescriptWatchCompilerHost({
-      debug: this.debug,
+      debug: this.logger,
       configFileName: tsconfigPath,
       optionsToExtend: undefined,
       watchOptionsToExtend: undefined,
@@ -136,21 +137,48 @@ export class TypescriptRunner {
       return await Fs.writeFile(filename, content);
     }
 
-    program.emit(undefined, (filename, content) => {
-      files.push({
-        filename,
-        content,
-        depth: filename.split("/").length,
+    program.getSyntacticDiagnostics;
+
+    // All Diagnostics Messages
+    const typescriptDiagnostics = [
+      ...program.getConfigFileParsingDiagnostics(),
+      ...program.getDeclarationDiagnostics(),
+      ...program.getGlobalDiagnostics(),
+      ...program.getOptionsDiagnostics(),
+      ...program.getSemanticDiagnostics(),
+      ...program.getSyntacticDiagnostics(),
+    ];
+
+    if (typescriptDiagnostics.length > 0) {
+      const diagnosticsMessage =
+        TypescriptWatchCompilerHost.tsDiagnosticsPrettier(
+          typescriptDiagnostics
+        );
+      this.logger.log("\n" + diagnosticsMessage);
+      this.logger.log(
+        chalk.red(
+          `Compile failed with ${typescriptDiagnostics.length} errors, ` +
+            `Please fix the errors above, and try again!`
+        )
+      );
+      process.exit(1);
+    } else {
+      program.emit(undefined, (filename, content) => {
+        files.push({
+          filename,
+          content,
+          depth: filename.split("/").length,
+        });
       });
-    });
 
-    files = files.sort((a, b) => (a.depth > b.depth ? 1 : -1));
+      files = files.sort((a, b) => (a.depth > b.depth ? 1 : -1));
 
-    await Execution.serialize(
-      files.map(
-        (file) => () => _createWriteFileTask(file.filename, file.content)
-      ),
-      void 0
-    );
+      await Execution.serialize(
+        files.map(
+          (file) => () => _createWriteFileTask(file.filename, file.content)
+        ),
+        void 0
+      );
+    }
   }
 }

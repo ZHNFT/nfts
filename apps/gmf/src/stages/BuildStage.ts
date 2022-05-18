@@ -48,7 +48,7 @@ export class BuildStage extends Stage<
     await this.hooks.preCompile.call(compileSubContext);
     await BuildStage._runSubStageHooks("preCompile", compileSubContext.hooks);
 
-    // Test
+    // Lint
     await this.hooks.lint.call(compileSubContext);
     await BuildStage._runSubStageHooks("test", compileSubContext.hooks);
 

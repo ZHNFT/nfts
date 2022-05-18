@@ -1,10 +1,10 @@
 import path from "path";
 import os from "os";
 import { PluginSession, Plugin } from "@nfts/gmf";
-import { Linter, ESLint } from "eslint";
-import { Command } from "@nfts/noddy";
+import { ESLint } from "eslint";
+import { Command, Debug } from "@nfts/noddy";
 import { FlagParameter, ValueOfParameters } from "@nfts/argparser";
-import { req, chalk, Utilities } from "@nfts/node-utils-library";
+import { chalk, Utilities } from "@nfts/node-utils-library";
 
 const NAME = "EslintPlugin";
 const DESCRIPTION = "Code quality checker";
@@ -25,20 +25,24 @@ class EslintPlugin
   fix!: FlagParameter;
   cache!: FlagParameter;
 
+  logger!: Debug;
+
   apply(session: PluginSession<EslintPluginParametersValue>): void {
     this.onParametersDefinition(session.command);
 
+    this.logger = session.getScopedLogger(NAME);
+
     session.hooks.build.add(NAME, (build) => {
-      build.hooks.lint.add(NAME, (test) => {
-        test.hooks.run.add(NAME, async () => {
+      build.hooks.lint.add(NAME, (lint) => {
+        lint.hooks.run.add(NAME, async () => {
           await this.runEslintEngine();
         });
       });
     });
 
     session.hooks.bundle.add(NAME, (bundle) => {
-      bundle.hooks.lint.add(NAME, (test) => {
-        test.hooks.run.add(NAME, async () => {
+      bundle.hooks.lint.add(NAME, (lint) => {
+        lint.hooks.run.add(NAME, async () => {
           await this.runEslintEngine();
         });
       });
@@ -58,13 +62,6 @@ class EslintPlugin
 
     const lintResult = await lint.lintFiles(["**/*.{ts,js,jsx,tsx}"]);
     this.eslintMessagePrettier(lintResult);
-  }
-
-  private createBasicEslintConfiguration(): Linter.Config {
-    const isUsingTypescript = this.isUsingTypescript();
-    const isUsingReact = this.isUsingReact();
-
-    return {};
   }
 
   // 格式化
@@ -118,10 +115,13 @@ class EslintPlugin
           .join(os.EOL);
       });
 
-      // fileMap.set(filePath, formattedMessages);
-      console.log(header());
-      console.log(formattedMessages.join(os.EOL));
-      console.log("");
+      this.logger.log(
+        os.EOL +
+          `${header()}` +
+          os.EOL +
+          `${formattedMessages.join(os.EOL)}` +
+          os.EOL
+      );
     }
 
     if (fixableCount > 0) {
@@ -130,24 +130,6 @@ class EslintPlugin
           `${fixableCount} errors and warnings potentially fixable with the \`--fix\` option`
         )
       );
-    }
-  }
-
-  private isUsingTypescript(): boolean {
-    try {
-      req.resolve("./tsconfig.json");
-      return true;
-    } catch (_) {
-      return false;
-    }
-  }
-
-  private isUsingReact(): boolean {
-    try {
-      req.sync("react");
-      return true;
-    } catch (_) {
-      return false;
     }
   }
 
