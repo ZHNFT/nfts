@@ -12,7 +12,6 @@ importers:
       '@nfts/gmf': workspace:*
       '@nfts/noddy': workspace:*
       '@nfts/node-utils-library': workspace:*
-      '@nfts/plugin-eslint': workspace:*
       '@nfts/project-profiles': workspace:*
       '@types/jest': ^27.0.3
       '@types/node': ~17.0.5
@@ -23,12 +22,11 @@ importers:
       typescript: ^4.5.4
     dependencies:
       '@nfts/argparser': link:../../libs/argparser
+      '@nfts/eslint-config': link:../../profiles/eslint
       '@nfts/gmf': link:../gmf
       '@nfts/noddy': link:../../libs/noddy
       '@nfts/node-utils-library': link:../../libs/node-utils-library
     devDependencies:
-      '@nfts/eslint-config': link:../../profiles/eslint
-      '@nfts/plugin-eslint': link:../../gmf-plugins/plugin-eslint
       '@nfts/project-profiles': link:../../profiles/project-profiles
       '@types/jest': 27.5.1
       '@types/node': 17.0.33
